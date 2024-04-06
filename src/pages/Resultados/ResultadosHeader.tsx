@@ -6,10 +6,11 @@ const Wrapper = styled(Box)(() => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'start',
-  marginTop: '3rem',
-  marginBottom: 'rem',
-  paddingLeft: '16px',
-  paddingRight: '16px',
+  marginTop: '0rem',
+  marginBottom: '1rem',
+  paddingLeft: '1rem',
+  paddingRight: '1rem',
+  paddingTop: '1rem',
   width: '100%',
 }));
 

@@ -105,6 +105,7 @@ function SearchBar() {
                   margin: '0.5rem',
                   padding: 'auto',
                   cursor: 'pointer',
+                  maxWidth: 'fit-content',
                 }}
               >
                 {name}

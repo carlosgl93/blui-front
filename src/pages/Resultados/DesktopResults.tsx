@@ -19,8 +19,9 @@ const DesktopResults = ({ filteredPrestadores }: DesktopResultsProps) => {
         gridTemplateColumns: '25% 75%',
         backgroundColor: theme.palette.background.paper,
         gap: theme.spacing(16),
-        m: '5vh 3vw',
+        m: '2.5vh 1vw',
         borderRadius: '0.5rem',
+        padding: '1rem',
       }}
     >
       {/* FILTERS */}

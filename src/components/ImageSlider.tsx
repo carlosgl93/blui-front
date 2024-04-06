@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar/SearchBar';
 
 interface ImageSliderProps {
   interval?: number;
