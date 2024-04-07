@@ -28,7 +28,7 @@ export interface Prestador {
   totalReviews?: number;
   offersFreeMeetAndGreet: boolean;
   imageUrl?: string;
-  settings?: {
+  settings: {
     disponibilidad: boolean;
     comunas: boolean;
     tarifas: boolean;
@@ -49,9 +49,8 @@ export interface Prestador {
 }
 
 export const prestadorState = atom<null | Prestador>({
-  key: 'prestadorState', // unique ID (with respect to other atoms/selectors)
+  key: 'prestadorState',
   default: {
-    // default value (aka initial value)
     email: '',
     id: '',
     role: '',
@@ -74,5 +73,23 @@ export const prestadorState = atom<null | Prestador>({
     totalReviews: 0,
     description: '',
     offersFreeMeetAndGreet: false,
+    settings: {
+      disponibilidad: false,
+      comunas: false,
+      tarifas: false,
+      experiencia: false,
+      cuentaBancaria: false,
+      historialLaboral: false,
+      educacionFormacion: false,
+      registroSuperIntendenciaSalud: false,
+      insignias: false,
+      inmunizacion: false,
+      idiomas: false,
+      antecedentesCulturales: false,
+      religion: false,
+      interesesHobbies: false,
+      sobreMi: false,
+      misPreferencias: false,
+    },
   },
 });

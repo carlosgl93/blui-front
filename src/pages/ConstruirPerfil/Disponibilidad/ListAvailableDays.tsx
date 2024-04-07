@@ -17,14 +17,15 @@ export const StyledDayName = styled(SubTitle)(() => ({
   fontSize: '1rem',
 }));
 
-interface TimeSlot {
+export interface TimeSlot {
   startTime: string;
   endTime: string;
 }
 
 export interface AvailabilityData {
   day: string;
-  times: TimeSlot[];
+  times: TimeSlot;
+  isAvailable: boolean;
 }
 
 type ListAvailableDaysProps = {
@@ -34,19 +35,13 @@ type ListAvailableDaysProps = {
 export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
   if (!availability) return null;
 
-  const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-
-  const sortedAvailability = [...availability].sort((a, b) => {
-    return daysOfWeek.indexOf(a.day.toLowerCase()) - daysOfWeek.indexOf(b.day.toLowerCase());
-  });
-
   return (
     <List>
-      {sortedAvailability.map((d) => {
-        const { day, times } = d;
+      {availability.map((d) => {
+        const { day, times, isAvailable } = d;
         return (
           <StyledListItem key={day}>
-            {times.length > 0 ? <DoneOutlinedIcon /> : <CloseOutlinedIcon />}
+            {isAvailable ? <StyledDoneIcon /> : <StyledCloseIcon />}
             <Box
               sx={{
                 display: 'flex',
@@ -62,7 +57,7 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
               >
                 {day}
               </StyledDayName>
-              {times.find((time) => time.startTime === '00:00' && time.endTime === '24:00') ? (
+              {times.startTime === '00:00' && times.endTime === '00:00' ? (
                 <Text sx={{ fontSize: '0.8rem' }}>Todo el dia</Text>
               ) : null}
             </Box>
@@ -72,3 +67,11 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
     </List>
   );
 };
+
+const StyledDoneIcon = styled(DoneOutlinedIcon)(({ theme }) => ({
+  color: theme.palette.primary.main,
+}));
+
+const StyledCloseIcon = styled(CloseOutlinedIcon)(({ theme }) => ({
+  color: theme.palette.secondary.contrastText,
+}));

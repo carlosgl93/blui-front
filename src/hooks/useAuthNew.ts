@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { auth, db } from '../../firebase/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import {
@@ -57,6 +57,7 @@ export const useAuthNew = () => {
 
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { mutate: createPrestador, isLoading: createPrestadorLoading } = useMutation(
     ({
@@ -114,13 +115,25 @@ export const useAuthNew = () => {
         const providerRef = doc(db, 'providers', user.uid);
         return setDoc(providerRef, newPrestador).then(() => {
           const defaultAvailability = [
-            { day: 'Lunes', times: [{ startTime: '00:00', endTime: '24:00' }] },
-            { day: 'Martes', times: [{ startTime: '00:00', endTime: '24:00' }] },
-            { day: 'Miercoles', times: [{ startTime: '00:00', endTime: '24:00' }] },
-            { day: 'Jueves', times: [{ startTime: '00:00', endTime: '24:00' }] },
-            { day: 'Viernes', times: [{ startTime: '00:00', endTime: '24:00' }] },
-            { day: 'Sabado', times: [{ startTime: '00:00', endTime: '24:00' }] },
-            { day: 'Domingo', times: [{ startTime: '00:00', endTime: '24:00' }] },
+            { isAvailable: true, day: 'Lunes', times: { startTime: '00:00', endTime: '00:00' } },
+            { isAvailable: true, day: 'Martes', times: { startTime: '00:00', endTime: '00:00' } },
+            {
+              isAvailable: true,
+              day: 'Miercoles',
+              times: { startTime: '00:00', endTime: '00:00' },
+            },
+            { isAvailable: true, day: 'Jueves', times: { startTime: '00:00', endTime: '00:00' } },
+            {
+              isAvailable: true,
+              day: 'Viernes',
+              times: { startTime: '00:00', endTime: '00:00' },
+            },
+            { isAvailable: true, day: 'Sabado', times: { startTime: '00:00', endTime: '00:00' } },
+            {
+              isAvailable: true,
+              day: 'Domingo',
+              times: { startTime: '00:00', endTime: '00:00' },
+            },
           ];
 
           const batch = writeBatch(db);
@@ -136,13 +149,13 @@ export const useAuthNew = () => {
     },
     {
       onSuccess(data) {
-        console.log('data', data);
         setNotification({
           open: true,
           message: `Cuenta creada exitosamente`,
           severity: 'success',
         });
         setPrestadorState({ ...data, isLoggedIn: true } as Prestador);
+        queryClient.setQueryData(['prestador', data.email], prestador);
         navigate('/prestador-dashboard');
       },
       onError(error: FirebaseError) {
@@ -212,8 +225,8 @@ export const useAuthNew = () => {
           message: `Cuenta creada exitosamente`,
           severity: 'success',
         });
-        console.log(data, 'data from user login');
         setUserState({ ...data, isLoggedIn: true } as User);
+        queryClient.setQueryData(['user', data.email], user);
         navigate('/usuario-dashboard');
       },
       onError(error: FirebaseError) {
@@ -267,10 +280,12 @@ export const useAuthNew = () => {
         if (users.docs.length > 0) {
           const user = users.docs[0].data() as User;
           setUserState({ ...user, isLoggedIn: true });
+          queryClient.setQueryData(['user', correo], user);
           return { role: 'user', data: user };
         } else if (prestadores.docs.length > 0) {
           const prestador = prestadores.docs[0].data() as Prestador;
           setPrestadorState({ ...prestador, isLoggedIn: true });
+          queryClient.setQueryData(['prestador', correo], prestador);
           return { role: 'prestador', data: prestador };
         }
       });

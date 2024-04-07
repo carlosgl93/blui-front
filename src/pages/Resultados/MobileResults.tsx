@@ -28,7 +28,6 @@ const MobileResults = ({ filteredPrestadores }: MobileResultsProps) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          p: '1rem',
         }}
       >
         <Button

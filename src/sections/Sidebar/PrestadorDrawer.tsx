@@ -23,7 +23,7 @@ function PrestadorDrawerList({ closeDrawer }: PrestadorDrawerListProps) {
 
   const prestador = useRecoilValue(prestadorState) as Prestador;
 
-  const { firstname, lastname, servicio } = prestador;
+  const { firstname, lastname, servicio, email } = prestador;
 
   return (
     <List
@@ -49,7 +49,11 @@ function PrestadorDrawerList({ closeDrawer }: PrestadorDrawerListProps) {
             ml: '1rem',
           }}
         >
-          <ListItemText>{firstname + ' ' + lastname}</ListItemText>
+          {firstname && lastname ? (
+            <ListItemText>{firstname + ' ' + lastname}</ListItemText>
+          ) : (
+            <ListItemText>{email}</ListItemText>
+          )}
 
           <span
             style={{

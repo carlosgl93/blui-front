@@ -1,134 +1,101 @@
-import { Box, Button, Switch, styled } from '@mui/material';
+import { Box, Button, Switch, TextField } from '@mui/material';
 
-import { StyledDayName } from './ListAvailableDays';
+import { AvailabilityData, StyledDayName } from './ListAvailableDays';
 import { CenteredDivider } from '@/components/StyledDivider';
 import useConstruirPerfil from '@/store/construirPerfil';
+import {
+  Container,
+  StyledDayContainer,
+  StyledEditableDay,
+  StyledTimePickerContainer,
+  StyledTimerContainer,
+  StyledTimeTitle,
+  StyledToggleContainer,
+} from './EditAvailableDaysStyledComp';
+import { useDisponibilidadNew } from '@/hooks/useDisponibilidadNew';
+import Loading from '@/components/Loading';
 
-const Container = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: '1rem 0',
-}));
+type EditAvailableDaysProps = {
+  availability: AvailabilityData[];
+};
 
-const StyledEditableDay = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'start',
-}));
+export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
+  const {
+    handleToggleDisponibilidadDay,
+    handleTimeChange,
+    handleSaveDisponibilidad,
+    saveDisponibilidadLoading,
+  } = useDisponibilidadNew();
+  const [, { handleEditDisponibilidad }] = useConstruirPerfil();
 
-const StyledToggleContainer = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-}));
-
-const StyledTimePickerContainer = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: '2rem',
-}));
-
-const StyledTimerContainer = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-}));
-
-const StyledSelect = styled('select')(() => ({
-  width: '100%',
-  padding: '0.5rem',
-  borderRadius: '0.5rem',
-  border: '1px solid black',
-  margin: '0.5rem 0rem',
-  // style the openned list:
-}));
-
-const StyledTimeTitle = styled(StyledDayName)(() => ({
-  marginLeft: '0',
-}));
-
-const times = Array.from({ length: 24 }, (_, hour) => [
-  `${hour.toString().padStart(2, '0')}:00`,
-  `${hour.toString().padStart(2, '0')}:30`,
-]).flat();
-
-export const EditAvailableDays = () => {
-  const [
-    { disponibilidad },
-    {
-      handleEditDisponibilidad,
-      handleToggleDisponibilidadDay,
-      handleTimeChange,
-      handleSaveDisponibilidad,
-    },
-  ] = useConstruirPerfil();
-
-  return (
+  return saveDisponibilidadLoading ? (
+    <Loading />
+  ) : (
     <Container>
-      {disponibilidad &&
-        disponibilidad?.map((day) => {
-          const { dayName, id, isAvailable } = day;
+      {availability &&
+        availability?.map((d) => {
+          const { day, times, isAvailable } = d;
           return (
-            <div key={id}>
+            <StyledDayContainer key={day}>
               <CenteredDivider />
-              <StyledEditableDay key={id}>
+              <StyledEditableDay>
                 <StyledToggleContainer>
-                  <Switch checked={isAvailable} onClick={() => handleToggleDisponibilidadDay(id)} />
-                  <StyledDayName>{dayName}</StyledDayName>
+                  <Switch
+                    checked={isAvailable}
+                    onClick={() => handleToggleDisponibilidadDay(day)}
+                  />
+                  <StyledDayName>{day}</StyledDayName>
                 </StyledToggleContainer>
                 {isAvailable && (
                   <StyledTimePickerContainer>
                     <StyledTimerContainer>
                       {/* Start Time */}
 
-                      <StyledTimeTitle>Hora de inicio:</StyledTimeTitle>
-                      <StyledSelect
+                      <StyledTimeTitle>Inicio:</StyledTimeTitle>
+                      <TextField
+                        type="time"
                         onChange={(e) => handleTimeChange(e, 'startTime')}
-                        value={day.startTime}
-                        name={`startTime${dayName}`}
-                      >
-                        {times.map((time) => (
-                          <option key={time} value={time}>
-                            {time}
-                          </option>
-                        ))}
-                      </StyledSelect>
+                        value={times.startTime}
+                        name={`startTime${day}`}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        inputProps={{
+                          step: 300, // 5 min
+                        }}
+                      />
                     </StyledTimerContainer>
                     <StyledTimerContainer>
                       {/* End Time */}
-                      <StyledTimeTitle>Hora de termino:</StyledTimeTitle>
-                      <StyledSelect
+                      <StyledTimeTitle>Término:</StyledTimeTitle>
+
+                      <TextField
+                        type="time"
                         onChange={(e) => handleTimeChange(e, 'endTime')}
-                        value={day.endTime}
-                        name={`endTime${dayName}`}
-                      >
-                        {times.map((time) => (
-                          <option key={time} value={time}>
-                            {time}
-                          </option>
-                        ))}
-                      </StyledSelect>
+                        value={times.endTime}
+                        name={`endTime${day}`}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        inputProps={{
+                          step: 300, // 5 min
+                        }}
+                      />
                     </StyledTimerContainer>
                   </StyledTimePickerContainer>
                 )}
               </StyledEditableDay>
-            </div>
+            </StyledDayContainer>
           );
         })}
 
-      <CenteredDivider />
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           width: '80vw',
           gap: '2rem',
+          mt: '1rem',
         }}
       >
         <Button
