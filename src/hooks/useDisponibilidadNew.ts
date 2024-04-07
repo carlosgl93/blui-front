@@ -86,7 +86,6 @@ export const useDisponibilidadNew = () => {
     startOrEnd: 'startTime' | 'endTime',
   ) => {
     const { value: newTime } = e.target;
-    console.log(newTime);
     // let hasError = false;
 
     setAvailability((prev) => {
@@ -95,9 +94,13 @@ export const useDisponibilidadNew = () => {
           return day;
         }
 
+        console.log(newTime);
         const updatedDay = {
           ...day,
-          [startOrEnd]: newTime,
+          times: {
+            ...day.times,
+            [startOrEnd]: newTime,
+          },
         };
 
         // if (updatedDay.times.startTime >= updatedDay.times.endTime) {
