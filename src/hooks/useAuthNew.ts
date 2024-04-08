@@ -85,7 +85,7 @@ export const useAuthNew = () => {
           // firstname: nombre,
           // lastname: apellido,
           rut,
-          comunas: comunas.map((comuna) => comuna.name),
+          comunas: comunas,
           servicio: servicio?.serviceName,
           // especialidad: especialidad?.especialidadName,
           // telefono,

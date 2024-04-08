@@ -1,4 +1,3 @@
-import React from 'react';
 import { InputAdornment, IconButton, Box, TextField, CircularProgress } from '@mui/material';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { Search } from '@mui/icons-material';
@@ -11,27 +10,26 @@ type ComunaSearchbarProps = {
 };
 
 export const ComunaSearchbar = ({ isTablet }: ComunaSearchbarProps) => {
-  const { allComunas, comunasSearched, setComunasSearched } = useComunas();
+  const {
+    allComunas,
+    setComunasSearched,
+    matchedComunas,
+    setMatchedComunas,
+    handleChangeSearchComuna,
+  } = useComunas();
   const [{ comuna }, { addComuna, removeComuna }] = useRecibeApoyo();
 
   const clickComunaHandler = (_comuna: Comuna) => {
     if (comuna === _comuna) {
       removeComuna(comuna);
-      setComunasSearched(allComunas);
+      setComunasSearched('');
+      setMatchedComunas(allComunas);
     } else {
       addComuna(_comuna);
-      setComunasSearched(allComunas);
+      setMatchedComunas(allComunas);
     }
   };
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    const match = allComunas?.filter((comuna: Comuna) => {
-      if (comuna.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-        return comuna;
-      }
-    });
-    setComunasSearched(match);
-  };
   if (!allComunas) return <CircularProgress />;
 
   if (comuna == null) {
@@ -57,11 +55,11 @@ export const ComunaSearchbar = ({ isTablet }: ComunaSearchbarProps) => {
             </InputAdornment>
           }
           placeholder="Indicanos la comuna donde necesitas apoyo"
-          onChange={onChangeHandler}
+          onChange={handleChangeSearchComuna}
         />
         <StyledResults>
-          {comunasSearched?.length <= 5 &&
-            comunasSearched?.map((_comuna) => (
+          {matchedComunas?.length <= 5 &&
+            matchedComunas?.map((_comuna) => (
               <Box
                 key={_comuna.id}
                 sx={{

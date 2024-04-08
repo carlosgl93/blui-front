@@ -12,7 +12,7 @@ export const useGetPrestadores = () => {
     let prestadoresQuery = query(prestadorCollectionRef, limit(15));
 
     if (comuna) {
-      prestadoresQuery = query(prestadoresQuery, where('comunas', 'array-contains', comuna.name));
+      prestadoresQuery = query(prestadoresQuery, where('comunas', 'array-contains', comuna));
     }
 
     if (servicio) {
@@ -52,9 +52,6 @@ export const useGetPrestadores = () => {
     {
       onError: (error) => {
         console.log('error', error);
-      },
-      onSuccess: (data) => {
-        console.log('data', data);
       },
     },
   );

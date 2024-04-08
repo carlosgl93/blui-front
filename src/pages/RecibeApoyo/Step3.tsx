@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 const Step3 = () => {
   const [{ step, servicio }, { decreaseStep }] = useRecibeApoyo();
 
-  console.log(servicio);
-
   const router = useNavigate();
 
   const handleNext = () => {

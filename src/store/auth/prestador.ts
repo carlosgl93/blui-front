@@ -1,3 +1,4 @@
+import { Comuna } from '@/types';
 import { atom } from 'recoil';
 
 type Availability = {
@@ -17,7 +18,7 @@ export interface Prestador {
   firstname?: string;
   lastname?: string;
   rut: string;
-  comunas: string[];
+  comunas: Comuna[];
   servicio: string | undefined;
   especialidad?: string | undefined;
   telefono?: string;

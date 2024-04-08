@@ -9,7 +9,14 @@ export const NotificationSnackbar = () => {
   const { onClose } = useSnackbarController();
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
+    <Snackbar
+      sx={{
+        mb: '5vh',
+      }}
+      open={open}
+      autoHideDuration={6000}
+      onClose={onClose}
+    >
       <Alert severity={severity}>{message}</Alert>
     </Snackbar>
   );

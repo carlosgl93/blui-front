@@ -21,7 +21,7 @@ export const MobileResultList = ({ filteredPrestadores }: MobileFilteredProps) =
     >
       {filteredPrestadores?.length > 0 ? (
         filteredPrestadores?.map((prestador) => {
-          const { id, firstname, lastname, averageReviews, totalReviews } = prestador;
+          const { id, firstname, lastname, averageReviews, totalReviews, email } = prestador;
 
           return (
             <Link
@@ -61,17 +61,20 @@ export const MobileResultList = ({ filteredPrestadores }: MobileFilteredProps) =
                     display: 'flex',
                     flexDirection: 'column',
                     py: '3vh',
+                    pr: '5vw',
                   }}
                 >
                   <Box>
                     <Title
                       variant="h6"
                       sx={{
-                        fontSize: '1.4rem',
+                        fontSize: '1.25rem',
                         color: theme.palette.primary.main,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
                     >
-                      {firstname} {lastname}
+                      {firstname ? firstname : email} {lastname}
                     </Title>
                     <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
                   </Box>

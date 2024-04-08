@@ -44,19 +44,11 @@ const Reviews = ({ average, total_reviews }: ReviewsProps) => {
           </Text>
         </>
       ) : (
-        <>
+        <Box>
           {Array.from(Array(5).keys()).map((i) => (
             <StarBorderOutlinedIcon key={i} sx={{ color: theme.palette.primary.main }} />
           ))}
-          <Text
-            sx={{
-              ml: '0.5rem',
-              color: theme.palette.background.paper,
-            }}
-          >
-            No hay reseñas
-          </Text>
-        </>
+        </Box>
       )}
     </Box>
   );
