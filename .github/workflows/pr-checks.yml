@@ -5,12 +5,15 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
   build:
+    environment: 
+      name: production
+      url: https://blui-6ec33.web.app/
+      
     name: Check Codebase
     runs-on: ubuntu-22.04
-
+    
     steps:
       - uses: actions/checkout@v3
 
