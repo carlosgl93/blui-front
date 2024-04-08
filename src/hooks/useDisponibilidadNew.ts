@@ -8,6 +8,7 @@ import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAva
 import { availabilityState } from '@/store/construirPerfil/availability';
 import { db } from 'firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
+import { useEffect } from 'react';
 
 const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 const sortAvailability = (data: AvailabilityData[]) =>
@@ -39,10 +40,6 @@ export const useDisponibilidadNew = () => {
   const { prestador } = useAuthNew();
   const id = prestador?.id ?? '';
   const client = useQueryClient();
-
-  if (!id) {
-    navigate('/ingresar');
-  }
 
   // Use the useQuery hook to fetch the data when the component mounts
   const { error, isLoading, isError } = useQuery(
@@ -154,6 +151,12 @@ export const useDisponibilidadNew = () => {
       },
     },
   );
+
+  useEffect(() => {
+    if (!id) {
+      navigate('/ingresar');
+    }
+  }, []);
 
   return {
     availability,
