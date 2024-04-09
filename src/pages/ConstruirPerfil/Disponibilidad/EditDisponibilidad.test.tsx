@@ -26,7 +26,6 @@ test('renders EditAvailableDays and displays availability data', async () => {
   );
 
   const { result } = renderHook(() => useDisponibilidadNew(), { wrapper });
-  console.log(result);
 
   await waitFor(() => expect(result.current).toBeDefined());
 

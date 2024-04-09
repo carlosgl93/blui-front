@@ -57,7 +57,6 @@ const fetchProviderComunas = async (providerId: string | undefined) => {
 export const useComunas = () => {
   const [comunasSearched, setComunasSearched] = useState<string>('');
   const [matchedComunas, setMatchedComunas] = useState<Comuna[]>([]);
-  // const [selectedComunas, setSelectedComunas] = useState<Comuna[]>([]);
   const [selectedComunas, setSelectedComunas] = useRecoilState(comunasState);
   const [, setNotification] = useRecoilState(notificationState);
   const { prestador } = useAuthNew();
