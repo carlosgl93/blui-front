@@ -1,4 +1,3 @@
-import { Text } from '@/components/StyledComponents';
 import { Box, TextField } from '@mui/material';
 
 import { SubTitle } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
@@ -45,13 +44,10 @@ export const TarifaDiaria = ({ tarifa, handleChangeTarifa }: TarifaDiariaProps) 
           width: '100%',
         }}
       >
-        <Text>
-          Agrega una tarifa indicativa: <br />
-        </Text>
         <TextField
           fullWidth
           type="number"
-          placeholder={formatCLP(Number(price))}
+          placeholder={` ${formatCLP(Number(price))}`}
           value={price}
           onChange={(e) => handleChangeTarifa(e, tarifa)}
           name={`tarifa${dayName}`}

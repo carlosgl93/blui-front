@@ -30,13 +30,14 @@ function EntregaApoyo() {
             sx={{
               width: '100%',
               maxWidth: 200,
-              height: 'auto',
             }}
           />
         </Box>
         <Box
           sx={{
-            width: '500px',
+            width: {
+              xs: '100%',
+            },
           }}
         >
           <LinearProgress

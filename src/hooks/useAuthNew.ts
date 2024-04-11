@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import { useRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
-import { Comuna } from '@/types';
+import { Comuna, TarifaFront } from '@/types';
 import { Servicio } from '@/types/Servicio';
 import { FirebaseError } from 'firebase/app';
 import { User, userState } from '@/store/auth/user';
@@ -24,6 +24,24 @@ import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
+
+const defaultTarifas: TarifaFront[] = [
+  {
+    id: 1,
+    dayName: 'Día de semana',
+    price: '0',
+  },
+  {
+    id: 2,
+    dayName: 'Sábado',
+    price: '0',
+  },
+  {
+    id: 3,
+    dayName: 'Domingo',
+    price: '0',
+  },
+];
 
 export type CreateUserParams = {
   nombre: string;
@@ -69,8 +87,7 @@ export const useAuthNew = () => {
       contrasena,
       comunas,
       servicio,
-    }: // especialidad,
-    CreatePrestadorParams) => {
+    }: CreatePrestadorParams) => {
       setNotification({
         open: true,
         message: 'Creando tu cuenta...',
@@ -86,6 +103,7 @@ export const useAuthNew = () => {
           // lastname: apellido,
           rut,
           comunas: comunas,
+          tarifas: defaultTarifas,
           servicio: servicio?.serviceName,
           // especialidad: especialidad?.especialidadName,
           // telefono,

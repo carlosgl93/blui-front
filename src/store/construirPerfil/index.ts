@@ -329,7 +329,6 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
       }),
     }));
   };
-
   const handleChangeFreeMeetGreet = () => {
     setConstruirPerfil((prev) => ({
       ...prev,

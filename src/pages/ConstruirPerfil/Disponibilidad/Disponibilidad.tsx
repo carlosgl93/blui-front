@@ -15,8 +15,11 @@ import { useDisponibilidadNew } from '@/hooks/useDisponibilidadNew';
 import Loading from '@/components/Loading';
 
 export const Disponibilidad = () => {
-  const [{ editDisponibilidad }, { handleEditDisponibilidad }] = useConstruirPerfil();
-  const { availability, isLoading } = useDisponibilidadNew();
+  const [, { handleEditDisponibilidad }] = useConstruirPerfil();
+  const { availability, isLoading, editDisponibilidad, setEditDisponibilidad } =
+    useDisponibilidadNew();
+
+  console.log('rerendering');
 
   return (
     <Wrapper>
@@ -41,7 +44,7 @@ export const Disponibilidad = () => {
             fullWidth
             variant="outlined"
             startIcon={<EditOutlinedIcon />}
-            onClick={handleEditDisponibilidad}
+            onClick={() => setEditDisponibilidad((prev) => !prev)}
             sx={{ fontWeight: 'bold' }}
           >
             Editar disponibilidad

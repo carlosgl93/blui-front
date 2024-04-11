@@ -18,7 +18,6 @@ const updateProviderComunas = async ({
   comunas: Comuna[];
 }) => {
   const providerRef = doc(db, 'providers', providerId);
-
   await updateDoc(providerRef, {
     comunas: comunas,
   });

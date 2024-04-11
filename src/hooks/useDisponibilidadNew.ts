@@ -8,7 +8,7 @@ import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAva
 import { availabilityState } from '@/store/construirPerfil/availability';
 import { db } from 'firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 const sortAvailability = (data: AvailabilityData[]) =>
@@ -23,11 +23,11 @@ async function fetchAvailability(prestadorId: string) {
   return snapshot.docs.map((doc) => doc.data()) as AvailabilityData[];
 }
 
-const updateDisponibilidad = async (id: string, disponibilidad: boolean) => {
+const updateDisponibilidad = async (id: string) => {
   const providerRef = doc(db, 'providers', id);
 
   await updateDoc(providerRef, {
-    'settings.disponibilidad': disponibilidad,
+    'settings.disponibilidad': true,
   });
 };
 
@@ -36,7 +36,7 @@ export const useDisponibilidadNew = () => {
   const [, setNotification] = useRecoilState(notificationState);
   const [availability, setAvailability] = useRecoilState(availabilityState);
   const [, setPrestadorState] = useRecoilState(prestadorState);
-
+  const [editDisponibilidad, setEditDisponibilidad] = useState(false);
   const { prestador } = useAuthNew();
   const id = prestador?.id ?? '';
   const client = useQueryClient();
@@ -123,7 +123,7 @@ export const useDisponibilidadNew = () => {
 
   const { mutate: handleSaveDisponibilidad, isLoading: saveDisponibilidadLoading } = useMutation(
     () => {
-      updateDisponibilidad(id, true);
+      updateDisponibilidad(id);
       return Promise.all(
         availability.map((a) => setDoc(doc(db, 'providers', id, 'availability', a.day), a)),
       );
@@ -135,6 +135,7 @@ export const useDisponibilidadNew = () => {
           if (!prev) return null;
           return { ...prev, settings: { ...prev.settings, disponibilidad: true } };
         });
+        setEditDisponibilidad((prev) => !prev);
         setNotification({
           open: true,
           message: 'Disponibilidad guardada exitosamente',
@@ -163,6 +164,8 @@ export const useDisponibilidadNew = () => {
     error,
     isLoading,
     isError,
+    editDisponibilidad,
+    setEditDisponibilidad,
     handleToggleDisponibilidadDay,
     handleTimeChange,
     handleSaveDisponibilidad,

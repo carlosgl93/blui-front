@@ -1,7 +1,7 @@
 import { Comuna } from './Comuna';
 
 export type Prestador = {
-  id?: number;
+  id?: string;
   rut?: string;
   firstname: string;
   lastname: string;

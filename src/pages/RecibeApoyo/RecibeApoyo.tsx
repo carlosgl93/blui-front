@@ -37,7 +37,9 @@ function Comienzo() {
         </Box>
         <Box
           sx={{
-            width: '500px',
+            width: {
+              xs: '100%',
+            },
           }}
         >
           <LinearProgress

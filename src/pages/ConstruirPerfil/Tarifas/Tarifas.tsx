@@ -9,14 +9,20 @@ import { StyledText } from '../StyledConstruirPerfilComponents';
 import { Box } from '@mui/material';
 import { TarifaDiaria } from './TarifaDiaria';
 import { TarifaFront } from '@/types';
-import useConstruirPerfil from '@/store/construirPerfil';
 import { SaveButton } from '@/components/SaveButton';
+import { useRecoilValue } from 'recoil';
+import { tarifasState } from '@/store/construirPerfil/tarifas';
+import { TarifaController } from './TarifaController';
 
 export const Tarifas = () => {
-  const [
-    { tarifas, prestador },
-    { handleSaveTarifas, handleChangeTarifa, handleChangeFreeMeetGreet },
-  ] = useConstruirPerfil();
+  const {
+    offersFreeMeetAndGreet,
+    prestador,
+    handleChangeTarifa,
+    handleChangeFreeMeetGreet,
+    handleSaveTarifas,
+  } = TarifaController();
+  const newTarifas = useRecoilValue(tarifasState);
 
   return (
     <Wrapper>
@@ -48,7 +54,7 @@ export const Tarifas = () => {
             Usa solo números, sin puntos ni comas.
           </StyledText>
           <form onSubmit={handleSaveTarifas}>
-            {tarifas.map((tarifa: TarifaFront) => (
+            {newTarifas?.map((tarifa: TarifaFront) => (
               <div key={tarifa.id}>
                 <TarifaDiaria tarifa={tarifa} handleChangeTarifa={handleChangeTarifa} />
               </div>
@@ -64,9 +70,14 @@ export const Tarifas = () => {
               }}
             >
               <input
+                id="meetAndGreet"
                 type="checkbox"
                 name="meetAndGreet"
-                checked={prestador?.offers_free_meet_greet}
+                checked={
+                  offersFreeMeetAndGreet
+                    ? offersFreeMeetAndGreet
+                    : prestador?.offersFreeMeetAndGreet
+                }
                 onChange={handleChangeFreeMeetGreet}
               />
               <label htmlFor="meetAndGreet">Ofrezco conocernos gratuitamente.</label>
