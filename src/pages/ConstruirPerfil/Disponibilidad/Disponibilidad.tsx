@@ -10,13 +10,11 @@ import { Box, Button } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { ListAvailableDays } from './ListAvailableDays';
 import { EditAvailableDays } from './EditAvailableDays';
-import useConstruirPerfil from '@/store/construirPerfil';
 import { useDisponibilidadNew } from '@/hooks/useDisponibilidadNew';
 import Loading from '@/components/Loading';
 
 export const Disponibilidad = () => {
-  const [, { handleEditDisponibilidad }] = useConstruirPerfil();
-  const { availability, isLoading, editDisponibilidad, setEditDisponibilidad } =
+  const { availability, isLoading, editDisponibilidad, handleEditDisponibilidad } =
     useDisponibilidadNew();
 
   return (
@@ -42,7 +40,7 @@ export const Disponibilidad = () => {
             fullWidth
             variant="outlined"
             startIcon={<EditOutlinedIcon />}
-            onClick={() => setEditDisponibilidad((prev) => !prev)}
+            onClick={handleEditDisponibilidad}
             sx={{ fontWeight: 'bold' }}
           >
             {editDisponibilidad ? 'Editando' : 'Editar'}

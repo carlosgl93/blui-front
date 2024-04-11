@@ -15,33 +15,16 @@ import {
 } from 'firebase/firestore';
 import { useRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
-import { Comuna, TarifaFront } from '@/types';
+import { Comuna } from '@/types';
 import { Servicio } from '@/types/Servicio';
 import { FirebaseError } from 'firebase/app';
 import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
 import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
+import { defaultTarifas } from '@/utils/constants';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
-
-const defaultTarifas: TarifaFront[] = [
-  {
-    id: 1,
-    dayName: 'Día de semana',
-    price: '0',
-  },
-  {
-    id: 2,
-    dayName: 'Sábado',
-    price: '0',
-  },
-  {
-    id: 3,
-    dayName: 'Domingo',
-    price: '0',
-  },
-];
 
 export type CreateUserParams = {
   nombre: string;

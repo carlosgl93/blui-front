@@ -1,3 +1,5 @@
+import { TarifaFront } from '@/types';
+
 export const allComunas = [
   'ALGARROBO',
   'ALHUE',
@@ -386,6 +388,24 @@ export type Service = {
     text: string;
   }[];
 };
+
+export const defaultTarifas: TarifaFront[] = [
+  {
+    id: 1,
+    dayName: 'Día de semana',
+    price: '0',
+  },
+  {
+    id: 2,
+    dayName: 'Sábado',
+    price: '0',
+  },
+  {
+    id: 3,
+    dayName: 'Domingo',
+    price: '0',
+  },
+];
 
 // export const dummyPrestadores: Prestador[] = [
 //   {

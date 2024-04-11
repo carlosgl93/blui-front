@@ -8,7 +8,7 @@ import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAva
 import { availabilityState } from '@/store/construirPerfil/availability';
 import { db } from 'firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 const sortAvailability = (data: AvailabilityData[]) =>
@@ -41,7 +41,6 @@ export const useDisponibilidadNew = () => {
   const id = prestador?.id ?? '';
   const client = useQueryClient();
 
-  // Use the useQuery hook to fetch the data when the component mounts
   const { error, isLoading, isError } = useQuery(
     ['availability', id],
     () => {
@@ -83,7 +82,6 @@ export const useDisponibilidadNew = () => {
     startOrEnd: 'startTime' | 'endTime',
   ) => {
     const { value: newTime } = e.target;
-    // let hasError = false;
 
     setAvailability((prev) => {
       const newDisponibilidad = prev.map((day) => {
@@ -91,7 +89,6 @@ export const useDisponibilidadNew = () => {
           return day;
         }
 
-        console.log(newTime);
         const updatedDay = {
           ...day,
           times: {
@@ -100,25 +97,11 @@ export const useDisponibilidadNew = () => {
           },
         };
 
-        // if (updatedDay.times.startTime >= updatedDay.times.endTime) {
-        //   hasError = true;
-        //   return day;
-        // }
-
         return updatedDay;
       });
 
       return newDisponibilidad;
     });
-
-    // if (hasError) {
-    //   setNotification({
-    //     open: true,
-    //     message: 'La hora de inicio debe ser antes de la hora de finalización',
-    //     severity: 'error',
-    //   });
-    //   console.error('Start time must be before end time');
-    // }
   };
 
   const { mutate: handleSaveDisponibilidad, isLoading: saveDisponibilidadLoading } = useMutation(
@@ -153,6 +136,10 @@ export const useDisponibilidadNew = () => {
     },
   );
 
+  const handleEditDisponibilidad = () => {
+    setEditDisponibilidad((prev) => !prev);
+  };
+
   useEffect(() => {
     if (!id) {
       navigate('/ingresar');
@@ -165,10 +152,11 @@ export const useDisponibilidadNew = () => {
     isLoading,
     isError,
     editDisponibilidad,
+    saveDisponibilidadLoading,
     setEditDisponibilidad,
     handleToggleDisponibilidadDay,
     handleTimeChange,
     handleSaveDisponibilidad,
-    saveDisponibilidadLoading,
+    handleEditDisponibilidad,
   };
 };
