@@ -38,7 +38,7 @@ export const useExperiencia = () => {
   });
 
   const { isLoading: loadingPrestadorExp } = usePrestadorExperience(
-    user?.id as number,
+    user?.id ?? '',
     (data: ExperienceState) => setAggregatedExperience(data),
   );
 
@@ -46,7 +46,7 @@ export const useExperiencia = () => {
     isLoading: saveExpLoading,
     error: saveExpError,
     mutate,
-  } = useMutation(() => saveExperiences(user?.id as number, aggregatedExperience), {
+  } = useMutation(() => saveExperiences(user?.id ?? '', aggregatedExperience), {
     onSuccess: () => {
       // Handle success
       setNotification({

@@ -1,6 +1,6 @@
 import api from '../api';
 
-export const getMessages = async (userId: number, prestadorId: number, userToken: string) => {
+export const getMessages = async (userId: number, prestadorId: string, userToken: string) => {
   try {
     const res = await api.get('/chat', {
       params: {

@@ -23,7 +23,7 @@ export const useTarifas = () => {
     error: getTarifasError,
   } = useQuery<TarifaFront[], AxiosError>(
     'prestadorTarifas',
-    () => getPrestadorTarifas(user?.id as number),
+    () => getPrestadorTarifas(user?.id ?? ''),
     {
       onError: (error: AxiosError) => {
         setNotification({
@@ -61,8 +61,8 @@ export const useTarifas = () => {
   //       console.log('plain data', data);
   //       // console.log('data from mutation', Object.fromEntries(data));
 
-  //       // postTarifas(user?.id as number, true);
-  //       // postFreeMeetGreet(user?.id as number, data.meetAndGreet);
+  //       // postTarifas(user?.id ?? '', true);
+  //       // postFreeMeetGreet(user?.id ?? '', data.meetAndGreet);
   //     },
   //     {
   //       mutationKey: 'asdf',

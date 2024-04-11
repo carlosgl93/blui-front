@@ -36,8 +36,8 @@ export const useHistorialLaboral = () => {
     isLoading: getPrestadorHistorialLaboralLoading,
     error: getPrestadorHistorialLaboralError,
   } = useQuery<HistorialLaboralEntry[], AxiosError>(
-    ['prestadorHistorialLaboral', user?.id],
-    () => getHistorialLaboral(user?.id as number),
+    ['prestadorHistorialLaboral', user?.id ?? ''],
+    () => getHistorialLaboral(user?.id ?? ''),
     {
       onError: (error: AxiosError) => {
         setNotification({
@@ -75,7 +75,7 @@ export const useHistorialLaboral = () => {
       return postHistorialLaboral(
         data?.map((historial) => ({
           ...historial,
-          prestadorId: user?.id as number,
+          prestadorId: user?.id ?? '',
         })),
       );
     },

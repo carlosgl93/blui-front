@@ -23,7 +23,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
   const [{ user, isLoggedIn }, { updateRedirectToAfterLogin }] = useAuth();
 
   const { messages } = useChatMessages({
-    userId: user?.id,
+    userId: user?.id ?? '' ?? '',
     prestadorId: prestador.id,
   });
 
@@ -95,7 +95,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     //           message,
     //           prestador_id: prestador.id,
     //           sent_by: user?.role || 'user',
-    //           usuario_id: user?.id,
+    //           usuario_id: user?.id ?? '',
     //         },
     //       ],
     //     },

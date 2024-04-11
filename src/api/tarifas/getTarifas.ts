@@ -10,7 +10,7 @@ const formatTarifa = (tarifa: TarifaBack) => {
   };
 };
 
-export const getPrestadorTarifas = async (id: number): Promise<TarifaFront[]> => {
+export const getPrestadorTarifas = async (id: string): Promise<TarifaFront[]> => {
   const response = await api.get(`/tarifas`, {
     params: {
       prestadorId: id,

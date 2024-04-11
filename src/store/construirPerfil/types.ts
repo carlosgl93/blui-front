@@ -1,12 +1,12 @@
 import { Comuna, TarifaFront } from '@/types';
 
 type Actions = {
-  getPrestador(id: number): Promise<void>;
-  getDisponibilidad(id: number): Promise<void>;
-  getComunas(id: number): Promise<void>;
-  getTarifas(id: number): Promise<void>;
+  getPrestador(id: string): Promise<void>;
+  getDisponibilidad(id: string): Promise<void>;
+  getComunas(id: string): Promise<void>;
+  getTarifas(id: string): Promise<void>;
   handleEditDisponibilidad: () => void;
-  handleToggleDisponibilidadDay: (id: number) => void;
+  handleToggleDisponibilidadDay: (id: string) => void;
   handleTimeChange: (
     e: React.ChangeEvent<HTMLSelectElement>,
     startOrEnd: 'startTime' | 'endTime',

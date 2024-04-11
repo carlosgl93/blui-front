@@ -13,7 +13,7 @@ type BackChats = {
 
 const formatMessages = (messages: BackChats[]) => {
   return messages.map((message) => ({
-    id: message.id,
+    id: message.id.toString(),
     createdAt: message.created_at,
     sentBy: message.sent_by,
     userId: message.usuario_id,
@@ -23,7 +23,7 @@ const formatMessages = (messages: BackChats[]) => {
   }));
 };
 
-export const getPrestadorInboxMessages = async (prestadorId: number) => {
+export const getPrestadorInboxMessages = async (prestadorId: string) => {
   try {
     const response = await api.get('/inbox/prestador', {
       params: {

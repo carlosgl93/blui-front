@@ -9,7 +9,7 @@ type BackendHistorialEntry = {
   todavia: boolean;
 };
 
-export const getHistorialLaboral = async (prestadorId: number) => {
+export const getHistorialLaboral = async (prestadorId: string) => {
   const readHistorialLaboral = await api.get('/historialLaboral', {
     params: { prestadorId },
   });

@@ -3,7 +3,7 @@ import api from '../api';
 import { EducacionInputs } from '@/pages/ConstruirPerfil/EducacionFormacion/EducacionFormacion';
 
 export interface SaveEducacion extends EducacionInputs {
-  prestadorId: number;
+  prestadorId: string;
 }
 
 export const postEducacion = async (data: SaveEducacion[]) => {

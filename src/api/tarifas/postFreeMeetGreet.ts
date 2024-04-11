@@ -1,6 +1,6 @@
 import api from '../api';
 
-export const postFreeMeetGreet = async (prestadorId: number, freeMeetGreet: boolean) => {
+export const postFreeMeetGreet = async (prestadorId: string, freeMeetGreet: boolean) => {
   const response = await api.post(`/tarifas/freeMeetGreet`, {
     prestadorId,
     freeMeetGreet,

@@ -2,7 +2,7 @@ import { CuentaBancariaInputs } from '@/pages/ConstruirPerfil/CuentaBancaria/Cue
 import api from '../api';
 
 interface SavePrestadorCuentaBancaria extends CuentaBancariaInputs {
-  prestadorId: number;
+  prestadorId: string;
 }
 
 export const postCuentaPrestador = async (data: SavePrestadorCuentaBancaria) => {

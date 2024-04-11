@@ -2,8 +2,8 @@ import { days } from '@/pages/ConstruirPerfil/Disponibilidad/days';
 import api from '../api';
 
 type DisponibilidadFromBack = {
-  id: number;
-  prestador_id: number;
+  id: string;
+  prestador_id: string;
   day_name: string;
   start_time: string;
   end_time: string;
@@ -11,8 +11,8 @@ type DisponibilidadFromBack = {
 };
 
 export type DisponibilidadFromFront = {
-  id: number;
-  prestadorId: number | null;
+  id: string;
+  prestadorId: string | null;
   dayName: string;
   startTime: string;
   endTime: string;
@@ -35,12 +35,12 @@ const disponibilidadFromBackToFront = (
 };
 
 export const getDisponibilidadByPrestadorId = async (
-  prestadorId: number,
+  prestadorId: string,
 ): Promise<DisponibilidadFromFront[]> => {
   const response = await api.get(`/disponibilidad/${prestadorId}`, { params: { prestadorId } });
   if (response.data.length === 0) {
     const data = days.map((day, i) => ({
-      id: i,
+      id: i.toString(),
       prestadorId: prestadorId,
       dayName: day.dayName,
       startTime: '00:00',

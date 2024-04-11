@@ -15,7 +15,7 @@ export const usePreviewPerfilPrestador = () => {
   const isTablet = useMediaQuery(tablet);
   const [{ user }] = useAuth();
 
-  const prestadorId = user?.id ?? 0;
+  const prestadorId = user?.id ?? '' ?? '';
 
   const [{ allServicios }] = useRecibeApoyo();
   const [prestadorServicio, setPrestadorServicio] = useState({} as Servicio);

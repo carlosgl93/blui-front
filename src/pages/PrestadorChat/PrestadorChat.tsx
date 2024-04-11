@@ -32,7 +32,7 @@ export const PrestadorChat = () => {
   const { customer, prestador, isLoading, error } = useRetrieveCustomerAndPrestador();
 
   const customerId = customer?.id;
-  const prestadorId = prestador?.id as number;
+  const prestadorId = prestador?.id;
 
   const { messages, message, lastMessageRef, handleInputChange, handleSendMessage, sendWithEnter } =
     usePrestadorChatMessages({

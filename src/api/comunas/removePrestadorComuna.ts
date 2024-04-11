@@ -1,6 +1,6 @@
 import api from '../api';
 
-export const removePrestadorComuna = async (prestadorId: number, comunaId: number) => {
+export const removePrestadorComuna = async (prestadorId: string, comunaId: number) => {
   const removeComuna = await api.delete('/prestador/comuna', {
     params: {
       prestadorId,

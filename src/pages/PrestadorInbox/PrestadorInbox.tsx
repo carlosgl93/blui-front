@@ -56,7 +56,10 @@ export const PrestadorInbox = () => {
             const { firstname, id, createdAt, prestadorId, userId } = chat;
 
             return (
-              <StyledListItem key={id} onClick={() => handleClickChat(prestadorId, userId)}>
+              <StyledListItem
+                key={id}
+                onClick={() => handleClickChat(prestadorId.toString(), userId.toString())}
+              >
                 <Box
                   sx={{
                     display: 'flex',

@@ -2,7 +2,7 @@ import { DisponibilidadFromFront } from '@/api/disponibilidad/getDisponibilidadB
 
 export const days: DisponibilidadFromFront[] = [
   {
-    id: 0,
+    id: '0',
     prestadorId: null,
     dayName: 'Lunes',
     startTime: '',
@@ -10,7 +10,7 @@ export const days: DisponibilidadFromFront[] = [
     isAvailable: false,
   },
   {
-    id: 1,
+    id: '1',
     prestadorId: null,
     dayName: 'Martes',
     startTime: '',
@@ -18,7 +18,7 @@ export const days: DisponibilidadFromFront[] = [
     isAvailable: false,
   },
   {
-    id: 2,
+    id: '2',
     prestadorId: null,
     dayName: 'Miércoles',
     startTime: '',
@@ -26,7 +26,7 @@ export const days: DisponibilidadFromFront[] = [
     isAvailable: false,
   },
   {
-    id: 3,
+    id: '3',
     prestadorId: null,
     dayName: 'Jueves',
     startTime: '',
@@ -34,7 +34,7 @@ export const days: DisponibilidadFromFront[] = [
     isAvailable: false,
   },
   {
-    id: 4,
+    id: '4',
     prestadorId: null,
     dayName: 'Viernes',
     startTime: '',
@@ -42,7 +42,7 @@ export const days: DisponibilidadFromFront[] = [
     isAvailable: false,
   },
   {
-    id: 5,
+    id: '5',
     prestadorId: null,
     dayName: 'Sábado',
     startTime: '',
@@ -50,7 +50,7 @@ export const days: DisponibilidadFromFront[] = [
     isAvailable: false,
   },
   {
-    id: 6,
+    id: '6',
     prestadorId: null,
     dayName: 'Domingo',
     startTime: '',

@@ -4,7 +4,7 @@ import useAuth from '@/store/auth';
 import api from '@/api/api';
 
 type useChatMessagesProps = {
-  userId?: number;
+  userId?: string;
   prestadorId?: string;
 };
 

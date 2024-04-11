@@ -1,7 +1,7 @@
 import { getPrestadorById } from '@/api/prestadores/getPrestadorById';
 import { useQuery } from 'react-query';
 
-export const usePrestador = (prestadorId: number) => {
+export const usePrestador = (prestadorId: string) => {
   const {
     data: prestador,
     isError,

@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import api from '../api';
 
-export const getEducacion = async (prestadorId: number) => {
+export const getEducacion = async (prestadorId: string) => {
   try {
     const readEducacion = await api.get('/educacion', {
       params: { prestadorId },

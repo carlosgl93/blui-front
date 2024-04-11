@@ -5,7 +5,7 @@ export type CuentaBancaria = {
   numeroCuenta: string;
   titular: string;
   rut: string;
-  prestadorId: number;
+  prestadorId: string;
   createdAt?: string;
   updatedAt?: string;
 };

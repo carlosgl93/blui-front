@@ -2,7 +2,7 @@ import { ExperienceState } from '@/store/construirPerfil/experiencia';
 import api from '../api';
 
 export const saveExperiences = async (
-  prestadorId: number,
+  prestadorId: string,
   aggregatedExperience: ExperienceState,
 ) => {
   const res = await api.post(`experience`, {

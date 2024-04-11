@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 type usePrestadorProps = {
-  id?: number;
+  id?: string;
 };
 
 export const usePrestador = ({ id }: usePrestadorProps) => {
@@ -27,7 +27,7 @@ export const usePrestador = ({ id }: usePrestadorProps) => {
 
     if (prestadorId) {
       setPrestadorState((prevState) => ({ ...prevState, loading: true }));
-      getPrestadorById(prestadorId as number)
+      getPrestadorById(prestadorId)
         .then((res) => {
           setPrestadorState((prevState) => ({ ...prevState, prestador: res }));
         })

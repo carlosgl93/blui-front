@@ -36,7 +36,7 @@ export const Chat = () => {
   } = useRetrieveCustomerAndPrestador();
 
   const customerId = customer?.id;
-  const prestadorId = prestador?.id as number;
+  const prestadorId = prestador?.id;
 
   const {
     messages,

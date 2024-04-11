@@ -3,7 +3,7 @@ import api from '../api';
 type SendMessageParameters = {
   userId: number;
   message: string;
-  prestadorId: number;
+  prestadorId: string;
   token: string;
   sentBy: string;
 };

@@ -3,7 +3,7 @@ import api from '../api';
 import { HistorialLaboralEntry } from '@/hooks/useHistorialLaboral';
 
 export interface SaveHistorialLaboral extends HistorialLaboralEntry {
-  prestadorId: number;
+  prestadorId: string;
 }
 
 export const postHistorialLaboral = async (data: SaveHistorialLaboral[]) => {

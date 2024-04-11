@@ -25,7 +25,7 @@ const formatMessages = (messages: BackChats[]) => {
   }));
 };
 
-export const getUsuarioInboxMessages = async (userId: number) => {
+export const getUsuarioInboxMessages = async (userId: string) => {
   try {
     const response = await api.get('/inbox/usuario', {
       params: {

@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 type useChatMessagesProps = {
   userId: number;
-  prestadorId: number;
+  prestadorId: string | undefined;
 };
 
 export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessagesProps) => {
@@ -24,7 +24,7 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
     error,
   } = useQuery(
     ['messages', userId, prestadorId],
-    () => getMessages(userId, prestadorId, user?.token as string),
+    () => getMessages(userId, prestadorId ?? '', user?.token as string),
     {
       enabled: !!userId && !!prestadorId,
     },
@@ -41,7 +41,7 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
     mutation.mutate(
       {
         message,
-        prestadorId,
+        prestadorId: '',
         userId,
         sentBy,
         token: user?.token as string,

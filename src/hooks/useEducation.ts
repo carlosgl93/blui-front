@@ -18,7 +18,7 @@ export const useEducation = () => {
   const { data: educacionData, isLoading: educacionIsLoading } = useQuery<
     EducacionInputs[],
     AxiosError
-  >('prestadorEducacion', () => getEducacion(user?.id as number), {
+  >('prestadorEducacion', () => getEducacion(user?.id ?? ''), {
     onError: (error: AxiosError) => {
       setNotification({
         ...notification,
@@ -54,7 +54,7 @@ export const useEducation = () => {
       return postEducacion(
         data?.map((historial) => ({
           ...historial,
-          prestadorId: user?.id as number,
+          prestadorId: user?.id ?? '',
         })),
       );
     },

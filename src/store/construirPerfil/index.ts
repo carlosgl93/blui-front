@@ -55,7 +55,7 @@ export const construirPerfilState = atom<ConstruirPerfilState>({
   key: 'construirPerfilState',
   default: {
     prestador: {
-      id: 0,
+      id: '0',
       firstname: '',
       lastname: '',
       email: '',
@@ -92,16 +92,16 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
   // const { educacionData } = useEducation();
   const router = useNavigate();
 
-  // usePrestadorExperience(user?.id as number, (data: ExperienceState) =>
+  // usePrestadorExperience(user?.id ?? '', (data: ExperienceState) =>
   //   setConstruirPerfil((prev) => {
   //     return { ...prev, experiencia: data };
   //   }),
   // );
 
-  async function getPrestador(id: number) {
+  async function getPrestador(id: string) {
     try {
       setConstruirPerfil((prev) => ({ ...prev, loading: true }));
-      const prestadorResponse = await getPrestadorById(id);
+      const prestadorResponse = await getPrestadorById(id.toString());
       const prestador = prestadorResponse;
       setConstruirPerfil((prev) => ({ ...prev, prestador, loading: false }));
     } catch (error) {
@@ -113,7 +113,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     }
   }
 
-  async function getDisponibilidad(id: number) {
+  async function getDisponibilidad(id: string) {
     try {
       setConstruirPerfil((prev) => ({ ...prev, loading: true }));
       const disponibilidadResponse = await getDisponibilidadByPrestadorId(id);
@@ -128,7 +128,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     }
   }
 
-  async function getComunas(id: number) {
+  async function getComunas(id: string) {
     try {
       setConstruirPerfil((prev) => ({ ...prev, loading: true }));
       const comunas = await getPrestadorComunas(id);
@@ -142,7 +142,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     }
   }
 
-  async function getTarifas(id: number) {
+  async function getTarifas(id: string) {
     try {
       setConstruirPerfil((prev) => ({ ...prev, loading: true }));
       const tarifasResponse = await getPrestadorTarifas(id);
@@ -161,7 +161,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     setConstruirPerfil((prev) => ({ ...prev, editDisponibilidad: !prev.editDisponibilidad }));
   };
 
-  const handleToggleDisponibilidadDay = (id: number) => {
+  const handleToggleDisponibilidadDay = (id: string) => {
     setConstruirPerfil((prev) => ({
       ...prev,
       disponibilidad: prev.disponibilidad.map((disponibilidad) => {
@@ -282,7 +282,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
 
     try {
       await api.post('/prestadores/comunas', {
-        prestadorId: user?.id as number,
+        prestadorId: user?.id ?? '',
         comunas: construirPerfil.comunas,
       });
       setNotification({
@@ -302,7 +302,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
   };
 
   const handleVerPerfil = () =>
-    router(`/preview-perfil-prestador/${user?.id}`, {
+    router(`/preview-perfil-prestador/${user?.id ?? ''}`, {
       state: {
         prestador: construirPerfil.prestador,
         comunas: construirPerfil.comunas,
@@ -343,9 +343,9 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     e.preventDefault();
     setConstruirPerfil((prev) => ({ ...prev, loading: true }));
     try {
-      await postTarifas(user?.id as number, construirPerfil.tarifas);
+      await postTarifas(user?.id ?? '', construirPerfil.tarifas);
       await postFreeMeetGreet(
-        user?.id as number,
+        user?.id ?? '',
         construirPerfil.prestador.offers_free_meet_greet as boolean,
       );
       setNotification({

@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 
 export const usePrestadorExperience = (
-  prestadorId: number,
+  prestadorId: string,
   onSuccessAction: (data: ExperienceState) => void,
 ) => {
   const [notification, setNotification] = useRecoilState(notificationState);

@@ -1,6 +1,6 @@
 import api from '../api';
 
-export const getCuentaPrestador = async (prestadorId: number) => {
+export const getCuentaPrestador = async (prestadorId: string) => {
   const readCuentaPrestador = await api.get('/cuentaBancaria', {
     params: { prestadorId },
   });

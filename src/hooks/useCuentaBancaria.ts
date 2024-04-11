@@ -28,7 +28,7 @@ export const useCuentaBancaria = () => {
     error: getCuentaPrestadorError,
   } = useQuery<CuentaBancaria, AxiosError>(
     'prestadorCuentaBancaria',
-    () => getCuentaPrestador(user?.id as number),
+    () => getCuentaPrestador(user?.id ?? ''),
     {
       onError: (error: AxiosError) => {
         setNotification({
@@ -63,7 +63,7 @@ export const useCuentaBancaria = () => {
           severity: 'info',
         };
       });
-      return postCuentaPrestador({ prestadorId: user?.id as number, ...data });
+      return postCuentaPrestador({ prestadorId: user?.id ?? '', ...data });
     },
     {
       onSuccess: () => {
