@@ -1,5 +1,5 @@
-import { Box, TextField } from '@mui/material';
-
+import { Box, styled, TextField } from '@mui/material';
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import { SubTitle } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { formatCLP } from '@/utils/formatCLP';
 import { TarifaFront } from '@/types';
@@ -39,20 +39,25 @@ export const TarifaDiaria = ({ tarifa, handleChangeTarifa }: TarifaDiariaProps) 
           {dayName}
         </SubTitle>
       </Box>
-      <Box
-        sx={{
-          width: '100%',
-        }}
-      >
+      <StyledCurrencyTextField>
+        <AttachMoneyOutlinedIcon />
         <TextField
           fullWidth
           type="number"
-          placeholder={` ${formatCLP(Number(price))}`}
+          placeholder={formatCLP(Number(price))}
           value={price}
           onChange={(e) => handleChangeTarifa(e, tarifa)}
           name={`tarifa${dayName}`}
         />
-      </Box>
+      </StyledCurrencyTextField>
     </Box>
   );
 };
+
+const StyledCurrencyTextField = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  alignContent: 'center',
+  alignItems: 'center',
+  color: theme.palette.primary.main,
+}));

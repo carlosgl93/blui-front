@@ -3,9 +3,9 @@ import { tarifasState } from '@/store/construirPerfil/tarifas';
 import { notificationState } from '@/store/snackbar';
 import { TarifaFront } from '@/types';
 import { db } from 'firebase/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
@@ -26,14 +26,26 @@ const updateTarifas = async ({
   });
 };
 
+const fetchTarifas = async (prestadorId: string | undefined) => {
+  if (!prestadorId) return;
+  const providerRef = collection(db, 'providers');
+  const q = query(providerRef, where('id', '==', prestadorId));
+  const querySnapshot = await getDocs(q);
+  const doc = querySnapshot.docs[0];
+
+  if (!doc.exists) {
+    throw new Error('Provider does not exist');
+  }
+
+  return doc.data().tarifas;
+};
+
 export const TarifaController = () => {
   const [newTarifas, setNewTarifas] = useRecoilState(tarifasState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
-  const [offersFreeMeetAndGreet, setOffersFreeMeetAndGreet] = useState(
-    prestador?.offersFreeMeetAndGreet,
-  );
   const [, setNotification] = useRecoilState(notificationState);
   const navigate = useNavigate();
+  const client = useQueryClient();
 
   const handleChangeTarifa = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -54,13 +66,13 @@ export const TarifaController = () => {
   };
 
   const handleChangeFreeMeetGreet = () => {
-    // setPrestadorState((prev) => {
-    //   return {
-    //     ...prev,
-    //     offersFreeMeetAndGreet: !prev?.offersFreeMeetAndGreet,
-    //   } as Prestador;
-    // });
-    setOffersFreeMeetAndGreet((prev) => !prev);
+    setPrestadorState((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        offersFreeMeetAndGreet: !prev.offersFreeMeetAndGreet,
+      };
+    });
   };
 
   const handleSaveTarifas = (e: React.FormEvent) => {
@@ -71,18 +83,23 @@ export const TarifaController = () => {
     }
 
     const prestadorId = prestador.id;
-    saveTarifas({ prestadorId, newTarifas, meetAndGreet: offersFreeMeetAndGreet ?? false });
+    saveTarifas({
+      prestadorId,
+      newTarifas,
+      meetAndGreet: prestador.offersFreeMeetAndGreet ?? false,
+    });
   };
 
   const { mutate: saveTarifas, isLoading: isSavingTarifas } = useMutation(updateTarifas, {
     onSuccess: () => {
-      console.log('saved');
       // invalidate tarifas query
+      client.invalidateQueries('prestador');
       // update prestador.tarifas state
       setPrestadorState((prev) => {
         if (!prev) return null;
         return { ...prev, settings: { ...prev.settings, tarifas: true } };
       });
+
       setNotification({
         open: true,
         message: 'Tarifas guardadas exitosamente',
@@ -99,6 +116,25 @@ export const TarifaController = () => {
     },
   });
 
+  const { data: prestadorTarifas, isLoading: fetchPrestadorTarifasIsLoading } = useQuery(
+    ['providerTarifas', prestador?.id],
+    () => fetchTarifas(prestador?.id),
+    {
+      enabled: !!prestador?.id,
+      onSuccess(data: TarifaFront[]) {
+        setNewTarifas([...data]);
+      },
+      onError(error) {
+        console.error(error);
+        setNotification({
+          message: 'Error al cargar Tarifas',
+          severity: 'error',
+          open: true,
+        });
+      },
+    },
+  );
+
   useEffect(() => {
     if (!prestador?.email) {
       navigate('/ingresar');
@@ -107,8 +143,9 @@ export const TarifaController = () => {
 
   return {
     prestador,
-    offersFreeMeetAndGreet,
     isSavingTarifas,
+    prestadorTarifas,
+    fetchPrestadorTarifasIsLoading,
     handleChangeTarifa,
     handleChangeFreeMeetGreet,
     handleSaveTarifas,

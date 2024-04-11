@@ -19,8 +19,6 @@ export const Disponibilidad = () => {
   const { availability, isLoading, editDisponibilidad, setEditDisponibilidad } =
     useDisponibilidadNew();
 
-  console.log('rerendering');
-
   return (
     <Wrapper>
       <BackButton action={editDisponibilidad ? handleEditDisponibilidad : undefined} />
@@ -47,7 +45,7 @@ export const Disponibilidad = () => {
             onClick={() => setEditDisponibilidad((prev) => !prev)}
             sx={{ fontWeight: 'bold' }}
           >
-            Editar disponibilidad
+            {editDisponibilidad ? 'Editando' : 'Editar'}
           </Button>
         </Box>
         {isLoading ? (
