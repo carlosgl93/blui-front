@@ -2,7 +2,6 @@ import { Box, Button, Switch, TextField } from '@mui/material';
 
 import { AvailabilityData, StyledDayName } from './ListAvailableDays';
 import { CenteredDivider } from '@/components/StyledDivider';
-import useConstruirPerfil from '@/store/construirPerfil';
 import {
   Container,
   StyledDayContainer,
@@ -25,8 +24,8 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
     handleTimeChange,
     handleSaveDisponibilidad,
     saveDisponibilidadLoading,
+    handleEditDisponibilidad,
   } = useDisponibilidadNew();
-  const [, { handleEditDisponibilidad }] = useConstruirPerfil();
 
   return saveDisponibilidadLoading ? (
     <Loading />

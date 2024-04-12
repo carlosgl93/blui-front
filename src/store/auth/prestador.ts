@@ -1,15 +1,6 @@
+import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { Comuna, TarifaFront } from '@/types';
 import { atom } from 'recoil';
-
-type Availability = {
-  monday: [];
-  tuesday: [];
-  wednesday: [];
-  thursday: [];
-  friday: [];
-  saturday: [];
-  sunday: [];
-};
 
 export interface Prestador {
   email: string;
@@ -19,12 +10,12 @@ export interface Prestador {
   lastname?: string;
   rut: string;
   comunas: Comuna[];
-  tarifas?: TarifaFront[];
+  tarifas: TarifaFront[];
   servicio: string | undefined;
   especialidad?: string | undefined;
   telefono?: string;
   isLoggedIn?: boolean;
-  availability?: Availability;
+  availability: AvailabilityData[];
   averageReviews?: number;
   description?: string;
   totalReviews?: number;
@@ -63,15 +54,64 @@ export const prestadorState = atom<null | Prestador>({
     tarifas: [],
     servicio: '',
     especialidad: '',
-    availability: {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [],
-      friday: [],
-      saturday: [],
-      sunday: [],
-    },
+    availability: [
+      {
+        day: 'Lunes',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+      {
+        day: 'Martes',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+      {
+        day: 'Miércoles',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+      {
+        day: 'Jueves',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+      {
+        day: 'Viernes',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+      {
+        day: 'Sábado',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+      {
+        day: 'Domingo',
+        times: {
+          startTime: '00:00',
+          endTime: '00:00',
+        },
+        isAvailable: true,
+      },
+    ],
     averageReviews: 0,
     totalReviews: 0,
     description: '',

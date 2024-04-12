@@ -5,14 +5,20 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Text } from '@/components/StyledComponents';
 
 const StyledListItem = styled(ListItem)(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'start',
+  width: '100%',
+  display: 'grid',
+  gridTemplateColumns: '10% 30% 60%',
+  '& > :nth-last-child()': {
+    justifyContent: 'end',
+  },
+  columnGap: '1rem',
+}));
+
+const StyledTimeText = styled(Text)(() => ({
+  fontSize: '0.8rem',
 }));
 
 export const StyledDayName = styled(SubTitle)(() => ({
-  marginLeft: '1rem',
   marginBottom: 0,
   fontSize: '1rem',
 }));
@@ -36,7 +42,15 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
   if (!availability) return null;
 
   return (
-    <List>
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'start',
+        width: '100%',
+      }}
+    >
       {availability.map((d) => {
         const { day, times, isAvailable } = d;
         return (
@@ -47,7 +61,7 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: '50vw',
+                width: { xs: '60vw' },
               }}
             >
               <StyledDayName
@@ -58,8 +72,12 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
                 {day}
               </StyledDayName>
               {times.startTime === '00:00' && times.endTime === '00:00' ? (
-                <Text sx={{ fontSize: '0.8rem' }}>Todo el dia</Text>
-              ) : null}
+                <StyledTimeText>Todo el dia</StyledTimeText>
+              ) : (
+                <StyledTimeText sx={{}}>
+                  De {times.startTime} a {times.endTime}
+                </StyledTimeText>
+              )}
             </Box>
           </StyledListItem>
         );

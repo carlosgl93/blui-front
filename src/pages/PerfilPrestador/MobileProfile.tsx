@@ -26,6 +26,8 @@ import PerfilBackButton from './PerfilBackButton';
 import { Box, styled } from '@mui/material';
 // import { Tarifas } from './Tarifas';
 import { Prestador } from '@/store/auth/prestador';
+import { Tarifas } from './Tarifas';
+import { ListAvailableDays } from './ListAvailableDays';
 
 const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -33,7 +35,7 @@ const SectionContainer = styled(Box)(() => ({
   alignItems: 'flex-start',
   justifyContent: 'start',
   width: '100%',
-  padding: '0 1rem',
+  padding: '1rem 1rem',
 }));
 
 const SectionTitle = styled(StyledTitle)(({ theme }) => ({
@@ -51,32 +53,32 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     usePerfilPrestador(prestador as Prestador);
   const {
     firstname,
-    lastname,
     imageUrl,
     averageReviews,
     totalReviews,
     description,
-    // availability,
-    // offersFreeMeetAndGreet,
+    tarifas,
+    availability,
+    offersFreeMeetAndGreet,
+    email,
+    servicio,
+    especialidad,
   } = prestador;
 
   return (
     <Wrapper>
       <HeroContainer>
         <PerfilBackButton />
-
-        <StyledAvatar alt={`Imagen de perfil de ${firstname}`} src={imageUrl} />
+        <StyledAvatar alt={`Imágen de perfil de ${firstname}`} src={imageUrl} />
         <StyledNameContainer>
-          <StyledTitle>
-            {firstname} {lastname}
-          </StyledTitle>
+          <StyledTitle>{firstname ? firstname : ''}</StyledTitle>
           <ReviewsContainer>
             <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
           </ReviewsContainer>
         </StyledNameContainer>
 
         <StyledServicio>
-          {prestador.servicio} / {prestador.especialidad}
+          {servicio} {especialidad && '/ especialidad'}
         </StyledServicio>
         <StyledCTAs>
           <StyledContactButton onClick={handleContact}>
@@ -96,16 +98,19 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         </StyledCTAs>
       </HeroContainer>
       <AboutContainer>
-        <AboutTitle>Sobre {firstname}</AboutTitle>
-        <AboutDescription>{description}</AboutDescription>
+        {firstname}
+        <AboutTitle>Sobre {firstname ? firstname : email}</AboutTitle>
+        <AboutDescription>
+          {description ? description : 'Este prestador aun no agrega información'}
+        </AboutDescription>
       </AboutContainer>
       <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
       </SectionContainer>
-      {/* <ListAvailableDays disponibilidad={availability} /> */}
+      <ListAvailableDays disponibilidad={availability} />
       <SectionContainer>
         <SectionTitle>Tarifas</SectionTitle>
-        {/* <Tarifas tarifas={tarifas} freeMeetGreet={offersFreeMeetAndGreet} /> */}
+        <Tarifas tarifas={tarifas} freeMeetGreet={offersFreeMeetAndGreet} />
       </SectionContainer>
     </Wrapper>
   );

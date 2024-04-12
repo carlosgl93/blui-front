@@ -2,9 +2,8 @@ import { SubTitle } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardCom
 import { Box, List, ListItem, styled } from '@mui/material';
 import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { DisponibilidadFromFront } from '@/api/disponibilidad/getDisponibilidadByPrestadorId';
-import { CenteredDivider } from '@/components/StyledDivider';
 import { Text } from '@/components/StyledComponents';
+import { AvailabilityData } from '../ConstruirPerfil/Disponibilidad/ListAvailableDays';
 
 const StyledList = styled(List)(() => ({
   display: 'flex',
@@ -15,22 +14,26 @@ const StyledList = styled(List)(() => ({
 }));
 
 const StyledListItem = styled(ListItem)(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'start',
+  width: '100%',
+  display: 'grid',
+  gridTemplateColumns: '10% 30% 60%',
+  '& > :nth-last-child()': {
+    justifyContent: 'end',
+  },
+  columnGap: '1rem',
+}));
+
+const StyledTimeText = styled(Text)(() => ({
+  fontSize: '0.8rem',
 }));
 
 export const StyledDayName = styled(SubTitle)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
   marginLeft: '1rem',
   marginBottom: 0,
   fontSize: '1rem',
-}));
-
-const StyledAvailableTimes = styled(Text)(() => ({
-  marginLeft: '1rem',
-  marginBottom: 0,
-  fontSize: '0.8rem',
 }));
 
 const StyledAvailableIcon = styled(DoneOutlinedIcon)(({ theme }) => ({
@@ -42,33 +45,43 @@ const StyledUnAvailableIcon = styled(CloseOutlinedIcon)(({ theme }) => ({
 }));
 
 type ListAvailableDaysProps = {
-  disponibilidad: DisponibilidadFromFront[];
+  disponibilidad: AvailabilityData[];
 };
 
 export const ListAvailableDays = ({ disponibilidad }: ListAvailableDaysProps) => {
-  console.log(disponibilidad);
   return (
     <StyledList>
-      {disponibilidad.map((day) => {
-        const { id, dayName, isAvailable, startTime, endTime } = day;
-
-        let availableAllDay = false;
-
-        if (startTime === '00:00' && endTime === '00:00') availableAllDay = true;
+      {disponibilidad.map((d) => {
+        const { day, isAvailable, times } = d;
+        const { startTime, endTime } = times;
 
         return (
-          <Box key={id}>
-            <StyledListItem>
-              {isAvailable ? <StyledAvailableIcon /> : <StyledUnAvailableIcon />}
-              <StyledDayName>{dayName}</StyledDayName>
-              {isAvailable && (
-                <StyledAvailableTimes>
-                  {availableAllDay ? 'Todo el día' : 'De ' + startTime + ' a ' + endTime}
-                </StyledAvailableTimes>
+          <StyledListItem key={day}>
+            {isAvailable ? <StyledAvailableIcon /> : <StyledUnAvailableIcon />}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: { xs: '60vw' },
+              }}
+            >
+              <StyledDayName
+                sx={{
+                  textTransform: 'capitalize',
+                }}
+              >
+                {day}
+              </StyledDayName>
+              {startTime === '00:00' && endTime === '00:00' ? (
+                <StyledTimeText>Todo el dia</StyledTimeText>
+              ) : (
+                <StyledTimeText>
+                  De {startTime} a {endTime}
+                </StyledTimeText>
               )}
-            </StyledListItem>
-            <CenteredDivider />
-          </Box>
+            </Box>
+          </StyledListItem>
         );
       })}
     </StyledList>

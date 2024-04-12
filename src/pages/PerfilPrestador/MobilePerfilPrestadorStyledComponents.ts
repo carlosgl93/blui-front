@@ -38,6 +38,7 @@ export const StyledTitle = styled(Title)(({ theme }) => ({
   lineHeight: '1.5rem',
   textAlign: 'center',
   color: theme.palette.primary.contrastText,
+  textOverflow: 'ellipsis',
 }));
 
 export const ReviewsContainer = styled(Box)(() => ({
