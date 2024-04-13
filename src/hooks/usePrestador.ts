@@ -10,7 +10,6 @@ const dayOrder = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado',
 
 const sortedAvailability = (availability: AvailabilityData[]) =>
   availability.sort((a, b) => {
-    console.log(a, b);
     return dayOrder.indexOf(a.day.toLowerCase()) - dayOrder.indexOf(b.day.toLowerCase());
   });
 

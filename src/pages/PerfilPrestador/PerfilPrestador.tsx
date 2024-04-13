@@ -14,12 +14,10 @@ function PerfilPrestador() {
   const { id } = useParams();
   const { prestador, isLoading } = usePrestador(id ?? '');
 
-  console.log(prestador);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!prestador) {
+    if (!prestador && !isLoading) {
       navigate('/resultados');
       return;
     }
@@ -30,7 +28,7 @@ function PerfilPrestador() {
   }
 
   if (!prestador) {
-    return null; // or some other fallback component
+    return null;
   }
 
   return (

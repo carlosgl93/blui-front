@@ -10,19 +10,19 @@ import {
 } from './MobilePerfilPrestadorStyledComponents';
 
 import Reviews from '@/components/Reviews';
-import { StyledContactButton } from './DesktopPerfilPrestadorStyledComponents';
-
-import { usePreviewPerfilPrestador } from './usePreviewPerfilPrestador';
 import {
   AboutContainer,
   AboutDescription,
   AboutTitle,
 } from '../PerfilPrestador/MobilePerfilPrestadorStyledComponents';
 import { ListAvailableDays } from '../PerfilPrestador/ListAvailableDays';
-import { Prestador } from '@/types';
-import { Tarifas } from './Tarifas';
 import { Box, styled } from '@mui/material';
 import PerfilBackButton from './PerfilBackButton';
+import { useAuthNew } from '@/hooks/useAuthNew';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Prestador } from '@/store/auth/prestador';
+import { Tarifas } from '../PerfilPrestador/Tarifas';
 
 const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -39,11 +39,31 @@ const SectionTitle = styled(StyledTitle)(({ theme }) => ({
 }));
 
 export const PreviewMobileProfile = () => {
-  const { prestador, prestadorServicio, prestadorEspecialidad, handleEditPerfil, disponibilidad } =
-    usePreviewPerfilPrestador();
+  // const { prestadorServicio, prestadorEspecialidad, handleEditPerfil, disponibilidad } =
+  //   usePreviewPerfilPrestador();
+  const navigate = useNavigate();
+  const { prestador } = useAuthNew();
 
-  const { firstname, lastname, imageUrl, average_review, total_reviews, description } =
-    prestador as Prestador;
+  useEffect(() => {
+    if (!prestador?.email) {
+      navigate('/ingresar');
+    }
+    return;
+  }, []);
+
+  const {
+    firstname,
+    imageUrl,
+    description,
+    averageReviews,
+    totalReviews,
+    availability,
+    servicio,
+    especialidad,
+    email,
+    tarifas,
+    offersFreeMeetAndGreet,
+  } = prestador as Prestador;
 
   return (
     <Wrapper>
@@ -51,33 +71,33 @@ export const PreviewMobileProfile = () => {
         <PerfilBackButton />
         <StyledAvatar alt={`Imagen de perfil de ${firstname}`} src={imageUrl} />
         <StyledNameContainer>
-          <StyledTitle>
-            {firstname} {lastname}
-          </StyledTitle>
+          <StyledTitle>{firstname ? firstname : ''}</StyledTitle>
           <ReviewsContainer>
-            <Reviews average={average_review || 0} total_reviews={total_reviews || 0} />
+            <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
           </ReviewsContainer>
         </StyledNameContainer>
 
         <StyledServicio>
-          {prestadorServicio?.serviceName} / {prestadorEspecialidad?.especialidadName}
+          {servicio} {especialidad && `/ ${especialidad}`}
         </StyledServicio>
         <StyledCTAs>
-          <StyledContactButton onClick={handleEditPerfil}>Editar perfil</StyledContactButton>
+          {/* <StyledContactButton onClick={handleEditPerfil}>Editar perfil</StyledContactButton> */}
         </StyledCTAs>
       </HeroContainer>
       <AboutContainer>
-        <AboutTitle>Sobre {firstname}</AboutTitle>
-        <AboutDescription>{description}</AboutDescription>
+        <AboutTitle>Sobre {firstname ? firstname : email}</AboutTitle>
+        <AboutDescription>
+          {description ? description : 'Este prestador aun no agrega información'}
+        </AboutDescription>
       </AboutContainer>
 
       <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
+        <ListAvailableDays disponibilidad={availability ?? []} />
       </SectionContainer>
-      <ListAvailableDays disponibilidad={disponibilidad} />
       <SectionContainer>
         <SectionTitle>Tarifas</SectionTitle>
-        <Tarifas />
+        <Tarifas tarifas={tarifas} freeMeetGreet={offersFreeMeetAndGreet} />
       </SectionContainer>
     </Wrapper>
   );

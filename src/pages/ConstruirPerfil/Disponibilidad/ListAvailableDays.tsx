@@ -71,7 +71,9 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
               >
                 {day}
               </StyledDayName>
-              {times.startTime === '00:00' && times.endTime === '00:00' ? (
+              {!isAvailable ? (
+                <StyledTimeText>No disponible</StyledTimeText>
+              ) : times.startTime === '00:00' && times.endTime === '00:00' ? (
                 <StyledTimeText>Todo el dia</StyledTimeText>
               ) : (
                 <StyledTimeText sx={{}}>

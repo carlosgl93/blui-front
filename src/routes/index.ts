@@ -65,7 +65,7 @@ const routes: Routes = {
   },
   [Pages.PreviewPerfilPrestador]: {
     component: asyncComponentLoader(() => import('@/pages/PreviewPerfilPrestador')),
-    path: '/preview-perfil-prestador/:id',
+    path: '/preview-perfil-prestador/',
   },
   [Pages.ConstruirPerfil]: {
     component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil')),

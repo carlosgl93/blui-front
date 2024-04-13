@@ -11,7 +11,6 @@ import {
   StyledTitle,
   Wrapper,
 } from './MobilePerfilPrestadorStyledComponents';
-
 import Reviews from '@/components/Reviews';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import {
@@ -19,27 +18,28 @@ import {
   StyledShortListButton,
 } from './DesktopPerfilPrestadorStyledComponents';
 import { ChatModal } from '@/components/ChatModal';
-
 import { usePerfilPrestador } from './usePerfilPrestador';
-// import { ListAvailableDays } from './ListAvailableDays';
 import PerfilBackButton from './PerfilBackButton';
 import { Box, styled } from '@mui/material';
-// import { Tarifas } from './Tarifas';
 import { Prestador } from '@/store/auth/prestador';
 import { Tarifas } from './Tarifas';
 import { ListAvailableDays } from './ListAvailableDays';
+import { useChat } from '@/hooks';
+import { useParams } from 'react-router-dom';
+import { useAuthNew } from '@/hooks/useAuthNew';
+import Loading from '@/components/Loading';
 
-const SectionContainer = styled(Box)(() => ({
+export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'start',
   width: '100%',
-  padding: '1rem 1rem',
+  padding: '0.5rem 1rem',
 }));
 
-const SectionTitle = styled(StyledTitle)(({ theme }) => ({
-  marginTop: '2rem',
+export const SectionTitle = styled(StyledTitle)(({ theme }) => ({
+  marginTop: '1rem',
   color: theme.palette.secondary.dark,
   fontSize: '1.5rem',
 }));
@@ -49,8 +49,13 @@ type MobileProfileProps = {
 };
 
 export const MobileProfile = ({ prestador }: MobileProfileProps) => {
-  const { handleClose, handleContact, handleSendMessage, open, message, messages, setMessage } =
-    usePerfilPrestador(prestador as Prestador);
+  const { handleClose, handleContact, open, message, setMessage } = usePerfilPrestador(
+    prestador as Prestador,
+  );
+  const { id } = useParams();
+  const { user } = useAuthNew();
+
+  const { messages, messagesLoading, savingMessageLoading } = useChat(user?.id ?? '', id ?? '');
   const {
     firstname,
     imageUrl,
@@ -81,20 +86,25 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
           {servicio} {especialidad && '/ especialidad'}
         </StyledServicio>
         <StyledCTAs>
-          <StyledContactButton onClick={handleContact}>
-            {messages?.length > 0 ? 'Ver conversación' : 'Contactar'}
-          </StyledContactButton>
-          <ChatModal
-            open={open}
-            handleClose={handleClose}
-            message={message}
-            setMessage={setMessage}
-            handleSendMessage={handleSendMessage}
-            messages={messages}
-          />
-          <StyledShortListButton startIcon={<BookmarkBorderOutlinedIcon />}>
-            Guardar
-          </StyledShortListButton>
+          {messagesLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <StyledContactButton onClick={handleContact}>
+                {(messages ?? []).length > 0 ? 'Ver conversación' : 'Contactar'}
+              </StyledContactButton>
+              <ChatModal
+                isLoading={savingMessageLoading}
+                open={open}
+                handleClose={handleClose}
+                message={message}
+                setMessage={setMessage}
+              />
+              <StyledShortListButton startIcon={<BookmarkBorderOutlinedIcon />}>
+                Guardar
+              </StyledShortListButton>
+            </>
+          )}
         </StyledCTAs>
       </HeroContainer>
       <AboutContainer>
@@ -106,8 +116,8 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
       </AboutContainer>
       <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
+        <ListAvailableDays disponibilidad={availability ?? []} />
       </SectionContainer>
-      <ListAvailableDays disponibilidad={availability} />
       <SectionContainer>
         <SectionTitle>Tarifas</SectionTitle>
         <Tarifas tarifas={tarifas} freeMeetGreet={offersFreeMeetAndGreet} />

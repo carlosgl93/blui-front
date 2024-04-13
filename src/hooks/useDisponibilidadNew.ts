@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
-import { availabilityState } from '@/store/construirPerfil/availability';
+import { availabilityState, editDisponibilidadState } from '@/store/construirPerfil/availability';
 import { db } from 'firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 const sortAvailability = (data: AvailabilityData[]) =>
@@ -36,7 +36,7 @@ export const useDisponibilidadNew = () => {
   const [, setNotification] = useRecoilState(notificationState);
   const [availability, setAvailability] = useRecoilState(availabilityState);
   const [, setPrestadorState] = useRecoilState(prestadorState);
-  const [editDisponibilidad, setEditDisponibilidad] = useState(false);
+  const [editDisponibilidad, setEditDisponibilidad] = useRecoilState(editDisponibilidadState);
   const { prestador } = useAuthNew();
   const id = prestador?.id ?? '';
   const client = useQueryClient();
@@ -118,7 +118,7 @@ export const useDisponibilidadNew = () => {
           if (!prev) return null;
           return { ...prev, settings: { ...prev.settings, disponibilidad: true } };
         });
-        setEditDisponibilidad((prev) => !prev);
+        setEditDisponibilidad(() => false);
         setNotification({
           open: true,
           message: 'Disponibilidad guardada exitosamente',

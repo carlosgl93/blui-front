@@ -1,3 +1,4 @@
+import Loading from '../Loading';
 import { ModalContent, StyledModal } from './ChatModalStyledComponents';
 import { EnviarMensaje } from './EnviarMensaje';
 
@@ -6,8 +7,7 @@ type ChatModalProps = {
   handleClose: () => void;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
-  handleSendMessage: () => Promise<void>;
-  messages: string[];
+  isLoading: boolean;
 };
 
 export const ChatModal = ({
@@ -15,17 +15,16 @@ export const ChatModal = ({
   handleClose,
   message,
   setMessage,
-  handleSendMessage,
+  isLoading,
 }: ChatModalProps) => {
   return (
     <StyledModal id="chatModal" open={open} onClose={handleClose}>
       <ModalContent>
-        <EnviarMensaje
-          setMessage={setMessage}
-          message={message}
-          handleSendMessage={handleSendMessage}
-          handleClose={handleClose}
-        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <EnviarMensaje setMessage={setMessage} message={message} handleClose={handleClose} />
+        )}
       </ModalContent>
     </StyledModal>
   );

@@ -2,43 +2,25 @@ import useAuth from '@/store/auth';
 import { tablet } from '@/theme/breakpoints';
 import { useMediaQuery } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useChatMessages } from '../Chat/useChatMessages';
-// import { sendMessage } from '@/api/chat/sendMessage';
-// import useRecibeApoyo from '@/store/recibeApoyo';
-// import { notificationState } from '@/store/snackbar';
-import { Servicio, Especialidad } from '@/types/Servicio';
 import { useState } from 'react';
-// import { useRecoilState } from 'recoil';
-import {
-  DisponibilidadFromFront,
-  // getDisponibilidadByPrestadorId,
-} from '@/api/disponibilidad/getDisponibilidadByPrestadorId';
-import { TarifaFront } from '@/types';
-// import { getPrestadorTarifas } from '@/api/tarifas';
 import { Prestador } from '@/store/auth/prestador';
+import { useSetRecoilState } from 'recoil';
+import { notificationState } from '@/store/snackbar';
+import { useAuthNew } from '@/hooks/useAuthNew';
+import { useChat } from '@/hooks';
 
 export const usePerfilPrestador = (prestador: Prestador) => {
   const { id } = useParams();
   const isTablet = useMediaQuery(tablet);
-  const [{ user, isLoggedIn }, { updateRedirectToAfterLogin }] = useAuth();
+  const { user } = useAuthNew();
+  const [, { updateRedirectToAfterLogin }] = useAuth();
 
-  const { messages } = useChatMessages({
-    userId: user?.id ?? '' ?? '',
-    prestadorId: prestador.id,
-  });
-
-  // const [{ allServicios }] = useRecibeApoyo();
-  // const [notification, setNotification] = useRecoilState(notificationState);
-  const [prestadorServicio] = useState({} as Servicio);
-  const [prestadorEspecialidad] = useState({} as Especialidad);
+  const { messages } = useChat(user?.id ?? '', id ?? '');
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [disponibilidad] = useState<DisponibilidadFromFront[]>([]);
-  const [tarifas] = useState<TarifaFront[]>([]);
+  const setNotification = useSetRecoilState(notificationState);
 
   const { offersFreeMeetAndGreet } = prestador;
-
-  // const { service, speciality_id, offers_free_meet_greet } = prestador;
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -46,8 +28,8 @@ export const usePerfilPrestador = (prestador: Prestador) => {
   const navigate = useNavigate();
 
   const handleContact = () => {
-    if (isLoggedIn && user) {
-      if (messages?.length > 0) {
+    if (user?.id.length) {
+      if ((messages ?? []).length > 0) {
         navigate('/chat', {
           state: {
             prestador,
@@ -63,6 +45,11 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     }
 
     updateRedirectToAfterLogin(`/perfil-prestador/${id}`);
+    setNotification({
+      open: true,
+      message: 'Debes iniciar sesión para poder contactar a un prestador',
+      severity: 'info',
+    });
     navigate('/ingresar');
     return;
   };
@@ -144,12 +131,8 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     prestador,
     messages,
     isTablet,
-    prestadorServicio,
-    prestadorEspecialidad,
     open,
     message,
-    disponibilidad,
-    tarifas,
     freeMeetGreet: offersFreeMeetAndGreet,
     handleContact,
     handleOpen,

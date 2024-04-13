@@ -23,6 +23,7 @@ import { Prestador, prestadorState } from '@/store/auth/prestador';
 import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { defaultTarifas } from '@/utils/constants';
+import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
 
@@ -285,6 +286,15 @@ export const useAuthNew = () => {
           return { role: 'user', data: user };
         } else if (prestadores.docs.length > 0) {
           const prestador = prestadores.docs[0].data() as Prestador;
+          const availabilityCollectionRef = collection(
+            db,
+            'providers',
+            prestador.id,
+            'availability',
+          );
+          const availabilityData = await getDocs(availabilityCollectionRef);
+          const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
+          prestador.availability = availability;
           setPrestadorState({ ...prestador, isLoggedIn: true });
           queryClient.setQueryData(['prestador', correo], prestador);
           return { role: 'prestador', data: prestador };

@@ -15,7 +15,7 @@ export interface Prestador {
   especialidad?: string | undefined;
   telefono?: string;
   isLoggedIn?: boolean;
-  availability: AvailabilityData[];
+  availability?: AvailabilityData[];
   averageReviews?: number;
   description?: string;
   totalReviews?: number;

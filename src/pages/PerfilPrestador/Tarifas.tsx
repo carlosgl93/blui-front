@@ -15,7 +15,7 @@ const Grid = styled(Box)(() => ({
   gridTemplateRows: 'repeat(2, 1fr)',
   gap: '1rem',
   width: '100%',
-  padding: '1rem  0',
+  padding: '1rem  1rem',
 }));
 
 const StyledTarifaContainer = styled(Box)(() => ({
@@ -44,22 +44,35 @@ type TarifasProps = {
 export const Tarifas = ({ tarifas, freeMeetGreet }: TarifasProps) => {
   return (
     <Wrapper>
-      <Grid>
-        <StyledTarifaContainer>
-          <StyledSubtitle>Juntarse y conocerse</StyledSubtitle>
-          <StyledTarifa>{freeMeetGreet ? 'Gratis' : 'Conversable'}</StyledTarifa>
-        </StyledTarifaContainer>
-        {tarifas?.map((tarifa) => {
-          const { id, dayName, price } = tarifa;
-          return (
-            <StyledTarifaContainer key={id}>
-              <StyledSubtitle>{dayName}</StyledSubtitle>
-              <StyledTarifa>{formatCLP(Number(price))}</StyledTarifa>
+      {Number(tarifas[0].price) === 0 ? (
+        <Box
+          sx={{
+            width: '100%',
+            p: '1rem',
+          }}
+        >
+          <SmallText>Aun no tiene tarifas, puedes contactarlo para saber más.</SmallText>
+        </Box>
+      ) : (
+        <>
+          <Grid>
+            <StyledTarifaContainer>
+              <StyledSubtitle>Juntarse y conocerse</StyledSubtitle>
+              <StyledTarifa>{freeMeetGreet ? 'Gratis' : 'Conversable'}</StyledTarifa>
             </StyledTarifaContainer>
-          );
-        })}
-      </Grid>
-      <SmallText>Todas las tarifas son por hora.</SmallText>
+            {tarifas?.map((tarifa) => {
+              const { id, dayName, price } = tarifa;
+              return (
+                <StyledTarifaContainer key={id}>
+                  <StyledSubtitle>{dayName}</StyledSubtitle>
+                  <StyledTarifa>{formatCLP(Number(price))}</StyledTarifa>
+                </StyledTarifaContainer>
+              );
+            })}
+          </Grid>
+          <SmallText>Todas las tarifas son por hora.</SmallText>
+        </>
+      )}
     </Wrapper>
   );
 };
