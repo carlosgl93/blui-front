@@ -70,7 +70,7 @@ export const PrestadorInbox = () => {
                   <Text>{firstname}</Text>
                 </Box>
                 <Box>
-                  <StyledChatDate>{formatDate(createdAt)}</StyledChatDate>
+                  <StyledChatDate>{formatDate(new Date(createdAt))}</StyledChatDate>
                 </Box>
               </StyledListItem>
             );

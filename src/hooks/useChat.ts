@@ -1,12 +1,16 @@
 import { getMessages, sendMessage } from '@/api/firebase/chat';
 import { notificationState } from '@/store/snackbar';
 import { useMutation, useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 export const useChat = (userId: string, providerId: string) => {
   const setNotification = useSetRecoilState(notificationState);
+  const navigate = useNavigate();
+
   const { mutate: handleSaveMessage, isLoading: savingMessageLoading } = useMutation(sendMessage, {
     onSuccess() {
+      navigate('/chat');
       setNotification({
         open: true,
         message: 'Mensaje enviado',

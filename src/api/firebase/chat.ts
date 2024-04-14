@@ -1,5 +1,6 @@
 import { db } from 'firebase/firebase';
-import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
+import { doc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
 
 type SendMessageArgs = {
   userId: string;
@@ -12,14 +13,14 @@ export const sendMessage = async ({ userId, providerId, message, sentBy }: SendM
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
   try {
     const newMessage = {
-      id: messagesRef.id,
+      id: uuidv4(),
       message,
       sentBy,
       timestamp: new Date().toISOString(),
       userId,
       providerId,
     };
-    const saveMessage = await updateDoc(messagesRef, {
+    const saveMessage = await setDoc(messagesRef, {
       messages: arrayUnion(newMessage),
     });
     return saveMessage;

@@ -1,50 +1,33 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import IconButton from '@mui/material/IconButton';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { FlexBox, HeaderIconImage } from '@/components/styled';
 import useSidebar from '@/store/sidebar';
 import { ChatTitle } from '@/pages/Chat/StyledChatMensajes';
 import { useRetrieveCustomerAndPrestador } from '@/hooks/useRetrieveCustomerAndPrestador';
+import BackButton from '@/components/BackButton';
+import { Box, styled } from '@mui/material';
 
 const MobileHeaderContent = () => {
-  const router = useNavigate();
   const [, sidebarActions] = useSidebar();
   const { customer, prestador } = useRetrieveCustomerAndPrestador();
 
   const isChat = location.pathname === '/chat' || location.pathname === '/prestador-chat';
-  const isPrestadorChat = location.pathname === '/prestador-chat';
-  const isCustomerChat = location.pathname === '/chat';
-
-  const navigateBack = () => {
-    if (isPrestadorChat) {
-      router('/prestador-inbox');
-    } else if (isCustomerChat) {
-      router('/usuario-inbox');
-    }
-  };
 
   if (isChat) {
     return (
-      <FlexBox sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        <IconButton
-          onClick={navigateBack}
-          size="large"
-          edge="start"
-          color="primary"
-          aria-label="menu"
-          sx={{ mr: 1 }}
-        >
-          <ArrowBackOutlinedIcon />
-        </IconButton>
+      <StyledChatHeaderContainer>
+        <BackButton ignoreMargin />
         <ChatTitle>
           {location.pathname === '/chat'
-            ? `${prestador?.firstname} ${prestador?.lastname}`
+            ? prestador?.firstname
+              ? prestador?.firstname
+              : prestador?.email
             : `${customer?.firstname && customer?.firstname} 
                 ${customer?.lastname && customer?.lastname}`}
         </ChatTitle>
-      </FlexBox>
+      </StyledChatHeaderContainer>
     );
   }
 
@@ -74,3 +57,13 @@ const MobileHeaderContent = () => {
 };
 
 export default MobileHeaderContent;
+
+const StyledChatHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '20% 80%',
+  gridColumnGap: theme.spacing(4),
+  height: theme.spacing(10),
+  width: '100%',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+}));

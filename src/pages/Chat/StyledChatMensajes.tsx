@@ -16,7 +16,7 @@ export const ChatContainer = styled(Box)(() => ({
 export const ChatTitleContainer = styled(Box)(() => ({}));
 
 export const ChatTitle = styled(Typography)(({ theme }) => ({
-  fontSize: '2rem',
+  fontSize: '1rem',
   fontWeight: 'bolder',
   color: theme.palette.primary.main,
 }));

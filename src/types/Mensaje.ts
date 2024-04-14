@@ -1,8 +1,8 @@
 export type Mensaje = {
-  created_at: string;
-  id: number;
+  timestamp: string;
+  id: string;
   message: string;
-  prestador_id: number;
-  sent_by: string;
-  usuario_id: number;
+  providerId: string;
+  sentBy: 'user' | 'provider';
+  userId: string;
 };

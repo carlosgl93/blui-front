@@ -353,6 +353,7 @@ export const useAuthNew = () => {
       setPrestadorState(null);
       resetEntregaApoyoState();
       resetRecibeApoyoState();
+      queryClient.resetQueries();
       navigate('/ingresar');
     },
   });

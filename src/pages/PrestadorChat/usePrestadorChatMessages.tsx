@@ -1,21 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { sendMessage } from '@/api/chat/sendMessage';
-import useAuth from '@/store/auth';
-import { getMessages } from '@/api/chat/getMessages';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { getMessages, sendMessage } from '@/api/firebase/chat';
 
 type useChatMessagesProps = {
-  userId: number;
-  prestadorId: string | undefined;
+  userId: string;
+  prestadorId: string;
 };
 
 export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessagesProps) => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
-  const [{ user }] = useAuth();
   const queryClient = useQueryClient();
 
-  const sentBy = location.pathname.includes('prestador-chat') ? 'prestador' : 'user';
+  const sentBy = location.pathname.includes('prestador-chat') ? 'provider' : 'user';
 
   const {
     data: messages,
@@ -24,13 +21,17 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
     error,
   } = useQuery(
     ['messages', userId, prestadorId],
-    () => getMessages(userId, prestadorId ?? '', user?.token as string),
+    () => getMessages({ userId, providerId: prestadorId }),
     {
       enabled: !!userId && !!prestadorId,
     },
   );
 
-  const mutation = useMutation(sendMessage, {
+  const {
+    mutate,
+    isLoading: sendMessageIsLoading,
+    error: sendMessageError,
+  } = useMutation(sendMessage, {
     onSuccess: () => {
       // On success, invalidate and refetch the messages query
       queryClient.invalidateQueries(['messages', userId, prestadorId]);
@@ -38,13 +39,12 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
   });
 
   const handleSendMessage = async () => {
-    mutation.mutate(
+    mutate(
       {
         message,
-        prestadorId: '',
+        providerId: '',
         userId,
         sentBy,
-        token: user?.token as string,
       },
       {
         onSuccess: () => {
@@ -84,8 +84,8 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
     error,
     handleSendMessage,
     handleInputChange,
-    isSending: mutation.isLoading,
-    sendError: mutation.error,
+    isSending: sendMessageIsLoading,
+    sendError: sendMessageError,
     lastMessageRef,
     sendWithEnter,
     sentBy,

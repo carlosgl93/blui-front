@@ -19,8 +19,9 @@ import { Prestador } from '@/types/Prestador';
 import Loading from '@/components/Loading';
 import { formatDate } from '@/utils/formatDate';
 import { Box } from '@mui/material';
-import { useRetrieveCustomerAndPrestador } from '@/hooks/useRetrieveCustomerAndPrestador';
 import { usePrestadorChatMessages } from '../PrestadorChat/usePrestadorChatMessages';
+import { useLocation } from 'react-router-dom';
+import { useAuthNew } from '@/hooks/useAuthNew';
 
 export type LocationState = {
   messages: Mensaje[];
@@ -29,30 +30,26 @@ export type LocationState = {
 };
 
 export const Chat = () => {
-  const {
-    customer,
-    prestador,
-    isLoading: customerPrestadorLoading,
-  } = useRetrieveCustomerAndPrestador();
-
+  const { user } = useAuthNew();
+  const { prestador } = useLocation().state;
+  const customer = user;
   const customerId = customer?.id;
   const prestadorId = prestador?.id;
 
   const {
     messages,
     message,
-    isLoading,
-    error,
+    isSending,
     lastMessageRef,
     handleInputChange,
     handleSendMessage,
     sendWithEnter,
   } = usePrestadorChatMessages({
-    userId: customerId,
+    userId: customerId ?? '',
     prestadorId,
   });
 
-  if (isLoading) {
+  if (isSending) {
     return (
       <ChatContainer>
         <Loading />
@@ -62,12 +59,10 @@ export const Chat = () => {
 
   return (
     <ChatContainer>
-      {(isLoading || customerPrestadorLoading) && <Loading />}
-      {error && <p>Hubo un error</p>}
       {messages &&
-        messages.map((m: Mensaje, index: number) => {
+        messages.map((m, index: number) => {
           const isLastMessage = index === messages.length - 1;
-          if (m.sent_by === 'prestador') {
+          if (m.sentBy === 'provider') {
             return (
               <StyledPrestadorMensajeContainer
                 key={m.id}
@@ -85,7 +80,7 @@ export const Chat = () => {
                 >
                   <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
                   <StyledTimestampContainer>
-                    <StyledMensajeTimestamp>{formatDate(m.created_at)}</StyledMensajeTimestamp>
+                    <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
                   </StyledTimestampContainer>
                 </Box>
               </StyledPrestadorMensajeContainer>
@@ -95,7 +90,7 @@ export const Chat = () => {
               <StyledUsuarioMensajeContainer key={m.id} ref={isLastMessage ? lastMessageRef : null}>
                 <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
                 <StyledTimestampContainer>
-                  <StyledMensajeTimestamp>{formatDate(m.created_at)}</StyledMensajeTimestamp>
+                  <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
                 </StyledTimestampContainer>
               </StyledUsuarioMensajeContainer>
             );

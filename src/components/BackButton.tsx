@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 type BackButtonProps = {
   to?: string;
   action?: (() => void | null) | undefined;
+  displayText?: boolean;
+  ignoreMargin?: boolean;
 };
 
-const BackButton = ({ to, action }: BackButtonProps) => {
+const BackButton = ({ to, action, displayText, ignoreMargin }: BackButtonProps) => {
   const router = useNavigate();
 
   return (
@@ -21,10 +23,11 @@ const BackButton = ({ to, action }: BackButtonProps) => {
         to ? router(to) : router(-1);
       }}
       sx={{
-        mb: '1rem',
+        mb: ignoreMargin ? '' : '1rem',
+        width: 'fit-content',
       }}
     >
-      Atras
+      {displayText && 'Atras'}
     </Button>
   );
 };

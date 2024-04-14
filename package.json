@@ -51,7 +51,8 @@
     "react-hotkeys-hook": "^3.4.7",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.4.1",
-    "recoil": "^0.7.5"
+    "recoil": "^0.7.5",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.8",
@@ -62,6 +63,7 @@
     "@types/node": "^18.7.21",
     "@types/react": "^18.2.63",
     "@types/react-dom": "^18.2.20",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
     "@vitejs/plugin-react": "4.2.1",

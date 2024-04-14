@@ -1,4 +1,4 @@
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateString: Date) => {
   const date = new Date(dateString);
   const now = new Date();
 

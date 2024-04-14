@@ -32,7 +32,7 @@ export const PrestadorChat = () => {
   const { customer, prestador, isLoading, error } = useRetrieveCustomerAndPrestador();
 
   const customerId = customer?.id;
-  const prestadorId = prestador?.id;
+  const prestadorId = prestador?.id ?? '';
 
   const { messages, message, lastMessageRef, handleInputChange, handleSendMessage, sendWithEnter } =
     usePrestadorChatMessages({
@@ -45,9 +45,9 @@ export const PrestadorChat = () => {
       {isLoading && <Loading />}
       {error && <p>Hubo un error</p>}
       {messages &&
-        messages.map((m: Mensaje, index: number) => {
+        messages.map((m, index: number) => {
           const isLastMessage = index === messages?.length - 1;
-          if (m.sent_by === 'prestador') {
+          if (m.sentBy === 'provider') {
             return (
               <Box key={m.id}>
                 <StyledPrestadorMensajeContainer
@@ -56,7 +56,7 @@ export const PrestadorChat = () => {
                 >
                   <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
                   <StyledTimestampContainer>
-                    <StyledMensajeTimestamp>{formatDate(m.created_at)}</StyledMensajeTimestamp>
+                    <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
                   </StyledTimestampContainer>
                 </StyledPrestadorMensajeContainer>
               </Box>
@@ -77,7 +77,7 @@ export const PrestadorChat = () => {
                   >
                     <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
                     <StyledTimestampContainer>
-                      <StyledMensajeTimestamp>{formatDate(m.created_at)}</StyledMensajeTimestamp>
+                      <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
                     </StyledTimestampContainer>
                   </Box>
                 </StyledUsuarioMensajeContainer>

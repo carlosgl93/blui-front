@@ -216,21 +216,21 @@ function useAuth(): [AuthState, Actions] {
     setRedirectToAfterLogin(path);
   }
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser !== null) {
-      const user = JSON.parse(storedUser);
-      setUser((prev) => ({ ...prev, isLoggedIn: true, user }));
-    }
-    if (
-      storedUser === null &&
-      (location.pathname.includes('prestador-chat') || location.pathname.includes('chat'))
-    ) {
-      updateRedirectToAfterLogin(location.pathname);
-      console.log(redirectToAfterLogin);
-      navigate('/ingresar');
-    }
-  }, [setUser]);
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem('user');
+  //   if (storedUser !== null) {
+  //     const user = JSON.parse(storedUser);
+  //     setUser((prev) => ({ ...prev, isLoggedIn: true, user }));
+  //   }
+  //   if (
+  //     storedUser === null &&
+  //     (location.pathname.includes('prestador-chat') || location.pathname.includes('chat'))
+  //   ) {
+  //     updateRedirectToAfterLogin(location.pathname);
+  //     console.log(redirectToAfterLogin);
+  //     navigate('/ingresar');
+  //   }
+  // }, [setUser]);
 
   useEffect(() => {
     const cleanErrorMessage = setTimeout(() => {
