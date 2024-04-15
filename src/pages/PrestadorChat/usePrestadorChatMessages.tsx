@@ -48,7 +48,7 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
       },
       {
         onSuccess: () => {
-          setMessage('');
+          // setMessage('');
         },
       },
     );
