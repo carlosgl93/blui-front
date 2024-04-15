@@ -13,7 +13,7 @@ import {
   doc,
   setDoc,
 } from 'firebase/firestore';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { Comuna } from '@/types';
 import { Servicio } from '@/types/Servicio';
@@ -24,6 +24,7 @@ import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { defaultTarifas } from '@/utils/constants';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
+import { redirectToAfterLoginState } from '@/store/auth';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
 
@@ -53,6 +54,7 @@ export type CreatePrestadorParams = {
 export const useAuthNew = () => {
   const [, setNotification] = useRecoilState(notificationState);
   const [user, setUserState] = useRecoilState(userState);
+  const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
   const [, { resetEntregaApoyoState }] = useEntregaApoyo();
   const [, { resetRecibeApoyoState }] = useRecibeApoyo();
@@ -336,11 +338,12 @@ export const useAuthNew = () => {
         });
         if (data?.role === 'user') {
           setUserState({ ...data.data, isLoggedIn: true } as User);
-          navigate(`/usuario-dashboard`);
+
+          redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
         } else {
           if (data?.role === 'prestador') {
             setPrestadorState({ ...data.data, isLoggedIn: true } as Prestador);
-            navigate(`/prestador-dashboard`);
+            redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/prestador-dashboard`);
           }
         }
       },

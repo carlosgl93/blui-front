@@ -42,7 +42,7 @@ export const usePrestadorChatMessages = ({ userId, prestadorId }: useChatMessage
     mutate(
       {
         message,
-        providerId: '',
+        providerId: prestadorId,
         userId,
         sentBy,
       },

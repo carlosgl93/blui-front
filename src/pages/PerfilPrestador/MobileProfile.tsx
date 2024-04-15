@@ -49,13 +49,15 @@ type MobileProfileProps = {
 };
 
 export const MobileProfile = ({ prestador }: MobileProfileProps) => {
-  const { handleClose, handleContact, open, message, setMessage } = usePerfilPrestador(
-    prestador as Prestador,
-  );
+  const { handleClose, handleContact, open } = usePerfilPrestador(prestador as Prestador);
+
   const { id } = useParams();
   const { user } = useAuthNew();
 
-  const { messages, messagesLoading, savingMessageLoading } = useChat(user?.id ?? '', id ?? '');
+  const { message, setMessage, messages, messagesLoading, savingMessageLoading } = useChat(
+    user?.id ?? '',
+    id ?? '',
+  );
   const {
     firstname,
     imageUrl,
@@ -76,7 +78,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         <PerfilBackButton />
         <StyledAvatar alt={`Imágen de perfil de ${firstname}`} src={imageUrl} />
         <StyledNameContainer>
-          <StyledTitle>{firstname ? firstname : ''}</StyledTitle>
+          <StyledTitle>{firstname ? firstname : email}</StyledTitle>
           <ReviewsContainer>
             <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
           </ReviewsContainer>

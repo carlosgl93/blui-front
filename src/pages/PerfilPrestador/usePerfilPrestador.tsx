@@ -2,16 +2,17 @@ import useAuth from '@/store/auth';
 import { tablet } from '@/theme/breakpoints';
 import { useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Prestador } from '@/store/auth/prestador';
 import { useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { useChat } from '@/hooks';
+import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 
 export const usePerfilPrestador = (prestador: Prestador) => {
-  console.log(prestador);
   const isTablet = useMediaQuery(tablet);
+  const setInteractedPrestador = useSetRecoilState(interactedPrestadorState);
   const prestadorId = prestador.id;
   const { user } = useAuthNew();
   const [, { updateRedirectToAfterLogin }] = useAuth();
@@ -50,6 +51,10 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     navigate('/ingresar');
     return;
   };
+
+  useEffect(() => {
+    setInteractedPrestador(prestador);
+  }, []);
 
   return {
     prestador,

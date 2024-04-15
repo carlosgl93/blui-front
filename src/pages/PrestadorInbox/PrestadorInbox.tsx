@@ -1,10 +1,11 @@
 import { Box, List, ListItem, styled } from '@mui/material';
-import { usePrestadorInbox } from './usePrestadorInbox';
 import { Text } from '@/components/StyledComponents';
 import { StyledAvatar } from '../PerfilPrestador/MobilePerfilPrestadorStyledComponents';
 import { StyledTitle, Wrapper } from '../PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { formatDate } from '@/utils/formatDate';
 import Loading from '@/components/Loading';
+import { Message } from '@/api/firebase/chat';
+import { usePrestadorInbox } from './usePrestadorInbox';
 
 const TitleContainer = styled(Box)(() => ({
   width: '100%',
@@ -41,25 +42,22 @@ const StyledChatDate = styled(Text)(({ theme }) => ({
 }));
 
 export const PrestadorInbox = () => {
-  const { loading, prestadorInbox, handleClickChat } = usePrestadorInbox();
+  const { handleClickChat, fetchProvidersChat, isLoadingProvidersChats } = usePrestadorInbox();
 
   return (
     <Wrapper>
       <TitleContainer>
         <StyledTitle>Inbox</StyledTitle>
       </TitleContainer>
-      {loading && <Loading />}
-      {prestadorInbox && prestadorInbox.length === 0 && <p>No hay mensajes</p>}
-      {prestadorInbox && prestadorInbox.length > 0 && (
+      {isLoadingProvidersChats && <Loading />}
+      {fetchProvidersChat?.length === 0 && <p>No hay mensajes</p>}
+      {fetchProvidersChat && fetchProvidersChat?.length > 0 && (
         <StyledList>
-          {prestadorInbox?.map((chat) => {
-            const { firstname, id, createdAt, prestadorId, userId } = chat;
+          {fetchProvidersChat?.map((chat: Message) => {
+            const { id, providerId, userId } = chat;
 
             return (
-              <StyledListItem
-                key={id}
-                onClick={() => handleClickChat(prestadorId.toString(), userId.toString())}
-              >
+              <StyledListItem key={id} onClick={() => handleClickChat(providerId, userId)}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -67,10 +65,10 @@ export const PrestadorInbox = () => {
                   }}
                 >
                   <ChatAvatar />
-                  <Text>{firstname}</Text>
+                  <Text>{userId}</Text>
                 </Box>
                 <Box>
-                  <StyledChatDate>{formatDate(new Date(createdAt))}</StyledChatDate>
+                  <StyledChatDate>{formatDate(new Date())}</StyledChatDate>
                 </Box>
               </StyledListItem>
             );

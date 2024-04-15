@@ -8,11 +8,13 @@ import { ChatTitle } from '@/pages/Chat/StyledChatMensajes';
 import { useRetrieveCustomerAndPrestador } from '@/hooks/useRetrieveCustomerAndPrestador';
 import BackButton from '@/components/BackButton';
 import { Box, styled } from '@mui/material';
+import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
+import { useRecoilValue } from 'recoil';
 
 const MobileHeaderContent = () => {
   const [, sidebarActions] = useSidebar();
-  const { customer, prestador } = useRetrieveCustomerAndPrestador();
-
+  const { customer } = useRetrieveCustomerAndPrestador();
+  const prestador = useRecoilValue(interactedPrestadorState);
   const isChat = location.pathname === '/chat' || location.pathname === '/prestador-chat';
 
   if (isChat) {

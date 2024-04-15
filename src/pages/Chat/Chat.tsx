@@ -1,5 +1,4 @@
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
-import { Mensaje } from '@/types/Mensaje';
 import {
   ChatContainer,
   StyledChatInput,
@@ -14,42 +13,34 @@ import {
   StyledUsuarioMensajeText,
 } from './StyledChatMensajes';
 
-import { Prestador } from '@/types/Prestador';
-
 import Loading from '@/components/Loading';
 import { formatDate } from '@/utils/formatDate';
 import { Box } from '@mui/material';
 import { usePrestadorChatMessages } from '../PrestadorChat/usePrestadorChatMessages';
-import { useLocation } from 'react-router-dom';
 import { useAuthNew } from '@/hooks/useAuthNew';
-
-export type LocationState = {
-  messages: Mensaje[];
-  prestador: Prestador;
-  sentBy: string;
-};
+import { useRecoilValue } from 'recoil';
+import { chatState } from '@/store/chat/chatStore';
+import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
+import { useChat } from '@/hooks';
 
 export const Chat = () => {
   const { user } = useAuthNew();
-  const { prestador } = useLocation().state;
+  const messages = useRecoilValue(chatState);
   const customer = user;
+  const prestador = useRecoilValue(interactedPrestadorState);
   const customerId = customer?.id;
-  const prestadorId = prestador?.id;
 
-  const {
-    messages,
-    message,
-    isSending,
-    lastMessageRef,
-    handleInputChange,
-    handleSendMessage,
-    sendWithEnter,
-  } = usePrestadorChatMessages({
+  const { isSending, lastMessageRef } = usePrestadorChatMessages({
     userId: customerId ?? '',
-    prestadorId,
+    prestadorId: prestador?.id ?? '',
   });
 
-  if (isSending) {
+  const { message, messagesLoading, setMessage, handleSaveMessage, sendWithEnter } = useChat(
+    customerId ?? '',
+    prestador?.id ?? '',
+  );
+
+  if (messagesLoading) {
     return (
       <ChatContainer>
         <Loading />
@@ -59,7 +50,10 @@ export const Chat = () => {
 
   return (
     <ChatContainer>
-      {messages &&
+      {isSending ? (
+        <Loading />
+      ) : (
+        messages &&
         messages.map((m, index: number) => {
           const isLastMessage = index === messages.length - 1;
           if (m.sentBy === 'provider') {
@@ -68,7 +62,9 @@ export const Chat = () => {
                 key={m.id}
                 ref={isLastMessage ? lastMessageRef : null}
               >
-                <StyledPrestadorName>{prestador?.firstname}:</StyledPrestadorName>
+                <StyledPrestadorName>
+                  {prestador?.firstname ? prestador.firstname : prestador?.email}:
+                </StyledPrestadorName>
                 <Box
                   sx={{
                     display: 'flex',
@@ -95,15 +91,49 @@ export const Chat = () => {
               </StyledUsuarioMensajeContainer>
             );
           }
-        })}
+        })
+      )}
       <StyledChatInputContainer>
         <StyledChatInput
           value={message}
           placeholder="Escribe tu mensaje"
-          onChange={(e) => handleInputChange(e)}
-          onKeyDown={(e) => sendWithEnter(e)}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) =>
+            sendWithEnter(e, {
+              message,
+              sentBy: 'user',
+              providerId: prestador?.id ?? '',
+              userId: customerId ?? '',
+              username: customer?.firstname
+                ? customer.firstname
+                : customer?.email
+                ? customer.email
+                : '',
+              providerName: prestador?.firstname?.length
+                ? prestador.firstname
+                : prestador?.email || '',
+            })
+          }
         />
-        <StyledChatSendButton onClick={handleSendMessage} disabled={message.length === 0}>
+        <StyledChatSendButton
+          onClick={() =>
+            handleSaveMessage({
+              message,
+              sentBy: 'user',
+              providerId: prestador?.id ?? '',
+              userId: customerId ?? '',
+              username: customer?.firstname
+                ? customer.firstname
+                : customer?.email
+                ? customer.email
+                : '',
+              providerName: prestador?.firstname?.length
+                ? prestador.firstname
+                : prestador?.email || '',
+            })
+          }
+          disabled={message.length === 0}
+        >
           <SendOutlinedIcon />
         </StyledChatSendButton>
       </StyledChatInputContainer>

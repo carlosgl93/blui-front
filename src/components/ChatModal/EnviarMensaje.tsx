@@ -12,6 +12,8 @@ import { useParams } from 'react-router-dom';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import Loading from '../Loading';
 import { Box } from '@mui/material';
+import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
+import { useRecoilValue } from 'recoil';
 
 type EnviarMensajeProps = {
   message: string;
@@ -29,10 +31,12 @@ export const EnviarMensaje = ({ message, setMessage, handleClose }: EnviarMensaj
   const handleClickPredefinedMessage = (message: string) => {
     setMessage(message);
   };
+  const prestadorState = useRecoilValue(interactedPrestadorState);
+  const prestador = prestadorState ? prestadorState : { firstname: '', email: '' };
   const { id } = useParams();
   const { user } = useAuthNew();
 
-  const { handleSaveMessage, savingMessageLoading } = useChat(user?.id ?? '', id ?? '');
+  const { handleSendFirstMessage, sendFirstMessageLoading } = useChat(user?.id ?? '', id ?? '');
 
   return (
     <Box
@@ -44,7 +48,7 @@ export const EnviarMensaje = ({ message, setMessage, handleClose }: EnviarMensaj
         },
       }}
     >
-      {savingMessageLoading ? (
+      {sendFirstMessageLoading ? (
         <Loading />
       ) : (
         <>
@@ -74,11 +78,15 @@ export const EnviarMensaje = ({ message, setMessage, handleClose }: EnviarMensaj
               variant="contained"
               color="primary"
               onClick={() =>
-                handleSaveMessage({
+                handleSendFirstMessage({
                   message,
                   sentBy: 'user',
                   providerId: id ?? '',
                   userId: user?.id ?? '',
+                  username: user?.firstname ?? '',
+                  providerName: prestador?.firstname?.length
+                    ? prestador.firstname
+                    : prestador.email,
                 })
               }
               disabled={message.length < 5}

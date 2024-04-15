@@ -29,7 +29,7 @@ const authState = atom<AuthState>({
   },
 });
 
-const redirectToAfterLoginState = atom<string>({
+export const redirectToAfterLoginState = atom<string>({
   key: 'redirectToAfterLoginState',
   default: '/',
 });
