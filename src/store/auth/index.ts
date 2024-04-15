@@ -29,9 +29,9 @@ const authState = atom<AuthState>({
   },
 });
 
-export const redirectToAfterLoginState = atom<string>({
+export const redirectToAfterLoginState = atom<string | null>({
   key: 'redirectToAfterLoginState',
-  default: '/',
+  default: null,
 });
 
 function useAuth(): [AuthState, Actions] {
@@ -204,12 +204,11 @@ function useAuth(): [AuthState, Actions] {
   function logout() {
     setUser((prev) => ({ ...prev, isLoggedIn: false, user: null, role: null }));
     localStorage.removeItem('user');
-    // TODO: RESET ALL STATE
     navigate('/');
   }
 
   function redirectAfterLogin() {
-    navigate(redirectToAfterLogin);
+    return redirectToAfterLogin ? navigate(redirectToAfterLogin) : null;
   }
 
   function updateRedirectToAfterLogin(path: string) {

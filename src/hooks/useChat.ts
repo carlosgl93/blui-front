@@ -45,7 +45,7 @@ export const useChat = (userId: string, providerId: string) => {
 
       // Snapshot the previous value
       const prevMessages = messages;
-
+      setMessage('');
       // Optimistically update to the new value
       setMessages(
         (old) => [...old, { ...newMessage, timestamp: new Date().toISOString() }] as Message[],
