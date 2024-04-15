@@ -25,7 +25,6 @@ export const useChat = (userId: string, providerId: string) => {
     onSuccess: async (data) => {
       console.log('success data', data);
       // setMessages((prev) => [...prev, data.message] as Message[]);
-      setMessage('');
       await client.invalidateQueries(['messages', userId, providerId]);
     },
     onError: (error, variables, context: Message[] | undefined) => {
