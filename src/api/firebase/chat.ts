@@ -12,13 +12,36 @@ import {
   getDocs,
 } from 'firebase/firestore';
 
-export type SendMessageArgs = {
+type GetMessagesArgs = {
   userId: string;
   providerId: string;
+};
+
+export type Conversation = {
+  id: string;
+  providerId: string;
+  userId: string;
+  username?: string;
+  providerName: string;
+  messages: Message[];
+};
+
+export type Message = {
+  id: string;
+  message: string;
+  sentBy: 'user' | 'provider';
+  timestamp: Date;
+  isSending?: boolean;
+};
+
+export type SendMessageArgs = {
+  userId?: string;
+  providerId?: string;
   message: string;
   sentBy: 'user' | 'provider';
   username?: string;
   providerName?: string;
+  timestamp?: string;
 };
 
 export const sendFirstMessage = async ({
@@ -26,22 +49,24 @@ export const sendFirstMessage = async ({
   providerId,
   message,
   sentBy,
-  username,
   providerName,
+  username,
 }: SendMessageArgs) => {
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
   try {
+    const docId = uuidv4();
     const newMessage = {
       id: uuidv4(),
       message,
       sentBy,
       timestamp: new Date().toISOString(),
-      userId,
-      providerId,
-      username,
-      providerName,
     };
     const saveMessage = await setDoc(messagesRef, {
+      id: docId,
+      userId,
+      username,
+      providerId,
+      providerName,
       messages: [newMessage],
     });
     return saveMessage;
@@ -50,29 +75,19 @@ export const sendFirstMessage = async ({
   }
 };
 
-export const sendMessage = async ({
-  userId,
-  providerId,
-  message,
-  sentBy,
-  username,
-  providerName,
-}: SendMessageArgs) => {
+export const sendMessage = async ({ userId, providerId, message, sentBy }: SendMessageArgs) => {
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
   const newMessage = {
     id: uuidv4(),
     message,
     sentBy,
     timestamp: new Date().toISOString(),
-    userId,
-    providerId,
-    username,
-    providerName,
   };
   try {
     await updateDoc(messagesRef, {
       messages: arrayUnion(newMessage),
     });
+
     return { success: true, message: newMessage };
   } catch (error) {
     console.error('Error sending message', error);
@@ -80,35 +95,16 @@ export const sendMessage = async ({
   }
 };
 
-type GetMessagesArgs = {
-  userId: string;
-  providerId: string;
-};
-
-export type Message = {
-  id: string;
-  message: string;
-  providerId: string;
-  sentBy: 'user' | 'provider';
-  timestamp: Date;
-  userId: string;
-  isSending?: boolean;
-  username?: string;
-  providerName: string;
-};
-
-export const getMessages = async ({ userId, providerId }: GetMessagesArgs): Promise<Message[]> => {
+export const getMessages = async ({
+  userId,
+  providerId,
+}: GetMessagesArgs): Promise<Conversation> => {
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
   const docSnap = await getDoc(messagesRef);
 
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    const result = data?.messages || [];
-    return result as Message[];
-  } else {
-    console.log('No such document!');
-    return [];
-  }
+  const data = docSnap.data();
+  const result = data;
+  return result as Conversation;
 };
 
 type GetProviderInboxMessages = {
@@ -117,19 +113,32 @@ type GetProviderInboxMessages = {
 
 export const getProviderInboxMessages = async ({
   providerId,
-}: GetProviderInboxMessages): Promise<Message[]> => {
-  console.log({ providerId });
+}: GetProviderInboxMessages): Promise<Conversation[]> => {
   const messagesQuery = query(collection(db, 'messages'), where('providerId', '==', providerId));
   const querySnapshot = await getDocs(messagesQuery);
 
-  console.log('running');
-  const messages: Message[] = [];
-  querySnapshot.forEach((doc) => {
-    console.log(doc);
+  const messages: Conversation[] = querySnapshot.docs.map((doc) => {
     const data = doc.data();
-    const result = data?.messages || [];
-    messages.push(...result);
+    return { ...data } as Conversation;
   });
-  console.log('messages', messages);
+
+  return messages;
+};
+
+type GetUserInboxMessages = {
+  userId: string;
+};
+
+export const getUserInboxMessages = async ({
+  userId,
+}: GetUserInboxMessages): Promise<Conversation[]> => {
+  const messagesQuery = query(collection(db, 'messages'), where('userId', '==', userId));
+  const querySnapshot = await getDocs(messagesQuery);
+
+  const messages: Conversation[] = querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+    return { ...data } as Conversation;
+  });
+
   return messages;
 };

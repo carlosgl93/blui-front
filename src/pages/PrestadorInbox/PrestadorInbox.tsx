@@ -4,7 +4,7 @@ import { StyledAvatar } from '../PerfilPrestador/MobilePerfilPrestadorStyledComp
 import { StyledTitle, Wrapper } from '../PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { formatDate } from '@/utils/formatDate';
 import Loading from '@/components/Loading';
-import { Message } from '@/api/firebase/chat';
+import { Conversation } from '@/api/firebase/chat';
 import { usePrestadorInbox } from './usePrestadorInbox';
 
 const TitleContainer = styled(Box)(() => ({
@@ -19,13 +19,12 @@ const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-const StyledListItem = styled(ListItem)(({ theme }) => ({
+const StyledListItem = styled(ListItem)(() => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '1rem',
-  borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
 const ChatAvatar = styled(StyledAvatar)(() => ({
@@ -53,11 +52,13 @@ export const PrestadorInbox = () => {
       {fetchProvidersChat?.length === 0 && <p>No hay mensajes</p>}
       {fetchProvidersChat && fetchProvidersChat?.length > 0 && (
         <StyledList>
-          {fetchProvidersChat?.map((chat: Message) => {
-            const { id, providerId, userId } = chat;
+          {fetchProvidersChat?.map((chat: Conversation) => {
+            const { id, username, messages } = chat;
+
+            const lastMessageTimestamp = messages[messages.length - 1].timestamp;
 
             return (
-              <StyledListItem key={id} onClick={() => handleClickChat(providerId, userId)}>
+              <StyledListItem key={id} onClick={() => handleClickChat(chat)}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -65,10 +66,10 @@ export const PrestadorInbox = () => {
                   }}
                 >
                   <ChatAvatar />
-                  <Text>{userId}</Text>
+                  <Text>{username}</Text>
                 </Box>
                 <Box>
-                  <StyledChatDate>{formatDate(new Date())}</StyledChatDate>
+                  <StyledChatDate>{formatDate(lastMessageTimestamp)}</StyledChatDate>
                 </Box>
               </StyledListItem>
             );

@@ -9,6 +9,7 @@ import {
   StyledMensajeTimestamp,
   StyledPrestadorMensajeContainer,
   StyledPrestadorMensajeText,
+  StyledProviderName,
   StyledTimestampContainer,
   StyledUsuarioMensajeContainer,
   StyledUsuarioMensajeText,
@@ -20,7 +21,9 @@ import { usePrestadorChatMessages } from './usePrestadorChatMessages';
 import Loading from '@/components/Loading';
 import { formatDate } from '@/utils/formatDate';
 import { Box } from '@mui/material';
-import { useRetrieveCustomerAndPrestador } from '@/hooks/useRetrieveCustomerAndPrestador';
+import { chatState } from '@/store/chat/chatStore';
+import { useRecoilValue } from 'recoil';
+import { useChat } from '@/hooks';
 
 export type LocationState = {
   messages: Mensaje[];
@@ -29,70 +32,90 @@ export type LocationState = {
 };
 
 export const PrestadorChat = () => {
-  const { customer, prestador, isLoading, error } = useRetrieveCustomerAndPrestador();
+  const conversation = useRecoilValue(chatState);
+  const customerId = conversation.userId;
+  const prestadorId = conversation.providerId;
+  const { handleSaveMessage, messagesLoading, sendWithEnter, message, setMessage } = useChat(
+    customerId,
+    prestadorId,
+  );
 
-  const customerId = customer?.id;
-  const prestadorId = prestador?.id ?? '';
-
-  const { messages, message, lastMessageRef, handleInputChange, handleSendMessage, sendWithEnter } =
-    usePrestadorChatMessages({
-      userId: customerId,
-      prestadorId,
-    });
+  const { lastMessageRef } = usePrestadorChatMessages({
+    userId: customerId,
+    prestadorId,
+  });
 
   return (
     <ChatContainer>
-      {isLoading && <Loading />}
-      {error && <p>Hubo un error</p>}
-      {messages &&
-        messages.map((m, index: number) => {
-          const isLastMessage = index === messages?.length - 1;
-          if (m.sentBy === 'provider') {
-            return (
-              <Box key={m.id}>
-                <StyledPrestadorMensajeContainer
-                  key={m.id}
-                  ref={isLastMessage ? lastMessageRef : null}
+      {messagesLoading && <Loading />}
+      {conversation.messages.map((m, index: number) => {
+        const isLastMessage = index === conversation.messages?.length - 1;
+        if (m.sentBy === 'provider') {
+          return (
+            <Box key={m.id}>
+              <StyledPrestadorMensajeContainer
+                key={m.id}
+                ref={isLastMessage ? lastMessageRef : null}
+              >
+                <StyledProviderName>
+                  {conversation.providerName.includes('@') ? 'Tú' : conversation.providerName}:
+                </StyledProviderName>
+                <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
+                <StyledTimestampContainer>
+                  <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
+                </StyledTimestampContainer>
+              </StyledPrestadorMensajeContainer>
+            </Box>
+          );
+        } else {
+          return (
+            <Box key={m.id}>
+              <StyledUsuarioMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
+                <StyledCustomerName>{conversation.username}:</StyledCustomerName>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
                 >
-                  <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
+                  <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
                   <StyledTimestampContainer>
                     <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
                   </StyledTimestampContainer>
-                </StyledPrestadorMensajeContainer>
-              </Box>
-            );
-          } else {
-            return (
-              <Box key={m.id}>
-                <StyledUsuarioMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
-                  <StyledCustomerName>{customer?.firstname}:</StyledCustomerName>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    }}
-                  >
-                    <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
-                    <StyledTimestampContainer>
-                      <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
-                    </StyledTimestampContainer>
-                  </Box>
-                </StyledUsuarioMensajeContainer>
-              </Box>
-            );
-          }
-        })}
+                </Box>
+              </StyledUsuarioMensajeContainer>
+            </Box>
+          );
+        }
+      })}
       <StyledChatInputContainer>
         <StyledChatInput
           value={message}
           placeholder="Escribe tu mensaje"
-          onChange={(e) => handleInputChange(e)}
-          onKeyDown={sendWithEnter}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) =>
+            sendWithEnter(e, {
+              message,
+              sentBy: 'provider',
+              providerId: prestadorId,
+              userId: customerId,
+            })
+          }
         />
-        <StyledChatSendButton onClick={handleSendMessage} disabled={message.length === 0}>
+        <StyledChatSendButton
+          onClick={() =>
+            handleSaveMessage({
+              message,
+              sentBy: 'provider',
+              providerId: prestadorId,
+              userId: customerId,
+            })
+          }
+          disabled={message.length === 0}
+        >
           <SendOutlinedIcon />
         </StyledChatSendButton>
       </StyledChatInputContainer>

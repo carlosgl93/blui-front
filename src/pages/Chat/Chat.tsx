@@ -25,7 +25,7 @@ import { useChat } from '@/hooks';
 
 export const Chat = () => {
   const { user } = useAuthNew();
-  const messages = useRecoilValue(chatState);
+  const conversation = useRecoilValue(chatState);
   const customer = user;
   const prestador = useRecoilValue(interactedPrestadorState);
   const customerId = customer?.id;
@@ -53,18 +53,15 @@ export const Chat = () => {
       {isSending ? (
         <Loading />
       ) : (
-        messages &&
-        messages.map((m, index: number) => {
-          const isLastMessage = index === messages.length - 1;
+        conversation?.messages.map((m, index: number) => {
+          const isLastMessage = index === conversation.messages.length - 1;
           if (m.sentBy === 'provider') {
             return (
               <StyledPrestadorMensajeContainer
-                key={m.id}
+                key={m.id + m.timestamp}
                 ref={isLastMessage ? lastMessageRef : null}
               >
-                <StyledPrestadorName>
-                  {prestador?.firstname ? prestador.firstname : prestador?.email}:
-                </StyledPrestadorName>
+                <StyledPrestadorName>{conversation.providerName}:</StyledPrestadorName>
                 <Box
                   sx={{
                     display: 'flex',
@@ -83,7 +80,10 @@ export const Chat = () => {
             );
           } else {
             return (
-              <StyledUsuarioMensajeContainer key={m.id} ref={isLastMessage ? lastMessageRef : null}>
+              <StyledUsuarioMensajeContainer
+                key={m.id + m.timestamp}
+                ref={isLastMessage ? lastMessageRef : null}
+              >
                 <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
                 <StyledTimestampContainer>
                   <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
@@ -120,16 +120,10 @@ export const Chat = () => {
             handleSaveMessage({
               message,
               sentBy: 'user',
-              providerId: prestador?.id ?? '',
-              userId: customerId ?? '',
-              username: customer?.firstname
-                ? customer.firstname
-                : customer?.email
-                ? customer.email
-                : '',
-              providerName: prestador?.firstname?.length
-                ? prestador.firstname
-                : prestador?.email || '',
+              providerId: conversation.providerId,
+              userId: conversation.userId,
+              username: conversation.username,
+              providerName: conversation.providerName,
             })
           }
           disabled={message.length === 0}

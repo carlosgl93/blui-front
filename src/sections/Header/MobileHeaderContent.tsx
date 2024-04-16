@@ -5,30 +5,33 @@ import { Link } from 'react-router-dom';
 import { FlexBox, HeaderIconImage } from '@/components/styled';
 import useSidebar from '@/store/sidebar';
 import { ChatTitle } from '@/pages/Chat/StyledChatMensajes';
-import { useRetrieveCustomerAndPrestador } from '@/hooks/useRetrieveCustomerAndPrestador';
 import BackButton from '@/components/BackButton';
 import { Box, styled } from '@mui/material';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 import { useRecoilValue } from 'recoil';
+import { chatState } from '@/store/chat/chatStore';
 
 const MobileHeaderContent = () => {
   const [, sidebarActions] = useSidebar();
-  const { customer } = useRetrieveCustomerAndPrestador();
   const prestador = useRecoilValue(interactedPrestadorState);
+  const chats = useRecoilValue(chatState);
+  const username = chats?.username;
   const isChat = location.pathname === '/chat' || location.pathname === '/prestador-chat';
 
-  if (isChat) {
+  if (isChat && location.pathname === '/chat') {
     return (
       <StyledChatHeaderContainer>
         <BackButton ignoreMargin />
-        <ChatTitle>
-          {location.pathname === '/chat'
-            ? prestador?.firstname
-              ? prestador?.firstname
-              : prestador?.email
-            : `${customer?.firstname && customer?.firstname} 
-                ${customer?.lastname && customer?.lastname}`}
-        </ChatTitle>
+        <ChatTitle>{prestador?.firstname ? prestador?.firstname : prestador?.email}</ChatTitle>
+      </StyledChatHeaderContainer>
+    );
+  }
+
+  if (isChat && location.pathname === '/prestador-chat') {
+    return (
+      <StyledChatHeaderContainer>
+        <BackButton ignoreMargin />
+        <ChatTitle>{username}</ChatTitle>
       </StyledChatHeaderContainer>
     );
   }

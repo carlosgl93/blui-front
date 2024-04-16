@@ -22,7 +22,7 @@ function Ingresar() {
 
   return (
     <>
-      <Meta title="Inicia Sesion" />
+      <Meta title="Inicia Sesión" />
       <FullSizeCenteredFlexBox>
         <Box
           component="form"
@@ -46,7 +46,7 @@ function Ingresar() {
               mb: 10,
             }}
           >
-            Inicia sesion
+            Iniciar sesión
           </Title>
           <TextField
             label="Email"

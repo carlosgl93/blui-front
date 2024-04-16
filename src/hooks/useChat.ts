@@ -1,6 +1,6 @@
 import {
+  Conversation,
   getMessages,
-  Message,
   sendFirstMessage,
   sendMessage,
   SendMessageArgs,
@@ -22,12 +22,11 @@ export const useChat = (userId: string, providerId: string) => {
   const client = useQueryClient();
 
   const { mutate: handleSaveMessage, isLoading: savingMessageLoading } = useMutation(sendMessage, {
-    onSuccess: async (data) => {
-      console.log('success data', data);
+    onSuccess: async () => {
       // setMessages((prev) => [...prev, data.message] as Message[]);
       await client.invalidateQueries(['messages', userId, providerId]);
     },
-    onError: (error, variables, context: Message[] | undefined) => {
+    onError: (error, variables, context: Conversation | undefined) => {
       // context is the snapshot value returned from onMutate
       console.log('on error running');
       console.log({ error });
@@ -38,7 +37,6 @@ export const useChat = (userId: string, providerId: string) => {
       }
     },
     onMutate: async (newMessage) => {
-      console.log('mutating', newMessage);
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
       await client.cancelQueries(['messages', userId, providerId]);
 
@@ -46,9 +44,13 @@ export const useChat = (userId: string, providerId: string) => {
       const prevMessages = messages;
       setMessage('');
       // Optimistically update to the new value
-      setMessages(
-        (old) => [...old, { ...newMessage, timestamp: new Date().toISOString() }] as Message[],
-      );
+      setMessages((old) => {
+        newMessage.timestamp = new Date().toISOString();
+        return {
+          ...old,
+          messages: [...old.messages, newMessage],
+        } as Conversation;
+      });
 
       // Return a context object with the snapshotted value
       return prevMessages;
@@ -77,7 +79,7 @@ export const useChat = (userId: string, providerId: string) => {
     },
   );
 
-  const { isLoading: messagesLoading } = useQuery(
+  const { data: fetchMessages, isLoading: messagesLoading } = useQuery(
     ['messages', userId, providerId],
     () => getMessages({ userId, providerId }),
     {
@@ -104,6 +106,7 @@ export const useChat = (userId: string, providerId: string) => {
   }, []);
 
   return {
+    fetchMessages,
     message,
     messages,
     savingMessageLoading,

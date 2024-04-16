@@ -28,7 +28,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
 
   const handleContact = () => {
     if (user?.id.length) {
-      if ((messages ?? []).length > 0) {
+      if ((messages.messages ?? []).length > 0) {
         navigate('/chat', {
           state: {
             prestador,

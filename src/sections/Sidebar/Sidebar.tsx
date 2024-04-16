@@ -5,10 +5,13 @@ import PrestadorDrawerList from './PrestadorDrawer';
 import { UsuarioDrawerList } from './UsuarioDrawerList';
 import { BrandHomeLinkMobile } from './BrandHomeLinkMobile';
 import { useAuthNew } from '@/hooks/useAuthNew';
+import { userState } from '@/store/auth/user';
+import { useRecoilValue } from 'recoil';
 
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
-  const { user, prestador } = useAuthNew();
+  const { prestador } = useAuthNew();
+  const user = useRecoilValue(userState);
 
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
 

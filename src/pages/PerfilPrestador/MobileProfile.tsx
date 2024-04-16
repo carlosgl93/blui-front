@@ -93,7 +93,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
           ) : (
             <>
               <StyledContactButton onClick={handleContact}>
-                {(messages ?? []).length > 0 ? 'Ver conversación' : 'Contactar'}
+                {(messages.messages ?? []).length > 0 ? 'Ver conversación' : 'Contactar'}
               </StyledContactButton>
               <ChatModal
                 isLoading={savingMessageLoading}

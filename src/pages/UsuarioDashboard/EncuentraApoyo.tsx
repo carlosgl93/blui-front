@@ -48,7 +48,7 @@ export const EncuentraApoyo = () => {
 
   return (
     <EncuentraApoyoContainer>
-      <StyledTitle>Encuentra Apoyo</StyledTitle>
+      <StyledTitle>Encuentra apoyo</StyledTitle>
       <SubTitle>Explora los perfiles de los prestadores.</SubTitle>
       <Text>
         Usa filtros tales como la comuna, tipo de servicio y especialidad, luego chatea con los

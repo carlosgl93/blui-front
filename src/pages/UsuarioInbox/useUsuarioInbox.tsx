@@ -1,68 +1,37 @@
-import { useEffect, useState } from 'react';
-import useAuth from '@/store/auth';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUsuarioInboxMessages } from '@/api/chat/getUsuarioInboxMessages';
-
-// type Chat = {
-//   createdAt: string;
-//   id: string;
-//   message: string;
-//   prestadorId: string;
-//   sentBy: string;
-//   userId: string;
-//   firstname: string;
-//   lastname: string;
-// };
+import { useQuery } from 'react-query';
+import { Conversation, getUserInboxMessages } from '@/api/firebase/chat';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { userState } from '@/store/auth/user';
+import { chatState } from '@/store/chat/chatStore';
 
 export const useUsuarioInbox = () => {
-  const [{ user }] = useAuth();
-  const [usuarioInbox, setUsuarioInbox] = useState<
-    | {
-        id: string;
-        createdAt: string;
-        sentBy: string;
-        userId: string;
-        prestadorId: string;
-        message: string;
-        firstname: string;
-      }[]
-    | undefined
-  >([]);
-  const [loading, setLoading] = useState(false);
+  const user = useRecoilValue(userState);
+  const setMessages = useSetRecoilState(chatState);
+
+  const userId = user?.id;
+  const navigate = useNavigate();
+
   const router = useNavigate();
 
-  const handleClickChat = (prestadorId: string, userId: string) => {
-    const prestador = usuarioInbox?.find((chat) => chat.prestadorId === prestadorId);
-    router('/chat', {
-      state: {
-        prestadorId,
-        userId,
-        prestadorName: prestador?.firstname,
-      },
-    });
+  const handleClickChat = (chat: Conversation) => {
+    setMessages(chat);
+    router('/chat');
   };
 
+  const { data: fetchUserChat, isLoading: isLoadingUserChats } = useQuery(
+    ['userMessages', userId],
+    () => getUserInboxMessages({ userId: userId ?? '' }),
+  );
+
   useEffect(() => {
-    setLoading(true);
-    getUsuarioInboxMessages(user?.id ?? '').then((res) => {
-      const formattedRes = res?.map((item) => ({
-        ...item,
-        id: String(item.id), // convert id to string
-        userId: String(item.userId), // convert userId to string
-        prestadorId: String(item.prestadorId), // convert prestadorId to string
-      }));
-      setUsuarioInbox(
-        formattedRes?.sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        ),
-      );
-    });
-    setLoading(false);
-  }, [user]);
+    if (!userId) navigate('/ingresar');
+  }, []);
 
   return {
-    loading,
-    usuarioInbox,
+    isLoadingUserChats,
+    fetchUserChat,
     handleClickChat,
   };
 };
