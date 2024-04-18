@@ -24,13 +24,11 @@ export type CuentaBancariaInputs = {
 
 export const CuentaBancaria = () => {
   const {
-    postCuentaPrestador,
-    postCuentaPrestadorLoading,
-    getCuentaPrestadorLoading,
-    prestadorCuentaBancaria,
+    mutateCuentaBancaria,
+    postCuentaBancariaLoading,
+    cuentaBancaria,
+    getCuentaBancariaLoading,
   } = useCuentaBancaria();
-
-  const isLoading = postCuentaPrestadorLoading || getCuentaPrestadorLoading;
 
   const {
     register,
@@ -39,12 +37,13 @@ export const CuentaBancaria = () => {
     control,
   } = useForm<CuentaBancariaInputs>({
     defaultValues: {
-      ...prestadorCuentaBancaria,
+      ...cuentaBancaria,
     },
   });
 
-  const onSubmit: SubmitHandler<CuentaBancariaInputs> = (data) => postCuentaPrestador(data);
+  const onSubmit: SubmitHandler<CuentaBancariaInputs> = (data) => mutateCuentaBancaria(data);
 
+  const isLoading = postCuentaBancariaLoading || getCuentaBancariaLoading;
   return (
     <Wrapper>
       <BackButton to="/construir-perfil" />
