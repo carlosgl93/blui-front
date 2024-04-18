@@ -21,7 +21,7 @@
     }
   },
   "scripts": {
-    "test": "vitest --pool=forks --exit",
+    "test": "vitest --pool=forks",
     "coverage": "vitest run --coverage",
     "dev": "vite",
     "build": "tsc && vite build",
