@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 export const useExperiencia = () => {
   const [notification, setNotification] = useRecoilState(notificationState);
   const [aggregatedExperience, setAggregatedExperience] = useRecoilState(aggregatedExperienceState);
-  const [experienceOptions] = useRecoilValue(allExperiencesState);
+  const experienceOptions = useRecoilValue(allExperiencesState);
 
   const queryClient = useQueryClient();
 
