@@ -29,7 +29,6 @@ export const Experiencia = () => {
     isLoading,
     experienceOptions,
     aggregatedExperience,
-    loadingPrestadorExp,
     selectPreviousExperience,
     detectPreviousExperience,
     selectExperienceType,
@@ -41,7 +40,7 @@ export const Experiencia = () => {
     handleSaveExperience,
   } = useExperiencia();
 
-  if (isLoading || !experienceOptions || saveExpLoading || loadingPrestadorExp) return <Loading />;
+  if (isLoading || saveExpLoading) return <Loading />;
 
   return (
     <Wrapper>

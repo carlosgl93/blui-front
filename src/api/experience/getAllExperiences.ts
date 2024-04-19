@@ -1,13 +1,15 @@
-import api from '../api';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from 'firebase/firebase';
 
-export const getAllExperiences = async () => {
+export const getAllExperiences = async (providerId: string) => {
+  const docRef = doc(db, 'providers', providerId);
   try {
-    const res = await api.get(`experience`);
-    return res.data;
+    const res = await getDoc(docRef);
+    return res.data()?.experience;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
-      return error.message;
+      throw new Error(error.message);
     }
   }
 };

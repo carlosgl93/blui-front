@@ -3,27 +3,33 @@ import {
   aggregatedExperienceState,
   allExperiencesState,
   ExperienceOption,
-  ExperienceState,
   ExperienceType,
-  mapExperiencesToState,
 } from '@/store/construirPerfil/experiencia';
 import { notificationState } from '@/store/snackbar';
 import { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useRecoilState } from 'recoil';
-import useAuth from '@/store/auth';
-import { usePrestadorExperience } from './usePrestadorExperience';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useAuthNew } from './useAuthNew';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const useExperiencia = () => {
   const [notification, setNotification] = useRecoilState(notificationState);
   const [aggregatedExperience, setAggregatedExperience] = useRecoilState(aggregatedExperienceState);
-  const [experienceOptions, setExperienceOptions] = useRecoilState(allExperiencesState);
+  const [experienceOptions] = useRecoilValue(allExperiencesState);
 
   const queryClient = useQueryClient();
 
-  const [{ user }] = useAuth();
+  const { prestador } = useAuthNew();
+  const providerId = prestador?.id;
 
-  const { isError, isLoading, error } = useQuery(['allExperiences'], () => getAllExperiences(), {
+  const {
+    data: allExperiences,
+    isError,
+    isLoading,
+    error,
+  } = useQuery(['allExperiences'], () => getAllExperiences(providerId ?? ''), {
+    enabled: Boolean(providerId?.length),
     onError: (error: { message: string }) => {
       setNotification({
         ...notification,
@@ -32,21 +38,17 @@ export const useExperiencia = () => {
         severity: 'error',
       });
     },
+
     onSuccess: (data) => {
-      setExperienceOptions(mapExperiencesToState(data));
+      setAggregatedExperience(data);
     },
   });
-
-  const { isLoading: loadingPrestadorExp } = usePrestadorExperience(
-    user?.id ?? '',
-    (data: ExperienceState) => setAggregatedExperience(data),
-  );
 
   const {
     isLoading: saveExpLoading,
     error: saveExpError,
     mutate,
-  } = useMutation(() => saveExperiences(user?.id ?? '', aggregatedExperience), {
+  } = useMutation(() => saveExperiences(providerId ?? '', aggregatedExperience), {
     onSuccess: () => {
       // Handle success
       setNotification({
@@ -181,6 +183,13 @@ export const useExperiencia = () => {
     mutate();
   };
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!providerId?.length) {
+      navigate('/ingresar');
+    }
+  }, []);
+
   return {
     saveExpError,
     saveExpLoading,
@@ -189,7 +198,7 @@ export const useExperiencia = () => {
     error,
     experienceOptions,
     aggregatedExperience,
-    loadingPrestadorExp,
+    allExperiences,
     selectPreviousExperience,
     detectPreviousExperience,
     selectExperienceType,

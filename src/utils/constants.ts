@@ -1,4 +1,12 @@
 import { TarifaFront } from '@/types';
+import ElderlyOutlinedIcon from '@mui/icons-material/ElderlyOutlined';
+import ElderlyIcon from '@mui/icons-material/Elderly';
+import LoopIcon from '@mui/icons-material/Loop';
+import LoopOutlinedIcon from '@mui/icons-material/LoopOutlined';
+import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
+import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
 
 export const allComunas = [
   'ALGARROBO',
@@ -548,5 +556,70 @@ export const days = [
   {
     id: 7,
     name: 'Domingo',
+  },
+];
+
+export const generalExperiences = [
+  {
+    id: 1,
+    label: 'Adultos mayores',
+    icon: ElderlyOutlinedIcon,
+    checkedIcon: ElderlyIcon,
+    specialities: [
+      { id: 1, label: 'Demencia senil' },
+      { id: 2, label: 'Parkinson' },
+    ],
+  },
+  {
+    id: 2,
+    label: 'Condiciones crónicas',
+    icon: LoopOutlinedIcon,
+    checkedIcon: LoopIcon,
+    specialities: [
+      { id: 3, label: 'Artritis' },
+      { id: 4, label: 'Asma' },
+      { id: 5, label: 'Enfermedades cardiovasculares' },
+      { id: 6, label: 'Enfermedades respiratorias' },
+      { id: 7, label: 'Diabetes' },
+    ],
+  },
+  {
+    id: 3,
+    label: 'Discapacidad',
+    icon: AccessibleOutlinedIcon,
+    checkedIcon: AccessibleForwardIcon,
+    specialities: [
+      { id: 8, label: 'Lesión Cerebral Adquirida' },
+      { id: 9, label: 'Autismo' },
+      { id: 10, label: 'Parálisis Cerebral' },
+      { id: 11, label: 'Fibrosis Quística' },
+      { id: 12, label: 'Síndrome de Down' },
+      { id: 13, label: 'Epilepsia' },
+      { id: 14, label: 'Discapacidad Auditiva' },
+      { id: 15, label: 'Discapacidades Intelectuales' },
+      { id: 16, label: 'Enfermedad de Neurona Motora' },
+      { id: 17, label: 'Distrofia Muscular' },
+      { id: 18, label: 'Discapacidades Físicas' },
+      { id: 19, label: 'Espina Bífida' },
+      { id: 20, label: 'Lesión de Médula Espinal' },
+      { id: 21, label: 'Discapacidad Visual' },
+    ],
+  },
+  {
+    id: 4,
+    label: 'Salud mental',
+    icon: PsychologyOutlinedIcon,
+    checkedIcon: PsychologyIcon,
+    specialities: [
+      { id: 22, label: 'Ansiedad' },
+      { id: 23, label: 'Trastorno Bipolar' },
+      { id: 24, label: 'Depresión' },
+      { id: 25, label: 'Trastornos de la Alimentación' },
+      { id: 26, label: 'Acumulación (Síndrome de Diógenes)' },
+      { id: 27, label: 'Trastorno Obsesivo-Compulsivo (TOC)' },
+      { id: 28, label: 'Trastorno de Estrés Postraumático (TEPT)' },
+      { id: 29, label: 'Esquizofrenia' },
+      { id: 30, label: 'Abuso de Sustancias y Adicción' },
+    ],
   },
 ];

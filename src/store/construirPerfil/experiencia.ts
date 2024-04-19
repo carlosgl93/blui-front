@@ -13,6 +13,7 @@ import {
 
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material';
+import { generalExperiences } from '@/utils/constants';
 
 export type ExperienceType = 'Personal' | 'Profesional'[];
 
@@ -32,7 +33,7 @@ export type ExperienceOption = {
 };
 
 export type ExperienceState = {
-  id: number; // this id will correlate to the generalExperience
+  id: number;
   name: string;
   type: ExperienceType[];
   mainAreas: string[];
@@ -66,7 +67,7 @@ export const aggregatedExperienceState = atom<ExperienceState>({
 
 export const allExperiencesState = atom<ExperienceOption[]>({
   key: 'allExperiencesState',
-  default: [],
+  default: generalExperiences,
 });
 
 export const mapExperiencesToState = (
@@ -81,7 +82,7 @@ export const mapExperiencesToState = (
     ];
   }[],
 ): ExperienceOption[] => {
-  return experiences.map((exp) => {
+  return experiences?.map((exp) => {
     switch (exp.label) {
       case 'Adultos Mayores':
         return {
@@ -139,7 +140,7 @@ export const mapExperiencesToState = (
           label: exp.label,
           icon: ElderlyOutlinedIcon,
           checkedIcon: ElderlyIcon,
-          specialities: exp.specialities.map((s) => {
+          specialities: exp?.specialities?.map((s) => {
             return {
               id: s.id,
               label: s.label,
