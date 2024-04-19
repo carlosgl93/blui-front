@@ -83,7 +83,7 @@ export const useExperiencia = () => {
   const selectPreviousExperience = (option: ExperienceOption) => {
     const { id, label } = option;
     setAggregatedExperience((prev) => {
-      const experience = prev.find((exp) => exp.id === id);
+      const experience = prev?.find((exp) => exp.id === id);
       if (experience) {
         return prev.filter((e) => e.id !== id);
       } else {
@@ -106,7 +106,7 @@ export const useExperiencia = () => {
   };
 
   const selectExperienceType = (type: ExperienceType, id: number) => {
-    const experience = aggregatedExperience.find((exp) => exp.id === id);
+    const experience = aggregatedExperience?.find((exp) => exp.id === id);
     if (experience) {
       setAggregatedExperience((prev) => {
         return prev.map((exp) => {
