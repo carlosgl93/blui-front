@@ -141,4 +141,24 @@ const routes: Routes = {
   },
 };
 
+export const protectedRoutes = [
+  '/prestador-dashboard',
+  '/email-verificado-prestador',
+  '/construir-perfil',
+  '/construir-perfil/disponibilidad',
+  '/construir-perfil/comunas',
+  '/construir-perfil/tarifas',
+  '/construir-perfil/experiencia',
+  '/construir-perfil/cuentaBancaria',
+  '/construir-perfil/historialLaboral',
+  '/construir-perfil/educacionFormacion',
+  '/chat',
+  '/prestador-chat',
+  '/prestador-inbox',
+  '/usuario-inbox',
+  '/perfil-usuario',
+  '/usuario-dashboard',
+  '/email-verificado',
+];
+
 export default routes;

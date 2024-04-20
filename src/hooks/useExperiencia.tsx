@@ -9,18 +9,17 @@ import { notificationState } from '@/store/snackbar';
 import { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useAuthNew } from './useAuthNew';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { prestadorState } from '@/store/auth/prestador';
 
 export const useExperiencia = () => {
   const [notification, setNotification] = useRecoilState(notificationState);
+  const [prestador, setPrestadorState] = useRecoilState(prestadorState);
+
   const [aggregatedExperience, setAggregatedExperience] = useRecoilState(aggregatedExperienceState);
   const experienceOptions = useRecoilValue(allExperiencesState);
 
   const queryClient = useQueryClient();
 
-  const { prestador } = useAuthNew();
   const providerId = prestador?.id;
 
   const {
@@ -58,7 +57,11 @@ export const useExperiencia = () => {
         severity: 'success',
       });
       // invalidate prestador Experiences
-      queryClient.invalidateQueries('prestadorExperience');
+      queryClient.resetQueries();
+      setPrestadorState((prev) => {
+        if (!prev) return null;
+        return { ...prev, settings: { ...prev.settings, experiencia: true } };
+      });
     },
     onError: (error: AxiosError) => {
       // Handle error
@@ -182,13 +185,6 @@ export const useExperiencia = () => {
     e.preventDefault();
     mutate();
   };
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!providerId?.length) {
-      navigate('/ingresar');
-    }
-  }, []);
 
   return {
     saveExpError,

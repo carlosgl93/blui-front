@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { Conversation, getUserInboxMessages } from '@/api/firebase/chat';
@@ -11,7 +10,6 @@ export const useUsuarioInbox = () => {
   const setMessages = useSetRecoilState(chatState);
 
   const userId = user?.id;
-  const navigate = useNavigate();
 
   const router = useNavigate();
 
@@ -24,10 +22,6 @@ export const useUsuarioInbox = () => {
     ['userMessages', userId],
     () => getUserInboxMessages({ userId: userId ?? '' }),
   );
-
-  useEffect(() => {
-    if (!userId) navigate('/ingresar');
-  }, []);
 
   return {
     isLoadingUserChats,

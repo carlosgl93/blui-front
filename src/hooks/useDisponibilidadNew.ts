@@ -1,14 +1,12 @@
 import { useAuthNew } from './useAuthNew';
 import { collection, doc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { availabilityState, editDisponibilidadState } from '@/store/construirPerfil/availability';
 import { db } from 'firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
-import { useEffect } from 'react';
 
 const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 const sortAvailability = (data: AvailabilityData[]) =>
@@ -32,7 +30,6 @@ const updateDisponibilidad = async (id: string) => {
 };
 
 export const useDisponibilidadNew = () => {
-  const navigate = useNavigate();
   const [, setNotification] = useRecoilState(notificationState);
   const [availability, setAvailability] = useRecoilState(availabilityState);
   const [, setPrestadorState] = useRecoilState(prestadorState);
@@ -139,12 +136,6 @@ export const useDisponibilidadNew = () => {
   const handleEditDisponibilidad = () => {
     setEditDisponibilidad((prev) => !prev);
   };
-
-  useEffect(() => {
-    if (!id) {
-      navigate('/ingresar');
-    }
-  }, []);
 
   return {
     availability,

@@ -7,15 +7,14 @@ import {
 } from '@/api/firebase/chat';
 import { chatState } from '@/store/chat/chatStore';
 import { notificationState } from '@/store/snackbar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 export const useChat = (userId: string, providerId: string) => {
   const [messages, setMessages] = useRecoilState(chatState);
   const [message, setMessage] = useState('');
-  const { pathname } = useLocation();
   const setNotification = useSetRecoilState(notificationState);
   const navigate = useNavigate();
 
@@ -100,10 +99,6 @@ export const useChat = (userId: string, providerId: string) => {
       return;
     }
   };
-
-  useEffect(() => {
-    if (pathname === '/chat' && !userId) navigate('/ingresar');
-  }, []);
 
   return {
     fetchMessages,

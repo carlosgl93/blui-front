@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { Conversation, getProviderInboxMessages } from '@/api/firebase/chat';
 import { useAuthNew } from '@/hooks/useAuthNew';
@@ -10,8 +9,6 @@ export const usePrestadorInbox = () => {
   const { prestador } = useAuthNew();
   const setMessages = useSetRecoilState(chatState);
   const providerId = prestador?.id;
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const router = useNavigate();
 
@@ -24,12 +21,6 @@ export const usePrestadorInbox = () => {
     ['providerMessages', providerId],
     () => getProviderInboxMessages({ providerId: providerId ?? '' }),
   );
-
-  useEffect(() => {
-    if (location.pathname === '/prestador-inbox' && !providerId?.length) {
-      navigate('/ingresar');
-    }
-  }, []);
 
   return {
     handleClickChat,

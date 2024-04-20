@@ -1,14 +1,16 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 
 import routes from '..';
 import Footer from '@/components/Footer';
+import { useAuthNew, useRenderFooter, useRequireLogin } from '@/hooks';
 
 function Pages() {
-  const location = useLocation();
+  const { prestador } = useAuthNew();
 
-  const renderFooter = location.pathname !== '/chat' && location.pathname !== '/prestador-chat';
+  useRequireLogin(prestador?.id);
+  const renderFooter = useRenderFooter();
 
   return (
     <Box sx={{ height: 'fit-content', minHeight: '75vh', backgroundColor: '#f7f7f7' }}>

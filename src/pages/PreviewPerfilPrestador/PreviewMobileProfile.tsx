@@ -19,8 +19,6 @@ import { ListAvailableDays } from '../PerfilPrestador/ListAvailableDays';
 import { Box, styled } from '@mui/material';
 import PerfilBackButton from './PerfilBackButton';
 import { useAuthNew } from '@/hooks/useAuthNew';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { Prestador } from '@/store/auth/prestador';
 import { Tarifas } from '../PerfilPrestador/Tarifas';
 
@@ -41,15 +39,7 @@ const SectionTitle = styled(StyledTitle)(({ theme }) => ({
 export const PreviewMobileProfile = () => {
   // const { prestadorServicio, prestadorEspecialidad, handleEditPerfil, disponibilidad } =
   //   usePreviewPerfilPrestador();
-  const navigate = useNavigate();
   const { prestador } = useAuthNew();
-
-  useEffect(() => {
-    if (!prestador?.email) {
-      navigate('/ingresar');
-    }
-    return;
-  }, []);
 
   const {
     firstname,

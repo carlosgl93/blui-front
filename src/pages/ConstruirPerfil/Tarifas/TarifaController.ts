@@ -4,7 +4,6 @@ import { notificationState } from '@/store/snackbar';
 import { TarifaFront } from '@/types';
 import { db } from 'firebase/firebase';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -123,6 +122,10 @@ export const TarifaController = () => {
       enabled: !!prestador?.id,
       onSuccess(data: TarifaFront[]) {
         setNewTarifas([...data]);
+        setPrestadorState((prev) => {
+          if (!prev) return null;
+          return { ...prev, settings: { ...prev.settings, tarifas: true } };
+        });
       },
       onError(error) {
         console.error(error);
@@ -134,12 +137,6 @@ export const TarifaController = () => {
       },
     },
   );
-
-  useEffect(() => {
-    if (!prestador?.email) {
-      navigate('/ingresar');
-    }
-  }, []);
 
   return {
     prestador,

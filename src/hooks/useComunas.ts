@@ -1,13 +1,12 @@
 import { Comuna } from '@/types';
 import regions from '../utils/regions.json';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { notificationState } from '@/store/snackbar';
 import { useRecoilState } from 'recoil';
 import { useAuthNew } from './useAuthNew';
 import { db } from 'firebase/firebase';
 import { doc, collection, updateDoc, where, query, getDocs } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { comunasState } from '@/store/construirPerfil/comunas';
 
 const updateProviderComunas = async ({
@@ -61,7 +60,6 @@ export const useComunas = () => {
   const [, setNotification] = useRecoilState(notificationState);
   const { prestador } = useAuthNew();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const allComunas = useMemo(() => {
     const comunas: Comuna[] = [];
@@ -186,12 +184,6 @@ export const useComunas = () => {
       },
     },
   );
-
-  useEffect(() => {
-    if (window.location.pathname === '/construir-perfil/comunas' && !prestador?.id) {
-      navigate('/ingresar');
-    }
-  }, [prestador?.id]);
 
   return {
     allComunas,
