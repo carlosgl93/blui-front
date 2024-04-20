@@ -72,9 +72,9 @@ export const Experiencia = () => {
 
         <form onSubmit={(e) => handleSaveExperience(e)}>
           <Text>Detalla tu experiencia en cada una de las areas seleccionadas.</Text>
-          {experienceOptions.map(
+          {experienceOptions?.map(
             (exp) =>
-              aggregatedExperience.find((e) => e.id === exp.id) &&
+              aggregatedExperience?.find((e) => e.id === exp.id) &&
               exp.specialities &&
               exp.specialities.length > 0 && (
                 <Accordion key={exp.id}>
