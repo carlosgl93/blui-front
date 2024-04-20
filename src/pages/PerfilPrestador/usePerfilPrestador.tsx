@@ -48,7 +48,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
       message: 'Debes iniciar sesión para poder contactar a un prestador',
       severity: 'info',
     });
-    navigate('/ingresar');
+    navigate('/registrar-usuario');
     return;
   };
 

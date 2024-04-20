@@ -2,7 +2,6 @@ import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 import { Box, Button, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 
-import { Image } from '@/components/ImageContainer';
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
 
 import RegistrarUsuarioController from './RegistrarUsuarioController';
@@ -13,6 +12,7 @@ import useRecibeApoyo from '@/store/recibeApoyo';
 import useAuth from '@/store/auth';
 import Loading from '@/components/Loading';
 import { CreateUserParams, useAuthNew } from '@/hooks/useAuthNew';
+import { Link } from 'react-router-dom';
 
 function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
@@ -41,10 +41,10 @@ function RegistrarUsuario() {
           flexDirection: 'column',
           maxWidth: 500,
           textAlign: 'center',
-          margin: '5vh auto',
+          mb: '2rem',
         }}
       >
-        <Box>
+        {/* <Box>
           <Image
             src="/images/blui-new.png"
             sx={{
@@ -53,7 +53,7 @@ function RegistrarUsuario() {
               height: 'auto',
             }}
           />
-        </Box>
+        </Box> */}
         <TextContainer>
           <Title
             sx={{
@@ -69,6 +69,16 @@ function RegistrarUsuario() {
           sx={{ width: '100%', gap: theme.spacing(2) }}
           onSubmit={handleSubmit}
         >
+          <Box
+            sx={{
+              display: 'row',
+            }}
+          >
+            <Text sx={{ fontSize: '0.8rem', width: '100%', textAlign: 'center' }}>
+              Ya tienes una cuenta? {'  '}
+              <Link to="/ingresar">Creala aqui</Link>
+            </Text>
+          </Box>
           {state.error && (
             <TextContainer>
               <Typography

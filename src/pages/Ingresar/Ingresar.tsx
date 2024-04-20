@@ -71,7 +71,7 @@ function Ingresar() {
           </Button>
 
           <Typography variant="body2" mt={2}>
-            Aun no tienes una cuenta? <Link to="/registrar-usuario">Creala aqui</Link>
+            Aun no tienes una cuenta? <Link to="/comienzo">Creala aqui</Link>
           </Typography>
         </Box>
       </FullSizeCenteredFlexBox>

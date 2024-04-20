@@ -64,7 +64,7 @@ export const useAuthNew = () => {
   const queryClient = useQueryClient();
 
   const { mutate: createPrestador, isLoading: createPrestadorLoading } = useMutation(
-    ({
+    async ({
       // nombre,
       // apellido,
       rut,
@@ -79,6 +79,20 @@ export const useAuthNew = () => {
         message: 'Creando tu cuenta...',
         severity: 'info',
       });
+
+      // Check if a user with the given email already exists in the users collection
+      const userQuery = query(collection(db, 'users'), where('email', '==', correo));
+      const userSnapshot = await getDocs(userQuery);
+      if (!userSnapshot.empty) {
+        throw new Error('Este email ya tiene una cuenta.');
+      }
+
+      // Check if a user with the given email already exists in the providers collection
+      const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
+      const providerSnapshot = await getDocs(providerQuery);
+      if (!providerSnapshot.empty) {
+        throw new Error('Este email ya tiene una cuenta.');
+      }
 
       return createUserWithEmailAndPassword(auth, correo, contrasena).then(({ user }) => {
         const newPrestador: Prestador = {
@@ -207,6 +221,19 @@ export const useAuthNew = () => {
         message: 'Creando tu cuenta...',
         severity: 'info',
       });
+      // Check if a user with the given email already exists in the users collection
+      const userQuery = query(collection(db, 'users'), where('email', '==', correo));
+      const userSnapshot = await getDocs(userQuery);
+      if (!userSnapshot.empty) {
+        throw new Error('Este email ya tiene una cuenta.');
+      }
+
+      // Check if a user with the given email already exists in the providers collection
+      const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
+      const providerSnapshot = await getDocs(providerQuery);
+      if (!providerSnapshot.empty) {
+        throw new Error('Este email ya tiene una cuenta.');
+      }
       const { user } = await createUserWithEmailAndPassword(auth, correo, contrasena);
       const newUser = {
         email: correo,

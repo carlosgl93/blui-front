@@ -26,10 +26,12 @@ export const StyledAvatar = styled(Avatar)(() => ({
 export const StyledNameContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
   fontSize: '2rem',
   fontWeight: 500,
   textAlign: 'center',
-  my: '1rem',
+  my: '0.5rem',
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({
@@ -38,7 +40,9 @@ export const StyledTitle = styled(Title)(({ theme }) => ({
   lineHeight: '1.5rem',
   textAlign: 'center',
   color: theme.palette.primary.contrastText,
-  textOverflow: 'ellipsis',
+  maxWidth: '80vw',
+  overflowWrap: 'break-word',
+  margin: '0 auto',
 }));
 
 export const ReviewsContainer = styled(Box)(() => ({

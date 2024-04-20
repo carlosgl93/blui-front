@@ -79,10 +79,10 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         <StyledAvatar alt={`Imágen de perfil de ${firstname}`} src={imageUrl} />
         <StyledNameContainer>
           <StyledTitle>{firstname ? firstname : email}</StyledTitle>
-          <ReviewsContainer>
-            <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
-          </ReviewsContainer>
         </StyledNameContainer>
+        <ReviewsContainer>
+          <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
+        </ReviewsContainer>
 
         <StyledServicio>
           {servicio} {especialidad && '/ especialidad'}

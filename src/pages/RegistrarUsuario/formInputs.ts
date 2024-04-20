@@ -19,8 +19,8 @@ export const formInputs = [
   },
   {
     inputName: 'rut',
-    placeholder: 'Ingresa tu rut',
-    label: 'Rut (*): 18445810-X',
+    placeholder: 'Ej: 18445810-X',
+    label: 'Rut Paciente (*): ',
     type: 'text',
   },
   {

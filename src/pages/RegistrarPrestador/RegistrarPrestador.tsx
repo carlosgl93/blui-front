@@ -5,7 +5,6 @@ import { TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarPrestadorController from './RegistrarPrestadorController';
 import { formInputs } from './formInputs';
 import { useAuthNew } from '@/hooks/useAuthNew';
-import { Image } from '@/components/ImageContainer';
 
 function RegistrarPrestador() {
   const { state, handleChange, handleSubmit } = RegistrarPrestadorController();
@@ -19,10 +18,10 @@ function RegistrarPrestador() {
           flexDirection: 'column',
           maxWidth: 500,
           textAlign: 'center',
-          margin: '5vh auto',
+          mb: '2rem',
         }}
       >
-        <Box>
+        {/* <Box>
           <Image
             src="/images/blui-new.png"
             sx={{
@@ -31,7 +30,7 @@ function RegistrarPrestador() {
               height: 'auto',
             }}
           />
-        </Box>
+        </Box> */}
         <TextContainer>
           <Title
             sx={{
@@ -39,8 +38,7 @@ function RegistrarPrestador() {
               my: '2.5vh',
             }}
           >
-            ¡Estas a un solo paso! Favor registrate para poder encontrar y contactar a la persona
-            que buscas.
+            ¡Estas a un solo paso! Registrate para poder ofrecer tus servicios.
           </Title>
         </TextContainer>
         <Box
