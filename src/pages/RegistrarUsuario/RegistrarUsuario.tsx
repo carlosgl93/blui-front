@@ -76,7 +76,7 @@ function RegistrarUsuario() {
           >
             <Text sx={{ fontSize: '0.8rem', width: '100%', textAlign: 'center' }}>
               Ya tienes una cuenta? {'  '}
-              <Link to="/ingresar">Creala aqui</Link>
+              <Link to="/ingresar">Ingresa aqui</Link>
             </Text>
           </Box>
           {state.error && (

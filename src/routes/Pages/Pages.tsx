@@ -7,9 +7,9 @@ import Footer from '@/components/Footer';
 import { useAuthNew, useRenderFooter, useRequireLogin } from '@/hooks';
 
 function Pages() {
-  const { prestador } = useAuthNew();
+  const { prestador, user } = useAuthNew();
 
-  useRequireLogin(prestador?.id);
+  useRequireLogin(prestador?.id, user?.id);
   const renderFooter = useRenderFooter();
 
   return (
