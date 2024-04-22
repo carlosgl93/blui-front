@@ -4,9 +4,11 @@ import SearchBar from './SearchBar';
 import { TextContainer, Title } from '@/components/StyledComponents';
 import { recibeApoyoSteps } from './recibeApoyoSteps';
 import useRecibeApoyo from '@/store/recibeApoyo';
+import { useComunas } from '@/hooks';
 
 const Step2 = () => {
-  const [{ comuna }, { removeComuna, increaseStep, decreaseStep }] = useRecibeApoyo();
+  const [, { increaseStep, decreaseStep }] = useRecibeApoyo();
+  const { selectedComunas, handleRemoveComuna } = useComunas();
 
   const handleNext = () => {
     increaseStep();
@@ -42,38 +44,39 @@ const Step2 = () => {
           >
             Comuna seleccionada:
           </Title>
-          {comuna && (
-            <List
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                maxWidth: '600px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto',
-              }}
-            >
-              <ListItemButton
-                key={comuna.id}
-                onClick={() => removeComuna(comuna)}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  margin: '0.5rem',
-                  padding: '0.5rem',
-                  border: '1px solid #ccc',
-                  borderRadius: '0.5rem',
-                  cursor: 'pointer',
-                  maxWidth: 'fit-content',
-                }}
-              >
-                {comuna.name}
-                <CloseIcon sx={{ marginLeft: '0.5rem' }} />
-              </ListItemButton>
-            </List>
-          )}
+          <List
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              maxWidth: '600px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto',
+            }}
+          >
+            {selectedComunas &&
+              selectedComunas.map((comuna) => (
+                <ListItemButton
+                  key={comuna.id}
+                  onClick={() => handleRemoveComuna(comuna)}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: '0.5rem',
+                    padding: '0.5rem',
+                    border: '1px solid #ccc',
+                    borderRadius: '0.5rem',
+                    cursor: 'pointer',
+                    maxWidth: 'fit-content',
+                  }}
+                >
+                  {comuna.name}
+                  <CloseIcon sx={{ marginLeft: '0.5rem' }} />
+                </ListItemButton>
+              ))}
+          </List>
         </Box>
       </TextContainer>
       <SearchBar />
@@ -87,7 +90,7 @@ const Step2 = () => {
         <Button variant="contained" onClick={handlePrevious}>
           Atras
         </Button>
-        <Button disabled={comuna === null} variant="contained" onClick={handleNext}>
+        <Button disabled={!selectedComunas.length} variant="contained" onClick={handleNext}>
           Siguiente
         </Button>
       </Box>

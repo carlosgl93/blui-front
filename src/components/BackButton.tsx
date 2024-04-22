@@ -7,9 +7,10 @@ type BackButtonProps = {
   action?: (() => void | null) | undefined;
   displayText?: boolean;
   ignoreMargin?: boolean;
+  style: React.CSSProperties;
 };
 
-const BackButton = ({ to, action, displayText, ignoreMargin }: BackButtonProps) => {
+const BackButton = ({ to, action, displayText, ignoreMargin, style }: BackButtonProps) => {
   const router = useNavigate();
 
   return (
@@ -25,6 +26,7 @@ const BackButton = ({ to, action, displayText, ignoreMargin }: BackButtonProps) 
       sx={{
         mb: ignoreMargin ? '' : '1rem',
         width: 'fit-content',
+        ...style,
       }}
     >
       {displayText && 'Atras'}

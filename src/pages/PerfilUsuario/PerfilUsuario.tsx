@@ -1,11 +1,14 @@
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
-import { useAuthNew } from '@/hooks';
+import { SaveButton } from '@/components/SaveButton';
+import { usePerfilUsuarioController } from './PerfilUsuarioController';
+import Loading from '@/components/Loading';
+import BackButton from '@/components/BackButton';
 
-interface IFormInput {
-  firstName: string;
-  lastName: string;
+export interface IFormInput {
+  firstname: string;
+  lastname: string;
   gender: string;
   dob: string;
   phone: string;
@@ -33,16 +36,19 @@ const StyledSelect = styled(Select)(() => ({
   minWidth: '220px',
 }));
 
+const FormHelperText = styled('p')(({ theme }) => ({
+  color: theme.palette.error.main,
+}));
+
 const StyledTextField = styled(TextField)(() => ({}));
 
 export const PerfilUsuario = () => {
-  const { user } = useAuthNew();
-  console.log(user);
+  const { user, updateUserLoading, onSubmit } = usePerfilUsuarioController();
 
-  const { register, handleSubmit } = useForm<IFormInput>({
+  const { register, handleSubmit, formState } = useForm<IFormInput>({
     defaultValues: {
-      firstName: user?.firstname || '',
-      lastName: user?.lastname || '',
+      firstname: user?.firstname || '',
+      lastname: user?.lastname || '',
       gender: user?.gender || '',
       dob: user?.dob || '',
       phone: user?.phone || '',
@@ -50,58 +56,90 @@ export const PerfilUsuario = () => {
     },
   });
 
-  const onSubmit = (data: IFormInput) => {
-    console.log(data);
-  };
+  const { errors, isDirty } = formState;
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <StyledTitle>Actualizar Perfil</StyledTitle>
-      <StyledTextField
-        {...register('firstName', { required: true })}
-        label="Nombre"
-        variant="outlined"
-      />
-      <StyledTextField
-        {...register('lastName', { required: true })}
-        label="Apellido"
-        variant="outlined"
-      />
-      <FormControl variant="outlined">
-        <InputLabel id="gender-label">Género</InputLabel>
-        <StyledSelect
-          labelId="gender-label"
-          label="Género"
-          {...register('gender', { required: true })}
-        >
-          <MenuItem value="male">Masculino</MenuItem>
-          <MenuItem value="female">Femenino</MenuItem>
-          <MenuItem value="other">Otro</MenuItem>
-        </StyledSelect>
-      </FormControl>
-      <StyledTextField
-        sx={{
-          minWidth: '220px',
+    <Box>
+      <BackButton
+        ignoreMargin
+        displayText
+        style={{
+          margin: '1rem',
+          marginBottom: '0rem',
         }}
-        {...register('dob', { required: true })}
-        label="Fecha de Nacimiento"
-        type="date"
-        InputLabelProps={{ shrink: true }}
-        variant="outlined"
       />
-      <StyledTextField
-        {...register('phone', { required: true })}
-        label="Teléfono"
-        variant="outlined"
-      />
-      <StyledTextField
-        {...register('address', { required: true })}
-        label="Dirección"
-        variant="outlined"
-      />
-      <Button type="submit" variant="contained" color="primary">
-        Actualizar
-      </Button>
-    </StyledForm>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        {updateUserLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <StyledTitle>Actualizar Perfil</StyledTitle>
+            <StyledTextField
+              {...register('firstname', { required: 'Nombre es requerido' })}
+              label="Nombre"
+              variant="outlined"
+              error={Boolean(errors.firstname)}
+              helperText={errors.firstname?.message}
+            />
+            <StyledTextField
+              {...register('lastname', { required: 'Apellido es requerido' })}
+              label="Apellido"
+              variant="outlined"
+              error={Boolean(errors.lastname)}
+              helperText={errors.lastname?.message}
+            />
+            <FormControl variant="outlined">
+              <InputLabel id="gender-label">Género</InputLabel>
+              <StyledSelect
+                labelId="gender-label"
+                label="Género"
+                {...register('gender', { required: 'Género es requerido' })}
+                error={Boolean(errors.gender)}
+                defaultValue={user?.gender}
+              >
+                <MenuItem value="">Selecciona tu genero</MenuItem>
+                <MenuItem value="Masculino">Masculino</MenuItem>
+                <MenuItem value="Femenino">Femenino</MenuItem>
+                <MenuItem value="Otro">Otro</MenuItem>
+              </StyledSelect>
+              {errors.gender && <FormHelperText>{errors.gender.message}</FormHelperText>}
+            </FormControl>
+            <StyledTextField
+              {...register('dob', { required: 'Fecha de Nacimiento es requerida' })}
+              label="Fecha de Nacimiento"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+              error={Boolean(errors.dob)}
+              helperText={errors.dob?.message}
+              sx={{
+                minWidth: '220px',
+              }}
+              // fullWidth
+            />
+            <StyledTextField
+              {...register('phone', { required: 'Teléfono es requerido' })}
+              label="Teléfono"
+              variant="outlined"
+              error={Boolean(errors.phone)}
+              helperText={errors.phone?.message}
+            />
+            <StyledTextField
+              {...register('address', { required: 'Dirección es requerida' })}
+              label="Dirección"
+              variant="outlined"
+              error={Boolean(errors.address)}
+              helperText={errors.address?.message}
+            />
+            <SaveButton
+              disabled={!isDirty}
+              style={{
+                marginBottom: '2rem',
+              }}
+            />
+          </>
+        )}
+      </StyledForm>
+    </Box>
   );
 };

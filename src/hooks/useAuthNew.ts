@@ -4,7 +4,6 @@ import { auth, db } from '../../firebase/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import {
   collection,
-  addDoc,
   query,
   where,
   getDocs,
@@ -216,11 +215,9 @@ export const useAuthNew = () => {
       paraQuien,
       nombrePaciente,
       rut,
-      comuna,
       correo,
       contrasena,
     }: CreateUserParams) => {
-      console.log('creating account', comuna);
       setNotification({
         open: true,
         message: 'Creando tu cuenta...',
@@ -252,18 +249,19 @@ export const useAuthNew = () => {
         rut,
         comuna: selectedComunas,
       };
-      await addDoc(collection(db, 'users'), newUser);
-      return newUser;
+      const userRef = doc(db, 'users', user.uid);
+      return await setDoc(userRef, newUser).then(() => newUser);
     },
     {
       onSuccess(data) {
+        console.log('data from create user', data);
         setNotification({
           open: true,
           message: `Cuenta creada exitosamente`,
           severity: 'success',
         });
         setUserState({ ...data, isLoggedIn: true } as User);
-        queryClient.setQueryData(['user', data.email], user);
+        queryClient.setQueryData(['user', data?.email], user);
         navigate('/usuario-dashboard');
       },
       onError(error: FirebaseError) {

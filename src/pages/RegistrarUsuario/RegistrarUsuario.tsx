@@ -1,27 +1,23 @@
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
-import { Box, Button, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
-
+import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
-
 import RegistrarUsuarioController from './RegistrarUsuarioController';
 import { formInputs } from './formInputs';
-import { ComunaSearchbar } from './ComunaSearchbar';
-import { tablet } from '@/theme/breakpoints';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import useAuth from '@/store/auth';
 import Loading from '@/components/Loading';
 import { CreateUserParams, useAuthNew } from '@/hooks/useAuthNew';
 import { Link } from 'react-router-dom';
+import { useComunas } from '@/hooks';
+import SearchBar from '../RecibeApoyo/SearchBar';
 
 function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
   const { state, handleChange, handleSubmit } = RegistrarUsuarioController();
+  const { selectedComunas } = useComunas();
   const [user] = useAuth();
   const theme = useTheme();
-  const isTablet = useMediaQuery(tablet);
-
-  console.log('forWhom', forWhom);
 
   const { createUser, createUserLoading } = useAuthNew();
 
@@ -94,8 +90,8 @@ function RegistrarUsuario() {
             </TextContainer>
           )}
           {formInputs.map((input, i) => {
-            if (input.inputName === 'comuna') {
-              return <ComunaSearchbar key={i} isTablet={isTablet} />;
+            if (!selectedComunas.length && input.inputName === 'comuna') {
+              return <SearchBar key={i} />;
             } else if (forWhom === 'tercero' && input.inputName === 'nombrePaciente') {
               return (
                 <TextField
@@ -108,7 +104,7 @@ function RegistrarUsuario() {
                   }}
                   key={i}
                   label={'Nombre del paciente'}
-                  name={'pacienteName'}
+                  name={'nombrePaciente'}
                   variant="outlined"
                   onChange={handleChange}
                   type={'text'}

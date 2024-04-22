@@ -2,23 +2,21 @@ import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
-import useRecibeApoyo from '@/store/recibeApoyo';
 import Loading from '@/components/Loading';
 import { Comuna } from '@/types/Comuna';
 import { useComunas } from '@/hooks/useComunas';
 
 function SearchBar() {
-  const [{ comuna }, { addComuna, removeComuna }] = useRecibeApoyo();
   const [comunasState, setComunasState] = useState<Comuna[]>([]);
 
-  const { allComunas } = useComunas();
+  const { selectedComunas, allComunas, handleSelectComuna, handleRemoveComuna } = useComunas();
 
   const clickComunaHandler = (c: Comuna) => {
     const textInput = document.getElementById('searchByComuna') as HTMLInputElement;
-    if (comuna === c) {
-      removeComuna(c);
+    if (selectedComunas.find((co) => co.id === c.id)) {
+      handleRemoveComuna(c);
     } else {
-      addComuna(c);
+      handleSelectComuna(c);
       setComunasState(allComunas);
       textInput.value = '';
     }
