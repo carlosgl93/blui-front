@@ -7,7 +7,7 @@ type BackButtonProps = {
   action?: (() => void | null) | undefined;
   displayText?: boolean;
   ignoreMargin?: boolean;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
 };
 
 const BackButton = ({ to, action, displayText, ignoreMargin, style }: BackButtonProps) => {
