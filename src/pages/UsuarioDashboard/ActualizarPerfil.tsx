@@ -43,7 +43,7 @@ export const ActualizarPerfil = () => {
   const router = useNavigate();
 
   const handleGoToProfile = () => {
-    router('/usuario/perfil');
+    router(`/perfil-usuario`);
   };
 
   return (

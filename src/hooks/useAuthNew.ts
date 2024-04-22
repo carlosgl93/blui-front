@@ -25,6 +25,7 @@ import useRecibeApoyo from '@/store/recibeApoyo';
 import { defaultTarifas } from '@/utils/constants';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
+import { comunasState } from '@/store/construirPerfil/comunas';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
 
@@ -51,11 +52,14 @@ export type CreatePrestadorParams = {
   // especialidad: Especialidad | undefined;
 };
 
+const defaultNewUser = { dob: '', phone: '', gender: '', address: '' };
+
 export const useAuthNew = () => {
   const [, setNotification] = useRecoilState(notificationState);
   const [user, setUserState] = useRecoilState(userState);
   const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
+  const selectedComunas = useRecoilValue(comunasState);
   const [, { resetEntregaApoyoState }] = useEntregaApoyo();
   const [, { resetRecibeApoyoState }] = useRecibeApoyo();
 
@@ -216,6 +220,7 @@ export const useAuthNew = () => {
       correo,
       contrasena,
     }: CreateUserParams) => {
+      console.log('creating account', comuna);
       setNotification({
         open: true,
         message: 'Creando tu cuenta...',
@@ -236,6 +241,7 @@ export const useAuthNew = () => {
       }
       const { user } = await createUserWithEmailAndPassword(auth, correo, contrasena);
       const newUser = {
+        ...defaultNewUser,
         email: correo,
         id: user.uid,
         role: 'user',
@@ -244,7 +250,7 @@ export const useAuthNew = () => {
         forWhom: paraQuien !== nombre ? 'tercero' : 'paciente',
         patientName: nombrePaciente,
         rut,
-        comuna,
+        comuna: selectedComunas,
       };
       await addDoc(collection(db, 'users'), newUser);
       return newUser;

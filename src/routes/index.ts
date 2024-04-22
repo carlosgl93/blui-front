@@ -117,7 +117,7 @@ const routes: Routes = {
   },
   [Pages.PerfilUsuario]: {
     component: asyncComponentLoader(() => import('@/pages/PerfilUsuario')),
-    path: '/perfil-usuario/:id',
+    path: '/perfil-usuario',
   },
   [Pages.UsuarioDashboard]: {
     component: asyncComponentLoader(() => import('@/pages/UsuarioDashboard')),

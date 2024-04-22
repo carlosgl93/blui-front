@@ -21,6 +21,8 @@ function RegistrarUsuario() {
   const theme = useTheme();
   const isTablet = useMediaQuery(tablet);
 
+  console.log('forWhom', forWhom);
+
   const { createUser, createUserLoading } = useAuthNew();
 
   const resetPatientName = () => {
@@ -94,23 +96,23 @@ function RegistrarUsuario() {
           {formInputs.map((input, i) => {
             if (input.inputName === 'comuna') {
               return <ComunaSearchbar key={i} isTablet={isTablet} />;
-            } else if (forWhom && input.inputName === 'tercero') {
+            } else if (forWhom === 'tercero' && input.inputName === 'nombrePaciente') {
               return (
                 <TextField
                   sx={{
                     m: {
-                      xs: 1,
-                      sm: 2,
+                      xs: 2,
+                      sm: 5,
                       md: 3,
                     },
                   }}
                   key={i}
-                  label={input.label}
-                  name={'nombrePaciente'}
+                  label={'Nombre del paciente'}
+                  name={'pacienteName'}
                   variant="outlined"
                   onChange={handleChange}
-                  type={input.type}
-                  value={forWhom && state.nombrePaciente === '' ? forWhom : state.nombrePaciente}
+                  type={'text'}
+                  value={state.nombrePaciente}
                   onClick={() => resetPatientName()}
                 />
               );
@@ -119,7 +121,7 @@ function RegistrarUsuario() {
                 <TextField
                   sx={{
                     m: {
-                      xs: 3.5,
+                      xs: 2,
                       sm: 5,
                       md: 3,
                     },

@@ -14,7 +14,6 @@ const ForWhomList = ({ options }: ListProps) => {
   const [{ forWhom }, { selectForWhom }] = useRecibeApoyo();
 
   const handleSelectForWhom = (whom: ForWhom) => {
-    console.log(whom);
     selectForWhom(whom);
   };
 

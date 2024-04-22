@@ -10,6 +10,10 @@ export interface User {
   patientName: string;
   rut: string;
   isLoggedIn: boolean;
+  gender: 'Masculino' | 'Femenino' | 'Otro' | '';
+  dob: string;
+  phone: string;
+  address: string;
 }
 
 export const userState = atom<null | User>({
@@ -24,5 +28,9 @@ export const userState = atom<null | User>({
     patientName: '',
     rut: '',
     isLoggedIn: false,
+    gender: '',
+    dob: '',
+    phone: '',
+    address: '',
   },
 });

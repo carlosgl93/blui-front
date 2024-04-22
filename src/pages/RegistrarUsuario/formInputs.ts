@@ -11,12 +11,12 @@ export const formInputs = [
     label: 'Apellido (*)',
     type: 'text',
   },
-  {
-    inputName: 'nombrePaciente',
-    placeholder: 'Nombre del paciente',
-    label: 'Nombre del paciente (*)',
-    type: 'text',
-  },
+  // {
+  //   inputName: 'nombrePaciente',
+  //   placeholder: 'Nombre del paciente',
+  //   label: 'Nombre del paciente (*)',
+  //   type: 'text',
+  // },
   {
     inputName: 'rut',
     placeholder: 'Ej: 18445810-X',
