@@ -51,7 +51,6 @@ export const ConstruirPerfil = () => {
             <List>
               {construirPerfilOpciones.map((opcion) => {
                 const { key, value } = opcion;
-                console.log(settings?.[key], key);
                 return (
                   <StyledLink key={opcion.key} to={`/construir-perfil/${opcion.key}`}>
                     <StyledListItem>
