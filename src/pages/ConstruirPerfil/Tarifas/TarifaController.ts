@@ -96,6 +96,8 @@ export const TarifaController = () => {
       // update prestador.tarifas state
       setPrestadorState((prev) => {
         if (!prev) return null;
+        console.log('running tarifas setState');
+        if (prev.tarifas.filter((t) => t.price === '').length > 0) return prev;
         return { ...prev, settings: { ...prev.settings, tarifas: true } };
       });
 
@@ -122,6 +124,7 @@ export const TarifaController = () => {
       enabled: !!prestador?.id,
       onSuccess(data: TarifaFront[]) {
         setNewTarifas([...data]);
+        if (data.filter((t) => t.price === '0').length > 0) return;
         setPrestadorState((prev) => {
           if (!prev) return null;
           return { ...prev, settings: { ...prev.settings, tarifas: true } };

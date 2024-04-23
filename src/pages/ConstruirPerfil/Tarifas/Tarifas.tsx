@@ -19,6 +19,7 @@ export const Tarifas = () => {
   const {
     prestador,
     isSavingTarifas,
+    fetchPrestadorTarifasIsLoading,
     handleChangeTarifa,
     handleChangeFreeMeetGreet,
     handleSaveTarifas,
@@ -54,7 +55,7 @@ export const Tarifas = () => {
           >
             Usa solo números, sin puntos ni comas.
           </StyledText>
-          {isSavingTarifas ? (
+          {isSavingTarifas || fetchPrestadorTarifasIsLoading ? (
             <Loading />
           ) : (
             <form onSubmit={handleSaveTarifas}>
