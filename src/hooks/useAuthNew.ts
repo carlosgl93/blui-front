@@ -115,6 +115,7 @@ export const useAuthNew = () => {
           description: '',
           offersFreeMeetAndGreet: false,
           settings: {
+            detallesBasicos: false,
             disponibilidad: false,
             comunas: true,
             tarifas: false,

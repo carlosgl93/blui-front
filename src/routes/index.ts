@@ -99,6 +99,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/EducacionFormacion')),
     path: '/construir-perfil/educacionFormacion',
   },
+  [Pages.DetallesBasicos]: {
+    component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/DetallesBasicos')),
+    path: '/construir-perfil/detallesBasicos',
+  },
   [Pages.Chat]: {
     component: asyncComponentLoader(() => import('@/pages/Chat')),
     path: '/chat/',
@@ -152,6 +156,7 @@ export const protectedRoutes = [
   '/construir-perfil/cuentaBancaria',
   '/construir-perfil/historialLaboral',
   '/construir-perfil/educacionFormacion',
+  '/construir-perfil/detallesBasicos',
   '/chat',
   '/prestador-chat',
   '/prestador-inbox',

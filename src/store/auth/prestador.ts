@@ -21,7 +21,11 @@ export interface Prestador {
   totalReviews?: number;
   offersFreeMeetAndGreet: boolean;
   imageUrl?: string;
+  gender?: string;
+  dob?: string;
+  address?: string;
   settings: {
+    detallesBasicos: boolean;
     disponibilidad: boolean;
     comunas: boolean;
     tarifas: boolean;
@@ -117,6 +121,7 @@ export const prestadorState = atom<null | Prestador>({
     description: '',
     offersFreeMeetAndGreet: false,
     settings: {
+      detallesBasicos: false,
       disponibilidad: false,
       comunas: false,
       tarifas: false,

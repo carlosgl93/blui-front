@@ -2,17 +2,17 @@ import { TextField, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/
 import { useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
 import { SaveButton } from '@/components/SaveButton';
-import { usePerfilUsuarioController } from './PerfilUsuarioController';
+import { useDetallesBasicos } from './useDetallesBasicos';
 import Loading from '@/components/Loading';
 import BackButton from '@/components/BackButton';
 
-export interface IFormInput {
+export interface IDetallesBasicosInputs {
   email: string;
   firstname: string;
   lastname: string;
   gender: string;
   dob: string;
-  phone: string;
+  telefono: string;
   address: string;
 }
 
@@ -43,18 +43,18 @@ const FormHelperText = styled('p')(({ theme }) => ({
 
 const StyledTextField = styled(TextField)(() => ({}));
 
-export const PerfilUsuario = () => {
-  const { user, updateUserLoading, onSubmit } = usePerfilUsuarioController();
+export const DetallesBasicos = () => {
+  const { prestador, updatePrestadorLoading, onSubmit } = useDetallesBasicos();
 
-  const { register, handleSubmit, formState } = useForm<IFormInput>({
+  const { register, handleSubmit, formState } = useForm<IDetallesBasicosInputs>({
     defaultValues: {
-      email: user?.email || '',
-      firstname: user?.firstname || '',
-      lastname: user?.lastname || '',
-      gender: user?.gender || '',
-      dob: user?.dob || '',
-      phone: user?.phone || '',
-      address: user?.address || '',
+      email: prestador?.email || '',
+      firstname: prestador?.firstname || '',
+      lastname: prestador?.lastname || '',
+      gender: prestador?.gender || '',
+      dob: prestador?.dob || '',
+      telefono: prestador?.telefono || '',
+      address: prestador?.address || '',
     },
   });
 
@@ -71,7 +71,7 @@ export const PerfilUsuario = () => {
         }}
       />
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        {updateUserLoading ? (
+        {updatePrestadorLoading ? (
           <Loading />
         ) : (
           <>
@@ -104,7 +104,7 @@ export const PerfilUsuario = () => {
                 label="Género"
                 {...register('gender', { required: 'Género es requerido' })}
                 error={Boolean(errors.gender)}
-                defaultValue={user?.gender}
+                defaultValue={prestador?.gender}
               >
                 <MenuItem value="">Selecciona tu genero</MenuItem>
                 <MenuItem value="Masculino">Masculino</MenuItem>
@@ -127,11 +127,11 @@ export const PerfilUsuario = () => {
               // fullWidth
             />
             <StyledTextField
-              {...register('phone', { required: 'Teléfono es requerido' })}
+              {...register('telefono', { required: 'Teléfono es requerido' })}
               label="Teléfono"
               variant="outlined"
-              error={Boolean(errors.phone)}
-              helperText={errors.phone?.message}
+              error={Boolean(errors.telefono)}
+              helperText={errors.telefono?.message}
             />
             <StyledTextField
               {...register('address', { required: 'Dirección es requerida' })}
