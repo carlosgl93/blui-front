@@ -6,6 +6,7 @@ import {
   StyledChatInputContainer,
   StyledChatSendButton,
   StyledCustomerName,
+  StyledMensajeAndtTimestampContainer,
   StyledMensajeTimestamp,
   StyledPrestadorMensajeContainer,
   StyledPrestadorMensajeText,
@@ -53,17 +54,16 @@ export const PrestadorChat = () => {
         if (m.sentBy === 'provider') {
           return (
             <Box key={m.id}>
-              <StyledPrestadorMensajeContainer
-                key={m.id}
-                ref={isLastMessage ? lastMessageRef : null}
-              >
+              <StyledPrestadorMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
                 <StyledProviderName>
                   {conversation.providerName.includes('@') ? 'Tú' : conversation.providerName}:
                 </StyledProviderName>
-                <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
-                <StyledTimestampContainer>
-                  <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
-                </StyledTimestampContainer>
+                <StyledMensajeAndtTimestampContainer>
+                  <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
+                  <StyledTimestampContainer>
+                    <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
+                  </StyledTimestampContainer>
+                </StyledMensajeAndtTimestampContainer>
               </StyledPrestadorMensajeContainer>
             </Box>
           );
@@ -72,20 +72,12 @@ export const PrestadorChat = () => {
             <Box key={m.id}>
               <StyledUsuarioMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
                 <StyledCustomerName>{conversation.username}:</StyledCustomerName>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                  }}
-                >
+                <StyledMensajeAndtTimestampContainer>
                   <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
                   <StyledTimestampContainer>
                     <StyledMensajeTimestamp>{formatDate(m.timestamp)}</StyledMensajeTimestamp>
                   </StyledTimestampContainer>
-                </Box>
+                </StyledMensajeAndtTimestampContainer>
               </StyledUsuarioMensajeContainer>
             </Box>
           );

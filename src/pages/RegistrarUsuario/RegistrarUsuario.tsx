@@ -112,6 +112,8 @@ function RegistrarUsuario() {
                   onClick={() => resetPatientName()}
                 />
               );
+            } else if (forWhom === 'paciente' && input.inputName === 'nombrePaciente') {
+              return null;
             } else {
               return (
                 <TextField

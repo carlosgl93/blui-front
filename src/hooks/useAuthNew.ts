@@ -255,7 +255,6 @@ export const useAuthNew = () => {
     },
     {
       onSuccess(data) {
-        console.log('data from create user', data);
         setNotification({
           open: true,
           message: `Cuenta creada exitosamente`,
@@ -263,7 +262,8 @@ export const useAuthNew = () => {
         });
         setUserState({ ...data, isLoggedIn: true } as User);
         queryClient.setQueryData(['user', data?.email], user);
-        navigate('/usuario-dashboard');
+        window.scrollTo(0, 0);
+        redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
       },
       onError(error: FirebaseError) {
         let message = 'Hubo un error creando tu cuenta: ';
@@ -370,6 +370,7 @@ export const useAuthNew = () => {
         });
         if (data?.role === 'user') {
           setUserState({ ...data.data, isLoggedIn: true } as User);
+          console.log(redirectAfterLogin);
           redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
         } else {
           if (data?.role === 'prestador') {

@@ -42,17 +42,25 @@ export const StyledUsuarioMensajeText = styled(Typography)(({ theme }) => ({
 
 export const StyledPrestadorMensajeContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   width: '60vw',
   position: 'relative',
   left: '38vw',
-  alignItems: 'center',
+  alignItems: 'start',
   gap: '1rem',
   margin: '0.25rem 1vw',
   padding: '0.5rem',
   borderRadius: '0.5rem',
   boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.25)',
   backgroundColor: theme.palette.primary.main,
+}));
+
+export const StyledMensajeAndtTimestampContainer = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'baseline',
+  justifyContent: 'space-between',
+  width: '100%',
 }));
 
 export const StyledPrestadorMensajeText = styled(Typography)(({ theme }) => ({
@@ -69,7 +77,7 @@ export const StyledTimestampContainer = styled(Box)(() => ({
   gap: '1rem',
   position: 'relative',
   float: 'right',
-  width: '100%',
+  width: '20%',
 }));
 
 export const StyledMensajeTimestamp = styled('span')(() => ({

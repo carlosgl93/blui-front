@@ -1,4 +1,4 @@
-import useAuth from '@/store/auth';
+import { redirectToAfterLoginState } from '@/store/auth';
 import { tablet } from '@/theme/breakpoints';
 import { useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { Prestador } from '@/store/auth/prestador';
 import { useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { useAuthNew } from '@/hooks/useAuthNew';
-import { useChat } from '@/hooks';
+import { useChat, useNavigationHistory } from '@/hooks';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 
 export const usePerfilPrestador = (prestador: Prestador) => {
@@ -15,8 +15,9 @@ export const usePerfilPrestador = (prestador: Prestador) => {
   const setInteractedPrestador = useSetRecoilState(interactedPrestadorState);
   const prestadorId = prestador.id;
   const { user } = useAuthNew();
-  const [, { updateRedirectToAfterLogin }] = useAuth();
-  const { messages } = useChat(user?.id ?? '', prestador.id);
+  const setRedirectToAfterLogin = useSetRecoilState(redirectToAfterLoginState);
+  const history = useNavigationHistory();
+  const { messages, messagesLoading } = useChat(user?.id ?? '', prestador.id);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const setNotification = useSetRecoilState(notificationState);
@@ -42,13 +43,18 @@ export const usePerfilPrestador = (prestador: Prestador) => {
       return;
     }
 
-    updateRedirectToAfterLogin(`/perfil-prestador/${prestadorId}`);
+    setRedirectToAfterLogin(`/perfil-prestador/${prestadorId}`);
     setNotification({
       open: true,
       message: 'Debes iniciar sesión para poder contactar a un prestador',
       severity: 'info',
     });
-    navigate('/registrar-usuario');
+    // add logic to redirect to register only if has the comenzar flujo in the history
+    if (!history.find((h) => h.includes('/registrar-usuario'))) {
+      navigate('/registrar-usuario');
+    } else {
+      navigate('/ingresar');
+    }
     return;
   };
 
@@ -62,6 +68,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     isTablet,
     open,
     message,
+    messagesLoading,
     handleContact,
     handleOpen,
     handleClose,

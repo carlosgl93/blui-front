@@ -27,7 +27,6 @@ export const useChat = (userId: string, providerId: string) => {
     },
     onError: (error, variables, context: Conversation | undefined) => {
       // context is the snapshot value returned from onMutate
-      console.log('on error running');
       console.log({ error });
       console.log({ variables });
       console.log({ context });
@@ -84,7 +83,11 @@ export const useChat = (userId: string, providerId: string) => {
     {
       enabled: !!userId && !!providerId,
       onSuccess(data) {
-        setMessages(data);
+        if (data !== undefined) {
+          setMessages(data);
+        } else {
+          return;
+        }
       },
       onError(err) {
         console.log('error getting messages', err);
