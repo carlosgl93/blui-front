@@ -17,7 +17,7 @@ const StyledListItem = styled(ListItem)(() => ({
   width: '100%',
   display: 'grid',
   gridTemplateColumns: '10% 30% 60%',
-  '& > :nth-last-child()': {
+  '& > :nth-last-of-type()': {
     justifyContent: 'end',
   },
   columnGap: '1rem',
@@ -75,7 +75,7 @@ export const ListAvailableDays = ({ disponibilidad }: ListAvailableDaysProps) =>
               </StyledDayName>
               {!isAvailable ? (
                 <StyledTimeText>No disponible</StyledTimeText>
-              ) : startTime === '00:00' && endTime === '00:00' ? (
+              ) : startTime === '00:00' && endTime === '23:59' ? (
                 <StyledTimeText>Todo el dia</StyledTimeText>
               ) : (
                 <StyledTimeText>

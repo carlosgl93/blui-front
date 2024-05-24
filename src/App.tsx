@@ -1,6 +1,9 @@
 import { Fragment, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './styles.css';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { esES } from '@mui/x-date-pickers/locales';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { CircularProgress } from '@mui/material';
@@ -27,31 +30,37 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Fragment>
-        <CssBaseline />
-        <HotKeys />
-        <SW />
-        <BrowserRouter>
-          <Header />
-          <Sidebar />
-          <Suspense
-            fallback={
-              <CircularProgress
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  minHeight: '75vh',
-                }}
-              />
-            }
-          >
-            <Pages />
-          </Suspense>
-          <NotificationSnackbar />
-        </BrowserRouter>
-      </Fragment>
+      <LocalizationProvider
+        dateAdapter={AdapterDayjs}
+        adapterLocale="es-mx"
+        localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+      >
+        <Fragment>
+          <CssBaseline />
+          <HotKeys />
+          <SW />
+          <BrowserRouter>
+            <Header />
+            <Sidebar />
+            <Suspense
+              fallback={
+                <CircularProgress
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    minHeight: '75vh',
+                  }}
+                />
+              }
+            >
+              <Pages />
+            </Suspense>
+            <NotificationSnackbar />
+          </BrowserRouter>
+        </Fragment>
+      </LocalizationProvider>
     </QueryClientProvider>
   );
 }

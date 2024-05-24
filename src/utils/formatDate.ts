@@ -8,7 +8,7 @@ export const formatDate = (dateString: Date) => {
     now.getFullYear() === date.getFullYear();
 
   if (sameDay)
-    return date.toLocaleString('en-GB', {
+    return date.toLocaleString('en-gb', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
@@ -24,7 +24,7 @@ export const formatDate = (dateString: Date) => {
 
   if (sameYesterday) return 'Ayer';
 
-  return date.toLocaleString('es-CL', {
+  return date.toLocaleString('es-mx', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',

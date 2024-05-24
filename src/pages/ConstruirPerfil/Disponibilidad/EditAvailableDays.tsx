@@ -1,5 +1,5 @@
-import { Box, Button, Switch, TextField } from '@mui/material';
-
+import { Box, Button, Switch } from '@mui/material';
+import { MobileTimePicker, TimePicker } from '@mui/x-date-pickers';
 import { AvailabilityData, StyledDayName } from './ListAvailableDays';
 import { CenteredDivider } from '@/components/StyledDivider';
 import {
@@ -8,11 +8,11 @@ import {
   StyledEditableDay,
   StyledTimePickerContainer,
   StyledTimerContainer,
-  StyledTimeTitle,
   StyledToggleContainer,
 } from './EditAvailableDaysStyledComp';
 import { useDisponibilidadNew } from '@/hooks/useDisponibilidadNew';
 import Loading from '@/components/Loading';
+import dayjs from 'dayjs';
 
 type EditAvailableDaysProps = {
   availability: AvailabilityData[];
@@ -33,9 +33,9 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
     <Container>
       {availability &&
         availability?.map((d) => {
-          const { day, times, isAvailable } = d;
+          const { id, day, times, isAvailable } = d;
           return (
-            <StyledDayContainer key={day}>
+            <StyledDayContainer key={id + day}>
               <CenteredDivider />
               <StyledEditableDay>
                 <StyledToggleContainer>
@@ -48,37 +48,21 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                 {isAvailable && (
                   <StyledTimePickerContainer>
                     <StyledTimerContainer>
-                      {/* Start Time */}
-
-                      <StyledTimeTitle>Inicio:</StyledTimeTitle>
-                      <TextField
-                        type="time"
-                        onChange={(e) => handleTimeChange(e, 'startTime')}
-                        value={times.startTime}
-                        name={`startTime${day}`}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        inputProps={{
-                          step: 300, // 5 min
-                        }}
+                      <TimePicker
+                        label="Inicio"
+                        value={dayjs(times.startTime, 'HH:mm')}
+                        onChange={(e) => handleTimeChange(e!, id, 'startTime')}
+                        minutesStep={30}
+                        ampm={false}
                       />
                     </StyledTimerContainer>
                     <StyledTimerContainer>
-                      {/* End Time */}
-                      <StyledTimeTitle>Término:</StyledTimeTitle>
-
-                      <TextField
-                        type="time"
-                        onChange={(e) => handleTimeChange(e, 'endTime')}
-                        value={times.endTime}
-                        name={`endTime${day}`}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        inputProps={{
-                          step: 300, // 5 min
-                        }}
+                      <MobileTimePicker
+                        label="Término"
+                        value={dayjs(times.endTime, 'HH:mm')}
+                        onChange={(e) => handleTimeChange(e!, id, 'endTime')}
+                        minutesStep={30}
+                        ampm={false}
                       />
                     </StyledTimerContainer>
                   </StyledTimePickerContainer>

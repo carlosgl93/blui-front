@@ -22,7 +22,7 @@ export const usePreviewPerfilPrestador = () => {
   const [prestadorEspecialidad, setPrestadorEspecialidad] = useState({} as Especialidad);
   const [disponibilidad, setDisponibilidad] = useState<DisponibilidadFromFront[]>([]);
 
-  const { service_id, speciality_id } = user as Prestador;
+  const { servicio, especialidad } = user as Prestador;
 
   const router = useNavigate();
 
@@ -31,19 +31,19 @@ export const usePreviewPerfilPrestador = () => {
   };
 
   useEffect(() => {
-    const thisPrestadorServicio = allServicios?.find((s) => s.id === service_id);
+    const thisPrestadorServicio = allServicios?.find((s) => s.serviceName === servicio);
     if (thisPrestadorServicio) {
       setPrestadorServicio(thisPrestadorServicio);
     }
 
     const thisPrestadorEspecialidad = thisPrestadorServicio?.especialidades.find(
-      (e) => e.id === speciality_id,
+      (e) => e.especialidadName === especialidad,
     ) as Especialidad;
 
     if (thisPrestadorEspecialidad) {
       setPrestadorEspecialidad(thisPrestadorEspecialidad);
     }
-  }, [allServicios, service_id, speciality_id]);
+  }, [allServicios, servicio, especialidad]);
 
   useEffect(() => {
     getDisponibilidadByPrestadorId(prestadorId).then((res) => {

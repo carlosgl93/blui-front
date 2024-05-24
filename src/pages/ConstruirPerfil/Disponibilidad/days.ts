@@ -44,7 +44,7 @@ export const days: DisponibilidadFromFront[] = [
   {
     id: '5',
     prestadorId: null,
-    dayName: 'Sábado',
+    dayName: 'Sabado',
     startTime: '',
     endTime: '',
     isAvailable: false,

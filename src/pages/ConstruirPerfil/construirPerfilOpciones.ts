@@ -1,4 +1,5 @@
 type SettingsKey =
+  | 'servicios'
   | 'detallesBasicos'
   | 'disponibilidad'
   | 'comunas'
@@ -18,6 +19,7 @@ type SettingsKey =
   | 'misPreferencias';
 
 export const construirPerfilOpciones: { key: SettingsKey; value: string }[] = [
+  { key: 'servicios', value: 'Servicios ofrecidos' },
   { key: 'detallesBasicos', value: 'Detalles basicos' },
   { key: 'disponibilidad', value: 'Disponibilidad' },
   { key: 'comunas', value: 'Comunas' },

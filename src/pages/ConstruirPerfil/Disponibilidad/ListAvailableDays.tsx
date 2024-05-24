@@ -8,7 +8,7 @@ const StyledListItem = styled(ListItem)(() => ({
   width: '100%',
   display: 'grid',
   gridTemplateColumns: '10% 30% 60%',
-  '& > :nth-last-child()': {
+  '& > :nth-last-of-type()': {
     justifyContent: 'end',
   },
   columnGap: '1rem',
@@ -29,6 +29,7 @@ export interface TimeSlot {
 }
 
 export interface AvailabilityData {
+  id: number;
   day: string;
   times: TimeSlot;
   isAvailable: boolean;
@@ -73,7 +74,7 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
               </StyledDayName>
               {!isAvailable ? (
                 <StyledTimeText>No disponible</StyledTimeText>
-              ) : times.startTime === '00:00' && times.endTime === '00:00' ? (
+              ) : times.startTime === '00:00' && times.endTime === '23:59' ? (
                 <StyledTimeText>Todo el dia</StyledTimeText>
               ) : (
                 <StyledTimeText sx={{}}>

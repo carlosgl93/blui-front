@@ -59,12 +59,34 @@ export const construirPerfilState = atom<ConstruirPerfilState>({
       firstname: '',
       lastname: '',
       email: '',
-      phone: '',
       rut: '',
       description: '',
       imageUrl: '',
       comunas: [],
-      offers_free_meet_greet: false,
+      role: '',
+      tarifas: [],
+      servicio: '',
+      offersFreeMeetAndGreet: false,
+      settings: {
+        servicios: false,
+        detallesBasicos: false,
+        disponibilidad: false,
+        comunas: false,
+        tarifas: false,
+        experiencia: false,
+        cuentaBancaria: false,
+        historialLaboral: false,
+        educacionFormacion: false,
+        registroSuperIntendenciaSalud: false,
+        insignias: false,
+        inmunizacion: false,
+        idiomas: false,
+        antecedentesCulturales: false,
+        religion: false,
+        interesesHobbies: false,
+        sobreMi: false,
+        misPreferencias: false,
+      },
     },
     loading: false,
     error: null,
@@ -334,7 +356,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
       ...prev,
       prestador: {
         ...prev.prestador,
-        offers_free_meet_greet: !prev.prestador.offers_free_meet_greet,
+        offers_free_meet_greet: !prev.prestador.offersFreeMeetAndGreet,
       },
     }));
   };
@@ -346,7 +368,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
       await postTarifas(user?.id ?? '', construirPerfil.tarifas);
       await postFreeMeetGreet(
         user?.id ?? '',
-        construirPerfil.prestador.offers_free_meet_greet as boolean,
+        construirPerfil.prestador.offersFreeMeetAndGreet as boolean,
       );
       setNotification({
         message: 'Tarifas guardadas exitosamente',

@@ -4,28 +4,36 @@ import { useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Prestador } from '@/store/auth/prestador';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { useChat, useNavigationHistory } from '@/hooks';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
+import { scheduleModalState } from '@/store/schedule/sheduleState';
 
 export const usePerfilPrestador = (prestador: Prestador) => {
   const isTablet = useMediaQuery(tablet);
-  const setInteractedPrestador = useSetRecoilState(interactedPrestadorState);
-  const prestadorId = prestador.id;
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
   const { user } = useAuthNew();
   const setRedirectToAfterLogin = useSetRecoilState(redirectToAfterLoginState);
   const history = useNavigationHistory();
+  const prestadorId = prestador.id;
   const { messages, messagesLoading } = useChat(user?.id ?? '', prestador.id);
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [scheduleModalOpen, setScheduleModalOpen] = useRecoilState(scheduleModalState);
   const setNotification = useSetRecoilState(notificationState);
+  const setInteractedPrestador = useSetRecoilState(interactedPrestadorState);
+
+  const handleOpenScheduleModal = () => setScheduleModalOpen(true);
+  const handleCloseScheduleModal = () => setScheduleModalOpen(false);
+
+  const fromRecibeApoyo =
+    history.filter((h) => !h.includes('/registrar-usuario') && h.includes('/recibe-apoyo')).length >
+    0;
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const navigate = useNavigate();
 
   const handleContact = () => {
     if (user?.id.length) {
@@ -49,8 +57,28 @@ export const usePerfilPrestador = (prestador: Prestador) => {
       message: 'Debes iniciar sesión para poder contactar a un prestador',
       severity: 'info',
     });
-    // add logic to redirect to register only if has the comenzar flujo in the history
-    if (!history.find((h) => h.includes('/registrar-usuario'))) {
+    if (fromRecibeApoyo) {
+      navigate('/registrar-usuario');
+    } else {
+      navigate('/ingresar');
+    }
+    return;
+  };
+
+  const handleSchedule = () => {
+    if (user?.id.length) {
+      // handle react big calendar
+      handleOpenScheduleModal();
+      return;
+    }
+    setRedirectToAfterLogin(`/perfil-prestador/${prestadorId}`);
+    setNotification({
+      open: true,
+      message: 'Debes iniciar sesión para poder agendar.',
+      severity: 'info',
+    });
+
+    if (fromRecibeApoyo) {
       navigate('/registrar-usuario');
     } else {
       navigate('/ingresar');
@@ -67,11 +95,15 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     messages,
     isTablet,
     open,
+    scheduleModalOpen,
     message,
     messagesLoading,
     handleContact,
     handleOpen,
     handleClose,
     setMessage,
+    handleSchedule,
+    handleOpenScheduleModal,
+    handleCloseScheduleModal,
   };
 };

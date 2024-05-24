@@ -21,7 +21,7 @@ const MobileHeaderContent = () => {
   if (isChat && location.pathname === '/chat') {
     return (
       <StyledChatHeaderContainer>
-        <BackButton ignoreMargin />
+        <BackButton ignoreMargin displayText={false} />
         <ChatTitle>{prestador?.firstname ? prestador?.firstname : prestador?.email}</ChatTitle>
       </StyledChatHeaderContainer>
     );
@@ -30,7 +30,7 @@ const MobileHeaderContent = () => {
   if (isChat && location.pathname === '/prestador-chat') {
     return (
       <StyledChatHeaderContainer>
-        <BackButton ignoreMargin />
+        <BackButton ignoreMargin displayText={false} />
         <ChatTitle>{username}</ChatTitle>
       </StyledChatHeaderContainer>
     );

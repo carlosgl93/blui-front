@@ -71,6 +71,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil')),
     path: '/construir-perfil',
   },
+  [Pages.Servicios]: {
+    component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/Servicio')),
+    path: '/construir-perfil/servicios',
+  },
   [Pages.Disponibilidad]: {
     component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/Disponibilidad')),
     path: '/construir-perfil/disponibilidad',
@@ -139,6 +143,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/PrestadorDashboard')),
     path: '/prestador-dashboard',
   },
+  [Pages.Sesiones]: {
+    component: asyncComponentLoader(() => import('@/pages/Sesiones')),
+    path: '/sesiones',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',
@@ -157,6 +165,7 @@ export const protectedRoutes = [
   '/construir-perfil/historialLaboral',
   '/construir-perfil/educacionFormacion',
   '/construir-perfil/detallesBasicos',
+  '/construir-perfil/servicios',
   '/chat',
   '/prestador-chat',
   '/prestador-inbox',
@@ -164,6 +173,7 @@ export const protectedRoutes = [
   '/perfil-usuario',
   '/usuario-dashboard',
   '/email-verificado',
+  '/sesiones',
 ];
 
 export default routes;

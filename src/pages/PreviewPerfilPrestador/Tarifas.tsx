@@ -55,7 +55,7 @@ const StyledGreyTextContainer = styled(Box)(({ theme }) => ({
 export const Tarifas = () => {
   const [{ tarifas, prestador }] = useConstruirPerfil();
 
-  const freeMeetGreet = prestador?.offers_free_meet_greet;
+  const freeMeetGreet = prestador?.offersFreeMeetAndGreet;
   const fee = import.meta.env.VITE_TRANSACTION_FEE_PERCENTAGE;
   const feePercentage = Number(fee) / 100;
 

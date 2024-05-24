@@ -33,10 +33,10 @@ export const PreviewDesktopProfile = () => {
     firstname,
     lastname,
     imageUrl,
-    service_id,
-    speciality_id,
-    average_review,
-    total_reviews,
+    servicio,
+    especialidad,
+    averageReviews,
+    totalReviews,
     description,
   } = user as Prestador;
 
@@ -58,19 +58,19 @@ export const PreviewDesktopProfile = () => {
   };
 
   useEffect(() => {
-    const thisPrestadorServicio = allServicios?.find((s) => s.id === service_id);
+    const thisPrestadorServicio = allServicios?.find((s) => s.serviceName === servicio);
     if (thisPrestadorServicio) {
       setPrestadorServicio(thisPrestadorServicio);
     }
 
     const thisPrestadorEspecialidad = thisPrestadorServicio?.especialidades.find(
-      (e) => e.id === speciality_id,
+      (e) => e.especialidadName === especialidad,
     ) as Especialidad;
 
     if (thisPrestadorEspecialidad) {
       setPrestadorEspecialidad(thisPrestadorEspecialidad);
     }
-  }, [allServicios, service_id, speciality_id]);
+  }, [allServicios, servicio, especialidad]);
 
   return (
     <>
@@ -94,7 +94,7 @@ export const PreviewDesktopProfile = () => {
             <StyledName>
               {firstname} {lastname}
             </StyledName>
-            <Reviews average={average_review || 0} total_reviews={total_reviews || 0} />
+            <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
 
             <StyledServicio>
               {prestadorServicio?.serviceName} / {prestadorEspecialidad?.especialidadName}
