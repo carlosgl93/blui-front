@@ -1,3 +1,4 @@
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import dayjs from 'dayjs';
 import { atom } from 'recoil';
 

@@ -1,3 +1,4 @@
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { User } from '@/store/auth/user';
 import { Prestador } from '@/types';
 import { db } from 'firebase/firebase';

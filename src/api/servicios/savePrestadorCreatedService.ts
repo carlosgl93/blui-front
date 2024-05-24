@@ -1,3 +1,4 @@
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { db } from 'firebase/firebase';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';

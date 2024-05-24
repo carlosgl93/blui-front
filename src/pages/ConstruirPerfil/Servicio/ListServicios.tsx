@@ -5,6 +5,7 @@ import { Box, IconButton, List, ListItem } from '@mui/material';
 import { StyledSubtitle } from '../Comunas/StyledCompEditarComunas';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { UserCreatedServicio } from './types';
 
 export const ListServicios = () => {
   const { prestadorCreatedServicios, prestadorServicio, handleIsCreatingServicio } =

@@ -1,3 +1,4 @@
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { db } from 'firebase/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 

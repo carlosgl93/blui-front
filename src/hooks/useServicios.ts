@@ -12,6 +12,7 @@ import { handleServicioState } from '@/store/construirPerfil/servicios';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 import { defaultPrestador, prestadorState } from '@/store/auth/prestador';
 import { Prestador } from '@/types';
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 
 export const useServicios = () => {
   const setNotification = useSetRecoilState(notificationState);
