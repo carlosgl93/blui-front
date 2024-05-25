@@ -153,13 +153,7 @@ export const ScheduleController = () => {
       }
       return false;
     },
-    [
-      providerAvailability,
-      value,
-      providersAppointments,
-      schedule.selectedDate,
-      schedule.selectedTime,
-    ],
+    [providerAvailability, providersAppointments, schedule.selectedDate],
   );
 
   const handleSelectServicio = (serviceId: string) => {
