@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import useAuth from '@/store/auth';
 import api from '@/api/api';
 
 type useChatMessagesProps = {
@@ -14,7 +13,6 @@ export const useChatMessages = ({ userId, prestadorId }: useChatMessagesProps) =
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [{ user }] = useAuth();
   const router = useNavigate();
   const [params] = useSearchParams();
 
@@ -29,7 +27,6 @@ export const useChatMessages = ({ userId, prestadorId }: useChatMessagesProps) =
           params: {
             prestadorId: prestadorId ? prestadorId : prestadorIdFromSearchParams,
             userId: userId ? userId : userIdFromSearchParams,
-            token: user?.token || '',
           },
         });
         setMessages(res.data);

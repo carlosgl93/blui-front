@@ -12,7 +12,7 @@ import {
   Wrapper,
 } from './MobilePerfilPrestadorStyledComponents';
 import Reviews from '@/components/Reviews';
-import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import {
   StyledContactButton,
   StyledShortListButton,
@@ -22,12 +22,12 @@ import { usePerfilPrestador } from './usePerfilPrestador';
 import PerfilBackButton from './PerfilBackButton';
 import { Box, styled } from '@mui/material';
 import { Prestador } from '@/store/auth/prestador';
-import { Tarifas } from './Tarifas';
 import { ListAvailableDays } from './ListAvailableDays';
 import { useChat } from '@/hooks';
 import { useParams } from 'react-router-dom';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import Loading from '@/components/Loading';
+import { ScheduleModal } from '@/components/Schedule/ScheduleModal';
 
 export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -49,7 +49,14 @@ type MobileProfileProps = {
 };
 
 export const MobileProfile = ({ prestador }: MobileProfileProps) => {
-  const { handleClose, handleContact, open } = usePerfilPrestador(prestador as Prestador);
+  const {
+    handleClose,
+    handleContact,
+    open,
+    handleSchedule,
+    handleCloseScheduleModal,
+    scheduleModalOpen,
+  } = usePerfilPrestador(prestador as Prestador);
 
   const { id } = useParams();
   const { user } = useAuthNew();
@@ -64,9 +71,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     averageReviews,
     totalReviews,
     description,
-    tarifas,
     availability,
-    offersFreeMeetAndGreet,
     email,
     servicio,
     especialidad,
@@ -102,8 +107,11 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
                 message={message}
                 setMessage={setMessage}
               />
-              <StyledShortListButton startIcon={<BookmarkBorderOutlinedIcon />}>
-                Guardar
+              <StyledShortListButton
+                startIcon={<EditCalendarOutlinedIcon />}
+                onClick={handleSchedule}
+              >
+                Agendar
               </StyledShortListButton>
             </>
           )}
@@ -120,10 +128,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         <SectionTitle>Disponibilidad</SectionTitle>
         <ListAvailableDays disponibilidad={availability ?? []} />
       </SectionContainer>
-      <SectionContainer>
-        <SectionTitle>Tarifas</SectionTitle>
-        <Tarifas tarifas={tarifas} freeMeetGreet={offersFreeMeetAndGreet} />
-      </SectionContainer>
+      <ScheduleModal handleClose={handleCloseScheduleModal} open={scheduleModalOpen} />
     </Wrapper>
   );
 };

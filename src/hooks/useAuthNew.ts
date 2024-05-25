@@ -12,7 +12,7 @@ import {
   doc,
   setDoc,
 } from 'firebase/firestore';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { Comuna } from '@/types';
 import { Servicio } from '@/types/Servicio';
@@ -21,10 +21,11 @@ import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
 import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { defaultTarifas } from '@/utils/constants';
+import { defaultAvailability, defaultTarifas } from '@/utils/constants';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
 import { comunasState } from '@/store/construirPerfil/comunas';
+import { editDisponibilidadState } from '@/store/construirPerfil/availability';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
 
@@ -61,6 +62,7 @@ export const useAuthNew = () => {
   const selectedComunas = useRecoilValue(comunasState);
   const [, { resetEntregaApoyoState }] = useEntregaApoyo();
   const [, { resetRecibeApoyoState }] = useRecibeApoyo();
+  const setEditDisponibilidad = useSetRecoilState(editDisponibilidadState);
 
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
   const navigate = useNavigate();
@@ -115,6 +117,7 @@ export const useAuthNew = () => {
           description: '',
           offersFreeMeetAndGreet: false,
           settings: {
+            servicios: false,
             detallesBasicos: false,
             disponibilidad: false,
             comunas: true,
@@ -135,35 +138,20 @@ export const useAuthNew = () => {
           },
         };
         const providerRef = doc(db, 'providers', user.uid);
+        // const servicesRef = collection(db, 'providers', user.uid, 'services');
         return setDoc(providerRef, newPrestador).then(() => {
-          const defaultAvailability = [
-            { isAvailable: true, day: 'Lunes', times: { startTime: '00:00', endTime: '00:00' } },
-            { isAvailable: true, day: 'Martes', times: { startTime: '00:00', endTime: '00:00' } },
-            {
-              isAvailable: true,
-              day: 'Miercoles',
-              times: { startTime: '00:00', endTime: '00:00' },
-            },
-            { isAvailable: true, day: 'Jueves', times: { startTime: '00:00', endTime: '00:00' } },
-            {
-              isAvailable: true,
-              day: 'Viernes',
-              times: { startTime: '00:00', endTime: '00:00' },
-            },
-            { isAvailable: true, day: 'Sabado', times: { startTime: '00:00', endTime: '00:00' } },
-            {
-              isAvailable: true,
-              day: 'Domingo',
-              times: { startTime: '00:00', endTime: '00:00' },
-            },
-          ];
-
           const batch = writeBatch(db);
 
           defaultAvailability.forEach((day) => {
             const dayRef = doc(providerRef, 'availability', day.day);
             batch.set(dayRef, day);
           });
+          // const serviceDoc = doc(servicesRef, servicio?.serviceName);
+          // batch.set(serviceDoc, {
+          //   // name: servicio?.serviceName,
+          //   // description: '',
+          //   // price: 0,
+          // });
 
           return batch.commit().then(() => newPrestador);
         });
@@ -370,7 +358,6 @@ export const useAuthNew = () => {
         });
         if (data?.role === 'user') {
           setUserState({ ...data.data, isLoggedIn: true } as User);
-          console.log(redirectAfterLogin);
           redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
         } else {
           if (data?.role === 'prestador') {
@@ -390,6 +377,7 @@ export const useAuthNew = () => {
       resetRecibeApoyoState();
       queryClient.resetQueries();
       navigate('/ingresar');
+      setEditDisponibilidad(false);
     },
   });
 

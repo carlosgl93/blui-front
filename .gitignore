@@ -26,3 +26,4 @@ dist-ssr
 coverage/
 .firebase
 .env
+functions/node_modules

@@ -10,7 +10,7 @@ type BackButtonProps = {
   style?: React.CSSProperties;
 };
 
-const BackButton = ({ to, action, displayText, ignoreMargin, style }: BackButtonProps) => {
+const BackButton = ({ to, action, displayText = true, ignoreMargin, style }: BackButtonProps) => {
   const router = useNavigate();
 
   return (

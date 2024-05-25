@@ -7,6 +7,7 @@ import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
+import dayjs from 'dayjs';
 
 export const allComunas = [
   'ALGARROBO',
@@ -388,6 +389,72 @@ export const availability = [
   },
 ];
 
+export const defaultAvailability = [
+  {
+    id: 1,
+    isAvailable: true,
+    day: 'Lunes',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+  {
+    id: 2,
+    isAvailable: true,
+    day: 'Martes',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+  {
+    id: 3,
+    isAvailable: true,
+    day: 'Miercoles',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+  {
+    id: 4,
+    isAvailable: true,
+    day: 'Jueves',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+  {
+    id: 5,
+    isAvailable: true,
+    day: 'Viernes',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+  {
+    id: 6,
+    isAvailable: true,
+    day: 'Sabado',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+  {
+    id: 0,
+    isAvailable: true,
+    day: 'Domingo',
+    times: {
+      startTime: dayjs().startOf('day').format('HH:mm'),
+      endTime: dayjs().endOf('day').format('HH:mm'),
+    },
+  },
+];
+
 export type Service = {
   id: number;
   text: string;
@@ -446,87 +513,6 @@ export const defaultTarifas: TarifaFront[] = [
 //     availability: ['4', '5', '6', '7'],
 //   },
 // ];
-
-export const services = [
-  {
-    id: 1,
-    text: 'Apoyo en el hogar',
-    speciality: [
-      {
-        id: 1,
-        text: 'Apoyo en el hogar',
-      },
-    ],
-  },
-  {
-    id: 2,
-    text: 'Cuidadora',
-    speciality: [
-      {
-        id: 2,
-        text: 'Cuidadora',
-      },
-    ],
-  },
-  {
-    id: 3,
-    text: 'Soporte Terapéutico',
-    speciality: [
-      {
-        id: 1,
-        text: 'Kinesiología',
-      },
-      {
-        id: 2,
-        text: 'Quiropráctica',
-      },
-      {
-        id: 3,
-        text: 'Odontología',
-      },
-      {
-        id: 4,
-        text: 'Fonoaudiología',
-      },
-      {
-        id: 5,
-        text: 'Podología',
-      },
-      {
-        id: 6,
-        text: 'Psicología',
-      },
-      {
-        id: 7,
-        text: 'Terapeuta Ocupacional',
-      },
-    ],
-  },
-  {
-    id: 4,
-    text: 'Servicios de enfermería',
-    speciality: [
-      {
-        id: 1,
-        text: 'Enfermería',
-      },
-      {
-        id: 2,
-        text: 'Técnico en enfermería',
-      },
-    ],
-  },
-  {
-    id: 5,
-    text: 'Sana compañía',
-    speciality: [
-      {
-        id: 1,
-        text: 'Sana compañía',
-      },
-    ],
-  },
-];
 
 export const days = [
   {

@@ -25,7 +25,7 @@ export const ConstruirPerfil = () => {
 
   return (
     <Wrapper>
-      <BackButton to="/prestador-dashboard" />
+      <BackButton displayText to="/prestador-dashboard" />
       <Box
         sx={{
           display: 'flex',

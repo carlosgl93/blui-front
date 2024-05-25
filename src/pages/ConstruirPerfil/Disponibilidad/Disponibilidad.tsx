@@ -29,6 +29,7 @@ export const Disponibilidad = () => {
         <Box
           sx={{
             my: '1rem',
+            mx: 'auto',
             width: {
               xs: '75vw',
               sm: '50vw',

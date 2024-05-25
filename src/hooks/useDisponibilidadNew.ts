@@ -7,6 +7,7 @@ import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAva
 import { availabilityState, editDisponibilidadState } from '@/store/construirPerfil/availability';
 import { db } from 'firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
+import dayjs, { Dayjs } from 'dayjs';
 
 const daysOfWeek = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 const sortAvailability = (data: AvailabilityData[]) =>
@@ -74,26 +75,46 @@ export const useDisponibilidadNew = () => {
     setAvailability(newAvailability);
   };
 
-  const handleTimeChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    startOrEnd: 'startTime' | 'endTime',
-  ) => {
-    const { value: newTime } = e.target;
-
+  const handleTimeChange = (e: Dayjs, id: number, startOrEnd: 'startTime' | 'endTime') => {
     setAvailability((prev) => {
       const newDisponibilidad = prev.map((day) => {
-        if (`${startOrEnd}${day.day}` !== e.target.name) {
+        if (day.id !== id) {
+          return day;
+        }
+
+        const updatedTime = e.format('HH:mm');
+        const existingTime = day.times[startOrEnd === 'startTime' ? 'endTime' : 'startTime'];
+
+        // If updating start time, ensure it's before existing end time
+        if (startOrEnd === 'startTime' && existingTime && e.isAfter(dayjs(existingTime, 'HH:mm'))) {
+          console.error('Start time must be before end time');
+          setNotification({
+            open: true,
+            message: 'La hora de inicio debe ser antes de la hora de término',
+            severity: 'error',
+          });
+          return day;
+        }
+
+        // If updating end time, ensure it's after existing start time
+        if (startOrEnd === 'endTime' && existingTime && e.isBefore(dayjs(existingTime, 'HH:mm'))) {
+          console.error('End time must be after start time');
+          setNotification({
+            open: true,
+            message: 'La hora de término debe ser despues de la hora de inicio',
+            severity: 'error',
+          });
           return day;
         }
 
         const updatedDay = {
           ...day,
+          id: day.id,
           times: {
             ...day.times,
-            [startOrEnd]: newTime,
+            [startOrEnd]: updatedTime,
           },
         };
-
         return updatedDay;
       });
 

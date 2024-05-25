@@ -25,6 +25,7 @@ enum Pages {
   Chat,
   UsuarioDashboard,
   ConstruirPerfil,
+  Servicios,
   Disponibilidad,
   PreviewPerfilPrestador,
   EditarComunasPrestador,
@@ -37,6 +38,7 @@ enum Pages {
   HistorialLaboral,
   EducacionFormacion,
   DetallesBasicos,
+  Sesiones,
 }
 
 type PathRouteCustomProps = {

@@ -25,6 +25,7 @@ export interface Prestador {
   dob?: string;
   address?: string;
   settings: {
+    servicios: boolean;
     detallesBasicos: boolean;
     disponibilidad: boolean;
     comunas: boolean;
@@ -44,100 +45,109 @@ export interface Prestador {
     misPreferencias: boolean;
   };
 }
+export const defaultPrestador = {
+  email: '',
+  id: '',
+  role: '',
+  firstname: '',
+  lastname: '',
+  rut: '',
+  comunas: [],
+  tarifas: [],
+  servicio: '',
+  especialidad: '',
+  availability: [
+    {
+      id: 0,
+      day: 'Lunes',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+    {
+      id: 1,
+      day: 'Martes',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+    {
+      id: 2,
+      day: 'Miércoles',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+    {
+      id: 3,
+      day: 'Jueves',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+    {
+      id: 4,
+      day: 'Viernes',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+    {
+      id: 5,
+      day: 'Sábado',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+    {
+      id: 6,
+      day: 'Domingo',
+      times: {
+        startTime: '00:00',
+        endTime: '00:00',
+      },
+      isAvailable: true,
+    },
+  ],
+  averageReviews: 0,
+  totalReviews: 0,
+  description: '',
+  offersFreeMeetAndGreet: false,
+  settings: {
+    servicios: false,
+    detallesBasicos: false,
+    disponibilidad: false,
+    comunas: false,
+    tarifas: false,
+    experiencia: false,
+    cuentaBancaria: false,
+    historialLaboral: false,
+    educacionFormacion: false,
+    registroSuperIntendenciaSalud: false,
+    insignias: false,
+    inmunizacion: false,
+    idiomas: false,
+    antecedentesCulturales: false,
+    religion: false,
+    interesesHobbies: false,
+    sobreMi: false,
+    misPreferencias: false,
+  },
+};
 
 export const prestadorState = atom<null | Prestador>({
   key: 'prestadorState',
-  default: {
-    email: '',
-    id: '',
-    role: '',
-    firstname: '',
-    lastname: '',
-    rut: '',
-    comunas: [],
-    tarifas: [],
-    servicio: '',
-    especialidad: '',
-    availability: [
-      {
-        day: 'Lunes',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-      {
-        day: 'Martes',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-      {
-        day: 'Miércoles',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-      {
-        day: 'Jueves',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-      {
-        day: 'Viernes',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-      {
-        day: 'Sábado',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-      {
-        day: 'Domingo',
-        times: {
-          startTime: '00:00',
-          endTime: '00:00',
-        },
-        isAvailable: true,
-      },
-    ],
-    averageReviews: 0,
-    totalReviews: 0,
-    description: '',
-    offersFreeMeetAndGreet: false,
-    settings: {
-      detallesBasicos: false,
-      disponibilidad: false,
-      comunas: false,
-      tarifas: false,
-      experiencia: false,
-      cuentaBancaria: false,
-      historialLaboral: false,
-      educacionFormacion: false,
-      registroSuperIntendenciaSalud: false,
-      insignias: false,
-      inmunizacion: false,
-      idiomas: false,
-      antecedentesCulturales: false,
-      religion: false,
-      interesesHobbies: false,
-      sobreMi: false,
-      misPreferencias: false,
-    },
-  },
+  default: defaultPrestador,
 });

@@ -76,7 +76,6 @@ export const TarifaController = () => {
 
   const handleSaveTarifas = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('saving');
     if (!prestador) {
       return navigate('/ingresar');
     }
@@ -96,7 +95,6 @@ export const TarifaController = () => {
       // update prestador.tarifas state
       setPrestadorState((prev) => {
         if (!prev) return null;
-        console.log('running tarifas setState');
         if (prev.tarifas.filter((t) => t.price === '').length > 0) return prev;
         return { ...prev, settings: { ...prev.settings, tarifas: true } };
       });

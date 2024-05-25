@@ -1,5 +1,6 @@
 import { ThemeOptions } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
+import { esES } from '@mui/x-date-pickers/locales';
 
 import { Themes } from './types';
 
@@ -16,6 +17,7 @@ const sharedTheme = {
       paper: '#fff',
     },
   },
+  esES,
   components: {
     MuiListItem: {
       styleOverrides: {
@@ -54,6 +56,29 @@ const sharedTheme = {
         },
       },
     },
+    // MuiDigitalClock: {
+    //   styleOverrides: {
+    //     root: (rootStyleProps) => {
+    //       console.log('rootStyleProps', rootStyleProps);
+    //       return {
+    //         // backgroundColor: selected ? '#970B80' : 'transparent',
+    //         // color: selected ? '#fff' : '#000',
+    //         borderRadius: '50%',
+    //         padding: '0.5rem',
+    //       };
+    //     },
+
+    //     item: (itemStyleProps) => {
+    //       console.log('itemStyleProps', itemStyleProps)
+    //       return {
+    //         backgroundColor: itemStyleProps. ? '#970B80' : 'transparent',
+    //         // color: selected ? '#fff' : '#000',
+    //         borderRadius: '50%',
+    //         padding: '0.5rem',
+    //       };
+    //     },
+    //   },
+    // },
   },
 } as ThemeOptions; // the reason for this casting is deepmerge return type
 
@@ -75,7 +100,7 @@ const themes: Record<Themes, ThemeOptions> = {
       secondary: {
         main: '#fff7fe',
         dark: '#414042',
-        contrastText: '#f56b0c',
+        contrastText: '#E6AF2E',
       },
       error: {
         main: '#d72a31',
