@@ -13,7 +13,10 @@ export const ServicioController = () => {
     prestadorCreatedServicios,
     prestadorCreatedServiciosLoading,
     prestadorServicio,
+    saveServicioLoading,
+    deleteServicioLoading,
     saveServicio,
+    deleteServicio,
   } = useServicios();
   const { prestador } = useAuthNew();
 
@@ -39,6 +42,13 @@ export const ServicioController = () => {
 
   const handleIsCreatingServicio = () => {
     setServicioState((prev) => ({ ...prev, isCreatingServicio: !prev.isCreatingServicio }));
+  };
+
+  const handleDeleteServicio = (providerId: string, serviceId: string) => {
+    deleteServicio({
+      prestadorId: providerId,
+      serviceId,
+    });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,6 +78,8 @@ export const ServicioController = () => {
     prestadorServicio,
     isCreatingServicio,
     duration,
+    saveServicioLoading,
+    deleteServicioLoading,
     handleIsCreatingServicio,
     setServicioState,
     handleChangeEspecialidad,
@@ -76,5 +88,6 @@ export const ServicioController = () => {
     handleChangeTarifa,
     handleSubmit,
     handleSelectDuration,
+    handleDeleteServicio,
   };
 };

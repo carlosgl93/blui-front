@@ -13,6 +13,7 @@ import { interactedPrestadorState } from '@/store/resultados/interactedPrestador
 import { defaultPrestador, prestadorState } from '@/store/auth/prestador';
 import { Prestador } from '@/types';
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
+import { deleteService, DeleteServiceParams } from '../api/servicios/deleteService';
 
 export const useServicios = () => {
   const setNotification = useSetRecoilState(notificationState);
@@ -83,13 +84,44 @@ export const useServicios = () => {
   );
 
   // add a react query mutation to delete a servicio
+  const { mutate: deleteServicio, isLoading: deleteServicioLoading } = useMutation(
+    (data: DeleteServiceParams) => deleteService(data),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries(['prestadorCreatedServices']);
+        setNotification({
+          open: true,
+          message: 'Servicio eliminado exitosamente',
+          severity: 'success',
+        });
+        setServicioState((prev) => ({
+          ...prev,
+          isCreatingServicio: false,
+          description: '',
+          especialidad: '',
+          nombreServicio: '',
+          tarifa: '',
+          duration: 0,
+        }));
+      },
+      onError: () => {
+        setNotification({
+          open: true,
+          message: 'Hubo un error eliminando el servicio, intentalo nuevamente',
+          severity: 'error',
+        });
+      },
+    },
+  );
 
   return {
     prestadorCreatedServiciosLoading,
     allServicios,
     prestadorServicio,
     prestadorCreatedServicios,
-    saveServicio,
     saveServicioLoading,
+    deleteServicioLoading,
+    saveServicio,
+    deleteServicio,
   };
 };

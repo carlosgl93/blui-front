@@ -10,15 +10,16 @@ import Loading from '@/components/Loading';
 import { ListServicios } from './ListServicios';
 
 export const Servicio = () => {
-  const { isCreatingServicio, prestadorCreatedServiciosLoading } = ServicioController();
+  const { isCreatingServicio, prestadorCreatedServiciosLoading, saveServicioLoading } =
+    ServicioController();
 
-  if (prestadorCreatedServiciosLoading) {
+  if (prestadorCreatedServiciosLoading || saveServicioLoading) {
     return (
       <Wrapper>
         <BackButton displayText />
         <Container>
           <StyledTitle>Servicios</StyledTitle>
-          {prestadorCreatedServiciosLoading && <Loading />}
+          {(prestadorCreatedServiciosLoading || saveServicioLoading) && <Loading />}
         </Container>
       </Wrapper>
     );
