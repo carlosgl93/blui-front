@@ -80,6 +80,7 @@ export const AboutContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   backgroundColor: theme.palette.background.default,
   padding: '2rem 1rem',
+  gap: '2rem',
 }));
 
 export const AboutTitle = styled(StyledTitle)(({ theme }) => ({

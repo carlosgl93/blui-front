@@ -1,3 +1,5 @@
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import './mobileProfile.css';
 import {
   AboutContainer,
   AboutDescription,
@@ -20,14 +22,18 @@ import {
 import { ChatModal } from '@/components/ChatModal';
 import { usePerfilPrestador } from './usePerfilPrestador';
 import PerfilBackButton from './PerfilBackButton';
-import { Box, styled } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, styled } from '@mui/material';
 import { Prestador } from '@/store/auth/prestador';
-import { ListAvailableDays } from './ListAvailableDays';
 import { useChat } from '@/hooks';
 import { useParams } from 'react-router-dom';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import Loading from '@/components/Loading';
 import { ScheduleModal } from '@/components/Schedule/ScheduleModal';
+import { Carousel } from 'react-responsive-carousel';
+import { Text } from '@/components/StyledComponents';
+import { renderDuration } from '@/utils/renderDuration';
+import { formatCLP } from '@/utils/formatCLP';
+import { ListAvailableDays } from './ListAvailableDays';
 
 export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -65,16 +71,18 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     user?.id ?? '',
     id ?? '',
   );
+
   const {
     firstname,
     imageUrl,
     averageReviews,
     totalReviews,
     description,
-    availability,
     email,
     servicio,
     especialidad,
+    createdServicios,
+    availability,
   } = prestador;
 
   return (
@@ -118,16 +126,54 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         </StyledCTAs>
       </HeroContainer>
       <AboutContainer>
-        {firstname}
         <AboutTitle>Sobre {firstname ? firstname : email}</AboutTitle>
         <AboutDescription>
           {description ? description : 'Este prestador aun no agrega información'}
         </AboutDescription>
       </AboutContainer>
       <SectionContainer>
+        <SectionTitle>Servicios</SectionTitle>
+        <Carousel
+          autoPlay
+          centerMode
+          emulateTouch
+          showThumbs={false}
+          stopOnHover
+          showIndicators
+          infiniteLoop
+          interval={10000}
+          width={'90vw'}
+          className="hide-status"
+        >
+          {createdServicios?.map((s) => (
+            <Card
+              key={s.id}
+              sx={{
+                m: '1rem',
+                boxShadow: 5,
+                height: 'fit-content',
+              }}
+            >
+              <CardHeader
+                title={s.name}
+                subheader={`${renderDuration(s.duration)} - ${formatCLP(s.price)}`}
+              />
+              <CardContent
+                sx={{
+                  mb: '2rem',
+                }}
+              >
+                <Text>{s.description}</Text>
+              </CardContent>
+            </Card>
+          )) ?? []}
+        </Carousel>
+      </SectionContainer>
+      <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
         <ListAvailableDays disponibilidad={availability ?? []} />
       </SectionContainer>
+
       <ScheduleModal handleClose={handleCloseScheduleModal} open={scheduleModalOpen} />
     </Wrapper>
   );

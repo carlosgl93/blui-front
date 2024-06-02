@@ -52,6 +52,7 @@
     "react-hook-form": "^7.51.0",
     "react-hotkeys-hook": "^3.4.7",
     "react-query": "^3.39.3",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.1",
     "recoil": "^0.7.5",
     "uuid": "^9.0.1"

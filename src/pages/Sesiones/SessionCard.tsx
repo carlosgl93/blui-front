@@ -105,7 +105,11 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
               Pagar
             </Button>
           )}
-          <PaymentModal openPayment={openPayment} handleClose={handleClosePayment} />
+          <PaymentModal
+            paymentAmount={servicio.price}
+            openPayment={openPayment}
+            handleClose={handleClosePayment}
+          />
         </FlexBox>
       </CardContent>
     </Card>

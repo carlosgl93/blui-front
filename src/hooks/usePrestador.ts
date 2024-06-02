@@ -5,6 +5,7 @@ import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 
 const dayOrder = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 
@@ -20,9 +21,13 @@ const getPrestadorByIdFirestore = async (id: string): Promise<Prestador> => {
   const prestador = res.data() as Prestador;
 
   const availabilityRef = collection(providersRef, 'availability');
+  const servicesRef = collection(providersRef, 'services');
   const availabilitySnapshot = await getDocs(availabilityRef);
+  const servicesSnapshot = await getDocs(servicesRef);
   const availability = availabilitySnapshot.docs.map((doc) => doc.data()) as AvailabilityData[];
+  const services = servicesSnapshot.docs.map((d) => d.data()) as UserCreatedServicio[];
   prestador.availability = sortedAvailability(availability);
+  prestador.createdServicios = services;
   return prestador;
 };
 

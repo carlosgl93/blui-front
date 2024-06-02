@@ -13,6 +13,7 @@ import { SaveButton } from '@/components/SaveButton';
 import { useCuentaBancaria } from '@/hooks/useCuentaBancaria';
 import Loading from '@/components/Loading';
 import { bancos, tiposDeCuenta } from './consts';
+import { useEffect } from 'react';
 
 export type CuentaBancariaInputs = {
   banco: string;
@@ -35,15 +36,29 @@ export const CuentaBancaria = () => {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm<CuentaBancariaInputs>({
     defaultValues: {
-      ...cuentaBancaria,
+      banco: cuentaBancaria?.banco ?? '',
+      numeroCuenta: cuentaBancaria?.numeroCuenta,
+      rut: cuentaBancaria?.rut,
+      tipoCuenta: cuentaBancaria?.tipoCuenta,
+      titular: cuentaBancaria?.titular,
     },
   });
+
+  useEffect(() => {
+    if (cuentaBancaria) {
+      for (const key in cuentaBancaria) {
+        setValue(key as keyof CuentaBancariaInputs, cuentaBancaria[key]);
+      }
+    }
+  }, [cuentaBancaria, setValue]);
 
   const onSubmit: SubmitHandler<CuentaBancariaInputs> = (data) => mutateCuentaBancaria(data);
 
   const isLoading = postCuentaBancariaLoading || getCuentaBancariaLoading;
+
   return (
     <Wrapper>
       <BackButton to="/construir-perfil" />
@@ -140,7 +155,7 @@ export const CuentaBancaria = () => {
                   required: 'Debes ingresar un numero de cuenta.',
                   pattern: {
                     value: /^[0-9]+$/,
-                    message: 'Número de cuenta: Solo se aceptan numeros',
+                    message: 'Número de cuenta: Solo se aceptan numeros, sin espacios',
                   },
                 })}
               />

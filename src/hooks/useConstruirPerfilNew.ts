@@ -1,18 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuthNew } from './useAuthNew';
+import { useRecoilValue } from 'recoil';
+import { prestadorState } from '@/store/auth/prestador';
+import { useEffect } from 'react';
 
 export const useConstruirPerfilNew = () => {
-  const { prestador } = useAuthNew();
+  const prestador = useRecoilValue(prestadorState);
   const navigate = useNavigate();
-
-  if (!prestador?.rut) {
-    navigate('/ingresar');
-  }
   const settings = prestador ? prestador!.settings : undefined;
 
-  if (!settings) {
-    navigate('/ingresar');
-  }
+  useEffect(() => {
+    if (!prestador?.rut) {
+      navigate('/ingresar');
+    }
+
+    if (!settings) {
+      navigate('/ingresar');
+    }
+  }, []);
 
   return {
     settings,

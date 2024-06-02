@@ -8,6 +8,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { UserCreatedServicio } from './types';
 import { useAuthNew } from '@/hooks';
 import Loading from '@/components/Loading';
+import { formatCLP } from '@/utils/formatCLP';
 
 export const ListServicios = () => {
   const {
@@ -79,7 +80,7 @@ export const ListServicios = () => {
                     <StyledSubtitle sx={{ m: 0, color: 'primary.main' }}>
                       {servicio.name}
                     </StyledSubtitle>
-                    <StyledText>Tarifa: {servicio.price}</StyledText>
+                    <StyledText>Tarifa: {formatCLP(servicio.price)}</StyledText>
                   </Box>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteServicio(prestador?.id ?? '', servicio?.id ?? '')}
