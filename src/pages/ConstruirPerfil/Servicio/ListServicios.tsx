@@ -10,6 +10,7 @@ import { useAuthNew } from '@/hooks';
 import Loading from '@/components/Loading';
 import { formatCLP } from '@/utils/formatCLP';
 
+
 export const ListServicios = () => {
   const {
     prestadorCreatedServicios,
@@ -81,6 +82,7 @@ export const ListServicios = () => {
                       {servicio.name}
                     </StyledSubtitle>
                     <StyledText>Tarifa: {formatCLP(servicio.price)}</StyledText>
+
                   </Box>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteServicio(prestador?.id ?? '', servicio?.id ?? '')}

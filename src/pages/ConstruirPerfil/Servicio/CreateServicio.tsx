@@ -141,6 +141,7 @@ export const CreateServicio = () => {
             onChange={handleChangeTarifa}
             helperText="Sin puntos ni comas."
           />
+
           <Box
             sx={{
               display: 'flex',
