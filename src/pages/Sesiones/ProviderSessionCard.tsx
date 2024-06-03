@@ -82,7 +82,11 @@ export const ProviderSessionCard = ({ appointment }: SessionCardProps) => {
               Contactar
             </Button>
           )}
-          <PaymentModal openPayment={openPayment} handleClose={handleClosePayment} />
+          <PaymentModal
+            paymentAmount={servicio?.price}
+            openPayment={openPayment}
+            handleClose={handleClosePayment}
+          />
         </FlexBox>
       </CardContent>
     </Card>

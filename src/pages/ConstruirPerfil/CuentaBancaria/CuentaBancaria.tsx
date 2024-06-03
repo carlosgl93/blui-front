@@ -50,7 +50,7 @@ export const CuentaBancaria = () => {
   useEffect(() => {
     if (cuentaBancaria) {
       for (const key in cuentaBancaria) {
-        setValue(key as keyof CuentaBancariaInputs, cuentaBancaria[key]);
+        setValue(key as keyof CuentaBancariaInputs, cuentaBancaria[key] as string);
       }
     }
   }, [cuentaBancaria, setValue]);

@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
-import { DateCalendar } from '@mui/x-date-pickers';
+import { DateCalendar, PickersDayProps } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { StyledLabel } from './StyledScheduleModal';
-import { PickersDayProps } from '@mui/lab';
 import { TScheduleState } from '@/store/schedule/sheduleState';
 import { SetterOrUpdater } from 'recoil';
 
