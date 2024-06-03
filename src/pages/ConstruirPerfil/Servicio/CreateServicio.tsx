@@ -7,6 +7,7 @@ import { SaveButton } from '@/components/SaveButton';
 import Loading from '@/components/Loading';
 import { formatCLP } from '@/utils/formatCLP';
 
+
 const serviceDurationOptions = [
   { value: 15, label: '15 minutos' },
   { value: 30, label: '30 minutos' },
@@ -141,6 +142,7 @@ export const CreateServicio = () => {
             onChange={handleChangeTarifa}
             helperText="Sin puntos ni comas."
           />
+
           <Box
             sx={{
               display: 'flex',
