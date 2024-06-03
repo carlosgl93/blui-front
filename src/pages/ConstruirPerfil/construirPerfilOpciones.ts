@@ -3,7 +3,6 @@ type SettingsKey =
   | 'detallesBasicos'
   | 'disponibilidad'
   | 'comunas'
-  | 'tarifas'
   | 'experiencia'
   | 'cuentaBancaria'
   | 'historialLaboral'
@@ -23,7 +22,6 @@ export const construirPerfilOpciones: { key: SettingsKey; value: string }[] = [
   { key: 'detallesBasicos', value: 'Detalles basicos' },
   { key: 'disponibilidad', value: 'Disponibilidad' },
   { key: 'comunas', value: 'Comunas' },
-  { key: 'tarifas', value: 'Tarifas' },
   { key: 'experiencia', value: 'Experiencia' },
   { key: 'cuentaBancaria', value: 'Cuenta bancaria' },
   { key: 'historialLaboral', value: 'Historial laboral' },

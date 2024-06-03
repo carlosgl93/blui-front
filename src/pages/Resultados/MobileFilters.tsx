@@ -2,16 +2,9 @@ import { ChangeEvent } from 'react';
 import { List, ListItemButton, ListItemText, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import {
-  StyledSelect,
-  StyledUnorderedList,
-  StyledListItem,
-  StyledCheckboxInput,
-  Title,
-} from '@/components/StyledComponents';
+import { StyledSelect, Title } from '@/components/StyledComponents';
 import FiltersSearchBar from './FiltersSearchBar';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { availability } from '@/utils/constants';
 import { Servicio } from '@/types/Servicio';
 import { useServicios } from '@/hooks/useServicios';
 
@@ -20,10 +13,8 @@ type MobileFiltersProps = {
 };
 
 export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
-  const [
-    { servicio, especialidad, comuna },
-    { removeComuna, selectServicio, selectEspecialidad, setAvailability },
-  ] = useRecibeApoyo();
+  const [{ servicio, especialidad, comuna }, { removeComuna, selectServicio, selectEspecialidad }] =
+    useRecibeApoyo();
 
   const { allServicios } = useServicios();
 
@@ -47,8 +38,8 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-around',
         alignContent: 'center',
-        maxWidth: '80vw',
         p: '1rem',
       }}
     >
@@ -98,7 +89,7 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
               alignItems: 'center',
               border: '1px solid',
               borderColor: 'primary.dark',
-              borderRadius: '0.25rem',
+              borderRadius: '1.5rem',
               padding: '0.5rem 1rem',
               backgroundColor: 'primary.dark',
               ':hover': {
@@ -129,7 +120,9 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
         </Title>
         {allServicios && (
           <StyledSelect value={servicio?.serviceName || ''} onChange={handleSelectServicio}>
-            <option value={''}>Elige un servicio</option>
+            <option value={''} disabled>
+              Elige un servicio
+            </option>
 
             {allServicios.map((servicio: Servicio) => {
               return (
@@ -175,7 +168,7 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
       {/* ESPECIALIDAD */}
 
       {/* DISPONIBILIDAD */}
-      <Title
+      {/* <Title
         variant="h6"
         sx={{
           fontSize: '1.2rem',
@@ -198,7 +191,16 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
             </StyledListItem>
           );
         })}
-      </StyledUnorderedList>
+      </StyledUnorderedList> */}
+      <Button
+        sx={{
+          mt: '3rem',
+        }}
+        onClick={closeFilters}
+        variant="contained"
+      >
+        Buscar
+      </Button>
     </Box>
   );
 };

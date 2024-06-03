@@ -20,6 +20,7 @@ export const usePerfilUsuarioController = () => {
           ({
             ...prev,
             ...data,
+            comuna: data.comuna,
           } as User),
       );
     },

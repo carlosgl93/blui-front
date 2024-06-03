@@ -19,8 +19,8 @@ export const usePerfilPrestador = (prestador: Prestador) => {
   const { user } = useAuthNew();
   const setRedirectToAfterLogin = useSetRecoilState(redirectToAfterLoginState);
   const history = useNavigationHistory();
-  const prestadorId = prestador.id;
-  const { messages, messagesLoading } = useChat(user?.id ?? '', prestador.id);
+  const prestadorId = prestador?.id;
+  const { messages, messagesLoading } = useChat(user?.id ?? '', prestador?.id);
   const [scheduleModalOpen, setScheduleModalOpen] = useRecoilState(scheduleModalState);
   const setNotification = useSetRecoilState(notificationState);
   const setInteractedPrestador = useSetRecoilState(interactedPrestadorState);

@@ -33,10 +33,16 @@ export const ScheduleController = () => {
   const navigate = useNavigate();
   const { user } = useAuthNew();
 
+  const shouldDisableDay = (date: dayjs.Dayjs) => {
+    // Disable the date if the provider is not available on this day of the week
+    const dayAvailability = providerAvailability?.find((d) => d?.id === date.get('day'));
+    // If the day is not available, return true to disable it
+    return !dayAvailability?.isAvailable;
+  };
   const renderAvailableDay = useCallback(
     (props: PickersDayProps<dayjs.Dayjs>) => {
       const isAvailable = providerAvailability?.find((d) => {
-        return d.id === props.day.get('d');
+        return d?.id === props.day.get('d');
       })?.isAvailable;
 
       if (isAvailable) {
@@ -114,7 +120,6 @@ export const ScheduleController = () => {
           appointment.scheduledTime === completeTime &&
           appointment.scheduledDate === schedule?.selectedDate?.format('YYYY-MM-DD')
         ) {
-          console.log('time slot booked');
           return true;
         }
       });
@@ -123,8 +128,8 @@ export const ScheduleController = () => {
         return true;
       }
 
-      const dayAvailability = providerAvailability?.find((d) => d.id === selectedDay);
-      if (dayAvailability && dayAvailability.isAvailable) {
+      const dayAvailability = providerAvailability?.find((d) => d?.id === selectedDay);
+      if (dayAvailability && dayAvailability?.isAvailable) {
         // validation when provider is available all day
         if (
           dayAvailability.times.startTime === '00:00' &&
@@ -157,11 +162,18 @@ export const ScheduleController = () => {
   );
 
   const handleSelectServicio = (serviceId: string) => {
-    const selectedService = prestadorServicios?.find((s) => s.id === serviceId);
+    const selectedService = prestadorServicios?.find((s) => s?.id === serviceId);
     setSchedule({
       ...schedule,
       selectedService,
     });
+  };
+
+  const handleSelectDate = (e: Dayjs) => {
+    setSchedule((prev) => {
+      return { ...prev, selectedDate: e! };
+    });
+    setValue(e);
   };
 
   const handleSubmit = () => {
@@ -182,15 +194,10 @@ export const ScheduleController = () => {
     scheduleService,
     {
       onSettled: async () => {
-        console.log(client);
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
-
-        console.log('success');
-        console.log(user?.id);
       },
       onSuccess: (data) => {
-        console.log('data on success userAppointnemts', data);
         setNotification({
           open: true,
           message: 'Servicio agendado correctamente',
@@ -206,12 +213,17 @@ export const ScheduleController = () => {
       },
     },
   );
+  const { selectedService } = schedule;
+  const selectedServiceDuration = selectedService?.duration;
+  const availableTimesStep =
+    selectedServiceDuration && selectedServiceDuration > 45 ? 60 : selectedServiceDuration;
 
   return {
     providerAvailability,
     prestadorCreatedServicios: prestadorServicios,
     value,
     schedule,
+    availableTimesStep,
     scheduleServiceLoading,
     renderAvailableDay,
     shouldDisableTime,
@@ -220,5 +232,7 @@ export const ScheduleController = () => {
     handleCloseScheduleModal,
     handleSelectServicio,
     handleSubmit,
+    shouldDisableDay,
+    handleSelectDate,
   };
 };

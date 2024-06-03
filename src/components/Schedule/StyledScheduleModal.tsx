@@ -113,6 +113,8 @@ export const StyledScheduleForm = styled(FormGroup)(() => ({
   gap: '1rem',
   width: '100%',
   padding: '1rem .25rem',
+  justifyContent: 'center',
+  textAlign: 'center',
 }));
 
 export const StyledLabel = styled(InputLabel)(({ theme }) => ({

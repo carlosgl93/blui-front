@@ -1,6 +1,8 @@
+import { Comuna } from '@/types';
 import { atom } from 'recoil';
 
 export interface User {
+  comuna?: Comuna;
   email: string;
   id: string;
   role: string;

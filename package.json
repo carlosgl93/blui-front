@@ -35,7 +35,6 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
-    "@mui/lab": "5.0.0-alpha.100",
     "@mui/material": "^5.10.6",
     "@mui/system": "^5.10.6",
     "@mui/utils": "^5.10.6",
@@ -52,6 +51,7 @@
     "react-hook-form": "^7.51.0",
     "react-hotkeys-hook": "^3.4.7",
     "react-query": "^3.39.3",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.1",
     "recoil": "^0.7.5",
     "uuid": "^9.0.1"

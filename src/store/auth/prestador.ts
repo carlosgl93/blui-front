@@ -1,4 +1,5 @@
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
+import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { Comuna, TarifaFront } from '@/types';
 import { atom } from 'recoil';
 
@@ -24,6 +25,7 @@ export interface Prestador {
   gender?: string;
   dob?: string;
   address?: string;
+  createdServicios?: UserCreatedServicio[];
   settings: {
     servicios: boolean;
     detallesBasicos: boolean;

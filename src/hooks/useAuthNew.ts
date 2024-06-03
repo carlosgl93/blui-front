@@ -236,7 +236,7 @@ export const useAuthNew = () => {
         forWhom: paraQuien !== nombre ? 'tercero' : 'paciente',
         patientName: nombrePaciente,
         rut,
-        comuna: selectedComunas,
+        comuna: selectedComunas[0],
       };
       const userRef = doc(db, 'users', user.uid);
       return await setDoc(userRef, newUser).then(() => newUser);
@@ -304,6 +304,8 @@ export const useAuthNew = () => {
         if (users.docs.length > 0) {
           const user = users.docs[0].data() as User;
           setUserState({ ...user, isLoggedIn: true });
+          localStorage.setItem('user', JSON.stringify({ ...user, isLoggedIn: true }));
+          localStorage.removeItem('prestador');
           queryClient.setQueryData(['user', correo], user);
           return { role: 'user', data: user };
         } else if (prestadores.docs.length > 0) {
@@ -318,6 +320,8 @@ export const useAuthNew = () => {
           const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
           prestador.availability = availability;
           setPrestadorState({ ...prestador, isLoggedIn: true });
+          localStorage.setItem('prestador', JSON.stringify({ ...prestador, isLoggedIn: true }));
+          localStorage.removeItem('user');
           queryClient.setQueryData(['prestador', correo], prestador);
           return { role: 'prestador', data: prestador };
         }
@@ -371,6 +375,9 @@ export const useAuthNew = () => {
 
   const { mutate: logout } = useMutation(() => signOut(auth), {
     onSuccess: () => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('prestador');
+
       setUserState(null);
       setPrestadorState(null);
       resetEntregaApoyoState();

@@ -1,30 +1,28 @@
-import { Box, IconButton, Modal } from '@mui/material';
+import { Box, Button, IconButton, Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Text } from '@/components/StyledComponents';
+import { formatCLP } from '@/utils/formatCLP';
 
 type PaymentModalProps = {
   openPayment: boolean;
   handleClose: () => void;
+  paymentAmount: string;
 };
 
-export const PaymentModal = ({ openPayment, handleClose }: PaymentModalProps) => {
+export const PaymentModal = ({ openPayment, handleClose, paymentAmount }: PaymentModalProps) => {
   return (
     <Modal open={openPayment} onClose={handleClose}>
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
           display: 'flex',
+          m: '1rem 2rem',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'start',
           backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '10px',
+          padding: '1rem',
+          borderRadius: '1rem',
           textAlign: 'start',
-          overflow: 'scroll',
         }}
       >
         <IconButton onClick={handleClose} sx={{ alignSelf: 'flex-end' }}>
@@ -33,11 +31,16 @@ export const PaymentModal = ({ openPayment, handleClose }: PaymentModalProps) =>
         <Box
           sx={{
             textAlign: 'start',
+            mb: '1rem',
           }}
         >
           <Text sx={{ textAlign: 'start' }} variant="body1" gutterBottom>
             Por favor, realiza el pago a la siguiente cuenta bancaria:
           </Text>
+          <Text variant="body1">
+            <b>Monto:</b>
+          </Text>
+          <Text>{formatCLP(paymentAmount)}</Text>
           <Text variant="body1">
             <b>Nombre:</b>
           </Text>
@@ -79,6 +82,7 @@ export const PaymentModal = ({ openPayment, handleClose }: PaymentModalProps) =>
             profesional no realice el servicio.
           </Text>
         </Box>
+        <Button variant="contained">Ya transferí</Button>
       </Box>
     </Modal>
   );

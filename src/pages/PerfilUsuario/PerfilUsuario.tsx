@@ -1,10 +1,12 @@
 import { TextField, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import { usePerfilUsuarioController } from './PerfilUsuarioController';
+import UserComunaSearchBar from './UserComunaSearchBar';
+import { SaveButton } from '@/components/SaveButton';
+import BackButton from '@/components/BackButton';
+import Loading from '@/components/Loading';
 import { useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
-import { SaveButton } from '@/components/SaveButton';
-import { usePerfilUsuarioController } from './PerfilUsuarioController';
-import Loading from '@/components/Loading';
-import BackButton from '@/components/BackButton';
+import { Comuna } from '@/types';
 
 export interface IFormInput {
   email: string;
@@ -14,6 +16,7 @@ export interface IFormInput {
   dob: string;
   phone: string;
   address: string;
+  comuna: Comuna | undefined;
 }
 
 const StyledForm = styled('form')(({ theme }) => ({
@@ -46,7 +49,7 @@ const StyledTextField = styled(TextField)(() => ({}));
 export const PerfilUsuario = () => {
   const { user, updateUserLoading, onSubmit } = usePerfilUsuarioController();
 
-  const { register, handleSubmit, formState } = useForm<IFormInput>({
+  const { register, handleSubmit, formState, setValue } = useForm<IFormInput>({
     defaultValues: {
       email: user?.email || '',
       firstname: user?.firstname || '',
@@ -55,10 +58,11 @@ export const PerfilUsuario = () => {
       dob: user?.dob || '',
       phone: user?.phone || '',
       address: user?.address || '',
+      comuna: user?.comuna,
     },
   });
 
-  const { errors, isDirty } = formState;
+  const { errors, isValid } = formState;
 
   return (
     <Box>
@@ -133,6 +137,7 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.phone)}
               helperText={errors.phone?.message}
             />
+            <UserComunaSearchBar register={setValue} />
             <StyledTextField
               {...register('address', { required: 'Dirección es requerida' })}
               label="Dirección"
@@ -140,8 +145,9 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.address)}
               helperText={errors.address?.message}
             />
+
             <SaveButton
-              disabled={!isDirty}
+              disabled={!isValid}
               style={{
                 marginBottom: '2rem',
               }}

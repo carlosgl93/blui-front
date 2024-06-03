@@ -11,19 +11,15 @@ export const PaymentInfoModal = ({ openInfo, handleClose }: PaymentInfoModalProp
     <Modal open={openInfo} onClose={handleClose}>
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
           display: 'flex',
+          m: '1rem 2rem',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           maxWidth: 'fit-content',
-          margin: 'auto',
           backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '10px',
+          borderRadius: '1rem',
+          padding: '1rem',
           textAlign: 'center',
         }}
       >
