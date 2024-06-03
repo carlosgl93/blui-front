@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import 'dayjs/locale/es-mx';
 import { Title } from '../StyledComponents';
 import {
@@ -11,11 +11,11 @@ import {
 import { DateCalendar } from '@mui/x-date-pickers';
 import { ScheduleController } from './ScheduleController';
 import dayjs from 'dayjs';
+import ServiceSelector from './ServiceSelector';
 
 export const Scheduler = () => {
   const {
     handleCloseScheduleModal,
-    providerAvailability,
     prestadorCreatedServicios,
     schedule,
     renderAvailableDay,
@@ -24,6 +24,8 @@ export const Scheduler = () => {
     setValue,
     handleSelectServicio,
     handleSubmit,
+    shouldDisableDay,
+    handleSelectDate,
   } = ScheduleController();
 
   const { selectedTime, selectedService, selectedDate } = schedule;
@@ -44,35 +46,12 @@ export const Scheduler = () => {
         }}
       >
         <StyledLabel htmlFor="service-selector">¿Qué servicio necesitas?</StyledLabel>
-
-        <FormControl
-          sx={{
-            mx: 'auto',
-          }}
-        >
-          <InputLabel id="service-selector-label">Selecciona el servicio</InputLabel>
-          <Select
-            labelId="service-selector"
-            id="service-selector"
-            label="Selecciona el servicio"
-            onChange={(e) => handleSelectServicio(e.target.value)}
-            sx={{
-              width: {
-                xs: '75vw',
-                sm: '50vw',
-                md: 'fit-content',
-              },
-            }}
-            defaultValue=""
-          >
-            <MenuItem value="">Selecciona un servicio:</MenuItem>
-            {prestadorCreatedServicios?.map((e) => (
-              <MenuItem key={e.id} value={e.id}>
-                {e.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {prestadorCreatedServicios && (
+          <ServiceSelector
+            handleSelectServicio={handleSelectServicio}
+            prestadorCreatedServicios={prestadorCreatedServicios}
+          />
+        )}
 
         {/* step two, if recurrent ask what days per week customer needs support, else ask for starting and end date and time and explain it has to be approximate (again in spanish) */}
         <Box
@@ -80,25 +59,14 @@ export const Scheduler = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '1rem',
           }}
         >
           <StyledLabel>Fecha</StyledLabel>
           <DateCalendar
-            shouldDisableDate={(date) => {
-              // Disable the date if the provider is not available on this day of the week
-              const dayAvailability = providerAvailability?.find((d) => d.id === date.get('day'));
-              // If the day is not available, return true to disable it
-              return !dayAvailability?.isAvailable;
-            }}
+            shouldDisableDate={shouldDisableDay}
             disablePast
             slots={{ day: renderAvailableDay }}
-            onChange={(e) => {
-              setSchedule((prev) => {
-                return { ...prev, selectedDate: e! };
-              });
-              setValue(e);
-            }}
+            onChange={handleSelectDate}
           />
           {selectedService?.duration && selectedDate && (
             <>
@@ -111,7 +79,6 @@ export const Scheduler = () => {
                 timeStep={availableTimesStep}
                 disablePast={selectedDate.isBefore(dayjs())}
                 onChange={(e) => {
-                  console.log('selecting time', e);
                   setSchedule((prev) => {
                     return { ...prev, selectedTime: e! };
                   });

@@ -4,13 +4,12 @@ import Box from '@mui/material/Box';
 
 import routes from '..';
 import Footer from '@/components/Footer';
-import { useAuthNew, useNavigationHistory, useRenderFooter, useRequireLogin } from '@/hooks';
+import { useNavigationHistory, useRenderFooter, useRequireLogin } from '@/hooks';
 
 function Pages() {
-  const { prestador, user } = useAuthNew();
   useNavigationHistory();
 
-  useRequireLogin(prestador?.id, user?.id);
+  useRequireLogin();
   const renderFooter = useRenderFooter();
 
   return (

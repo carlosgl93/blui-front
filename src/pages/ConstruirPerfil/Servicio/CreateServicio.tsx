@@ -5,10 +5,12 @@ import { Servicio } from '@/types/Servicio';
 import { SubTitle } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { SaveButton } from '@/components/SaveButton';
 import Loading from '@/components/Loading';
+import { formatCLP } from '@/utils/formatCLP';
 
 const serviceDurationOptions = [
   { value: 15, label: '15 minutos' },
   { value: 30, label: '30 minutos' },
+  { value: 45, label: '45 minutos' },
   { value: 60, label: '1 hora' },
   { value: 120, label: '2 horas' },
   { value: 180, label: '3 horas' },
@@ -131,7 +133,15 @@ export const CreateServicio = () => {
               ))}
             </Select>
           </FormControl>
-          <TextField label="Precio" type="number" value={tarifa} onChange={handleChangeTarifa} />
+          <TextField
+            label="Precio"
+            type="number"
+            placeholder={formatCLP(Number(tarifa))}
+            value={tarifa}
+            onChange={handleChangeTarifa}
+            helperText="Sin puntos ni comas."
+          />
+
           <Box
             sx={{
               display: 'flex',

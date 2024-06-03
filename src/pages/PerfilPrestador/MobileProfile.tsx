@@ -1,3 +1,5 @@
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import './mobileProfile.css';
 import {
   AboutContainer,
   AboutDescription,
@@ -22,12 +24,13 @@ import { usePerfilPrestador } from './usePerfilPrestador';
 import PerfilBackButton from './PerfilBackButton';
 import { Box, styled } from '@mui/material';
 import { Prestador } from '@/store/auth/prestador';
-import { ListAvailableDays } from './ListAvailableDays';
 import { useChat } from '@/hooks';
 import { useParams } from 'react-router-dom';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import Loading from '@/components/Loading';
 import { ScheduleModal } from '@/components/Schedule/ScheduleModal';
+import { ListAvailableDays } from './ListAvailableDays';
+import { ServiciosCarousel } from './ServiciosCarousel';
 
 export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -65,16 +68,18 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     user?.id ?? '',
     id ?? '',
   );
+
   const {
     firstname,
     imageUrl,
     averageReviews,
     totalReviews,
     description,
-    availability,
     email,
     servicio,
     especialidad,
+    createdServicios,
+    availability,
   } = prestador;
 
   return (
@@ -118,16 +123,20 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         </StyledCTAs>
       </HeroContainer>
       <AboutContainer>
-        {firstname}
         <AboutTitle>Sobre {firstname ? firstname : email}</AboutTitle>
         <AboutDescription>
           {description ? description : 'Este prestador aun no agrega información'}
         </AboutDescription>
       </AboutContainer>
       <SectionContainer>
+        <SectionTitle>Servicios</SectionTitle>
+        <ServiciosCarousel createdServicios={createdServicios} />
+      </SectionContainer>
+      <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
         <ListAvailableDays disponibilidad={availability ?? []} />
       </SectionContainer>
+
       <ScheduleModal handleClose={handleCloseScheduleModal} open={scheduleModalOpen} />
     </Wrapper>
   );

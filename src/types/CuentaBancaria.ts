@@ -8,4 +8,5 @@ export type CuentaBancaria = {
   prestadorId: string;
   createdAt?: string;
   updatedAt?: string;
+  [key: string]: string | number | undefined;
 };
