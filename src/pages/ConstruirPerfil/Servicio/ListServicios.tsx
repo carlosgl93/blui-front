@@ -10,7 +10,6 @@ import { useAuthNew } from '@/hooks';
 import Loading from '@/components/Loading';
 import { formatCLP } from '@/utils/formatCLP';
 
-
 export const ListServicios = () => {
   const {
     prestadorCreatedServicios,
