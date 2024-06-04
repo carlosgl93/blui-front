@@ -81,6 +81,7 @@ export const ListServicios = () => {
                       {servicio.name}
                     </StyledSubtitle>
                     <StyledText>Tarifa: {formatCLP(servicio.price)}</StyledText>
+
                   </Box>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteServicio(prestador?.id ?? '', servicio?.id ?? '')}
