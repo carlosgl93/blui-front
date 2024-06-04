@@ -1,6 +1,6 @@
 import { notificationState } from '@/store/snackbar';
-import resetApp from '@/utils/reset-app';
 import { Button } from '@mui/material';
+import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 function SW() {
@@ -10,26 +10,23 @@ function SW() {
     //eslint-disable-next-line
     offlineReady: [_offlineReady, _setOfflineReady],
     //eslint-disable-next-line
-    needRefresh: [_needRefresh, _setNeedRefresh],
-  } = useRegisterSW({
-    onRegisteredSW(swScriptUrl, registration) {
-      console.log(swScriptUrl);
-      console.log(registration);
-      console.log('sw registered');
-    },
-    onNeedRefresh() {
+    needRefresh: [needRefresh, _setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW();
+
+  useEffect(() => {
+    if (needRefresh) {
       setNotification({
-        open: true,
-        severity: 'error',
-        message: `Nueva version, es necesario ${(
-          <Button variant="contained" onClick={() => resetApp()}>
-            actualizar
+        message: `Nueva version, necesitas refrescar la app: ${(
+          <Button variant="contained" onClick={() => updateServiceWorker(true)}>
+            Refrescar
           </Button>
         )}`,
+        open: true,
+        severity: 'warning',
       });
-    },
-  });
-
+    }
+  }, [needRefresh, updateServiceWorker]);
   return null;
 }
 
