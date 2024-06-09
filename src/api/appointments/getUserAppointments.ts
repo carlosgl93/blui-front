@@ -11,8 +11,9 @@ export const getUserAppointments = async (customerId: string) => {
   const appointmentsRef = collection(db, 'appointments');
   const userAppointmentsQuery = query(appointmentsRef, where('customer.id', '==', customerId));
   const querySnapshot = await getDocs(userAppointmentsQuery);
-  const userAppointments: ScheduleServiceParams[] = querySnapshot.docs.map((doc) =>
-    doc.data(),
-  ) as ScheduleServiceParams[];
+  const userAppointments: ScheduleServiceParams[] = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as ScheduleServiceParams[];
   return sortUserAppointments(userAppointments);
 };

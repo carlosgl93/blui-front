@@ -63,6 +63,7 @@ export const DetallesBasicos = () => {
   return (
     <Box>
       <BackButton
+        to="/construir-perfil"
         ignoreMargin
         displayText
         style={{
@@ -105,6 +106,7 @@ export const DetallesBasicos = () => {
                 {...register('gender', { required: 'Género es requerido' })}
                 error={Boolean(errors.gender)}
                 defaultValue={prestador?.gender}
+                value={prestador?.gender}
               >
                 <MenuItem value="">Selecciona tu genero</MenuItem>
                 <MenuItem value="Masculino">Masculino</MenuItem>
@@ -134,7 +136,7 @@ export const DetallesBasicos = () => {
               helperText={errors.telefono?.message}
             />
             <StyledTextField
-              {...register('address', { required: 'Dirección es requerida' })}
+              {...register('address')}
               label="Dirección"
               variant="outlined"
               error={Boolean(errors.address)}

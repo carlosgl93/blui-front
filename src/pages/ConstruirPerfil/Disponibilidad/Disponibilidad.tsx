@@ -19,7 +19,10 @@ export const Disponibilidad = () => {
 
   return (
     <Wrapper>
-      <BackButton action={editDisponibilidad ? handleEditDisponibilidad : undefined} />
+      <BackButton
+        action={editDisponibilidad ? handleEditDisponibilidad : undefined}
+        to="/construir-perfil"
+      />
       <Container>
         <StyledTitle>Disponibilidad</StyledTitle>
         <SubTitle>Dias y horas disponible</SubTitle>

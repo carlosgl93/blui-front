@@ -4,10 +4,14 @@ import { Prestador } from '@/types';
 import { db } from 'firebase/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
+type ScheduleAppointmentProvider = Pick<Prestador, 'id' | 'firstname' | 'lastname' | 'email'>;
+type ScheduleAppointmentCustomer = Pick<User, 'id' | 'firstname' | 'lastname' | 'email'>;
+
 export interface ScheduleServiceParams {
-  provider: Prestador;
+  id?: string;
+  provider: ScheduleAppointmentProvider;
   servicio: UserCreatedServicio;
-  customer: User;
+  customer: ScheduleAppointmentCustomer;
   scheduledDate: string;
   scheduledTime: string;
   isPaid?: boolean;

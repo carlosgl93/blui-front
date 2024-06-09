@@ -1,6 +1,6 @@
 import { useAppointments } from '@/hooks/useAppointments';
 
-export const SesionesController = () => {
+export const SessionController = () => {
   // const userSessions = useRecoilValue(userAppointmentsState)
   const { userAppointments, userAppointmentsLoading } = useAppointments();
 

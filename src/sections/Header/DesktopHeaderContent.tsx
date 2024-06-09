@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { FlexBox, HeaderIconImage } from '@/components/styled';
@@ -19,6 +18,9 @@ const DesktopHeaderContent = () => {
   const [user, { logout }] = useAuth();
 
   const theme = useTheme<Theme>();
+
+  if (location.pathname.includes('backoffice')) return null;
+
   return (
     <FlexBox sx={{ alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
       <Box

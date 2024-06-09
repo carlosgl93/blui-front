@@ -18,7 +18,7 @@ import Sidebar from '@/sections/Sidebar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { NotificationSnackbar } from './components/Snackbar';
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
@@ -39,6 +39,7 @@ function App() {
           <CssBaseline />
           <HotKeys />
           <SW />
+          {/* <BackOffice/> */}
           <BrowserRouter>
             <Header />
             <Sidebar />

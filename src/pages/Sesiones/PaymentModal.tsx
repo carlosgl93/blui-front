@@ -7,9 +7,15 @@ type PaymentModalProps = {
   openPayment: boolean;
   handleClose: () => void;
   paymentAmount: string;
+  handlePayment?: () => void;
 };
 
-export const PaymentModal = ({ openPayment, handleClose, paymentAmount }: PaymentModalProps) => {
+export const PaymentModal = ({
+  openPayment,
+  handleClose,
+  paymentAmount,
+  handlePayment,
+}: PaymentModalProps) => {
   return (
     <Modal open={openPayment} onClose={handleClose}>
       <Box
@@ -82,7 +88,9 @@ export const PaymentModal = ({ openPayment, handleClose, paymentAmount }: Paymen
             profesional no realice el servicio.
           </Text>
         </Box>
-        <Button variant="contained">Ya transferí</Button>
+        <Button variant="contained" onClick={handlePayment}>
+          Ya transferí
+        </Button>
       </Box>
     </Modal>
   );

@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
 import Meta from '@/components/Meta';
 import { Text, Title } from '../../components/StyledComponents';
-import { SesionesController } from './SesionesController';
+import { SessionController } from './SessionController';
 import Loading from '@/components/Loading';
 import { ListSesiones } from './ListSesiones';
 
 function Sesiones() {
-  const { userAppointments, userAppointmentsLoading } = SesionesController();
+  const { userAppointments, userAppointmentsLoading } = SessionController();
 
   return (
     <>

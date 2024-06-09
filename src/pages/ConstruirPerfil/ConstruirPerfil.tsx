@@ -1,3 +1,4 @@
+import './styles.css';
 import { Box, Button, List } from '@mui/material';
 import {
   Container,
@@ -52,7 +53,11 @@ export const ConstruirPerfil = () => {
               {construirPerfilOpciones.map((opcion) => {
                 const { key, value } = opcion;
                 return (
-                  <StyledLink key={opcion.key} to={`/construir-perfil/${opcion.key}`}>
+                  <StyledLink
+                    aria-disabled={!opcion.implemented}
+                    key={opcion.key}
+                    to={opcion.implemented ? `/construir-perfil/${opcion.key}` : ''}
+                  >
                     <StyledListItem>
                       {settings?.[key] ? <StyledCheckedIcon /> : <StyledUncheckedIcon />}
                       <StyledOption>{value}</StyledOption>

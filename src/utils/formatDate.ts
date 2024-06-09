@@ -1,4 +1,4 @@
-export const formatDate = (dateString: Date) => {
+export const formatDate = (dateString: Date | string, capitalize = false) => {
   const date = new Date(dateString);
   const now = new Date();
 
@@ -24,9 +24,16 @@ export const formatDate = (dateString: Date) => {
 
   if (sameYesterday) return 'Ayer';
 
-  return date.toLocaleString('es-mx', {
+  let formattedDate = date.toLocaleString('es-mx', {
+    weekday: 'long',
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
   });
+
+  if (capitalize) {
+    formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+  }
+
+  return formattedDate;
 };

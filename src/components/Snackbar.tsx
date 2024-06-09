@@ -1,10 +1,10 @@
 import { notificationState } from '@/store/snackbar';
 import { useSnackbarController } from '@/store/snackbar/useSnackbarController';
 import { Alert, Snackbar } from '@mui/material';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 export const NotificationSnackbar = () => {
-  const [notification] = useRecoilState(notificationState);
+  const notification = useRecoilValue(notificationState);
   const { open, message, severity } = notification;
   const { onClose } = useSnackbarController();
 
