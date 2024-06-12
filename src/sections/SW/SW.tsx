@@ -1,6 +1,4 @@
 import { notificationState } from '@/store/snackbar';
-import resetApp from '@/utils/reset-app';
-import { Button } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 function SW() {
@@ -21,11 +19,7 @@ function SW() {
       setNotification({
         open: true,
         severity: 'error',
-        message: `Nueva version, es necesario ${(
-          <Button variant="contained" onClick={() => resetApp()}>
-            actualizar
-          </Button>
-        )}`,
+        message: `Nueva versión, la app será recargada`,
       });
     },
   });
