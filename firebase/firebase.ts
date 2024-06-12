@@ -6,7 +6,7 @@ import { getStorage, connectStorageEmulator } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyCFFGtQ8UCPXendLYZc0koY2X2xqCqg4D8',
   authDomain: 'blui-6ec33.firebaseapp.com',
   projectId: 'blui-6ec33',

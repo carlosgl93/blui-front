@@ -39,7 +39,6 @@ function App() {
           <CssBaseline />
           <HotKeys />
           <SW />
-          {/* <BackOffice/> */}
           <BrowserRouter>
             <Header />
             <Sidebar />

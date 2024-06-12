@@ -150,10 +150,6 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/BackOffice')),
     path: '/backoffice/*',
   },
-  // [Pages.BackOfficeProviders]: {
-  //   component: asyncComponentLoader(() => import('@/pages/Providers')),
-  //   path: '/backoffice/providers',
-  // },
   [Pages.AdminLogin]: {
     component: asyncComponentLoader(() => import('@/pages/AdminLogin')),
     path: '/backoffice/login',
