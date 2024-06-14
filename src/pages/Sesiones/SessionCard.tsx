@@ -86,37 +86,28 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             }}
           />
           <Text variant="body2" color="textSecondary">
-            {isPaid}
+            {isPaid === false ? 'Pago pendiente' : isPaid}
           </Text>
-          {isPaid === false ? (
-            <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
-              <InfoOutlinedIcon
-                sx={{
-                  color: 'red',
-                }}
-              />
-            </IconButton>
-          ) : (
-            <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
-              <InfoOutlinedIcon
-                onMouseOver={handleOpenInfo}
-                sx={{
-                  color: 'red',
-                }}
-              />
-            </IconButton>
-          )}
+          {isPaid === 'Transferencia no encontrada' ||
+            (isPaid === false && (
+              <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
+                <InfoOutlinedIcon
+                  sx={{
+                    color: 'red',
+                  }}
+                />
+              </IconButton>
+            ))}
           <PaymentInfoModal
             isPaid={appointment.isPaid}
             openInfo={openInfo}
             handleClose={handleCloseInfo}
           />
-          {!isPaid ||
-            (isPaid === 'Transferencia no encontrada' && (
-              <Button variant="contained" onClick={handleOpenPayment}>
-                Pagar
-              </Button>
-            ))}
+          {(!isPaid || isPaid === 'Transferencia no encontrada') && (
+            <Button variant="contained" onClick={handleOpenPayment}>
+              Pagar
+            </Button>
+          )}
           <PaymentModal
             paymentAmount={servicio.price}
             openPayment={openPayment}

@@ -68,7 +68,7 @@ export const PaymentInfoModal = ({ isPaid, openInfo, handleClose }: PaymentInfoM
             <b>Tu transferencia no fue encontrada o el monto fue incorrecto</b>.
           </Typography>
           <Typography variant="body1">
-            Revisa el email que usaste para enviar la el comprobante de la transferencia
+            Revisa el email que usaste para enviar el comprobante de la transferencia
             (francisco.durney@blui.cl) y verifica que el monto sea el correcto.
           </Typography>
         </Box>
