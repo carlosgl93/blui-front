@@ -18,8 +18,6 @@ export const PaymentController = (appointmentId?: string) => {
   const client = useQueryClient();
   const { user } = useAuthNew();
 
-  console.log(appointmentId);
-
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: async () => {
       // await axios.post('https://us-central1-blui-310f4.cloudfunctions.net/userPaidAppointment', {

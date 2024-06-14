@@ -46,7 +46,7 @@ export const PaymentModal = ({
           <Text variant="body1">
             <b>Monto:</b>
           </Text>
-          <Text>{formatCLP(paymentAmount)}</Text>
+          <Text>{formatCLP(+paymentAmount * 1.035)}</Text>
           <Text variant="body1">
             <b>Nombre:</b>
           </Text>
