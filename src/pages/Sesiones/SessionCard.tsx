@@ -11,6 +11,7 @@ import { PaymentModal } from './PaymentModal';
 import { formatDate } from '@/utils/formatDate';
 import { PaymentController } from './PaymentController';
 import { InfoController } from './InfoController';
+import Loading from '@/components/Loading';
 
 type SessionCardProps = {
   appointment: ScheduleServiceParams;
@@ -19,9 +20,15 @@ type SessionCardProps = {
 export const SessionCard = ({ appointment }: SessionCardProps) => {
   const { scheduledDate, scheduledTime, provider, servicio, isPaid } = appointment;
   const { openInfo, handleCloseInfo, handleOpenInfo } = InfoController();
-  const { openPayment, handleClosePayment, handleOpenPayment, handlePayment } = PaymentController(
-    appointment.id,
-  );
+  const {
+    openPayment,
+    handleClosePayment,
+    handleOpenPayment,
+    handlePayment,
+    isLoadingVerifyPayment,
+  } = PaymentController(appointment.id);
+
+  if (isLoadingVerifyPayment) return <Loading />;
 
   return (
     <Card sx={{ my: 2, borderRadius: '1rem', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
