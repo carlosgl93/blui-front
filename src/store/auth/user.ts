@@ -5,7 +5,7 @@ export interface User {
   comuna?: Comuna;
   email: string;
   id: string;
-  role: string;
+  role: 'admin' | 'user' | 'prestador' | '';
   firstname: string;
   lastname: string;
   forWhom: string;

@@ -36,8 +36,6 @@ const MobileHeaderContent = () => {
     );
   }
 
-  if (location.pathname.includes('backoffice')) return null;
-
   return (
     <FlexBox sx={{ alignItems: 'center' }}>
       <IconButton

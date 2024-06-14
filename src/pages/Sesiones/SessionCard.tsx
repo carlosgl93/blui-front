@@ -77,7 +77,11 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             }}
           />
           <Text variant="body2" color="textSecondary">
-            {isPaid ? 'Pagado' : 'No pagado'}
+            {isPaid === 'Confirmando'
+              ? 'Confirmando'
+              : isPaid === 'Confirmada'
+              ? 'Confirmada'
+              : 'No pagado'}
           </Text>
           {isPaid ? (
             <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>

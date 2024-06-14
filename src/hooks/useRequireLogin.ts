@@ -42,6 +42,10 @@ export function useRequireLogin() {
     //   setUser(userData);
     //   redirectAfterLogin ? navigate(redirectAfterLogin) : navigate('/usuario-dashboard');
     // }
+    if ((!prestadorId || !userId) && location.pathname.includes('/backoffice')) {
+      setRedirectAfterLogin(location.pathname);
+      navigate('/backoffice/login');
+    }
 
     if (!prestadorId && !userId && protectedRoutes?.includes(location.pathname)) {
       setRedirectAfterLogin(location.pathname);

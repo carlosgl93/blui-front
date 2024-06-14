@@ -391,7 +391,7 @@ export const useAuthNew = () => {
           if (admins.docs.length > 0) {
             const user = admins.docs[0].data() as User;
             user.id = admins.docs[0].id;
-            setUserState({ ...user, isLoggedIn: true });
+            setUserState({ ...user, isLoggedIn: true, role: 'admin' });
             queryClient.setQueryData(['user', correo], user);
             return { role: 'admin', data: user };
           } else {
@@ -435,7 +435,7 @@ export const useAuthNew = () => {
           severity: 'success',
         });
         if (data?.role === 'admin') {
-          setUserState({ ...data.data, isLoggedIn: true } as User);
+          setUserState({ ...data.data, isLoggedIn: true, role: 'admin' } as User);
           navigate(`/backoffice`);
         }
       },

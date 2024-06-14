@@ -1,3 +1,5 @@
+import { Wrapper } from './styledBackOffice';
+
 export const BackOffice = () => {
-  return <div>BackOffice</div>;
+  return <Wrapper>BackOffice</Wrapper>;
 };

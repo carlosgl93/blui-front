@@ -40,6 +40,8 @@ enum Pages {
   DetallesBasicos,
   Sesiones,
   BackOffice,
+  BackOfficePrestadores,
+  BackOfficePagos,
   AdminLogin,
 }
 

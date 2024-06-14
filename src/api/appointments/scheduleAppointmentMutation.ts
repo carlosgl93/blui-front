@@ -14,7 +14,7 @@ export interface ScheduleServiceParams {
   customer: ScheduleAppointmentCustomer;
   scheduledDate: string;
   scheduledTime: string;
-  isPaid?: boolean;
+  isPaid?: boolean | 'Confirmando' | 'Confirmada';
 }
 
 export async function scheduleService({

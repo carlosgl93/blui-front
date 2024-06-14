@@ -7,6 +7,7 @@ import { getUserAppointments } from '@/api/appointments/getUserAppointments';
 import { userAppointmentsState } from '@/store/appointments/userAppointmentsState';
 import { notificationState } from '@/store/snackbar';
 import { providerAppointmentsState } from '@/store/appointments/providerAppointmentsState';
+import { getAllAppointments } from '@/api/appointments/getAllAppointments';
 
 export const useAppointments = () => {
   const interactedPrestador = useRecoilValue(interactedPrestadorState);
@@ -59,7 +60,24 @@ export const useAppointments = () => {
     },
   });
 
+  const {
+    data: allAppointments,
+    isLoading: allAppointmentsLoading,
+    error: allAppointmentsError,
+  } = useQuery(['allAppointments'], () => getAllAppointments(), {
+    onError: () => {
+      setNotification({
+        open: true,
+        message: 'Hubo un error cargando todas las sesiones',
+        severity: 'error',
+      });
+    },
+  });
+
   return {
+    allAppointments,
+    allAppointmentsLoading,
+    allAppointmentsError,
     providersAppointments,
     providersAppointmentsLoading,
     providersAppointmentsError,
