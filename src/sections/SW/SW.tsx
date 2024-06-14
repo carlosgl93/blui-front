@@ -10,17 +10,15 @@ function SW() {
     //eslint-disable-next-line
     needRefresh: [_needRefresh, _setNeedRefresh],
   } = useRegisterSW({
-    onRegisteredSW(swScriptUrl, registration) {
-      console.log(swScriptUrl);
-      console.log(registration);
-      console.log('sw registered');
-    },
     onNeedRefresh() {
       setNotification({
         open: true,
         severity: 'error',
         message: `Nueva versión, la app será recargada`,
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     },
   });
 
