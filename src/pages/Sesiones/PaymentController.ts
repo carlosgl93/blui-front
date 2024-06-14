@@ -8,7 +8,7 @@ import {
 } from '@/api/appointments';
 import { notificationState } from '@/store/snackbar';
 import { useAuthNew } from '@/hooks';
-import axios from 'axios';
+// import axios from 'axios';
 
 export const PaymentController = (appointmentId?: string) => {
   const [openPayment, setOpenPayment] = useState(false);
@@ -18,12 +18,14 @@ export const PaymentController = (appointmentId?: string) => {
   const client = useQueryClient();
   const { user } = useAuthNew();
 
+  console.log(appointmentId);
+
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: async () => {
-      await axios.post('https://us-central1-blui-310f4.cloudfunctions.net/userPaidAppointment', {
-        userEmail: user?.email,
-        appointmentId,
-      });
+      // await axios.post('https://us-central1-blui-310f4.cloudfunctions.net/userPaidAppointment', {
+      //   userEmail: user?.email,
+      //   appointmentId,
+      // });
       client.invalidateQueries(['userAppointments', user?.id]);
       setNotification({
         open: true,

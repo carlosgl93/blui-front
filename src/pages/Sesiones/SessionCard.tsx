@@ -47,7 +47,9 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             }}
           />
           <Text variant="body2" color="textSecondary">
-            {provider?.email}
+            {provider.firstname && provider.lastname
+              ? `${provider.firstname} ${provider.lastname}`
+              : provider?.email}
           </Text>
         </FlexBox>
         <FlexBox
@@ -77,11 +79,7 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             }}
           />
           <Text variant="body2" color="textSecondary">
-            {isPaid === 'Confirmando'
-              ? 'Confirmando'
-              : isPaid === 'Confirmada'
-              ? 'Confirmada'
-              : 'No pagado'}
+            {isPaid}
           </Text>
           {isPaid ? (
             <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
@@ -111,7 +109,7 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             paymentAmount={servicio.price}
             openPayment={openPayment}
             handleClose={handleClosePayment}
-            handlePayment={handlePayment}
+            handlePayment={() => handlePayment()}
           />
         </FlexBox>
       </CardContent>
