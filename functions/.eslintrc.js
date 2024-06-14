@@ -30,5 +30,6 @@ module.exports = {
     "indent": "off",
     "object-curly-spacing": "off",
     "no-trailing-spaces": "off",
+    "max-len": "off",
   },
 };
