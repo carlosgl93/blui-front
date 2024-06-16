@@ -14,6 +14,7 @@ function SW() {
     updateServiceWorker,
   } = useRegisterSW({
     onNeedRefresh() {
+      console.log('NEED REFRESH RAN');
       setNeedRefresh(true);
     },
   });
