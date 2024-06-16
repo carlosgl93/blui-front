@@ -3,6 +3,7 @@ import { getAnalytics } from 'firebase/analytics';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
+import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,6 +22,7 @@ export const app = initializeApp(firebaseConfig, 'blui');
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+const functions = getFunctions(app);
 
 // Check if window is defined before initializing Firebase Analytics
 export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
@@ -30,4 +32,5 @@ if (import.meta.env.VITE_ENV === 'dev') {
   connectAuthEmulator(auth, 'http://localhost:9099/auth');
   connectFirestoreEmulator(db, 'localhost', 8080);
   connectStorageEmulator(storage, 'localhost', 9199);
+  connectFunctionsEmulator(functions, 'localhost', 5001);
 }

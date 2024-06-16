@@ -210,6 +210,11 @@ export const ScheduleController = () => {
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
       onSuccess: (data) => {
+        setSchedule({
+          selectedTime: null,
+          selectedDate: null,
+        });
+        setValue(null);
         setNotification({
           open: true,
           message: 'Servicio agendado correctamente',

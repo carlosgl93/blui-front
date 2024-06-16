@@ -6,10 +6,14 @@ import { ScheduleServiceParams } from '@/api/appointments';
 import dayjs from 'dayjs';
 import { formatCLP } from '@/utils/formatCLP';
 import { PaymentController } from '@/pages/Sesiones/PaymentController';
+import { useRecoilState } from 'recoil';
+import { paymentsGridPaginationModelState } from '@/store/payments';
 
 type PaymentsRow = ScheduleServiceParams;
 
 export const PaymentsGridController = () => {
+  const [paginationModel, setPaginationModel] = useRecoilState(paymentsGridPaginationModelState);
+
   const {
     handleVerifyPayment,
     isLoadingVerifyPayment,
@@ -60,6 +64,9 @@ export const PaymentsGridController = () => {
         field: 'isPaid',
         headerName: 'Estado de pago',
         valueGetter: (_value, row) => {
+          if (row.isPaid === false) {
+            return 'No pagado';
+          }
           return row.isPaid;
         },
         width: 150,
@@ -67,9 +74,18 @@ export const PaymentsGridController = () => {
       },
       {
         field: 'scheduledDate',
-        headerName: 'Fecha',
+        headerName: 'Fecha Sesión',
         valueGetter: (_value, row) => {
           return dayjs(`${row.scheduledDate}${row.scheduledTime}`).format('DD/MM/YYYY HH:mm');
+        },
+        width: 150,
+        editable: false,
+      },
+      {
+        field: 'createdAt',
+        headerName: 'Fecha de creación',
+        valueGetter: (_value, row) => {
+          return dayjs(`${row.createdAt}`).format('DD/MM/YYYY HH:mm');
         },
         width: 150,
         editable: false,
@@ -94,14 +110,14 @@ export const PaymentsGridController = () => {
         ],
       },
     ],
-    [
-      // todo, add the actions as dependencies here
-    ],
+    [handlePaymentVerificationFailed, handleVerifyPayment],
   );
 
   return {
     columns,
+    paginationModel,
     isLoadingPaymentVerificationFailed,
     isLoadingVerifyPayment,
+    setPaginationModel,
   };
 };
