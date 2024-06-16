@@ -109,6 +109,7 @@ export const PerfilUsuario = () => {
                 {...register('gender', { required: 'Género es requerido' })}
                 error={Boolean(errors.gender)}
                 defaultValue={user?.gender}
+                value={user?.gender}
               >
                 <MenuItem value="">Selecciona tu genero</MenuItem>
                 <MenuItem value="Masculino">Masculino</MenuItem>

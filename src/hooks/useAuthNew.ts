@@ -1,7 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import { auth, db } from '../../firebase/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import {
+  browserSessionPersistence,
+  createUserWithEmailAndPassword,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 import {
   collection,
   query,
@@ -304,8 +310,6 @@ export const useAuthNew = () => {
         if (users.docs.length > 0) {
           const user = users.docs[0].data() as User;
           setUserState({ ...user, isLoggedIn: true });
-          localStorage.setItem('user', JSON.stringify({ ...user, isLoggedIn: true }));
-          localStorage.removeItem('prestador');
           queryClient.setQueryData(['user', correo], user);
           return { role: 'user', data: user };
         } else if (prestadores.docs.length > 0) {
@@ -320,8 +324,6 @@ export const useAuthNew = () => {
           const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
           prestador.availability = availability;
           setPrestadorState({ ...prestador, isLoggedIn: true });
-          localStorage.setItem('prestador', JSON.stringify({ ...prestador, isLoggedIn: true }));
-          localStorage.removeItem('user');
           queryClient.setQueryData(['prestador', correo], prestador);
           return { role: 'prestador', data: prestador };
         }
@@ -373,6 +375,73 @@ export const useAuthNew = () => {
     },
   );
 
+  const { mutate: adminLogin, isLoading: adminLoginLoading } = useMutation(
+    async ({ correo, contrasena }: { correo: string; contrasena: string }) => {
+      setNotification({
+        open: true,
+        message: 'Iniciando sesión...',
+        severity: 'info',
+      });
+      return setPersistence(auth, browserSessionPersistence).then(() =>
+        signInWithEmailAndPassword(auth, correo, contrasena).then(async () => {
+          const adminsColectionRef = collection(db, 'admins');
+          const adminQuery = query(adminsColectionRef, limit(1), where('email', '==', correo));
+          const admins = await getDocs(adminQuery);
+
+          if (admins.docs.length > 0) {
+            const user = admins.docs[0].data() as User;
+            user.id = admins.docs[0].id;
+            setUserState({ ...user, isLoggedIn: true, role: 'admin' });
+            queryClient.setQueryData(['user', correo], user);
+            return { role: 'admin', data: user };
+          } else {
+            throw new Error('No se encontró ningún admin con ese correo electrónico.');
+          }
+        }),
+      );
+    },
+    {
+      onError(error: FirebaseError) {
+        let message = 'Error: ';
+
+        switch (error.code) {
+          case 'auth/user-not-found':
+            message += 'No se encontró ningún admin con ese correo electrónico.';
+            break;
+          case 'auth/wrong-password':
+            message += 'La contraseña es incorrecta.';
+            break;
+          case 'auth/invalid-email':
+            message += 'El correo electrónico no es válido.';
+            break;
+          case 'auth/invalid-credential':
+            message += 'Email o contraseña incorrecta.';
+            break;
+          default:
+            message += error.message;
+        }
+
+        setNotification({
+          open: true,
+          message,
+          severity: 'error',
+        });
+      },
+      onSuccess(data) {
+        console.log('AUTH CURRENT USER', auth.currentUser);
+        setNotification({
+          open: true,
+          message: `Sesión iniciada exitosamente`,
+          severity: 'success',
+        });
+        if (data?.role === 'admin') {
+          setUserState({ ...data.data, isLoggedIn: true, role: 'admin' } as User);
+          navigate(`/backoffice`);
+        }
+      },
+    },
+  );
+
   const { mutate: logout } = useMutation(() => signOut(auth), {
     onSuccess: () => {
       localStorage.removeItem('user');
@@ -389,15 +458,17 @@ export const useAuthNew = () => {
   });
 
   return {
-    createUser,
-    createUserLoading,
-    createPrestador,
-    createPrestadorLoading,
     login,
-    loginLoading,
+    logout,
+    createUser,
+    adminLogin,
+    createPrestador,
     user,
     prestador,
-    logout,
     isLoggedIn,
+    loginLoading,
+    createUserLoading,
+    adminLoginLoading,
+    createPrestadorLoading,
   };
 };

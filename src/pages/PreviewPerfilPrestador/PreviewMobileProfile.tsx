@@ -1,4 +1,7 @@
 import {
+  AboutContainer,
+  AboutDescription,
+  AboutTitle,
   HeroContainer,
   ReviewsContainer,
   StyledAvatar,
@@ -7,20 +10,18 @@ import {
   StyledServicio,
   StyledTitle,
   Wrapper,
-} from './MobilePerfilPrestadorStyledComponents';
-
-import Reviews from '@/components/Reviews';
-import {
-  AboutContainer,
-  AboutDescription,
-  AboutTitle,
 } from '../PerfilPrestador/MobilePerfilPrestadorStyledComponents';
+import Reviews from '@/components/Reviews';
 import { ListAvailableDays } from '../PerfilPrestador/ListAvailableDays';
 import { Box, styled } from '@mui/material';
 import PerfilBackButton from './PerfilBackButton';
-import { useAuthNew } from '@/hooks/useAuthNew';
 import { Prestador } from '@/store/auth/prestador';
-import { Tarifas } from '../PerfilPrestador/Tarifas';
+import {
+  StyledContactButton,
+  StyledShortListButton,
+} from './DesktopPerfilPrestadorStyledComponents';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
+import { ServiciosCarousel } from '../PerfilPrestador/ServiciosCarousel';
 
 const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -28,7 +29,7 @@ const SectionContainer = styled(Box)(() => ({
   alignItems: 'flex-start',
   justifyContent: 'start',
   width: '100%',
-  padding: '0 1rem',
+  padding: '1rem 1rem',
 }));
 
 const SectionTitle = styled(StyledTitle)(({ theme }) => ({
@@ -36,24 +37,23 @@ const SectionTitle = styled(StyledTitle)(({ theme }) => ({
   fontSize: '1.5rem',
 }));
 
-export const PreviewMobileProfile = () => {
-  // const { prestadorServicio, prestadorEspecialidad, handleEditPerfil, disponibilidad } =
-  //   usePreviewPerfilPrestador();
-  const { prestador } = useAuthNew();
+type PreviewMobileProfileProps = {
+  fullProvider: Prestador | undefined;
+};
 
+export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps) => {
   const {
     firstname,
     imageUrl,
-    description,
     averageReviews,
     totalReviews,
-    availability,
+    description,
+    email,
     servicio,
     especialidad,
-    email,
-    tarifas,
-    offersFreeMeetAndGreet,
-  } = prestador as Prestador;
+    createdServicios,
+    availability,
+  } = fullProvider as Prestador;
 
   return (
     <Wrapper>
@@ -61,17 +61,20 @@ export const PreviewMobileProfile = () => {
         <PerfilBackButton />
         <StyledAvatar alt={`Imagen de perfil de ${firstname}`} src={imageUrl} />
         <StyledNameContainer>
-          <StyledTitle>{firstname ? firstname : ''}</StyledTitle>
-          <ReviewsContainer>
-            <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
-          </ReviewsContainer>
+          <StyledTitle>{firstname ? firstname : email}</StyledTitle>
         </StyledNameContainer>
+        <ReviewsContainer>
+          <Reviews average={averageReviews || 0} total_reviews={totalReviews || 0} />
+        </ReviewsContainer>
 
         <StyledServicio>
           {servicio} {especialidad && `/ ${especialidad}`}
         </StyledServicio>
         <StyledCTAs>
-          {/* <StyledContactButton onClick={handleEditPerfil}>Editar perfil</StyledContactButton> */}
+          <StyledContactButton>Ver conversación</StyledContactButton>
+          <StyledShortListButton startIcon={<EditCalendarOutlinedIcon />}>
+            Agendar
+          </StyledShortListButton>
         </StyledCTAs>
       </HeroContainer>
       <AboutContainer>
@@ -80,14 +83,13 @@ export const PreviewMobileProfile = () => {
           {description ? description : 'Este prestador aun no agrega información'}
         </AboutDescription>
       </AboutContainer>
-
+      <SectionContainer>
+        <SectionTitle>Servicios</SectionTitle>
+        <ServiciosCarousel createdServicios={createdServicios} />
+      </SectionContainer>
       <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
         <ListAvailableDays disponibilidad={availability ?? []} />
-      </SectionContainer>
-      <SectionContainer>
-        <SectionTitle>Tarifas</SectionTitle>
-        <Tarifas tarifas={tarifas} freeMeetGreet={offersFreeMeetAndGreet} />
       </SectionContainer>
     </Wrapper>
   );

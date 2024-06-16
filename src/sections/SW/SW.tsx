@@ -1,35 +1,52 @@
 import { notificationState } from '@/store/snackbar';
-import resetApp from '@/utils/reset-app';
 import { Button } from '@mui/material';
-import { useSetRecoilState } from 'recoil';
+import { useCallback, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 function SW() {
-  const setNotification = useSetRecoilState(notificationState);
+  const [notification, setNotification] = useRecoilState(notificationState);
 
   const {
     //eslint-disable-next-line
-    offlineReady: [_offlineReady, _setOfflineReady],
+    offlineReady: [_offlineReady, setOfflineReady],
     //eslint-disable-next-line
-    needRefresh: [_needRefresh, _setNeedRefresh],
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
   } = useRegisterSW({
-    onRegisteredSW(swScriptUrl, registration) {
-      console.log(swScriptUrl);
-      console.log(registration);
-      console.log('sw registered');
-    },
     onNeedRefresh() {
-      setNotification({
-        open: true,
-        severity: 'error',
-        message: `Nueva version, es necesario ${(
-          <Button variant="contained" onClick={() => resetApp()}>
-            actualizar
-          </Button>
-        )}`,
-      });
+      console.log('NEED REFRESH RAN');
+      setNeedRefresh(true);
     },
   });
 
+  const close = useCallback(() => {
+    setOfflineReady(false);
+    setNeedRefresh(false);
+
+    if (notification.open) {
+      setNotification({
+        ...notification,
+        open: false,
+      });
+    }
+  }, [setOfflineReady, setNeedRefresh, notification, setNotification]);
+
+  useEffect(() => {
+    if (needRefresh) {
+      setNotification({
+        message: 'Actualización instalada, por favor recarga la página.',
+        open: true,
+        severity: 'warning',
+        persist: true,
+        action: (
+          <>
+            <Button onClick={() => updateServiceWorker(true)}>Recargar</Button>
+            <Button onClick={close}>Cerrar</Button>
+          </>
+        ),
+      });
+    }
+  }, [needRefresh, updateServiceWorker]);
   return null;
 }
 

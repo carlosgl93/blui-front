@@ -39,6 +39,10 @@ enum Pages {
   EducacionFormacion,
   DetallesBasicos,
   Sesiones,
+  BackOffice,
+  BackOfficePrestadores,
+  BackOfficePagos,
+  AdminLogin,
 }
 
 type PathRouteCustomProps = {

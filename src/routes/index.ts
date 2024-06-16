@@ -1,5 +1,4 @@
 import asyncComponentLoader from '@/utils/loader';
-
 import { Pages, Routes } from './types';
 
 const routes: Routes = {
@@ -147,6 +146,22 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/Sesiones')),
     path: '/sesiones',
   },
+  [Pages.BackOffice]: {
+    component: asyncComponentLoader(() => import('@/pages/BackOffice')),
+    path: '/backoffice',
+  },
+  [Pages.BackOfficePrestadores]: {
+    component: asyncComponentLoader(() => import('@/pages/BackOffice/Prestadores')),
+    path: '/backoffice/prestadores',
+  },
+  [Pages.BackOfficePagos]: {
+    component: asyncComponentLoader(() => import('@/pages/BackOffice/Pagos')),
+    path: '/backoffice/pagos',
+  },
+  [Pages.AdminLogin]: {
+    component: asyncComponentLoader(() => import('@/pages/AdminLogin')),
+    path: '/backoffice/login',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',
@@ -174,6 +189,7 @@ export const protectedRoutes = [
   '/usuario-dashboard',
   '/email-verificado',
   '/sesiones',
+  '/preview-perfil-prestador/',
 ];
 
 export default routes;

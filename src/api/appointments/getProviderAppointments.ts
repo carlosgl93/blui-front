@@ -11,6 +11,6 @@ export const getProviderAppointments = async (providerId: string) => {
   const q = query(appointmentsRef, where('provider.id', '==', providerId));
   const querySnapshot = await getDocs(q);
   return sortUserAppointments(
-    querySnapshot.docs.map((doc) => doc.data()) as ScheduleServiceParams[],
+    querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as ScheduleServiceParams[],
   );
 };

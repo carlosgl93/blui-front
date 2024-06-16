@@ -1,16 +1,22 @@
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { User } from '@/store/auth/user';
 import { Prestador } from '@/types';
+import dayjs from 'dayjs';
 import { db } from 'firebase/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, FieldValue } from 'firebase/firestore';
+
+type ScheduleAppointmentProvider = Pick<Prestador, 'id' | 'firstname' | 'lastname' | 'email'>;
+type ScheduleAppointmentCustomer = Pick<User, 'id' | 'firstname' | 'lastname' | 'email'>;
 
 export interface ScheduleServiceParams {
-  provider: Prestador;
+  id?: string;
+  provider: ScheduleAppointmentProvider;
   servicio: UserCreatedServicio;
-  customer: User;
+  customer: ScheduleAppointmentCustomer;
   scheduledDate: string;
   scheduledTime: string;
-  isPaid?: boolean;
+  isPaid?: boolean | 'Confirmando' | 'Confirmada' | 'Transferencia no encontrada';
+  createdAt?: FieldValue | string | dayjs.Dayjs;
 }
 
 export async function scheduleService({
@@ -20,19 +26,18 @@ export async function scheduleService({
   scheduledDate,
   scheduledTime,
 }: ScheduleServiceParams) {
-  const newAppointment = {
+  const newAppointment: ScheduleServiceParams = {
     provider,
     servicio,
     customer,
     scheduledDate,
     scheduledTime,
     isPaid: false,
+    createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   };
 
-  await setDoc(
-    doc(db, 'appointments', `${provider.id}_${servicio.id}_${customer.id}_${scheduledTime}`),
-    newAppointment,
-  );
+  const docRef = await addDoc(collection(db, 'appointments'), newAppointment);
+  newAppointment.id = docRef.id;
 
   return newAppointment;
 }

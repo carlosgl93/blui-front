@@ -16,3 +16,8 @@ export const userAppointmentsState = atom<ScheduleServiceParams[]>({
   key: 'userAppointmentsState',
   default: [],
 });
+
+export const searchedAppointmentState = atom<string>({
+  key: 'searchedAppointmentState',
+  default: '',
+});

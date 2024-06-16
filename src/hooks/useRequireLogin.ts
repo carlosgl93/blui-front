@@ -13,8 +13,8 @@ export function useRequireLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const prestadorId = !!prestador?.id.length;
-  const userId = !!user?.id.length;
+  const prestadorId = !!prestador?.id?.length;
+  const userId = !!user?.id?.length;
 
   useEffect(() => {
     // const storedPrestador = localStorage.getItem('prestador');
@@ -42,8 +42,12 @@ export function useRequireLogin() {
     //   setUser(userData);
     //   redirectAfterLogin ? navigate(redirectAfterLogin) : navigate('/usuario-dashboard');
     // }
+    if ((!prestadorId || !userId) && location.pathname.includes('/backoffice')) {
+      setRedirectAfterLogin(location.pathname);
+      navigate('/backoffice/login');
+    }
 
-    if (!prestadorId && !userId && protectedRoutes.includes(location.pathname)) {
+    if (!prestadorId && !userId && protectedRoutes?.includes(location.pathname)) {
       setRedirectAfterLogin(location.pathname);
       navigate('/ingresar');
     }

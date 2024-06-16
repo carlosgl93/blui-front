@@ -30,7 +30,7 @@ export const EditarComunas = () => {
 
   return (
     <Wrapper>
-      <BackButton />
+      <BackButton to="/construir-perfil" />
       {fetchPrestadorComunasIsLoading ? (
         <Loading />
       ) : (

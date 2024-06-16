@@ -102,9 +102,6 @@ export const StyledChatContainer = styled(Box)(() => ({
 
 export const StyledScheduleContainer = styled(Box)(() => ({
   height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
 }));
 
 export const StyledScheduleForm = styled(FormGroup)(() => ({
@@ -132,5 +129,4 @@ export const StyledTitleContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '1rem',
 }));

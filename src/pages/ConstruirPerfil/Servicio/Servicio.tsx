@@ -26,7 +26,7 @@ export const Servicio = () => {
   }
   return (
     <Wrapper>
-      <BackButton displayText />
+      <BackButton displayText to="/construir-perfil" />
       <Container>
         <StyledTitle>Servicios</StyledTitle>
         {isCreatingServicio ? <CreateServicio /> : <ListServicios />}

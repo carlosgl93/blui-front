@@ -1,8 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import { routesToExcludeInHeader } from './routesToExcludeInHeader';
+import { Link, useNavigate } from 'react-router-dom';
 import { FlexBox, HeaderIconImage } from '@/components/styled';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -10,15 +11,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Button, useTheme, Box } from '@mui/material';
 import { Theme } from '@mui/material/styles';
-
 import routes from '@/routes';
-import { routesToExcludeInHeader } from './routesToExcludeInHeader';
-import useAuth from '@/store/auth';
+import { useAuthNew } from '@/hooks';
 
 const DesktopHeaderContent = () => {
-  const [user, { logout }] = useAuth();
+  const { user, logout } = useAuthNew();
 
   const theme = useTheme<Theme>();
+
   return (
     <FlexBox sx={{ alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
       <Box
@@ -44,33 +44,36 @@ const DesktopHeaderContent = () => {
           justifyContent: 'center',
         }}
       >
-        {Object.values(routes)
-          .filter((route) => route.title)
-          .map(({ path, title, icon: Icon }) =>
-            routesToExcludeInHeader.includes(path) ? null : (
-              <div
-                key={path}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <ListItem>
-                  <ListItemButton component={Link} to={path as string}>
-                    {Icon && (
-                      <ListItemIcon>
-                        <Icon />
-                      </ListItemIcon>
-                    )}
+        {user?.role !== 'admin' &&
+          Object.values(routes)
+            .filter((route) => route.title)
+            .map(({ path, title, icon: Icon }) =>
+              routesToExcludeInHeader.includes(path) ? null : (
+                <div
+                  key={path}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ListItem>
+                    <ListItemButton component={Link} to={path as string}>
+                      {Icon && (
+                        <ListItemIcon>
+                          <Icon />
+                        </ListItemIcon>
+                      )}
 
-                    <ListItemText>{title}</ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              </div>
-            ),
-          )}
+                      <ListItemText>{title}</ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                </div>
+              ),
+            )}
 
-        {user.isLoggedIn ? (
+        {user?.role === 'admin' ? (
+          <AdminHeaderContent />
+        ) : user?.role === 'user' ? (
           <>
             <ListItem sx={{ mx: 'auto' }}>
               <Button
@@ -158,3 +161,44 @@ const DesktopHeaderContent = () => {
 };
 
 export default DesktopHeaderContent;
+
+const AdminHeaderContent = () => {
+  const { logout } = useAuthNew();
+  const theme = useTheme<Theme>();
+  const navigate = useNavigate();
+  return (
+    <>
+      <ListItem sx={{ mx: 'auto' }}>
+        <ListItemIcon>
+          <HomeOutlinedIcon />
+        </ListItemIcon>
+        <ListItemText>Backoffice</ListItemText>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }} onClick={() => navigate('/backoffice/prestadores')}>
+        <ListItemIcon>
+          <PeopleOutlineOutlinedIcon />
+        </ListItemIcon>
+        <ListItemText>Prestadores</ListItemText>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }} onClick={() => navigate('/backoffice/pagos')}>
+        <ListItemIcon>
+          <PaymentOutlinedIcon />
+        </ListItemIcon>
+        <ListItemText>Pagos</ListItemText>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          variant="contained"
+          sx={{
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark,
+            },
+          }}
+          onClick={() => logout()}
+        >
+          Salir
+        </Button>
+      </ListItem>
+    </>
+  );
+};

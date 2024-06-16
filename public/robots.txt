@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-TODO: CREATE A SITEMAP WHEN IT GETS DEPLOYED AND SUBMIT IT TO Google Search Console
-Sitemap: https://www.example.com/sitemap.xml
+Sitemap: https://blui-6ec33.web.app/sitemap.xml

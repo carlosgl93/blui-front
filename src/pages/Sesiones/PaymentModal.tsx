@@ -2,14 +2,26 @@ import { Box, Button, IconButton, Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Text } from '@/components/StyledComponents';
 import { formatCLP } from '@/utils/formatCLP';
+import { PaymentController } from './PaymentController';
+import Loading from '@/components/Loading';
 
 type PaymentModalProps = {
   openPayment: boolean;
   handleClose: () => void;
   paymentAmount: string;
+  handlePayment?: () => void;
 };
 
-export const PaymentModal = ({ openPayment, handleClose, paymentAmount }: PaymentModalProps) => {
+export const PaymentModal = ({
+  openPayment,
+  handleClose,
+  paymentAmount,
+  handlePayment,
+}: PaymentModalProps) => {
+  const { isLoadingVerifyPayment } = PaymentController();
+
+  if (isLoadingVerifyPayment) return <Loading />;
+
   return (
     <Modal open={openPayment} onClose={handleClose}>
       <Box
@@ -40,7 +52,7 @@ export const PaymentModal = ({ openPayment, handleClose, paymentAmount }: Paymen
           <Text variant="body1">
             <b>Monto:</b>
           </Text>
-          <Text>{formatCLP(paymentAmount)}</Text>
+          <Text>{formatCLP(+paymentAmount * 1.035)}</Text>
           <Text variant="body1">
             <b>Nombre:</b>
           </Text>
@@ -82,7 +94,9 @@ export const PaymentModal = ({ openPayment, handleClose, paymentAmount }: Paymen
             profesional no realice el servicio.
           </Text>
         </Box>
-        <Button variant="contained">Ya transferí</Button>
+        <Button variant="contained" onClick={handlePayment}>
+          Ya transferí
+        </Button>
       </Box>
     </Modal>
   );

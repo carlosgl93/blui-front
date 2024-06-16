@@ -6,9 +6,12 @@ import { Text } from '@/components/StyledComponents';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
 import { FlexBox } from '@/components/styled';
-import { useState } from 'react';
 import { PaymentInfoModal } from './PaymentInfoModal';
 import { PaymentModal } from './PaymentModal';
+import { formatDate } from '@/utils/formatDate';
+import { PaymentController } from './PaymentController';
+import { InfoController } from './InfoController';
+import Loading from '@/components/Loading';
 
 type SessionCardProps = {
   appointment: ScheduleServiceParams;
@@ -16,19 +19,21 @@ type SessionCardProps = {
 
 export const SessionCard = ({ appointment }: SessionCardProps) => {
   const { scheduledDate, scheduledTime, provider, servicio, isPaid } = appointment;
-  const [openInfo, setOpenInfo] = useState(false);
-  const [openPayment, setOpenPayment] = useState(false);
+  const { openInfo, handleCloseInfo, handleOpenInfo } = InfoController();
+  const {
+    openPayment,
+    handleClosePayment,
+    handleOpenPayment,
+    handlePayment,
+    isLoadingVerifyPayment,
+  } = PaymentController(appointment.id);
 
-  const handleOpenInfo = () => setOpenInfo(true);
-  const handleCloseInfo = () => setOpenInfo(false);
-
-  const handleOpenPayment = () => setOpenPayment(true);
-  const handleClosePayment = () => setOpenPayment(false);
+  if (isLoadingVerifyPayment) return <Loading />;
 
   return (
     <Card sx={{ my: 2, borderRadius: '1rem', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
       <CardHeader
-        title={`${scheduledDate}`}
+        title={`${formatDate(scheduledDate, true)}`}
         subheader={`a las ${scheduledTime}`}
         titleTypographyProps={{
           variant: 'h5',
@@ -49,7 +54,9 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             }}
           />
           <Text variant="body2" color="textSecondary">
-            {provider?.email}
+            {provider.firstname && provider.lastname
+              ? `${provider.firstname} ${provider.lastname}`
+              : provider?.email}
           </Text>
         </FlexBox>
         <FlexBox
@@ -79,28 +86,24 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             }}
           />
           <Text variant="body2" color="textSecondary">
-            {isPaid ? 'Pagado' : 'No pagado'}
+            {isPaid === false ? 'Pago pendiente' : isPaid}
           </Text>
-          {isPaid ? (
-            <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
-              <InfoOutlinedIcon
-                sx={{
-                  color: 'green',
-                }}
-              />
-            </IconButton>
-          ) : (
-            <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
-              <InfoOutlinedIcon
-                onMouseOver={handleOpenInfo}
-                sx={{
-                  color: 'red',
-                }}
-              />
-            </IconButton>
-          )}
-          <PaymentInfoModal openInfo={openInfo} handleClose={handleCloseInfo} />
-          {!isPaid && (
+          {isPaid === 'Transferencia no encontrada' ||
+            (isPaid === false && (
+              <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
+                <InfoOutlinedIcon
+                  sx={{
+                    color: 'red',
+                  }}
+                />
+              </IconButton>
+            ))}
+          <PaymentInfoModal
+            isPaid={appointment.isPaid}
+            openInfo={openInfo}
+            handleClose={handleCloseInfo}
+          />
+          {(!isPaid || isPaid === 'Transferencia no encontrada') && (
             <Button variant="contained" onClick={handleOpenPayment}>
               Pagar
             </Button>
@@ -109,6 +112,7 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
             paymentAmount={servicio.price}
             openPayment={openPayment}
             handleClose={handleClosePayment}
+            handlePayment={() => handlePayment()}
           />
         </FlexBox>
       </CardContent>

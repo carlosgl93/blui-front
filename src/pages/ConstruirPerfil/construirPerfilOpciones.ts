@@ -17,22 +17,27 @@ type SettingsKey =
   | 'sobreMi'
   | 'misPreferencias';
 
-export const construirPerfilOpciones: { key: SettingsKey; value: string }[] = [
-  { key: 'servicios', value: 'Servicios ofrecidos' },
-  { key: 'detallesBasicos', value: 'Detalles basicos' },
-  { key: 'disponibilidad', value: 'Disponibilidad' },
-  { key: 'comunas', value: 'Comunas' },
-  { key: 'experiencia', value: 'Experiencia' },
-  { key: 'cuentaBancaria', value: 'Cuenta bancaria' },
-  { key: 'historialLaboral', value: 'Historial laboral' },
-  { key: 'educacionFormacion', value: 'Educación y formación' },
-  { key: 'registroSuperIntendenciaSalud', value: 'Registro super intendencia de salud' },
-  { key: 'insignias', value: 'Insignias' },
-  { key: 'inmunizacion', value: 'Inmunización' },
-  { key: 'idiomas', value: 'Idiomas' },
-  { key: 'antecedentesCulturales', value: 'Antecedentes culturales' },
-  { key: 'religion', value: 'Religión' },
-  { key: 'interesesHobbies', value: 'Intereses y hobbies' },
-  { key: 'sobreMi', value: 'Sobre mí' },
-  { key: 'misPreferencias', value: 'Mis preferencias' },
-];
+export const construirPerfilOpciones: { key: SettingsKey; value: string; implemented: boolean }[] =
+  [
+    { key: 'servicios', value: 'Servicios ofrecidos', implemented: true },
+    { key: 'detallesBasicos', value: 'Detalles basicos', implemented: true },
+    { key: 'disponibilidad', value: 'Disponibilidad', implemented: true },
+    { key: 'comunas', value: 'Comunas', implemented: true },
+    { key: 'experiencia', value: 'Experiencia', implemented: true },
+    { key: 'cuentaBancaria', value: 'Cuenta bancaria', implemented: true },
+    { key: 'historialLaboral', value: 'Historial laboral', implemented: false },
+    { key: 'educacionFormacion', value: 'Educación y formación', implemented: false },
+    {
+      key: 'registroSuperIntendenciaSalud',
+      value: 'Registro super intendencia de salud',
+      implemented: false,
+    },
+    { key: 'insignias', value: 'Insignias', implemented: false },
+    { key: 'inmunizacion', value: 'Inmunización', implemented: false },
+    { key: 'idiomas', value: 'Idiomas', implemented: false },
+    { key: 'antecedentesCulturales', value: 'Antecedentes culturales', implemented: false },
+    { key: 'religion', value: 'Religión', implemented: false },
+    { key: 'interesesHobbies', value: 'Intereses y hobbies', implemented: false },
+    { key: 'sobreMi', value: 'Sobre mí', implemented: false },
+    { key: 'misPreferencias', value: 'Mis preferencias', implemented: false },
+  ];

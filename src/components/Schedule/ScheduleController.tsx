@@ -180,10 +180,22 @@ export const ScheduleController = () => {
     const scheduledTime = schedule?.selectedTime!.format('HH:mm');
     const scheduledDate = schedule?.selectedDate!.format('YYYY-MM-DD');
     if (prestador && user && schedule.selectedService) {
+      const provider = {
+        id: prestador.id,
+        firstname: prestador.firstname,
+        lastname: prestador.lastname,
+        email: prestador.email,
+      };
+      const customer = {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+      };
       scheduleServiceMutate({
-        provider: prestador as Prestador,
+        provider,
         servicio: schedule.selectedService!,
-        customer: user,
+        customer,
         scheduledDate,
         scheduledTime,
       });
@@ -198,6 +210,11 @@ export const ScheduleController = () => {
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
       onSuccess: (data) => {
+        setSchedule({
+          selectedTime: null,
+          selectedDate: null,
+        });
+        setValue(null);
         setNotification({
           open: true,
           message: 'Servicio agendado correctamente',

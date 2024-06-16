@@ -1,3 +1,4 @@
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Card, CardHeader, CardContent } from '@mui/material';
 import { renderDuration } from '@/utils/renderDuration';
 import { Carousel } from 'react-responsive-carousel';
@@ -23,7 +24,7 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
       width={'90vw'}
       className="hide-status"
     >
-      {createdServicios?.map((s) => (
+      {(createdServicios ?? [])?.map((s) => (
         <Card
           key={s.id}
           sx={{
@@ -44,7 +45,7 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
             <Text>{s.description}</Text>
           </CardContent>
         </Card>
-      )) ?? []}
+      ))}
     </Carousel>
   );
 };
