@@ -12,7 +12,11 @@ function SW() {
     //eslint-disable-next-line
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
-  } = useRegisterSW();
+  } = useRegisterSW({
+    onNeedRefresh() {
+      () => setNeedRefresh(true);
+    },
+  });
 
   const close = useCallback(() => {
     setOfflineReady(false);
@@ -41,7 +45,6 @@ function SW() {
       });
     }
   }, [needRefresh, updateServiceWorker]);
-
   return null;
 }
 
