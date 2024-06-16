@@ -37,6 +37,7 @@ function SW() {
         message: 'Actualización instalada, por favor recarga la página.',
         open: true,
         severity: 'warning',
+        persist: true,
         action: (
           <>
             <Button onClick={() => updateServiceWorker(true)}>Recargar</Button>
