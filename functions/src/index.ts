@@ -2,14 +2,16 @@ import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { setGlobalOptions } from 'firebase-functions/v2/options';
 import * as nodemailer from 'nodemailer';
-import { defineString } from 'firebase-functions/params';
 import * as cors from 'cors';
 import Mail = require( 'nodemailer/lib/mailer' );
 const corsHandler = cors({ origin: true });
 
 setGlobalOptions({ region: 'southamerica-west1' });
-const email = defineString('EMAIL_USERNAME');
-const password = defineString('EMAIL_PASSWORD');
+// const email = defineString('EMAIL_USERNAME');
+// const password = defineString('EMAIL_PASSWORD');
+
+const email = process.env.EMAIL_USERNAME;
+const password = process.env.EMAIL_PASSWORD;
 
 export const userPaidAppointment = onRequest((request, res) => {
   const { userEmail, appointmentId } = request.body;
@@ -21,8 +23,8 @@ export const userPaidAppointment = onRequest((request, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: email.value(),
-        pass: password.value(),
+        user: email,
+        pass: password,
       },
     });
 
