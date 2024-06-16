@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 
 export const NotificationSnackbar = () => {
   const notification = useRecoilValue(notificationState);
-  const { open, message, severity, action } = notification;
+  const { open, message, severity, action, persist } = notification;
   const { onClose } = useSnackbarController();
 
   return (
@@ -14,7 +14,7 @@ export const NotificationSnackbar = () => {
         mb: '5vh',
       }}
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={persist ? null : 6000}
       onClose={onClose}
     >
       <Alert action={action} severity={severity}>
