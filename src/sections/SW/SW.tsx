@@ -14,7 +14,7 @@ function SW() {
     updateServiceWorker,
   } = useRegisterSW({
     onNeedRefresh() {
-      () => setNeedRefresh(true);
+      setNeedRefresh(true);
     },
   });
 
