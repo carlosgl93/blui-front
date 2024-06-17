@@ -27,11 +27,12 @@ import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
 import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { defaultAvailability, defaultTarifas } from '@/utils/constants';
+import { defaultAvailability } from '@/utils/constants';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
 import { comunasState } from '@/store/construirPerfil/comunas';
 import { editDisponibilidadState } from '@/store/construirPerfil/availability';
+import dayjs from 'dayjs';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
 
@@ -47,8 +48,8 @@ export type CreateUserParams = {
 };
 
 export type CreatePrestadorParams = {
-  // nombre: string;
-  // apellido: string;
+  nombre: string;
+  apellido: string;
   rut: string;
   // telefono: string;
   correo: string;
@@ -76,8 +77,8 @@ export const useAuthNew = () => {
 
   const { mutate: createPrestador, isLoading: createPrestadorLoading } = useMutation(
     async ({
-      // nombre,
-      // apellido,
+      nombre,
+      apellido,
       rut,
       // telefono,
       correo,
@@ -110,11 +111,10 @@ export const useAuthNew = () => {
           email: correo,
           id: user.uid,
           role: 'prestador',
-          // firstname: nombre,
-          // lastname: apellido,
+          firstname: nombre,
+          lastname: apellido,
           rut,
           comunas: comunas,
-          tarifas: defaultTarifas,
           servicio: servicio?.serviceName,
           // especialidad: especialidad?.especialidadName,
           // telefono,
@@ -122,12 +122,13 @@ export const useAuthNew = () => {
           totalReviews: 0,
           description: '',
           offersFreeMeetAndGreet: false,
+          createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+          verified: false,
           settings: {
             servicios: false,
             detallesBasicos: false,
             disponibilidad: false,
             comunas: true,
-            tarifas: false,
             experiencia: false,
             cuentaBancaria: false,
             historialLaboral: false,

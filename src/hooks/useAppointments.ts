@@ -15,7 +15,7 @@ import {
 } from '@/store/appointments/userAppointmentsState';
 import { notificationState } from '@/store/snackbar';
 import { providerAppointmentsState } from '@/store/appointments/providerAppointmentsState';
-import { paymentsGridPaginationModelState } from '@/store/payments';
+import { paymentsGridPaginationModelState } from '@/store/backoffice/payments';
 import { useState } from 'react';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 

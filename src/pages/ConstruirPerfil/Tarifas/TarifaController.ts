@@ -95,7 +95,7 @@ export const TarifaController = () => {
       // update prestador.tarifas state
       setPrestadorState((prev) => {
         if (!prev) return null;
-        if (prev.tarifas.filter((t) => t.price === '').length > 0) return prev;
+        // if (prev.tarifas.filter((t) => t.price === '').length > 0) return prev;
         return { ...prev, settings: { ...prev.settings, tarifas: true } };
       });
 

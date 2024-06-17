@@ -79,7 +79,7 @@ const RegistrarPrestadorController = () => {
   const rutRegex = /^[0-9]+-[0-9kK]{1}$/;
 
   const handleSubmit = async () => {
-    const { correo, rut, contrasena, confirmarContrasena } = state;
+    const { correo, rut, contrasena, confirmarContrasena, nombre, apellido } = state;
 
     if (!emailRegex.test(correo)) {
       dispatch({
@@ -125,8 +125,8 @@ const RegistrarPrestadorController = () => {
       setTimeout(() => dispatch({ type: 'ERROR', payload: { error: '' } }), 5000);
     } else {
       const prestador: CreatePrestadorParams = {
-        // nombre,
-        // apellido,
+        nombre,
+        apellido,
         rut,
         // telefono,
         correo,
