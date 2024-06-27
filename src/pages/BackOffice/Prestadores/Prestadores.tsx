@@ -4,21 +4,18 @@ import Loading from '@/components/Loading';
 import { PrestadoresGridController } from './PrestadoresGridController';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Search } from '@mui/icons-material';
-import { useGetPrestadores } from '@/hooks/useGetPrestadores';
 
 export const Prestadores = () => {
   const {
-    data,
-    isLoading: isLoadingPrestadores,
-    totalPrestadores,
-    isLoadingTotalPrestadores,
-  } = useGetPrestadores();
-  const {
+    rows,
     columns,
-    isLoadingFailedVerifyPrestador,
-    isLoadingVerifyPrestador,
     paginationModel,
     setPaginationModel,
+    totalPrestadores,
+    isLoadingPrestadores,
+    isLoadingVerifyPrestador,
+    isLoadingTotalPrestadores,
+    isLoadingFailedVerifyPrestador,
   } = PrestadoresGridController();
 
   const isLoading =
@@ -27,7 +24,7 @@ export const Prestadores = () => {
     isLoadingVerifyPrestador ||
     isLoadingPrestadores;
 
-  if (data && totalPrestadores)
+  if (rows && totalPrestadores)
     return (
       <Wrapper>
         {isLoading ? (
@@ -58,7 +55,7 @@ export const Prestadores = () => {
                 toolbar: GridToolbar,
               }}
               columns={columns}
-              rows={data}
+              rows={rows}
               paginationMode="server"
               rowCount={totalPrestadores?.count || 0}
               paginationModel={paginationModel}

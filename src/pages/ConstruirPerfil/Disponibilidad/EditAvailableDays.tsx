@@ -20,10 +20,10 @@ type EditAvailableDaysProps = {
 
 export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
   const {
+    saveDisponibilidadLoading,
     handleToggleDisponibilidadDay,
     handleTimeChange,
     handleSaveDisponibilidad,
-    saveDisponibilidadLoading,
     handleEditDisponibilidad,
   } = useDisponibilidadNew();
 

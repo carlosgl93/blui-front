@@ -21,6 +21,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/utils/seedDb.ts", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

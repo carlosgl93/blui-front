@@ -384,7 +384,7 @@ export const useAuthNew = () => {
         severity: 'info',
       });
       return setPersistence(auth, browserSessionPersistence).then(() =>
-        signInWithEmailAndPassword(auth, correo, contrasena).then(async () => {
+        signInWithEmailAndPassword(auth, correo, contrasena).then(async ({ user: authUser }) => {
           const adminsColectionRef = collection(db, 'admins');
           const adminQuery = query(adminsColectionRef, limit(1), where('email', '==', correo));
           const admins = await getDocs(adminQuery);
@@ -392,7 +392,12 @@ export const useAuthNew = () => {
           if (admins.docs.length > 0) {
             const user = admins.docs[0].data() as User;
             user.id = admins.docs[0].id;
-            setUserState({ ...user, isLoggedIn: true, role: 'admin' });
+            setUserState({
+              ...user,
+              isLoggedIn: true,
+              role: 'admin',
+              token: authUser.refreshToken,
+            });
             queryClient.setQueryData(['user', correo], user);
             return { role: 'admin', data: user };
           } else {

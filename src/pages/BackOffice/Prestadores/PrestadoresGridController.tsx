@@ -3,22 +3,104 @@ import { GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
 import { Prestador } from '@/store/auth/prestador';
-import { useMutation } from 'react-query';
-import { useRecoilState } from 'recoil';
+import { useMutation, useQueryClient } from 'react-query';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import { failedVerifyPrestadorMutation, verifyPrestadorMutation } from '@/api/prestadores';
+import { notificationState } from '@/store/snackbar';
+import axios from 'axios';
+import { interactedPrestadorState } from '../../../store/resultados/interactedPrestador';
+import { useGetPrestadores } from '@/hooks/useGetPrestadores';
+import { useAuthNew } from '@/hooks';
 
 type PrestadoresRow = Prestador;
 
 export const PrestadoresGridController = () => {
   const [paginationModel, setPaginationModel] = useRecoilState(prestadoresGridPaginationModelState);
+  const setNotification = useSetRecoilState(notificationState);
+  const [interactedPrestador, setInteractedPrestador] = useRecoilState(interactedPrestadorState);
+  const client = useQueryClient();
+  const { user } = useAuthNew();
 
-  const { mutate: verifyPrestador, isLoading: isLoadingVerifyPrestador } =
-    useMutation(verifyPrestadorMutation);
+  const {
+    data: prestadores,
+    isLoading: isLoadingPrestadores,
+    totalPrestadores,
+    isLoadingTotalPrestadores,
+  } = useGetPrestadores();
+
+  console.log(prestadores);
+  console.log(interactedPrestador);
+
+  const { mutate: verifyPrestador, isLoading: isLoadingVerifyPrestador } = useMutation(
+    verifyPrestadorMutation,
+    {
+      onSuccess: () => {
+        console.log('interactedPrestador', interactedPrestador);
+        client.invalidateQueries(['prestadoresByComunaAndServicio']);
+        setNotification({
+          open: true,
+          message: 'Prestador confirmado',
+          severity: 'success',
+        });
+        axios.post('https://sendemail-3qwroszdxa-tl.a.run.app', {
+          headers: {
+            authorization: `Bearer ${user?.token}`,
+          },
+          body: {
+            options: {
+              from: 'Francisco Durney <francisco.durney@blui.cl>',
+              to: interactedPrestador?.email,
+              subject: 'Tu perfil ha sido verificado!',
+              text: `Estimado ${
+                interactedPrestador?.firstname
+                  ? interactedPrestador.firstname
+                  : interactedPrestador?.email
+              } hemos verificado tu perfil.`,
+              html: `<p>Estimado ${
+                interactedPrestador?.firstname
+                  ? interactedPrestador.firstname
+                  : interactedPrestador?.email
+              } hemos verificado tu perfil.</p>`,
+            },
+          },
+        });
+      },
+    },
+  );
 
   const { mutate: failedVerifyPrestador, isLoading: isLoadingFailedVerifyPrestador } = useMutation(
     failedVerifyPrestadorMutation,
+    {
+      onSuccess: () => {
+        client.invalidateQueries(['prestadoresByComunaAndServicio']);
+        setNotification({
+          open: true,
+          message: 'Prestador rechazado',
+          severity: 'success',
+        });
+        axios.post('http://localhost:5001/blui-6ec33/us-central1/sendEmail', {
+          body: {
+            options: {
+              from: 'Francisco Durney <francisco.durney@blui.cl>',
+              to: interactedPrestador?.email,
+              subject: 'Tu perfil ha sido rechazado!',
+              text: `Estimado ${
+                interactedPrestador?.firstname
+                  ? interactedPrestador.firstname
+                  : interactedPrestador?.email
+              } hemos rechazado tu perfil dado que no figuras en la base de datos de prestadores de salud de chile.`,
+              html: `<p>Estimado ${
+                interactedPrestador?.firstname
+                  ? interactedPrestador.firstname
+                  : interactedPrestador?.email
+              } hemos rechazado tu perfil dado que no figuras en la base de datos de prestadores de salud de chile.</p>`,
+            },
+          },
+        });
+      },
+    },
   );
 
   const columns = useMemo<GridColDef<PrestadoresRow>[]>(
@@ -77,14 +159,17 @@ export const PrestadoresGridController = () => {
           <GridActionsCellItem
             key={params.id}
             icon={<CancelOutlinedIcon sx={{ color: 'red' }} />}
-            label="No pagado"
-            onClick={() => failedVerifyPrestador(params.row.id as string)}
+            label="Rechazar"
+            onClick={() => {
+              console.log('id from row', params.row.id);
+              handleFailedVerifyPrestador(params.row.id as string);
+            }}
           />,
           <GridActionsCellItem
             key={params.id}
             icon={<DoneOutlinedIcon sx={{ color: 'green' }} />}
             label="Verificado"
-            onClick={() => verifyPrestador(params.row.id as string)}
+            onClick={() => handleVerifyPrestador(params.row.id as string)}
           />,
         ],
       },
@@ -92,11 +177,33 @@ export const PrestadoresGridController = () => {
     [failedVerifyPrestador, verifyPrestador],
   );
 
+  const handleVerifyPrestador = (prestadorId: string) => {
+    console.log('inside handle verify');
+    const foundPrestador: Prestador | undefined = prestadores?.find((p) => {
+      console.log('id from array', p.id);
+      console.log('id from params', prestadorId);
+
+      return p.id.trim() === prestadorId.trim();
+    });
+    setInteractedPrestador(() => (foundPrestador ? foundPrestador : null));
+    verifyPrestador(prestadorId);
+    console.log(prestadorId);
+  };
+
+  const handleFailedVerifyPrestador = (prestadorId: string) => {
+    setInteractedPrestador(prestadores?.find((p) => p.id === prestadorId) ?? null);
+    failedVerifyPrestador(prestadorId);
+  };
+
   return {
     columns,
     paginationModel,
+    totalPrestadores,
+    rows: prestadores,
     setPaginationModel,
+    isLoadingPrestadores,
     isLoadingVerifyPrestador,
+    isLoadingTotalPrestadores,
     isLoadingFailedVerifyPrestador,
   };
 };

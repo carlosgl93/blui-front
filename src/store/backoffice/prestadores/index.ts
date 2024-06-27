@@ -10,3 +10,8 @@ export const prestadoresGridPaginationModelState = atom<{
     page: 0,
   },
 });
+
+export const prestadorIdState = atom<string | null>({
+  key: 'prestadorIdState',
+  default: null,
+});
