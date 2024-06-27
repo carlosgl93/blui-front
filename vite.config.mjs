@@ -33,5 +33,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     files: ['src/**/*.test.tsx'],
+    exclude: ["./tests/playwright", "./node_modules/**", "./functions/**"]
   },
 });

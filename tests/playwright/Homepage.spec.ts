@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { goToEnvUrl } from './utils/goToEnvUrl';
+import { goToEnvUrl } from '../utils/goToEnvUrl';
 
 test.describe('Home Screen', () => {
   test('Should render the comunas input', async ({ page }) => {

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { goToEnvUrl } from './utils/goToEnvUrl';
+import { goToEnvUrl } from '../utils/goToEnvUrl';
 
 test('test', async ({ page }) => {
   await page.goto(goToEnvUrl());
