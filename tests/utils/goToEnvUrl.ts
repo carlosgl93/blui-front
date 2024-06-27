@@ -5,7 +5,7 @@
 */
 
 export function goToEnvUrl() {
-    const env = process.env.VITE_ENV;
+    const env = import.meta.env.VITE_ENV;
     if (env === 'dev') {
         return 'http://localhost:5173/';
     } else if (env === 'prod') {
