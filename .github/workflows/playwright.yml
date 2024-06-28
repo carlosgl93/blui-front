@@ -9,9 +9,6 @@ env:
   VITE_ENV: ${{ secrets.VITE_ENV }}
 
 jobs:
-  logging_job:
-    runs: ubuntu-latest
-    run: echo "Logging vite env: $VITE_ENV"
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -22,6 +19,8 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm ci
+    - name: logging_job
+      run: echo "Logging vite env: $VITE_ENV"
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
