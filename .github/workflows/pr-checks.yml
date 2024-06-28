@@ -15,10 +15,8 @@ env:
   VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
   VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
   VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
-jobs:
-
   
-
+jobs:
   build:
     environment: 
       name: production
@@ -54,7 +52,7 @@ jobs:
         run: npm ci && cd functions && npm ci
 
       - name: Logging
-        run: "echo firebase api key: $VITE_FIREBASE_API_KEY"
+        run: "echo firebase api key: ${{ env.VITE_FIREBASE_API_KEY }}"
 
       - name: Unit Tests
         run: npm run test
