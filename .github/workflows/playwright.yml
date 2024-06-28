@@ -4,6 +4,10 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+    
+env:
+  VITE_ENV: ${{ secrets.VITE_ENV }}
+
 jobs:
   test:
     timeout-minutes: 60
