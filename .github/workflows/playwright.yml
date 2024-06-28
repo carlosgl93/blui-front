@@ -9,6 +9,9 @@ env:
   VITE_ENV: ${{ secrets.VITE_ENV }}
 
 jobs:
+  logging_job:
+    runs: ubuntu-latest
+    run: echo "Logging vite env: $VITE_ENV"
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
