@@ -7,16 +7,13 @@ import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const apiKey = process?.env?.FIREBASE_API_KEY || import.meta.env.FIREBASE_API_KEY;
-const authDomain = process?.env?.FIREBASE_AUTH_DOMAIN || import.meta.env.FIREBASE_AUTH_DOMAIN;
-const projectId = process?.env?.FIREBASE_PROJECT_ID || import.meta.env.FIREBASE_PROJECT_ID;
-const storageBucket =
-  process?.env?.FIREBASE_STORAGE_BUCKET || import.meta.env.FIREBASE_STORAGE_BUCKET;
-const messagingSenderId =
-  process?.env?.FIREBASE_MESSAGING_SENDER_ID || import.meta.env.FIREBASE_MESSAGING_SENDER_ID;
-const appId = process?.env?.FIREBASE_APP_ID || import.meta.env.FIREBASE_APP_ID;
-const measurementId =
-  process?.env?.FIREBASE_MEASUREMENT_ID || import.meta.env.FIREBASE_MEASUREMENT_ID;
+const apiKey = 'AIzaSyCFFGtQ8UCPXendLYZc0koY2X2xqCqg4D8';
+const authDomain = 'blui-6ec33.firebaseapp.com';
+const projectId = 'blui-6ec33';
+const storageBucket = 'blui-6ec33.appspot.com';
+const messagingSenderId = '612874412823';
+const appId = '1:612874412823:web:fbfd0f29b5b53450e8cd52';
+const measurementId = 'G-QWQ7SXL2SW';
 
 const firebaseConfig = {
   apiKey,
