@@ -6,6 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 import manifest from './manifest.json';
+import importMetaEnv from '@import-meta-env/unplugin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,6 +24,9 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
+    importMetaEnv.vite({
+      example: ".env"
+    })
   ],
   resolve: {
     alias: {
@@ -33,6 +37,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     files: ['src/**/*.test.tsx'],
-    exclude: ["./tests/playwright", "./node_modules/**", "./functions/**"]
+    exclude: ['./tests/playwright', './node_modules/**', './functions/**'],
   },
 });
