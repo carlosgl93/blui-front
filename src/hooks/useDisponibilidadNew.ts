@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { availabilityState, editDisponibilidadState } from '@/store/construirPerfil/availability';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { prestadorState } from '@/store/auth/prestador';
 import dayjs, { Dayjs } from 'dayjs';
 

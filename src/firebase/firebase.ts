@@ -36,6 +36,8 @@ functions.region = 'southamerica-west1';
 // Check if window is defined before initializing Firebase Analytics
 export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
 
+console.log('import.meta.env.VITE_ENV', import.meta.env.VITE_ENV);
+
 if (import.meta.env.VITE_ENV === 'dev') {
   console.log('connecting to emulators');
   connectAuthEmulator(auth, 'http://localhost:9099/auth');

@@ -1,4 +1,4 @@
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import {
   doc,

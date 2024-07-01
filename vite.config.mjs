@@ -3,10 +3,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 import manifest from './manifest.json';
-import importMetaEnv from '@import-meta-env/unplugin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,7 +12,6 @@ export default defineConfig({
     react(),
     VitePWA({
       manifest,
-      registerType: 'prompt',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       devOptions: {
         enabled: false,
@@ -23,10 +20,6 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
       },
     }),
-    tsconfigPaths(),
-    importMetaEnv.vite({
-      example: ".env"
-    })
   ],
   resolve: {
     alias: {

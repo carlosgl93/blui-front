@@ -1,6 +1,5 @@
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { Comuna } from './Comuna';
-import { TarifaFront } from './Tarifa';
 
 export interface Prestador {
   email: string;
@@ -10,7 +9,6 @@ export interface Prestador {
   lastname?: string;
   rut: string;
   comunas: Comuna[];
-  tarifas: TarifaFront[];
   servicio: string | undefined;
   especialidad?: string | undefined;
   telefono?: string;
@@ -24,12 +22,13 @@ export interface Prestador {
   gender?: string;
   dob?: string;
   address?: string;
+  createdAt: string;
+  verified: boolean;
   settings: {
     servicios: boolean;
     detallesBasicos: boolean;
     disponibilidad: boolean;
     comunas: boolean;
-    tarifas: boolean;
     experiencia: boolean;
     cuentaBancaria: boolean;
     historialLaboral: boolean;

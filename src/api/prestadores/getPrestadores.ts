@@ -1,7 +1,7 @@
 import { Prestador } from '@/store/auth/prestador';
 import { Comuna } from '@/types';
 import { Especialidad, Servicio } from '@/types/Servicio';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { collection, query, limit, where, getDocs } from 'firebase/firestore';
 
 export const getPrestadores = async (

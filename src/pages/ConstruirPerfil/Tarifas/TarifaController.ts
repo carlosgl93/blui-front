@@ -2,7 +2,7 @@ import { prestadorState } from '@/store/auth/prestador';
 import { tarifasState } from '@/store/construirPerfil/tarifas';
 import { notificationState } from '@/store/snackbar';
 import { TarifaFront } from '@/types';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';

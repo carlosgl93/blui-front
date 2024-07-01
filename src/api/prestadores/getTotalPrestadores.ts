@@ -1,4 +1,4 @@
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { collection, getCountFromServer } from 'firebase/firestore';
 
 export const getTotalPrestadoresQuery = async () => {

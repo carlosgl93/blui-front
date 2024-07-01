@@ -1,5 +1,5 @@
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 export type SavePrestadorCreatedServiceParams = {

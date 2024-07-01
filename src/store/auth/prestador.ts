@@ -59,6 +59,7 @@ export const defaultPrestador = {
   servicio: '',
   especialidad: '',
   verified: false,
+  createdAt: '',
   availability: [
     {
       id: 0,

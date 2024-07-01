@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, writeBatch } from 'firebase/firestore';
 import { defaultAvailability } from './constants';
-import { auth, db } from 'firebase/firebase';
+import { auth, db } from '@/firebase/firebase';
 
 const users = [
   { email: 'user@gmail.com', password: '123456', role: 'user' },

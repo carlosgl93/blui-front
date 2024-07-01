@@ -3,8 +3,6 @@
   "short_name": "Blui",
   "short_description": "Encuentra apoyo",
   "description": "Blui te conecta con el cuidador que necesitas.",
-  "display": "standalone",
-  "start_url": "/",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
   "icons": [

@@ -1,5 +1,5 @@
 import { Prestador } from '@/store/auth/prestador';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 export const getLeanPrestador = async (id: string): Promise<Prestador> => {

@@ -1,6 +1,6 @@
 import { Prestador } from '@/store/auth/prestador';
 import { notificationState } from '@/store/snackbar';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';

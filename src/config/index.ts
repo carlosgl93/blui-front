@@ -1,3 +1,5 @@
+import isMobile from '@/utils/is-mobile';
+import type { Notifications } from './types';
 const title = 'Blui';
 // TODO change this email
 const email = 'soporte@blui.com';
@@ -25,6 +27,17 @@ const messages = {
 
 const dateFormat = 'DD MMMM, YYYY';
 
+const notifications: Notifications = {
+  options: {
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left',
+    },
+    autoHideDuration: 6000,
+  },
+  maxSnack: isMobile ? 3 : 4,
+};
+
 const loader = {
   // no more blinking in your app
   delay: 300, // if your asynchronous process is finished during 300 milliseconds you will not see the loader at all
@@ -37,4 +50,14 @@ const defaultMetaTags = {
 };
 const giphy404 = 'https://giphy.com/embed/2asOjumchIeb5gZO9m';
 
-export { loader, dateFormat, messages, repository, email, title, defaultMetaTags, giphy404 };
+export {
+  loader,
+  notifications,
+  dateFormat,
+  messages,
+  repository,
+  email,
+  title,
+  defaultMetaTags,
+  giphy404,
+};
