@@ -10,7 +10,7 @@ export const getPrestadores = async (
   especialidad: Especialidad | null,
 ) => {
   const prestadorCollectionRef = collection(db, 'providers');
-  let prestadoresQuery = query(prestadorCollectionRef, limit(15));
+  let prestadoresQuery = query(prestadorCollectionRef, where('verified', '==', true), limit(15));
 
   if (comuna) {
     prestadoresQuery = query(prestadoresQuery, where('comunas', 'array-contains', comuna));

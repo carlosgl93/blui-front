@@ -1,14 +1,18 @@
 import { test, expect } from '@playwright/test';
 import { goToEnvUrl } from '../utils/goToEnvUrl';
+import { generateRandomString } from 'tests/utils/generateRandomString';
 
-test('test', async ({ page }) => {
+test('Creates a new prestador', async ({ page }) => {
   await page.goto(goToEnvUrl());
   await page.getByRole('list').getByRole('link', { name: 'Comenzar' }).click();
   await page.getByRole('link', { name: 'Entregar apoyo' }).click();
   await page.getByPlaceholder('Indicanos tu comuna').click();
   await page.getByPlaceholder('Indicanos tu comuna').fill('Provi');
-  await page.getByPlaceholder('Indicanos tu comuna').press('Enter');
-  await page.getByText('Providencia').click();
+  await page.waitForTimeout(1000);
+  await page.getByPlaceholder('Indicanos tu comuna').fill('dencia');
+  await page.getByRole('listitem', {
+    name: 'Providencia',
+  }).click();
   await page.getByRole('button', { name: 'Siguiente' }).click();
   await page.getByRole('button', { name: 'Soporte Terapéutico' }).click();
   await page.getByRole('button', { name: 'Siguiente' }).click();
@@ -19,7 +23,7 @@ test('test', async ({ page }) => {
   await page.getByPlaceholder('Ingresa tus apellidos').press('Tab');
   await page.getByPlaceholder('-5').fill('18445810-1');
   await page.getByPlaceholder('-5').press('Tab');
-  await page.getByPlaceholder('Ingresa tu email').fill('prestador@gmail.com');
+  await page.getByPlaceholder('Ingresa tu email').fill(`prestador${generateRandomString(3)}@gmail.com`);
   await page.getByPlaceholder('Ingresa tu email').press('Tab');
   await page.getByPlaceholder('Ingrese una contraseña').fill('123456');
   await page.getByPlaceholder('Ingrese una contraseña').press('Tab');

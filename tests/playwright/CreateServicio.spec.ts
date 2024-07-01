@@ -5,7 +5,7 @@ test('test', async ({ page }) => {
   await page.goto(goToEnvUrl());
   await page.getByRole('link', { name: 'Ingresar' }).click();
   await page.getByLabel('Email *').click();
-  await page.getByLabel('Email *').fill('prestador@gmail.com');
+  await page.getByLabel('Email *').fill('prestadorwgi@gmail.com');
   await page.getByLabel('Email *').press('Tab');
   await page.getByLabel('Password *').fill('123456');
   await page.getByLabel('Password *').press('Tab');
