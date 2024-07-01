@@ -1,4 +1,4 @@
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { ScheduleServiceParams } from './scheduleAppointmentMutation';
 import { sortUserAppointments } from '@/utils/sortUserAppointments';

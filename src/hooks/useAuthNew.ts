@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
-import { auth, db } from '../../firebase/firebase';
+import { auth, db } from '@/firebase/firebase';
 import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
@@ -8,16 +8,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  limit,
-  writeBatch,
-  doc,
-  setDoc,
-} from 'firebase/firestore';
+import { collection, query, where, getDocs, limit, doc, setDoc } from 'firebase/firestore';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { Comuna } from '@/types';
@@ -27,11 +18,11 @@ import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
 import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { defaultAvailability, defaultTarifas } from '@/utils/constants';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
 import { comunasState } from '@/store/construirPerfil/comunas';
 import { editDisponibilidadState } from '@/store/construirPerfil/availability';
+import { createPrestador } from '@/api/auth';
 
 export type ForWhom = 'paciente' | 'tercero' | '';
 
@@ -47,8 +38,8 @@ export type CreateUserParams = {
 };
 
 export type CreatePrestadorParams = {
-  // nombre: string;
-  // apellido: string;
+  nombre: string;
+  apellido: string;
   rut: string;
   // telefono: string;
   correo: string;
@@ -74,95 +65,8 @@ export const useAuthNew = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate: createPrestador, isLoading: createPrestadorLoading } = useMutation(
-    async ({
-      // nombre,
-      // apellido,
-      rut,
-      // telefono,
-      correo,
-      contrasena,
-      comunas,
-      servicio,
-    }: CreatePrestadorParams) => {
-      setNotification({
-        open: true,
-        message: 'Creando tu cuenta...',
-        severity: 'info',
-      });
-
-      // Check if a user with the given email already exists in the users collection
-      const userQuery = query(collection(db, 'users'), where('email', '==', correo));
-      const userSnapshot = await getDocs(userQuery);
-      if (!userSnapshot.empty) {
-        throw new Error('Este email ya tiene una cuenta.');
-      }
-
-      // Check if a user with the given email already exists in the providers collection
-      const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
-      const providerSnapshot = await getDocs(providerQuery);
-      if (!providerSnapshot.empty) {
-        throw new Error('Este email ya tiene una cuenta.');
-      }
-
-      return createUserWithEmailAndPassword(auth, correo, contrasena).then(({ user }) => {
-        const newPrestador: Prestador = {
-          email: correo,
-          id: user.uid,
-          role: 'prestador',
-          // firstname: nombre,
-          // lastname: apellido,
-          rut,
-          comunas: comunas,
-          tarifas: defaultTarifas,
-          servicio: servicio?.serviceName,
-          // especialidad: especialidad?.especialidadName,
-          // telefono,
-          averageReviews: 0,
-          totalReviews: 0,
-          description: '',
-          offersFreeMeetAndGreet: false,
-          settings: {
-            servicios: false,
-            detallesBasicos: false,
-            disponibilidad: false,
-            comunas: true,
-            tarifas: false,
-            experiencia: false,
-            cuentaBancaria: false,
-            historialLaboral: false,
-            educacionFormacion: false,
-            registroSuperIntendenciaSalud: false,
-            insignias: false,
-            inmunizacion: false,
-            idiomas: false,
-            antecedentesCulturales: false,
-            religion: false,
-            interesesHobbies: false,
-            sobreMi: false,
-            misPreferencias: false,
-          },
-        };
-        const providerRef = doc(db, 'providers', user.uid);
-        // const servicesRef = collection(db, 'providers', user.uid, 'services');
-        return setDoc(providerRef, newPrestador).then(() => {
-          const batch = writeBatch(db);
-
-          defaultAvailability.forEach((day) => {
-            const dayRef = doc(providerRef, 'availability', day.day);
-            batch.set(dayRef, day);
-          });
-          // const serviceDoc = doc(servicesRef, servicio?.serviceName);
-          // batch.set(serviceDoc, {
-          //   // name: servicio?.serviceName,
-          //   // description: '',
-          //   // price: 0,
-          // });
-
-          return batch.commit().then(() => newPrestador);
-        });
-      });
-    },
+  const { mutate: createPrestadorMutation, isLoading: createPrestadorLoading } = useMutation(
+    createPrestador,
     {
       onSuccess(data) {
         setNotification({
@@ -198,6 +102,13 @@ export const useAuthNew = () => {
           open: true,
           message,
           severity: 'error',
+        });
+      },
+      onMutate() {
+        setNotification({
+          open: true,
+          message: 'Creando tu cuenta...',
+          severity: 'info',
         });
       },
     },
@@ -383,7 +294,7 @@ export const useAuthNew = () => {
         severity: 'info',
       });
       return setPersistence(auth, browserSessionPersistence).then(() =>
-        signInWithEmailAndPassword(auth, correo, contrasena).then(async () => {
+        signInWithEmailAndPassword(auth, correo, contrasena).then(async ({ user: authUser }) => {
           const adminsColectionRef = collection(db, 'admins');
           const adminQuery = query(adminsColectionRef, limit(1), where('email', '==', correo));
           const admins = await getDocs(adminQuery);
@@ -391,7 +302,12 @@ export const useAuthNew = () => {
           if (admins.docs.length > 0) {
             const user = admins.docs[0].data() as User;
             user.id = admins.docs[0].id;
-            setUserState({ ...user, isLoggedIn: true, role: 'admin' });
+            setUserState({
+              ...user,
+              isLoggedIn: true,
+              role: 'admin',
+              token: authUser.refreshToken,
+            });
             queryClient.setQueryData(['user', correo], user);
             return { role: 'admin', data: user };
           } else {
@@ -462,7 +378,7 @@ export const useAuthNew = () => {
     logout,
     createUser,
     adminLogin,
-    createPrestador,
+    createPrestador: createPrestadorMutation,
     user,
     prestador,
     isLoggedIn,

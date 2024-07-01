@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { formatCLP } from '@/utils/formatCLP';
 import { PaymentController } from '@/pages/Sesiones/PaymentController';
 import { useRecoilState } from 'recoil';
-import { paymentsGridPaginationModelState } from '@/store/payments';
+import { paymentsGridPaginationModelState } from '@/store/backoffice/payments';
 
 type PaymentsRow = ScheduleServiceParams;
 

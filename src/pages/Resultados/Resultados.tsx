@@ -12,6 +12,8 @@ function Resultados() {
   const { data, isLoading } = useGetPrestadores();
   const isTablet = useMediaQuery(tablet);
 
+  console.log('prestadores data', data);
+
   return (
     <Suspense fallback={<Loading />}>
       <Meta title="Resultados" />

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { notificationState } from '@/store/snackbar';
 import { useRecoilState } from 'recoil';
 import { useAuthNew } from './useAuthNew';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { doc, collection, updateDoc, where, query, getDocs } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { comunasState } from '@/store/construirPerfil/comunas';

@@ -1,5 +1,5 @@
 import { IFormInput } from '@/pages/PerfilUsuario/PerfilUsuario';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
 type TUpdateUserDocument = {

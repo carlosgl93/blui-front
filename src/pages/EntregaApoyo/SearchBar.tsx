@@ -1,4 +1,4 @@
-import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
+import { IconButton, InputAdornment, List, ListItem, OutlinedInput } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
@@ -94,23 +94,26 @@ function SearchBar() {
             overflow: 'auto',
           }}
         >
-          {comunasState?.length <= 5 &&
-            comunasState?.map((comuna) => (
-              <Box
-                key={comuna.id}
-                sx={{
-                  px: '1rem',
-                  py: '1rem',
-                  borderBottom: '1px solid #ccc',
-                  '&:hover': {
-                    backgroundColor: '#ccc',
-                  },
-                }}
-                onClick={() => clickComunaHandler(comuna)}
-              >
-                {comuna.name}
-              </Box>
-            ))}
+          <List>
+            {comunasState?.length <= 5 &&
+              comunasState?.map((comuna) => (
+                <ListItem
+                  title={comuna.name}
+                  key={comuna.id}
+                  sx={{
+                    px: '1rem',
+                    py: '1rem',
+                    borderBottom: '1px solid #ccc',
+                    '&:hover': {
+                      backgroundColor: '#ccc',
+                    },
+                  }}
+                  onClick={() => clickComunaHandler(comuna)}
+                >
+                  {comuna.name}
+                </ListItem>
+              ))}
+          </List>
         </Box>
       </>
     );

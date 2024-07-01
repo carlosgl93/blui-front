@@ -1,6 +1,6 @@
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
-import { Comuna, TarifaFront } from '@/types';
+import { Comuna } from '@/types';
 import { atom } from 'recoil';
 
 export interface Prestador {
@@ -11,7 +11,6 @@ export interface Prestador {
   lastname?: string;
   rut: string;
   comunas: Comuna[];
-  tarifas: TarifaFront[];
   servicio: string | undefined;
   especialidad?: string | undefined;
   telefono?: string;
@@ -26,12 +25,13 @@ export interface Prestador {
   dob?: string;
   address?: string;
   createdServicios?: UserCreatedServicio[];
+  createdAt?: string;
+  verified?: boolean | 'Verificado' | 'Verificando' | 'Rechazado';
   settings: {
     servicios: boolean;
     detallesBasicos: boolean;
     disponibilidad: boolean;
     comunas: boolean;
-    tarifas: boolean;
     experiencia: boolean;
     cuentaBancaria: boolean;
     historialLaboral: boolean;
@@ -58,6 +58,8 @@ export const defaultPrestador = {
   tarifas: [],
   servicio: '',
   especialidad: '',
+  verified: false,
+  createdAt: '',
   availability: [
     {
       id: 0,

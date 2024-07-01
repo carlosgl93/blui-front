@@ -1,16 +1,16 @@
 export const formInputs = [
-  // {
-  //   inputName: 'nombre',
-  //   placeholder: 'Ingresa tu nombre',
-  //   label: 'Nombre (*)',
-  //   type: 'text',
-  // },
-  // {
-  //   inputName: 'apellido',
-  //   placeholder: 'Ingresa tus apellidos',
-  //   label: 'Apellido (*)',
-  //   type: 'text',
-  // },
+  {
+    inputName: 'nombre',
+    placeholder: 'Ingresa tu nombre',
+    label: 'Nombre (*)',
+    type: 'text',
+  },
+  {
+    inputName: 'apellido',
+    placeholder: 'Ingresa tus apellidos',
+    label: 'Apellido (*)',
+    type: 'text',
+  },
   {
     inputName: 'rut',
     placeholder: '18445810-5',

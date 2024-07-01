@@ -1,5 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { CuentaBancaria } from '@/types/CuentaBancaria';
 
 export const getCuentaBancaria = async (id: string) => {

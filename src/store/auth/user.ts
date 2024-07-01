@@ -16,6 +16,7 @@ export interface User {
   dob: string;
   phone: string;
   address: string;
+  token?: string;
 }
 
 export const userState = atom<null | User>({

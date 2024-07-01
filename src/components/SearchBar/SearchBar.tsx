@@ -1,16 +1,15 @@
-import { IconButton, InputAdornment, List, ListItem, OutlinedInput } from '@mui/material';
-import { Search } from '@mui/icons-material';
-import { Box } from '@mui/system';
 import { useState } from 'react';
+import { Box } from '@mui/system';
+import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import useRecibeApoyo from '@/store/recibeApoyo';
 import { useComunas } from '@/hooks/useComunas';
+import useRecibeApoyo from '@/store/recibeApoyo';
+import { IconButton, InputAdornment, List, ListItem, OutlinedInput } from '@mui/material';
 
 function SearchBar() {
   const { allComunas } = useComunas();
   const [, { addComuna }] = useRecibeApoyo();
   const [comunasState, setComunasState] = useState(allComunas);
-
   const router = useNavigate();
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -22,6 +21,13 @@ function SearchBar() {
     if (match.length > 0) {
       addComuna(match[0]);
       setComunasState(match);
+    }
+  };
+
+  const onEnterDown = (e: KeyboardEvent) => {
+    if (e.code === 'Enter' && comunasState.length === 1) {
+      addComuna(comunasState[0]);
+      router(`/resultados`);
     }
   };
 
@@ -73,6 +79,7 @@ function SearchBar() {
           mt: '1rem',
         }}
         onChange={onChangeHandler}
+        onKeyDown={(e) => onEnterDown(e as unknown as KeyboardEvent)}
       />
 
       {comunasState?.length > 0 && comunasState?.length <= 1 && (
@@ -98,6 +105,7 @@ function SearchBar() {
                 defaultValue={name}
                 key={id}
                 onClick={clickComunaHandler}
+                onKeyDown={(e) => onEnterDown(e as unknown as KeyboardEvent)}
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',

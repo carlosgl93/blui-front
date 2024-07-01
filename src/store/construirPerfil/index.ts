@@ -28,7 +28,7 @@ type ConstruirPerfilState = {
   error: string | null;
   disponibilidad: DisponibilidadFromFront[];
   comunas: Comuna[];
-  tarifas: TarifaFront[];
+  tarifas?: TarifaFront[];
   searchedComuna: string;
   searchedComunasState: Comuna[];
   editDisponibilidad: boolean;
@@ -64,15 +64,15 @@ export const construirPerfilState = atom<ConstruirPerfilState>({
       imageUrl: '',
       comunas: [],
       role: '',
-      tarifas: [],
       servicio: '',
       offersFreeMeetAndGreet: false,
+      createdAt: '',
+      verified: false,
       settings: {
         servicios: false,
         detallesBasicos: false,
         disponibilidad: false,
         comunas: false,
-        tarifas: false,
         experiencia: false,
         cuentaBancaria: false,
         historialLaboral: false,
@@ -92,7 +92,6 @@ export const construirPerfilState = atom<ConstruirPerfilState>({
     error: null,
     disponibilidad: [],
     comunas: [],
-    tarifas: [],
     searchedComuna: '',
     searchedComunasState: [],
     editDisponibilidad: false,
@@ -340,7 +339,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     const { value } = e.target;
     setConstruirPerfil((prev) => ({
       ...prev,
-      tarifas: prev.tarifas.map((tarifaState) => {
+      tarifas: prev?.tarifas?.map((tarifaState) => {
         if (tarifaState.id === tarifa.id) {
           return {
             ...tarifaState,
@@ -365,7 +364,7 @@ const useConstruirPerfil = (): [ConstruirPerfilState, Actions] => {
     e.preventDefault();
     setConstruirPerfil((prev) => ({ ...prev, loading: true }));
     try {
-      await postTarifas(user?.id ?? '', construirPerfil.tarifas);
+      await postTarifas(user?.id ?? '', construirPerfil?.tarifas as TarifaFront[]);
       await postFreeMeetGreet(
         user?.id ?? '',
         construirPerfil.prestador.offersFreeMeetAndGreet as boolean,

@@ -2,7 +2,7 @@ import { prestadorState } from '@/store/auth/prestador';
 import { tarifasState } from '@/store/construirPerfil/tarifas';
 import { notificationState } from '@/store/snackbar';
 import { TarifaFront } from '@/types';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -95,7 +95,7 @@ export const TarifaController = () => {
       // update prestador.tarifas state
       setPrestadorState((prev) => {
         if (!prev) return null;
-        if (prev.tarifas.filter((t) => t.price === '').length > 0) return prev;
+        // if (prev.tarifas.filter((t) => t.price === '').length > 0) return prev;
         return { ...prev, settings: { ...prev.settings, tarifas: true } };
       });
 

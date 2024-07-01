@@ -2,7 +2,7 @@ import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { User } from '@/store/auth/user';
 import { Prestador } from '@/types';
 import dayjs from 'dayjs';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { addDoc, collection, FieldValue } from 'firebase/firestore';
 
 type ScheduleAppointmentProvider = Pick<Prestador, 'id' | 'firstname' | 'lastname' | 'email'>;

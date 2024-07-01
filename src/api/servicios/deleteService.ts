@@ -1,4 +1,4 @@
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
 
 export type DeleteServiceParams = {

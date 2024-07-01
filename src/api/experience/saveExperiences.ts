@@ -1,5 +1,5 @@
 import { ExperienceState } from '@/store/construirPerfil/experiencia';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
 export const saveExperiences = async (

@@ -1,5 +1,5 @@
 import { CuentaBancariaInputs } from '@/pages/ConstruirPerfil/CuentaBancaria/CuentaBancaria';
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
 
 interface SaveCuentaBancaria extends CuentaBancariaInputs {

@@ -1,4 +1,4 @@
-import { db } from 'firebase/firebase';
+import { db } from '@/firebase/firebase';
 import {
   collection,
   getDocs,
@@ -10,7 +10,7 @@ import {
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import { ScheduleServiceParams } from './scheduleAppointmentMutation';
-import { PaginationModel } from '@/store/payments';
+import { PaginationModel } from '@/store/backoffice/payments';
 
 export const getAllAppointments = async (
   paginationModel: PaginationModel,

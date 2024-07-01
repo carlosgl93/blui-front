@@ -5,11 +5,15 @@ import { useState } from 'react';
 import Loading from '@/components/Loading';
 import { Comuna } from '@/types/Comuna';
 import { useComunas } from '@/hooks/useComunas';
+import useRecibeApoyo from '@/store/recibeApoyo';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar() {
   const [comunasState, setComunasState] = useState<Comuna[]>([]);
 
   const { selectedComunas, allComunas, handleSelectComuna, handleRemoveComuna } = useComunas();
+  const [, { addComuna }] = useRecibeApoyo();
+  const router = useNavigate();
 
   const clickComunaHandler = (c: Comuna) => {
     const textInput = document.getElementById('searchByComuna') as HTMLInputElement;
@@ -19,6 +23,13 @@ function SearchBar() {
       handleSelectComuna(c);
       setComunasState(allComunas);
       textInput.value = '';
+    }
+  };
+
+  const onEnterDown = (e: KeyboardEvent) => {
+    if (e.code === 'Enter' && comunasState.length === 1) {
+      addComuna(comunasState[0]);
+      router(`/resultados`);
     }
   };
 
@@ -75,6 +86,7 @@ function SearchBar() {
           mt: '1rem',
         }}
         onChange={onChangeHandler}
+        onKeyDown={(e) => onEnterDown(e as unknown as KeyboardEvent)}
       />
       <Box
         sx={{
@@ -103,6 +115,7 @@ function SearchBar() {
                 },
               }}
               onClick={() => clickComunaHandler(comuna)}
+              onKeyDown={(e) => onEnterDown(e as unknown as KeyboardEvent)}
             >
               {comuna.name}
             </Box>

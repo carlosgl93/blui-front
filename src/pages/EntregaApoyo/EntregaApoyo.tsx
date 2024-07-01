@@ -1,7 +1,6 @@
 import { Suspense, lazy } from 'react';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
-import { Image } from '@/components/ImageContainer';
 import { Box, LinearProgress } from '@mui/material';
 import { entregaApoyoSteps } from './entregaApoyoSteps';
 const Step1 = lazy(() => import('./Step1'));
@@ -24,15 +23,6 @@ function EntregaApoyo() {
           pt: 4,
         }}
       >
-        <Box>
-          <Image
-            src="/images/blui-new.png"
-            sx={{
-              width: '100%',
-              maxWidth: 200,
-            }}
-          />
-        </Box>
         <Box
           sx={{
             width: {

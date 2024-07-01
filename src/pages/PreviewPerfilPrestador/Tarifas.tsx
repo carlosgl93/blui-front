@@ -66,7 +66,7 @@ export const Tarifas = () => {
           <StyledSubtitle>Juntarse y conocerse gratis</StyledSubtitle>
           <StyledTarifa>{freeMeetGreet ? 'Gratis' : 'No'}</StyledTarifa>
         </StyledTarifaContainer>
-        {tarifas.map((tarifa) => {
+        {tarifas?.map((tarifa) => {
           const { id, dayName, price } = tarifa;
           return (
             <StyledTarifaContainer key={id}>

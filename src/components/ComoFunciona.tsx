@@ -1,6 +1,5 @@
 import { ComoFuncionaContent } from '@/pages/Welcome/comoFuncionaContent';
 import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 type ComoFuncionaProps = {
@@ -97,6 +96,7 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
                   maxWidth: '10rem',
                   maxHeight: '10rem',
                 }}
+                loading="lazy"
               />
             </Box>
             <Typography

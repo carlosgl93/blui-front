@@ -3,7 +3,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 import manifest from './manifest.json';
 
@@ -13,7 +12,6 @@ export default defineConfig({
     react(),
     VitePWA({
       manifest,
-      registerType: 'prompt',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       devOptions: {
         enabled: false,
@@ -22,7 +20,6 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
       },
     }),
-    tsconfigPaths(),
   ],
   resolve: {
     alias: {
@@ -33,5 +30,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     files: ['src/**/*.test.tsx'],
+    exclude: ['./tests/playwright', './node_modules/**', './functions/**'],
   },
 });

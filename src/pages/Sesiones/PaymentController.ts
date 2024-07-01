@@ -20,9 +20,14 @@ export const PaymentController = (appointmentId?: string) => {
 
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: () => {
-      axios.post('https://userpaidappointment-3qwroszdxa-tl.a.run.app', {
-        userEmail: user?.email,
-        appointmentId,
+      axios.post('https://sendEmail-3qwroszdxa-tl.a.run.app', {
+        body: {
+          from: 'Francisco Durney <francisco.durney@blui.cl>',
+          to: 'francisco.durney@blui.cl',
+          subject: 'Usuario ha pagado una cita',
+          text: `${user?.email} claimed to have paid for appointment ${appointmentId}.`,
+          html: `<p>${user?.email} claimed to have paid for appointment ${appointmentId}.</p>`,
+        },
       });
       client.invalidateQueries(['userAppointments', user?.id]);
       setNotification({
