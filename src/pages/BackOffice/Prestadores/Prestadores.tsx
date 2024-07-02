@@ -1,9 +1,9 @@
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { IconButtonBox, StyledOutlinedInput, Wrapper } from '../styledBackOffice';
 import Loading from '@/components/Loading';
-import { PrestadoresGridController } from './Controllers/PrestadoresGridController';
-import { IconButton, InputAdornment } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { IconButton, InputAdornment } from '@mui/material';
+import { IconButtonBox, StyledOutlinedInput, Wrapper } from '../styledBackOffice';
+import { PrestadoresGridController } from './Controllers/PrestadoresGridController';
 
 export const Prestadores = () => {
   const {
