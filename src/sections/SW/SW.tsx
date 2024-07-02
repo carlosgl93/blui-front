@@ -27,7 +27,6 @@ function SW() {
   }, [setOfflineReady, setNeedRefresh, notificationsActions]);
 
   useEffect(() => {
-    console.log('running SW effect');
     if (offlineReady) {
       notificationsActions.push({
         options: {

@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-interface NotificationState {
+export interface NotificationState {
   open: boolean;
   message: string;
   severity: 'success' | 'error' | 'warning' | 'info';

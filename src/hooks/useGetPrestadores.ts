@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getPrestadores } from '@/api/prestadores';
+import { getAllPrestadores, getPrestadores } from '@/api/prestadores';
 import { Prestador } from '@/store/auth/prestador';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { getTotalPrestadoresQuery } from '@/api/prestadores/getTotalPrestadores';
@@ -8,7 +8,13 @@ export const useGetPrestadores = () => {
   const [{ servicio, comuna, especialidad }] = useRecibeApoyo();
 
   const {
-    data = [],
+    data: allPrestadores = [],
+    isLoading: allPrestadoresLoading,
+    isError: allPrestadoresError,
+  } = useQuery<Prestador[]>(['allPrestadores'], () => getAllPrestadores());
+
+  const {
+    data: verifiedPrestadores = [],
     isLoading,
     isError,
   } = useQuery<Prestador[]>(
@@ -22,7 +28,10 @@ export const useGetPrestadores = () => {
   );
 
   return {
-    data,
+    data: verifiedPrestadores,
+    allPrestadores,
+    allPrestadoresLoading,
+    allPrestadoresError,
     totalPrestadores,
     isLoadingTotalPrestadores,
     isLoading,

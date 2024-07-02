@@ -1,9 +1,9 @@
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { IconButtonBox, StyledOutlinedInput, Wrapper } from '../styledBackOffice';
 import Loading from '@/components/Loading';
-import { PrestadoresGridController } from './PrestadoresGridController';
-import { IconButton, InputAdornment } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { IconButton, InputAdornment } from '@mui/material';
+import { IconButtonBox, StyledOutlinedInput, Wrapper } from '../styledBackOffice';
+import { PrestadoresGridController } from './Controllers/PrestadoresGridController';
 
 export const Prestadores = () => {
   const {
@@ -12,7 +12,7 @@ export const Prestadores = () => {
     paginationModel,
     setPaginationModel,
     totalPrestadores,
-    isLoadingPrestadores,
+    allPrestadoresLoading,
     isLoadingVerifyPrestador,
     isLoadingTotalPrestadores,
     isLoadingFailedVerifyPrestador,
@@ -22,7 +22,7 @@ export const Prestadores = () => {
     isLoadingFailedVerifyPrestador ||
     isLoadingTotalPrestadores ||
     isLoadingVerifyPrestador ||
-    isLoadingPrestadores;
+    allPrestadoresLoading;
 
   if (rows && totalPrestadores)
     return (

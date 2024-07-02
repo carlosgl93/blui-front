@@ -94,26 +94,28 @@ function SearchBar() {
             overflow: 'auto',
           }}
         >
-          <List>
-            {comunasState?.length <= 5 &&
-              comunasState?.map((comuna) => (
-                <ListItem
-                  title={comuna.name}
-                  key={comuna.id}
-                  sx={{
-                    px: '1rem',
-                    py: '1rem',
-                    borderBottom: '1px solid #ccc',
-                    '&:hover': {
-                      backgroundColor: '#ccc',
-                    },
-                  }}
-                  onClick={() => clickComunaHandler(comuna)}
-                >
-                  {comuna.name}
-                </ListItem>
-              ))}
-          </List>
+          {comunasState.length <= 5 && (
+            <List>
+              {comunasState?.length <= 5 &&
+                comunasState?.map((comuna) => (
+                  <ListItem
+                    title={comuna.name}
+                    key={comuna.id}
+                    sx={{
+                      px: '1rem',
+                      py: '1rem',
+                      borderBottom: '1px solid #ccc',
+                      '&:hover': {
+                        backgroundColor: '#ccc',
+                      },
+                    }}
+                    onClick={() => clickComunaHandler(comuna)}
+                  >
+                    {comuna.name}
+                  </ListItem>
+                ))}
+            </List>
+          )}
         </Box>
       </>
     );
