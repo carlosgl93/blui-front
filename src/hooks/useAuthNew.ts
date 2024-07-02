@@ -301,6 +301,7 @@ export const useAuthNew = () => {
 
           if (admins.docs.length > 0) {
             const user = admins.docs[0].data() as User;
+            user.token = authUser.refreshToken;
             user.id = admins.docs[0].id;
             setUserState({
               ...user,
@@ -351,7 +352,12 @@ export const useAuthNew = () => {
           severity: 'success',
         });
         if (data?.role === 'admin') {
-          setUserState({ ...data.data, isLoggedIn: true, role: 'admin' } as User);
+          setUserState({
+            ...data.data,
+            isLoggedIn: true,
+            role: data.role,
+            token: data.data.token,
+          } as User);
           navigate(`/backoffice`);
         }
       },

@@ -1,9 +1,10 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
-import Mail = require('nodemailer/lib/mailer');
 import * as nodemailer from 'nodemailer';
+import * as cors from 'cors';
 
-export const sendEmail = onRequest({ cors: true, region: 'southamerica-west1' }, (request, res) => {
+export const sendEmail = onRequest( (request, res) => {
+  cors({ origin: true });
   const email = process.env.EMAIL_USERNAME;
   const password = process.env.EMAIL_PASSWORD;
   const mailTransport = nodemailer.createTransport({
@@ -15,23 +16,40 @@ export const sendEmail = onRequest({ cors: true, region: 'southamerica-west1' },
       pass: password,
     },
   });
-  logger.info('Request:', request.body, { structuredData: true });
+  logger.info('body options:', request.body, { structuredData: true });
+  
 
-  // const authToken = request.headers.authorization;
-  // TODO: UNCOMMENT THIS
-  // if (!authToken) {
-  //   res.status(401).send('Unauthorized');
-  //   return;
-  // }
+  const authToken = request.headers.authorization;
+  if (!authToken) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+  
+  const body  = request.body;
+  const options = body.options;
 
-  const { options } = request.body as { options: Mail.Options };
+  if (!body || !options) {
+    logger.error('Missing email options in the request body');
+    res.status(400).send('Bad Request: Missing email options');
+    return;
+  }
+
+  
+  const { to } = options;
+  logger.info('this email is intended for:', to, { structuredData: true})
 
   logger.info('Sending email with options:', options, { structuredData: true });
 
   try {
-    mailTransport.sendMail(options);
-    logger.info('Email sent to:', options.to);
-    res.status(200).send('Email sent');
+    mailTransport.sendMail(request.body.options, (error, info) => {
+      if (error) {
+        logger.error('There was an error while sending the email:', error);
+        res.status(500).send(`Error sending email: ${error.message}`);
+      } else {
+        logger.info('Email sent to:', options.to);
+        res.status(200).send(`Email sent ${info.response}`);
+      }
+    });
   } catch (error) {
     logger.error('There was an error while sending the email:', error);
     if (error instanceof Error) {
