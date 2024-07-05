@@ -8,7 +8,7 @@
 import { Comuna, Prestador, Servicio } from '@/types';
 import { defaultAvailability } from '@/utils/constants';
 import dayjs from 'dayjs';
-import { createUserWithEmailAndPassword, getIdToken, sendEmailVerification } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { db, auth } from '@/firebase/firebase';
 import { query, collection, where, getDocs, doc, setDoc, writeBatch } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
@@ -51,9 +51,6 @@ export async function createPrestador({
 
     const userCredentials = await createUserWithEmailAndPassword(auth, correo, contrasena);
     const { user } = userCredentials;
-    const token = await getIdToken(user);
-    console.log('token!', token);
-    localStorage.setItem('token', JSON.stringify(token));
     await sendEmailVerification(user);
     const newPrestador: Prestador = {
       email: correo,
@@ -96,7 +93,7 @@ export async function createPrestador({
         batch.set(dayRef, day);
       });
 
-      return batch.commit().then(() => ({ prestador: newPrestador, token }));
+      return batch.commit().then(() => newPrestador);
     });
   } catch (error) {
     let message = 'Hubo un error creando el prestador: ';

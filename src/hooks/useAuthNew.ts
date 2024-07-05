@@ -38,7 +38,6 @@ export const useAuthNew = () => {
     createPrestador,
     {
       onSuccess(data) {
-        const { prestador } = data;
         setNotification({
           open: true,
           message: `Cuenta creada exitosamente`,
@@ -47,13 +46,13 @@ export const useAuthNew = () => {
         sendVerificationEmailApi.post('/', {
           options: {
             from: 'Blui.cl <francisco.durney@blui.cl>',
-            to: prestador.email,
+            to: data.email,
             subject: 'Bienvenido a Blui',
             text: `Verifica tu cuenta`,
           },
         });
-        setPrestadorState({ ...prestador, isLoggedIn: true });
-        queryClient.setQueryData(['prestador', prestador?.email], prestador);
+        setPrestadorState({ ...data, isLoggedIn: true });
+        queryClient.setQueryData(['prestador', data?.email], prestador);
         navigate('/prestador-dashboard');
       },
       onError(error: FirebaseError) {
@@ -79,6 +78,14 @@ export const useAuthNew = () => {
         open: true,
         message: `Cuenta creada exitosamente`,
         severity: 'success',
+      });
+      sendVerificationEmailApi.post('/', {
+        options: {
+          from: 'Blui.cl <francisco.durney@blui.cl>',
+          to: data?.email,
+          subject: 'Bienvenido a Blui',
+          text: `Verifica tu cuenta`,
+        },
       });
       setUserState({ ...data, isLoggedIn: true } as User);
       queryClient.setQueryData(['user', data?.email], user);
@@ -108,8 +115,7 @@ export const useAuthNew = () => {
         message: 'Iniciando sesión...',
         severity: 'info',
       });
-      return signInWithEmailAndPassword(auth, correo, contrasena).then(async ({ user }) => {
-        console.log('user logged in', user);
+      return signInWithEmailAndPassword(auth, correo, contrasena).then(async () => {
         const usersColectionRef = collection(db, 'users');
         const prestadorCollectionRef = collection(db, 'providers');
         const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
