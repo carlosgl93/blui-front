@@ -7,10 +7,11 @@ import { formInputs } from './formInputs';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import useAuth from '@/store/auth';
 import Loading from '@/components/Loading';
-import { CreateUserParams, useAuthNew } from '@/hooks/useAuthNew';
+import { useAuthNew } from '@/hooks/useAuthNew';
 import { Link } from 'react-router-dom';
 import { useComunas } from '@/hooks';
 import SearchBar from '../RecibeApoyo/SearchBar';
+import { CreateUserParams } from '@/api/auth';
 
 function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
@@ -168,7 +169,12 @@ function RegistrarUsuario() {
               }
               variant="contained"
               onClick={() => {
-                createUser({ ...(state as CreateUserParams) });
+                const userParams = {
+                  ...state,
+                  paraQuien: forWhom,
+                  comunas: selectedComunas,
+                };
+                createUser(userParams as CreateUserParams);
               }}
               sx={{
                 marginTop: '2.5vh',

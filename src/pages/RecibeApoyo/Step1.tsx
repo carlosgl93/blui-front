@@ -4,7 +4,7 @@ import useRecibeApoyo from '@/store/recibeApoyo';
 import { Box, Button } from '@mui/material';
 import ForWhomList from './ForWhomList';
 import { useNavigate } from 'react-router-dom';
-import { ForWhom } from '@/hooks/useAuthNew';
+import { ForWhom } from '@/api/auth';
 
 type Options = {
   value: ForWhom;

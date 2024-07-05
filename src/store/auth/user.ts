@@ -11,7 +11,7 @@ export interface User {
   forWhom: string;
   patientName: string;
   rut: string;
-  isLoggedIn: boolean;
+  isLoggedIn?: boolean;
   gender: 'Masculino' | 'Femenino' | 'Otro' | '';
   dob: string;
   phone: string;

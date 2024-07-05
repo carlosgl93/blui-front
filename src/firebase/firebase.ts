@@ -4,12 +4,10 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 const apiKey = 'AIzaSyCFFGtQ8UCPXendLYZc0koY2X2xqCqg4D8';
 const authDomain = 'blui-6ec33.firebaseapp.com';
-const projectId = 'blui-6ec33';
+export const projectId = 'blui-6ec33';
 const storageBucket = 'blui-6ec33.appspot.com';
 const messagingSenderId = '612874412823';
 const appId = '1:612874412823:web:fbfd0f29b5b53450e8cd52';

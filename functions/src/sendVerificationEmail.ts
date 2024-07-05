@@ -1,11 +1,14 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import * as nodemailer from 'nodemailer';
-import { getStorage } from './index';
+import { getAuth, getStorage } from './index';
 
-export const sendEmail = onRequest(
+export const sendVerificationEmail = onRequest(
+  // func settings
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
+  // handler
   async ({ headers, body }, res) => {
+    // bucket to get the html from
     const bucket = getStorage().bucket();
     const email = process.env.EMAIL_USERNAME;
     const password = process.env.EMAIL_PASSWORD;
@@ -24,7 +27,7 @@ export const sendEmail = onRequest(
       return;
     }
 
-    const { templateName, options, token } = body;
+    const { options } = body;
 
     if (!body || !options) {
       logger.error('Missing email options in the request body');
@@ -32,13 +35,20 @@ export const sendEmail = onRequest(
       return;
     }
 
+    // to === user created email
     const { to } = options;
-    const file = bucket.file(templateName);
+    const file = bucket.file('verify-email.html');
 
     try {
+      const link = await getAuth().generateEmailVerificationLink(to, {
+        url:
+          process.env.ENV === 'dev'
+            ? 'http://localhost:5173/email-verificado'
+            : 'https://blui-6ec33.web.app/email-verificado',
+      });
       const [templateContent] = await file.download();
       const template = templateContent.toString();
-      const populatedTemplate = template.replace(/{{TOKEN}}/g, token);
+      const populatedTemplate = template.replace('{{EMAIL_VERIFICATION_LINK}}', link);
       options.html = populatedTemplate;
       mailTransport.sendMail(options, (error, info) => {
         if (error) {

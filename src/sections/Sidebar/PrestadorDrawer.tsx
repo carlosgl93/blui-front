@@ -1,18 +1,17 @@
+import { useRecoilValue } from 'recoil';
 import { Link } from 'react-router-dom';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
+import { useAuthNew } from '@/hooks/useAuthNew';
+import { Avatar, Box, Divider } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { Avatar, Box, Divider } from '@mui/material';
 
-import { generalOptionsDrawerList, prestadorDrawerOptions } from './prestadorDrawerOptions';
-import { ChevronRightOutlined } from '@mui/icons-material';
-import { useRecoilValue } from 'recoil';
+import ListItemButton from '@mui/material/ListItemButton';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
-import { useAuthNew } from '@/hooks/useAuthNew';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import { generalOptionsDrawerList, prestadorDrawerOptions } from './prestadorDrawerOptions';
 
 type PrestadorDrawerListProps = {
   closeDrawer: () => void;
@@ -106,7 +105,7 @@ function PrestadorDrawerList({ closeDrawer }: PrestadorDrawerListProps) {
               >
                 {title}
               </ListItemText>
-              <ChevronRightOutlined />
+              <ChevronRightOutlinedIcon />
             </ListItemButton>
           </ListItem>
         );

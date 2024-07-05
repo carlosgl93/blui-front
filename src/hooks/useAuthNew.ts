@@ -3,16 +3,13 @@ import { useMutation, useQueryClient } from 'react-query';
 import { auth, db } from '@/firebase/firebase';
 import {
   browserSessionPersistence,
-  createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { collection, query, where, getDocs, limit, doc, setDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
-import { Comuna } from '@/types';
-import { Servicio } from '@/types/Servicio';
 import { FirebaseError } from 'firebase/app';
 import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
@@ -20,43 +17,15 @@ import useEntregaApoyo from '@/store/entregaApoyo';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
-import { comunasState } from '@/store/construirPerfil/comunas';
 import { editDisponibilidadState } from '@/store/construirPerfil/availability';
-import { createPrestador } from '@/api/auth';
-
-export type ForWhom = 'paciente' | 'tercero' | '';
-
-export type CreateUserParams = {
-  nombre: string;
-  apellido: string;
-  paraQuien: ForWhom;
-  nombrePaciente?: string;
-  rut: string;
-  comuna: string;
-  correo: string;
-  contrasena: string;
-};
-
-export type CreatePrestadorParams = {
-  nombre: string;
-  apellido: string;
-  rut: string;
-  // telefono: string;
-  correo: string;
-  contrasena: string;
-  comunas: Comuna[];
-  servicio: Servicio | undefined;
-  // especialidad: Especialidad | undefined;
-};
-
-const defaultNewUser = { dob: '', phone: '', gender: '', address: '' };
+import { createPrestador, createUser } from '@/api/auth';
+import { sendVerificationEmailApi } from '@/api';
 
 export const useAuthNew = () => {
-  const [, setNotification] = useRecoilState(notificationState);
+  const setNotification = useSetRecoilState(notificationState);
   const [user, setUserState] = useRecoilState(userState);
   const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
-  const selectedComunas = useRecoilValue(comunasState);
   const [, { resetEntregaApoyoState }] = useEntregaApoyo();
   const [, { resetRecibeApoyoState }] = useRecibeApoyo();
   const setEditDisponibilidad = useSetRecoilState(editDisponibilidadState);
@@ -69,38 +38,28 @@ export const useAuthNew = () => {
     createPrestador,
     {
       onSuccess(data) {
+        const { prestador } = data;
         setNotification({
           open: true,
           message: `Cuenta creada exitosamente`,
           severity: 'success',
         });
-        setPrestadorState({ ...data, isLoggedIn: true } as Prestador);
-        queryClient.setQueryData(['prestador', data.email], prestador);
+        sendVerificationEmailApi.post('/', {
+          options: {
+            from: 'Blui.cl <francisco.durney@blui.cl>',
+            to: prestador.email,
+            subject: 'Bienvenido a Blui',
+            text: `Verifica tu cuenta`,
+          },
+        });
+        setPrestadorState({ ...prestador, isLoggedIn: true });
+        queryClient.setQueryData(['prestador', prestador?.email], prestador);
         navigate('/prestador-dashboard');
       },
       onError(error: FirebaseError) {
-        let message = 'Hubo un error creando el prestador: ';
-
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-            message += 'El correo electrónico ya está en uso.';
-            break;
-          case 'auth/invalid-email':
-            message += 'El correo electrónico no es válido.';
-            break;
-          case 'auth/operation-not-allowed':
-            message += 'La operación no está permitida.';
-            break;
-          case 'auth/weak-password':
-            message += 'La contraseña es demasiado débil.';
-            break;
-          default:
-            message += error.message;
-        }
-
         setNotification({
           open: true,
-          message,
+          message: error.message,
           severity: 'error',
         });
       },
@@ -114,90 +73,33 @@ export const useAuthNew = () => {
     },
   );
 
-  const { mutate: createUser, isLoading: createUserLoading } = useMutation(
-    async ({
-      nombre,
-      apellido,
-      paraQuien,
-      nombrePaciente,
-      rut,
-      correo,
-      contrasena,
-    }: CreateUserParams) => {
+  const { mutate: createUserMutation, isLoading: createUserLoading } = useMutation(createUser, {
+    onSuccess(data) {
+      setNotification({
+        open: true,
+        message: `Cuenta creada exitosamente`,
+        severity: 'success',
+      });
+      setUserState({ ...data, isLoggedIn: true } as User);
+      queryClient.setQueryData(['user', data?.email], user);
+      window.scrollTo(0, 0);
+      redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
+    },
+    onError(error: Error) {
+      setNotification({
+        open: true,
+        message: error.message,
+        severity: 'error',
+      });
+    },
+    onMutate() {
       setNotification({
         open: true,
         message: 'Creando tu cuenta...',
         severity: 'info',
       });
-      // Check if a user with the given email already exists in the users collection
-      const userQuery = query(collection(db, 'users'), where('email', '==', correo));
-      const userSnapshot = await getDocs(userQuery);
-      if (!userSnapshot.empty) {
-        throw new Error('Este email ya tiene una cuenta.');
-      }
-
-      // Check if a user with the given email already exists in the providers collection
-      const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
-      const providerSnapshot = await getDocs(providerQuery);
-      if (!providerSnapshot.empty) {
-        throw new Error('Este email ya tiene una cuenta.');
-      }
-      const { user } = await createUserWithEmailAndPassword(auth, correo, contrasena);
-      const newUser = {
-        ...defaultNewUser,
-        email: correo,
-        id: user.uid,
-        role: 'user',
-        firstname: nombre,
-        lastname: apellido,
-        forWhom: paraQuien !== nombre ? 'tercero' : 'paciente',
-        patientName: nombrePaciente,
-        rut,
-        comuna: selectedComunas[0],
-      };
-      const userRef = doc(db, 'users', user.uid);
-      return await setDoc(userRef, newUser).then(() => newUser);
     },
-    {
-      onSuccess(data) {
-        setNotification({
-          open: true,
-          message: `Cuenta creada exitosamente`,
-          severity: 'success',
-        });
-        setUserState({ ...data, isLoggedIn: true } as User);
-        queryClient.setQueryData(['user', data?.email], user);
-        window.scrollTo(0, 0);
-        redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
-      },
-      onError(error: FirebaseError) {
-        let message = 'Hubo un error creando tu cuenta: ';
-
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-            message += 'El correo electrónico ya está en uso.';
-            break;
-          case 'auth/invalid-email':
-            message += 'El correo electrónico no es válido.';
-            break;
-          case 'auth/operation-not-allowed':
-            message += 'La operación no está permitida.';
-            break;
-          case 'auth/weak-password':
-            message += 'La contraseña es demasiado débil.';
-            break;
-          default:
-            message += error.message;
-        }
-
-        setNotification({
-          open: true,
-          message,
-          severity: 'error',
-        });
-      },
-    },
-  );
+  });
 
   const { mutate: login, isLoading: loginLoading } = useMutation(
     async ({ correo, contrasena }: { correo: string; contrasena: string }) => {
@@ -206,7 +108,8 @@ export const useAuthNew = () => {
         message: 'Iniciando sesión...',
         severity: 'info',
       });
-      return signInWithEmailAndPassword(auth, correo, contrasena).then(async () => {
+      return signInWithEmailAndPassword(auth, correo, contrasena).then(async ({ user }) => {
+        console.log('user logged in', user);
         const usersColectionRef = collection(db, 'users');
         const prestadorCollectionRef = collection(db, 'providers');
         const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
@@ -382,7 +285,7 @@ export const useAuthNew = () => {
   return {
     login,
     logout,
-    createUser,
+    createUser: createUserMutation,
     adminLogin,
     createPrestador: createPrestadorMutation,
     user,

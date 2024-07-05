@@ -28,7 +28,7 @@ export function onSuccessFailedVerifyPrestador(
     severity: 'success',
   });
   axios.post(
-    'http://localhost:5001/blui-6ec33/southamerica-west1/sendEmail',
+    `http://localhost:5001/blui-6ec33/southamerica-west1/sendEmail`,
     {
       options: {
         from: 'Francisco Durney <francisco.durney@blui.cl>',

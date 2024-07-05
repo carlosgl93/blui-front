@@ -1,10 +1,11 @@
 import { IconButton, InputAdornment, List, ListItem, OutlinedInput } from '@mui/material';
-import { Search } from '@mui/icons-material';
+
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import useEntregaApoyo from '@/store/entregaApoyo';
 import { Comuna } from '@/types/Comuna';
 import { useComunas } from '@/hooks/useComunas';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 function SearchBar() {
   const [{ selectedComunas }, { addComuna, removeComuna }] = useEntregaApoyo();
@@ -56,7 +57,7 @@ function SearchBar() {
                     alignItems: 'center',
                   }}
                 >
-                  <Search
+                  <SearchOutlinedIcon
                     sx={{
                       color: 'white',
                     }}

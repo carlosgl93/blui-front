@@ -1,5 +1,4 @@
 import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import { Search } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import Loading from '@/components/Loading';
@@ -7,6 +6,7 @@ import { Comuna } from '@/types/Comuna';
 import { useComunas } from '@/hooks/useComunas';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { useNavigate } from 'react-router-dom';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 function SearchBar() {
   const [comunasState, setComunasState] = useState<Comuna[]>([]);
@@ -21,6 +21,7 @@ function SearchBar() {
       handleRemoveComuna(c);
     } else {
       handleSelectComuna(c);
+      addComuna(c);
       setComunasState(allComunas);
       textInput.value = '';
     }
@@ -63,7 +64,7 @@ function SearchBar() {
                   alignItems: 'center',
                 }}
               >
-                <Search
+                <SearchOutlinedIcon
                   sx={{
                     color: 'white',
                   }}

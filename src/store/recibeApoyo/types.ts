@@ -1,4 +1,4 @@
-import { ForWhom } from '@/hooks/useAuthNew';
+import { ForWhom } from '@/api/auth';
 import { Comuna } from '@/types/Comuna';
 import { Prestador } from '@/types/Prestador';
 import { Especialidad, Servicio } from '@/types/Servicio';

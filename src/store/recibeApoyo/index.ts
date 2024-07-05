@@ -6,7 +6,7 @@ import type { Actions } from './types';
 import { Comuna } from '@/types/Comuna';
 import { Especialidad, Servicio } from '@/types/Servicio';
 import { Prestador } from '@/types/Prestador';
-import { ForWhom } from '@/hooks/useAuthNew';
+import { ForWhom } from '@/api/auth';
 
 type RecibeApoyoState = {
   step: number;
@@ -77,15 +77,12 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   );
 
   const addComuna = (comuna: Comuna) => {
+    console.log('adding comuna', comuna);
     if (apoyo.comuna === comuna) return;
     setApoyo((prev) => ({
       ...prev,
       comuna: comuna,
     }));
-    // getPrestadoresByComunaAndServicio({
-    //   comuna: comuna.id,
-    //   servicio: apoyo.servicio?.service_id || null,
-    // });
   };
 
   const removeComuna = () => {
@@ -93,10 +90,6 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
       ...prev,
       comuna: null,
     }));
-    // getPrestadoresByComunaAndServicio({
-    //   comuna: null,
-    //   servicio: apoyo.servicio?.service_id || null,
-    // });
   };
 
   const increaseStep = () => {

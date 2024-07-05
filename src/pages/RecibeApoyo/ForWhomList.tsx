@@ -1,7 +1,7 @@
 import { List, ListItemButton, ListItemText, ListItemIcon } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { ForWhom } from '@/hooks/useAuthNew';
+import { ForWhom } from '@/api/auth';
 
 type ListProps = {
   options: {

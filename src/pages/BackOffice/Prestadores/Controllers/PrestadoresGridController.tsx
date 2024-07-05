@@ -33,8 +33,7 @@ export const PrestadoresGridController = () => {
   const { mutate: verifyPrestador, isLoading: isLoadingVerifyPrestador } = useMutation(
     verifyPrestadorMutation,
     {
-      onSuccess: (prestador) =>
-        onSuccessVerifyPrestador(prestador, user as User, client, setNotification),
+      onSuccess: (prestador) => onSuccessVerifyPrestador(prestador, client, setNotification),
     },
   );
 

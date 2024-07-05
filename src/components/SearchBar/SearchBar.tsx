@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Box } from '@mui/system';
-import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useComunas } from '@/hooks/useComunas';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { IconButton, InputAdornment, List, ListItem, OutlinedInput } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 function SearchBar() {
   const { allComunas } = useComunas();
@@ -56,7 +56,7 @@ function SearchBar() {
                   alignItems: 'center',
                 }}
               >
-                <Search
+                <SearchOutlinedIcon
                   sx={{
                     color: 'white',
                   }}
