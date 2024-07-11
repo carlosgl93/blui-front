@@ -1,6 +1,4 @@
-
 export const envHelper = (redirectPath: string) => {
-  const baseUrl =
-    process.env.ENV === 'dev' ? 'http://localhost:5173' : 'https://blui-6ec33.web.app';
+  const baseUrl = process.env.ENV === 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
   return `${baseUrl}/${redirectPath}`;
 };
