@@ -24,7 +24,6 @@ export interface Prestador {
   address?: string;
   createdAt: string;
   verified: boolean;
-  emailVerified: boolean;
   settings: {
     servicios: boolean;
     detallesBasicos: boolean;

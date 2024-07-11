@@ -36,7 +36,7 @@
         text-decoration: none !important;
         padding: 10px 20px;
         background-color: #970b80;
-        color: white !important; 
+        color: white !important;
         border: none;
         border-radius: 5px;
         cursor: pointer;
@@ -64,20 +64,21 @@
                 <img
                   src="https://firebasestorage.googleapis.com/v0/b/blui-6ec33.appspot.com/o/pwa-maskable-192x192.png?alt=media&token=665fbf8c-5b8a-4cf8-aa0c-57e6fa924ca6"
                 />
-                <h1 style="color: #502048">Bienvenido a Blui</h1>
+                <h1 style="color: #502048">¡Verificación exitosa!</h1>
               </td>
             </tr>
             <tr>
               <td align="center">
-                <p>Gracias por unirte a nuestra comunidad</p>
+                <p>
+                  {{firstname}}, tu perfil ha sido aprobado. Ahora apareceras en las busquedas en
+                  Blui.
+                </p>
               </td>
             </tr>
             <tr>
               <td align="center" style="padding: 20px">
                 <!-- Use an anchor tag for the button to ensure compatibility -->
-                <a href="https://blui-6ec33.web.app/email-verificado?token={{TOKEN}}" class="button"
-                  >Verifica tu cuenta</a
-                >
+                <a href="{{env redirect}}" target="_blank" class="button">Tus servicios</a>
               </td>
             </tr>
           </table>

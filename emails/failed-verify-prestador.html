@@ -64,18 +64,21 @@
                 <img
                   src="https://firebasestorage.googleapis.com/v0/b/blui-6ec33.appspot.com/o/pwa-maskable-192x192.png?alt=media&token=665fbf8c-5b8a-4cf8-aa0c-57e6fa924ca6"
                 />
-                <h1 style="color: #502048">Bienvenido a Blui</h1>
+                <h1 style="color: #502048">¡Verificación fallida!</h1>
               </td>
             </tr>
             <tr>
               <td align="center">
-                <p>Por favor, haz click en el boton para verificar tu cuenta</p>
+                <p>
+                  {{firstname}}, tu perfil no ha podido ser aprobado. Tranquilo/a, aun puedes
+                  verificar tu perfil. Puedes contactarte al telefono de apoyo: {{customerSupportPhone}}
+                </p>
               </td>
             </tr>
             <tr>
               <td align="center" style="padding: 20px">
                 <!-- Use an anchor tag for the button to ensure compatibility -->
-                <a href="{{EMAIL_VERIFICATION_LINK}}" class="button">Verifica tu cuenta</a>
+                <a href="tel:{{customerSupportPhone}}" class="button">Llamar</a>
               </td>
             </tr>
           </table>

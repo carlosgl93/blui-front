@@ -26,16 +26,15 @@ export function onSuccessVerifyPrestador(
     severity: 'success',
   });
   sendEmailApi.post('/', {
+    firstname: prestador.firstname,
+    templateName: 'verify-prestador.html',
     options: {
-      from: 'Francisco Durney <francisco.durney@blui.cl>',
+      from: 'Blui.cl <francisco.durney@blui.cl>',
       to: prestador?.email,
       subject: 'Tu perfil ha sido verificado!',
-      text: `Estimado ${
+      text: `${
         prestador?.firstname ? prestador?.firstname : prestador?.email
-      } hemos verificado tu perfil.`,
-      html: `<p>Estimado ${
-        prestador?.firstname ? prestador?.firstname : prestador?.email
-      } hemos verificado tu perfil.</p>`,
+      } tu perfil ha sido aprobado. Ahora apareceras en las busquedas en Blui.`,
     },
   });
 }

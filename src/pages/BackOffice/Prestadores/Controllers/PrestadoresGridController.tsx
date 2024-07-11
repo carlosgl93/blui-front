@@ -10,9 +10,7 @@ import dayjs from 'dayjs';
 import { failedVerifyPrestadorMutation, verifyPrestadorMutation } from '@/api/prestadores';
 import { notificationState } from '@/store/snackbar';
 import { useGetPrestadores } from '@/hooks/useGetPrestadores';
-import { useAuthNew } from '@/hooks';
 import { onSuccessVerifyPrestador } from './onSuccessVerifyPrestador';
-import { User } from '@/store/auth/user';
 import { onSuccessFailedVerifyPrestador } from './onSuccessFailVerifyPrestador';
 
 type PrestadoresRow = Prestador;
@@ -21,7 +19,6 @@ export const PrestadoresGridController = () => {
   const [paginationModel, setPaginationModel] = useRecoilState(prestadoresGridPaginationModelState);
   const setNotification = useSetRecoilState(notificationState);
   const client = useQueryClient();
-  const { user } = useAuthNew();
 
   const {
     allPrestadores: prestadores,
@@ -40,8 +37,7 @@ export const PrestadoresGridController = () => {
   const { mutate: failedVerifyPrestador, isLoading: isLoadingFailedVerifyPrestador } = useMutation(
     failedVerifyPrestadorMutation,
     {
-      onSuccess: (prestador) =>
-        onSuccessFailedVerifyPrestador(prestador, user as User, client, setNotification),
+      onSuccess: (prestador) => onSuccessFailedVerifyPrestador(prestador, client, setNotification),
     },
   );
 

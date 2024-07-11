@@ -5,13 +5,15 @@ import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
-const apiKey = 'AIzaSyCFFGtQ8UCPXendLYZc0koY2X2xqCqg4D8';
-const authDomain = 'blui-6ec33.firebaseapp.com';
-export const projectId = 'blui-6ec33';
-const storageBucket = 'blui-6ec33.appspot.com';
-const messagingSenderId = '612874412823';
-const appId = '1:612874412823:web:fbfd0f29b5b53450e8cd52';
-const measurementId = 'G-QWQ7SXL2SW';
+const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+const authDomain = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+export const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+const storageBucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+const messagingSenderId = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
+const appId = import.meta.env.VITE_FIREBASE_APP_ID;
+const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
+
+console.log(import.meta.env.MODE);
 
 const firebaseConfig = {
   apiKey,

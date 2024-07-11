@@ -64,7 +64,6 @@ export async function createPrestador({
       offersFreeMeetAndGreet: false,
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       verified: false,
-      emailVerified: false,
       settings: {
         servicios: false,
         detallesBasicos: false,

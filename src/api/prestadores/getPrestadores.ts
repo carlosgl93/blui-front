@@ -10,9 +10,6 @@ export const getPrestadores = async (
   especialidad: Especialidad | null,
 ) => {
   const prestadorCollectionRef = collection(db, 'providers');
-  console.log('comuna', comuna);
-  console.log('servicio', servicio);
-
   let prestadoresQuery = query(prestadorCollectionRef, where('verified', '!=', false), limit(15));
 
   if (comuna) {
