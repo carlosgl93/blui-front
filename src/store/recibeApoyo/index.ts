@@ -77,7 +77,6 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   );
 
   const addComuna = (comuna: Comuna) => {
-    console.log('adding comuna', comuna);
     if (apoyo.comuna === comuna) return;
     setApoyo((prev) => ({
       ...prev,
