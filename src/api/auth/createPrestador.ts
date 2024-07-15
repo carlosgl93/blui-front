@@ -5,39 +5,53 @@
  *
  */
 
-import { CreatePrestadorParams } from '@/hooks';
-import { Prestador } from '@/types';
+import { Comuna, Prestador, Servicio } from '@/types';
 import { defaultAvailability } from '@/utils/constants';
 import dayjs from 'dayjs';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { db, auth } from '@/firebase/firebase';
 import { query, collection, where, getDocs, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { FirebaseError } from 'firebase/app';
+
+export type CreatePrestadorParams = {
+  nombre: string;
+  apellido: string;
+  rut: string;
+  // telefono: string;
+  correo: string;
+  contrasena: string;
+  comunas: Comuna[];
+  servicio: Servicio | undefined;
+  // especialidad: Especialidad | undefined;
+};
 
 export async function createPrestador({
   nombre,
   apellido,
   rut,
-  // telefono,
   correo,
   contrasena,
   comunas,
   servicio,
 }: CreatePrestadorParams) {
-  // Check if a user with the given email already exists in the users collection
-  const userQuery = query(collection(db, 'users'), where('email', '==', correo));
-  const userSnapshot = await getDocs(userQuery);
-  if (!userSnapshot.empty) {
-    throw new Error('Este email ya tiene una cuenta.');
-  }
+  try {
+    // Check if a user with the given email already exists in the users collection
+    const userQuery = query(collection(db, 'users'), where('email', '==', correo));
+    const userSnapshot = await getDocs(userQuery);
+    if (!userSnapshot.empty) {
+      throw new Error('Este email ya tiene una cuenta.');
+    }
 
-  // Check if a user with the given email already exists in the providers collection
-  const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
-  const providerSnapshot = await getDocs(providerQuery);
-  if (!providerSnapshot.empty) {
-    throw new Error('Este email ya tiene una cuenta.');
-  }
+    // Check if a user with the given email already exists in the providers collection
+    const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
+    const providerSnapshot = await getDocs(providerQuery);
+    if (!providerSnapshot.empty) {
+      throw new Error('Este email ya tiene una cuenta.');
+    }
 
-  return createUserWithEmailAndPassword(auth, correo, contrasena).then(({ user }) => {
+    const userCredentials = await createUserWithEmailAndPassword(auth, correo, contrasena);
+    const { user } = userCredentials;
+    await sendEmailVerification(user);
     const newPrestador: Prestador = {
       email: correo,
       id: user.uid,
@@ -80,5 +94,26 @@ export async function createPrestador({
 
       return batch.commit().then(() => newPrestador);
     });
-  });
+  } catch (error) {
+    let message = 'Hubo un error creando el prestador: ';
+    if (error instanceof FirebaseError) {
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          message += 'El correo electrónico ya está en uso.';
+          break;
+        case 'auth/invalid-email':
+          message += 'El correo electrónico no es válido.';
+          break;
+        case 'auth/operation-not-allowed':
+          message += 'La operación no está permitida.';
+          break;
+        case 'auth/weak-password':
+          message += 'La contraseña es demasiado débil.';
+          break;
+        default:
+          message += error.message;
+      }
+    }
+    return Promise.reject(new Error(message));
+  }
 }

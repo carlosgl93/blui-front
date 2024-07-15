@@ -17,7 +17,7 @@ export const BrandHomeLinkMobile = () => {
           alignItems: 'center',
         }}
       >
-        <HeaderIconImage src={`/images/blui-new.png`} alt="Blui logo" />
+        <HeaderIconImage src={`/images/blui-new.png`} alt="Blui logo" loading="lazy" />
       </Link>
     </Box>
   );

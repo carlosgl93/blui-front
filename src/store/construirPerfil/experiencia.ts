@@ -1,19 +1,15 @@
 import { atom } from 'recoil';
-
-import {
-  ElderlyOutlined as ElderlyOutlinedIcon,
-  LoopOutlined as LoopOutlinedIcon,
-  AccessibleOutlined as AccessibleOutlinedIcon,
-  PsychologyAltOutlined as PsychologyAltOutlinedIcon,
-  Elderly as ElderlyIcon,
-  Loop as LoopIcon,
-  Accessible as AccessibleIcon,
-  Psychology as PsychologyIcon,
-} from '@mui/icons-material';
-
-import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material';
+import LoopIcon from '@mui/icons-material/Loop';
+import ElderlyIcon from '@mui/icons-material/Elderly';
 import { generalExperiences } from '@/utils/constants';
+import AccessibleIcon from '@mui/icons-material/Accessible';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import LoopOutlinedIcon from '@mui/icons-material/LoopOutlined';
+import ElderlyOutlinedIcon from '@mui/icons-material/ElderlyOutlined';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
+import PsychologyAltOutlinedIcon from '@mui/icons-material/PsychologyAltOutlined';
 
 export type ExperienceType = 'Personal' | 'Profesional'[];
 

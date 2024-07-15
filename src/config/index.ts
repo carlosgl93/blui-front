@@ -2,9 +2,11 @@ import isMobile from '@/utils/is-mobile';
 import type { Notifications } from './types';
 const title = 'Blui';
 // TODO change this email
-const email = 'soporte@blui.com';
+const email = 'francisco.durney@blui.cl';
 // TODO change the repository
 const repository = 'https://github.com/TODO';
+
+const customerSupportPhone = '+569 8974 2613';
 
 const messages = {
   app: {
@@ -51,6 +53,7 @@ const defaultMetaTags = {
 const giphy404 = 'https://giphy.com/embed/2asOjumchIeb5gZO9m';
 
 export {
+  customerSupportPhone,
   loader,
   notifications,
   dateFormat,

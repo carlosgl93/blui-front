@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { SetterOrUpdater } from 'recoil';
-import { User } from '@/store/auth/user';
 import { QueryClient } from 'react-query';
 import { Prestador } from '@/store/auth/prestador';
 import { NotificationState } from '@/store/snackbar';
+import { sendEmailApi } from '@/api';
 
 /**;
  *
@@ -17,7 +16,6 @@ import { NotificationState } from '@/store/snackbar';
 
 export function onSuccessVerifyPrestador(
   prestador: Prestador,
-  user: User,
   client: QueryClient,
   setNotification: SetterOrUpdater<NotificationState>,
 ) {
@@ -27,25 +25,16 @@ export function onSuccessVerifyPrestador(
     message: 'Prestador confirmado',
     severity: 'success',
   });
-  axios.post(
-    'http://127.0.0.1:5001/blui-6ec33/southamerica-west1/sendEmail',
-    {
-      options: {
-        from: 'Francisco Durney <francisco.durney@blui.cl>',
-        to: prestador?.email,
-        subject: 'Tu perfil ha sido verificado!',
-        text: `Estimado ${
-          prestador?.firstname ? prestador?.firstname : prestador?.email
-        } hemos verificado tu perfil.`,
-        html: `<p>Estimado ${
-          prestador?.firstname ? prestador?.firstname : prestador?.email
-        } hemos verificado tu perfil.</p>`,
-      },
+  sendEmailApi.post('/', {
+    firstname: prestador.firstname,
+    templateName: 'verify-prestador.html',
+    options: {
+      from: 'Blui.cl <francisco.durney@blui.cl>',
+      to: prestador?.email,
+      subject: 'Tu perfil ha sido verificado!',
+      text: `${
+        prestador?.firstname ? prestador?.firstname : prestador?.email
+      } tu perfil ha sido aprobado. Ahora apareceras en las busquedas en Blui.`,
     },
-    {
-      headers: {
-        authorization: `Bearer ${user?.token}`,
-      },
-    },
-  );
+  });
 }

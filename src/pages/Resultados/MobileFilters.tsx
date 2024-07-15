@@ -123,7 +123,9 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
             <option value={''} disabled>
               Elige un servicio
             </option>
-
+            {/* semantically clearer for the user to select "Todos" than going back to elige */}
+            {/* un servicio para denotar el sacar los filtros o querer todos los resultados. */}
+            <option value={''}>Todos</option>
             {allServicios.map((servicio: Servicio) => {
               return (
                 <option key={servicio.id} value={servicio.serviceName}>

@@ -34,6 +34,15 @@ export const ScheduleController = () => {
   const { user } = useAuthNew();
 
   const shouldDisableDay = (date: dayjs.Dayjs) => {
+    // Calculate the current time plus 24 hours to get the cutoff time
+    const cutoffTime = dayjs().add(24, 'hour');
+
+    // Disable the date if it is less than 24 hours from the current time
+    // Note: We use .startOf('day') to compare only the date part, ignoring the time
+    if (date.diff(cutoffTime, 'days', true) < 0) {
+      return true;
+    }
+
     // Disable the date if the provider is not available on this day of the week
     const dayAvailability = providerAvailability?.find((d) => d?.id === date.get('day'));
     // If the day is not available, return true to disable it
@@ -41,6 +50,8 @@ export const ScheduleController = () => {
   };
   const renderAvailableDay = useCallback(
     (props: PickersDayProps<dayjs.Dayjs>) => {
+      // the day is available if the prestador availability includes that day of the week
+      // and its not less than 24 hours from now
       const isAvailable = providerAvailability?.find((d) => {
         return d?.id === props.day.get('d');
       })?.isAvailable;

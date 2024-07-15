@@ -24,9 +24,12 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '@/store/auth';
 
 import { Prestador } from '@/types';
+import { useAuthNew } from '@/hooks';
+import Loading from '@/components/Loading';
 
 export const PreviewDesktopProfile = () => {
-  const [{ isLoggedIn, user }, { updateRedirectToAfterLogin }] = useAuth();
+  const { prestador, isLoggedIn } = useAuthNew();
+  const [, { updateRedirectToAfterLogin }] = useAuth();
 
   const {
     id,
@@ -38,7 +41,7 @@ export const PreviewDesktopProfile = () => {
     averageReviews,
     totalReviews,
     description,
-  } = user as Prestador;
+  } = prestador as Prestador;
 
   const [{ allServicios }] = useRecibeApoyo();
   const [prestadorServicio, setPrestadorServicio] = useState({} as Servicio);
@@ -46,8 +49,7 @@ export const PreviewDesktopProfile = () => {
   const navigate = useNavigate();
 
   const handleContact = () => {
-    console.log(isLoggedIn, user);
-    if (isLoggedIn && user) {
+    if (isLoggedIn && prestador) {
       navigate(`/chat/${id}`);
       return;
     }
@@ -71,6 +73,8 @@ export const PreviewDesktopProfile = () => {
       setPrestadorEspecialidad(thisPrestadorEspecialidad);
     }
   }, [allServicios, servicio, especialidad]);
+
+  if (!prestador) return <Loading />;
 
   return (
     <>

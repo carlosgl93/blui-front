@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { SetterOrUpdater } from 'recoil';
-import { User } from '@/store/auth/user';
 import { QueryClient } from 'react-query';
 import { Prestador } from '@/store/auth/prestador';
 import { NotificationState } from '@/store/snackbar';
+import { sendEmailApi } from '@/api';
 
 /**;
  *
@@ -15,9 +14,9 @@ import { NotificationState } from '@/store/snackbar';
  *
  */
 
+// Confusing naming... handler for the onSuccess effect of the failed verify mutation.
 export function onSuccessFailedVerifyPrestador(
   prestador: Prestador,
-  user: User,
   client: QueryClient,
   setNotification: SetterOrUpdater<NotificationState>,
 ) {
@@ -27,25 +26,16 @@ export function onSuccessFailedVerifyPrestador(
     message: 'Prestador rechazado',
     severity: 'success',
   });
-  axios.post(
-    'http://localhost:5001/blui-6ec33/southamerica-west1/sendEmail',
-    {
-      options: {
-        from: 'Francisco Durney <francisco.durney@blui.cl>',
-        to: prestador?.email,
-        subject: 'Tu perfil ha sido rechazado!',
-        text: `Estimado ${
-          prestador?.firstname ? prestador.firstname : prestador?.email
-        } hemos rechazado tu perfil dado que no figuras en la base de datos de prestadores de salud de chile.`,
-        html: `<p>Estimado ${
-          prestador?.firstname ? prestador.firstname : prestador?.email
-        } hemos rechazado tu perfil dado que no figuras en la base de datos de prestadores de salud de chile.</p>`,
-      },
+  sendEmailApi.post('/', {
+    firstname: prestador.firstname,
+    templateName: 'failed-verify-prestador.html',
+    options: {
+      from: 'Blui.cl <francisco.durney@blui.cl>',
+      to: prestador?.email,
+      subject: 'Tu perfil ha sido rechazado!',
+      text: `Estimado/a ${
+        prestador?.firstname ? prestador.firstname : prestador?.email
+      } hemos rechazado tu perfil dado que no figuras en la base de datos de prestadores de salud de chile.`,
     },
-    {
-      headers: {
-        authorization: `Bearer ${user?.token}`,
-      },
-    },
-  );
+  });
 }

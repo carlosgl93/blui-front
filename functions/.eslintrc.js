@@ -31,5 +31,6 @@ module.exports = {
     "object-curly-spacing": "off",
     "no-trailing-spaces": "off",
     "max-len": "off",
+    "operator-linebreak": "off",
   },
 };

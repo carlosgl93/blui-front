@@ -81,6 +81,8 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     availability,
   } = prestador;
 
+  console.log(prestador.comunas);
+
   return (
     <Wrapper>
       <HeroContainer>
@@ -96,6 +98,9 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         <StyledServicio>
           {servicio} {especialidad && '/ especialidad'}
         </StyledServicio>
+
+        <StyledServicio>{prestador.comunas.map((c) => c.name)}</StyledServicio>
+
         <StyledCTAs>
           {messagesLoading ? (
             <Loading />

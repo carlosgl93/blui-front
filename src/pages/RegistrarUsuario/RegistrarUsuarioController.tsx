@@ -1,4 +1,4 @@
-import { ForWhom } from '@/hooks/useAuthNew';
+import { ForWhom } from '@/api/auth';
 import useAuth from '@/store/auth';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { ChangeEvent, useReducer } from 'react';
@@ -14,6 +14,7 @@ type FormState = {
   correo: string;
   contrasena: string;
   confirmarContrasena: string;
+  [key: string]: string | null;
 };
 
 type FormActions =

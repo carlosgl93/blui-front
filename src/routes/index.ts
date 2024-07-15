@@ -170,7 +170,6 @@ const routes: Routes = {
 
 export const protectedRoutes = [
   '/prestador-dashboard',
-  '/email-verificado-prestador',
   '/construir-perfil',
   '/construir-perfil/disponibilidad',
   '/construir-perfil/comunas',
@@ -187,7 +186,6 @@ export const protectedRoutes = [
   '/usuario-inbox',
   '/perfil-usuario',
   '/usuario-dashboard',
-  '/email-verificado',
   '/sesiones',
   '/preview-perfil-prestador/',
 ];

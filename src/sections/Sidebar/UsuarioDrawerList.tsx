@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 import { generalOptionsDrawerList, usuarioDrawerOptions } from './usuarioDrawerOptions';
-import { ChevronRightOutlined } from '@mui/icons-material';
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { User } from '@/store/auth/user';
 
@@ -106,7 +106,7 @@ export const UsuarioDrawerList = ({ closeDrawer }: UsuarioDrawerListProps) => {
               >
                 {title}
               </ListItemText>
-              <ChevronRightOutlined />
+              <ChevronRightOutlinedIcon />
             </ListItemButton>
           </ListItem>
         );

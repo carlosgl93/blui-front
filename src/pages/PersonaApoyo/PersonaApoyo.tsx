@@ -203,6 +203,11 @@ function PersonaApoyo() {
                 sx={{ width: 120, height: 120, borderRadius: '50%' }}
                 src={servicio.img}
                 alt={servicio.title}
+                slotProps={{
+                  img: {
+                    loading: 'lazy',
+                  },
+                }}
               />
               <Title
                 variant="h6"
@@ -216,7 +221,7 @@ function PersonaApoyo() {
             </PersonContainer>
           ))}
         </AvatarContainer>
-        <Link to="/comienzo">
+        <Link to="/entrega-apoyo">
           <StyledButton
             sx={{
               py: 1,

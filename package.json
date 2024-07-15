@@ -69,6 +69,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@types/jest": "^29.5.11",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^18.19.39",
     "@types/react": "^18.2.63",
     "@types/react-big-calendar": "^1.8.9",

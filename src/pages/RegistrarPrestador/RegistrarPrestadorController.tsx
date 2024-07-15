@@ -2,7 +2,8 @@ import useEntregaApoyo from '@/store/entregaApoyo';
 import { notificationState } from '@/store/snackbar';
 import { ChangeEvent, useReducer } from 'react';
 import { useRecoilState } from 'recoil';
-import { CreatePrestadorParams, useAuthNew } from '@/hooks/useAuthNew';
+import { useAuthNew } from '@/hooks/useAuthNew';
+import { CreatePrestadorParams } from '@/api/auth';
 
 type FormState = {
   error: string;
