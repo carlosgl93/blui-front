@@ -14,6 +14,7 @@ type FormState = {
   correo: string;
   contrasena: string;
   confirmarContrasena: string;
+  [key: string]: string | null;
 };
 
 type FormActions =

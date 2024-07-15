@@ -30,5 +30,6 @@ test('Creates a new prestador', async ({ page }) => {
   await page.getByPlaceholder('Confirme su contraseña').fill('123456');
   await page.getByPlaceholder('Confirme su contraseña').press('Tab');
   await page.getByRole('button', { name: 'Siguiente' }).press('Enter');
+  await page.waitForTimeout(10000);
   await expect(page.locator('#root')).toContainText('Construyamos tu perfil');
 });

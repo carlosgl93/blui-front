@@ -1,6 +1,6 @@
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarUsuarioController from './RegistrarUsuarioController';
 import { formInputs } from './formInputs';
@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { useComunas } from '@/hooks';
 import SearchBar from '../RecibeApoyo/SearchBar';
 import { CreateUserParams } from '@/api/auth';
+import { StyledInput } from './StyledInput';
 
 function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
@@ -21,14 +22,6 @@ function RegistrarUsuario() {
   const theme = useTheme();
 
   const { createUser, createUserLoading } = useAuthNew();
-
-  const resetPatientName = () => {
-    const input = document.querySelector('input[name="nombrePaciente"]') as HTMLInputElement;
-    console.log(input);
-    if (input) {
-      input.value = '';
-    }
-  };
 
   if (user.loading) return <Loading />;
 
@@ -43,16 +36,6 @@ function RegistrarUsuario() {
           mb: '2rem',
         }}
       >
-        {/* <Box>
-          <Image
-            src="/images/blui-new.png"
-            sx={{
-              width: '100%',
-              maxWidth: 125,
-              height: 'auto',
-            }}
-          />
-        </Box> */}
         <TextContainer>
           <Title
             sx={{
@@ -95,43 +78,27 @@ function RegistrarUsuario() {
               return <SearchBar key={i} />;
             } else if (forWhom === 'tercero' && input.inputName === 'nombrePaciente') {
               return (
-                <TextField
-                  sx={{
-                    m: {
-                      xs: 2,
-                      sm: 5,
-                      md: 3,
-                    },
-                  }}
+                <StyledInput
                   key={i}
-                  label={'Nombre del paciente'}
-                  name={'nombrePaciente'}
-                  variant="outlined"
-                  onChange={handleChange}
-                  type={'text'}
+                  input={{
+                    label: 'Nombre del paciente',
+                    inputName: 'nombrePaciente',
+                    placeholder: 'Nombre del paciente',
+                    type: 'text',
+                  }}
                   value={state.nombrePaciente}
-                  onClick={() => resetPatientName()}
+                  handleChange={handleChange}
                 />
               );
             } else if (forWhom === 'paciente' && input.inputName === 'nombrePaciente') {
               return null;
             } else {
               return (
-                <TextField
-                  sx={{
-                    m: {
-                      xs: 2,
-                      sm: 5,
-                      md: 3,
-                    },
-                  }}
+                <StyledInput
                   key={i}
-                  label={input.label}
-                  name={input.inputName}
-                  variant="outlined"
-                  placeholder={input.placeholder}
-                  onChange={handleChange}
-                  type={input.type}
+                  input={input}
+                  handleChange={handleChange}
+                  value={state[input?.inputName] as string}
                 />
               );
             }

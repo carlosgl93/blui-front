@@ -9,6 +9,6 @@ export function goToEnvUrl() {
     if (env === 'dev') {
         return 'http://localhost:5173/';
     } else {
-        return 'https://blui-6ec33.web.app/';
+        return 'https://blui.cl/';
     }
 }
