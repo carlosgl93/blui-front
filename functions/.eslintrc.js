@@ -32,5 +32,7 @@ module.exports = {
     "no-trailing-spaces": "off",
     "max-len": "off",
     "operator-linebreak": "off",
+    "spaced-comment": "off",
+    "require-jsdoc": "off",
   },
 };

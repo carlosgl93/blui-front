@@ -1,7 +1,9 @@
-import { ForWhom } from '@/api/auth';
-import useAuth from '@/store/auth';
+import { CreateUserParams, ForWhom } from '@/api/auth';
+import { useAuthNew } from '@/hooks';
 import useRecibeApoyo from '@/store/recibeApoyo';
+import { Comuna } from '@/types';
 import { ChangeEvent, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type FormState = {
   error: string;
@@ -10,11 +12,11 @@ type FormState = {
   paraQuien: ForWhom;
   nombrePaciente: string;
   rut: string;
-  comuna: string | null;
   correo: string;
   contrasena: string;
   confirmarContrasena: string;
-  [key: string]: string | null;
+  acceptedTerms: boolean;
+  [key: string]: string | null | boolean | Comuna;
 };
 
 type FormActions =
@@ -24,6 +26,9 @@ type FormActions =
         name: string;
         value: string;
       };
+    }
+  | {
+      type: 'ACCEPT TERMS';
     }
   | {
       type: 'ERROR';
@@ -39,6 +44,12 @@ const reducer = (state: FormState, action: FormActions) => {
         ...state,
         [action.payload.name]: action.payload.value,
       };
+
+    case 'ACCEPT TERMS':
+      return {
+        ...state,
+        acceptedTerms: !state.acceptedTerms,
+      };
     case 'ERROR':
       return {
         ...state,
@@ -50,7 +61,8 @@ const reducer = (state: FormState, action: FormActions) => {
 };
 
 const RegistrarUsuarioController = () => {
-  const [, { createUser }] = useAuth();
+  const { createUser } = useAuthNew();
+  const navigate = useNavigate();
 
   const [{ forWhom, comuna }] = useRecibeApoyo();
 
@@ -61,11 +73,12 @@ const RegistrarUsuarioController = () => {
     paraQuien: forWhom,
     nombrePaciente: '',
     rut: '',
-    comuna: '' || null,
     correo: '',
     contrasena: '',
     confirmarContrasena: '',
+    acceptedTerms: false,
   };
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const {
@@ -77,11 +90,18 @@ const RegistrarUsuarioController = () => {
     correo,
     contrasena,
     confirmarContrasena,
+    acceptedTerms,
   } = state;
+
+  console.log(comuna);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     dispatch({ type: 'CHANGE', payload: { name, value } });
+  };
+
+  const handleAcceptTerms = () => {
+    dispatch({ type: 'ACCEPT TERMS' });
   };
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,16 +123,19 @@ const RegistrarUsuarioController = () => {
         },
       });
       setTimeout(() => dispatch({ type: 'ERROR', payload: { error: '' } }), 5000);
+    } else if (!comuna) {
+      navigate('/recibe-apoyo');
     } else {
-      const newUser = {
-        firstname: nombre,
-        lastname: apellido,
-        forWhom: paraQuien !== nombre ? 'tercero' : 'paciente',
-        nombrePaciente: nombrePaciente,
+      const newUser: CreateUserParams = {
+        nombre,
+        apellido,
+        contrasena,
+        paraQuien: paraQuien !== nombre ? 'tercero' : 'paciente',
+        nombrePaciente,
         rut,
-        comuna_id: comuna!.id,
-        email: correo,
-        password: contrasena,
+        comuna: comuna as Comuna,
+        correo,
+        acceptedTerms,
       };
 
       try {
@@ -138,6 +161,7 @@ const RegistrarUsuarioController = () => {
     handleChange,
     handleSubmit,
     handleSelect,
+    handleAcceptTerms,
   };
 };
 

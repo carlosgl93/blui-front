@@ -73,12 +73,8 @@ export const StyledUsuarioMensajeText = styled(Typography)(({ theme }) => ({
 
 export const StyledTimestampContainer = styled(Box)(() => ({
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'end',
-  justifyContent: 'flex-end',
-  gap: '1rem',
-  position: 'relative',
-  float: 'right',
+  alignItems: 'center',
+  marginLeft: '2rem',
 }));
 
 export const StyledMensajeTimestamp = styled('span')(() => ({

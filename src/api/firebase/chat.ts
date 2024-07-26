@@ -30,7 +30,7 @@ export type Message = {
   id: string;
   message: string;
   sentBy: 'user' | 'provider';
-  timestamp: Date;
+  timestamp: Date | string;
   isSending?: boolean;
 };
 
@@ -42,6 +42,8 @@ export type SendMessageArgs = {
   username?: string;
   providerName?: string;
   timestamp?: string;
+  providerEmail: string;
+  userEmail: string;
 };
 
 export const sendFirstMessage = async ({
@@ -75,20 +77,37 @@ export const sendFirstMessage = async ({
   }
 };
 
-export const sendMessage = async ({ userId, providerId, message, sentBy }: SendMessageArgs) => {
+export const sendMessage = async ({
+  userId,
+  providerId,
+  message,
+  sentBy,
+  providerName,
+  username,
+  userEmail,
+  providerEmail,
+}: SendMessageArgs) => {
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
-  const newMessage = {
+  const newMessage: Message = {
     id: uuidv4(),
     message,
     sentBy,
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString().toString(),
   };
   try {
     await updateDoc(messagesRef, {
       messages: arrayUnion(newMessage),
     });
 
-    return { success: true, message: newMessage };
+    return {
+      success: true,
+      message: newMessage,
+      sentBy,
+      providerName,
+      username,
+      userEmail,
+      providerEmail,
+    };
   } catch (error) {
     console.error('Error sending message', error);
     throw error;

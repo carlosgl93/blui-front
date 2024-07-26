@@ -17,6 +17,7 @@ export interface User {
   phone: string;
   address: string;
   token?: string;
+  acceptedTerms: boolean;
 }
 
 export const userState = atom<null | User>({
@@ -35,5 +36,6 @@ export const userState = atom<null | User>({
     dob: '',
     phone: '',
     address: '',
+    acceptedTerms: false,
   },
 });

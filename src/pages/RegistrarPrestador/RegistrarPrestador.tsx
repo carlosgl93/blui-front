@@ -1,13 +1,14 @@
 import Meta from '@/components/Meta';
-import { FullSizeCenteredFlexBox } from '@/components/styled';
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
+import { FlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
+import { Box, Button, Checkbox, TextField, Typography, useTheme } from '@mui/material';
 import { TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarPrestadorController from './RegistrarPrestadorController';
 import { formInputs } from './formInputs';
 import { useAuthNew } from '@/hooks/useAuthNew';
+import { Link } from 'react-router-dom';
 
 function RegistrarPrestador() {
-  const { state, handleChange, handleSubmit } = RegistrarPrestadorController();
+  const { state, handleChange, handleSubmit, handleAcceptTerms } = RegistrarPrestadorController();
   const { createPrestadorLoading } = useAuthNew();
   const theme = useTheme();
   return (
@@ -21,16 +22,6 @@ function RegistrarPrestador() {
           mb: '2rem',
         }}
       >
-        {/* <Box>
-          <Image
-            src="/images/blui-new.png"
-            sx={{
-              width: '100%',
-              maxWidth: 125,
-              height: 'auto',
-            }}
-          />
-        </Box> */}
         <TextContainer>
           <Title
             sx={{
@@ -81,6 +72,38 @@ function RegistrarPrestador() {
             // }
           })}
           {/* TODO: ADD CAPTCHA */}
+
+          <FlexBox
+            sx={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: '2rem',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '1rem',
+                maxWidth: '50%',
+              }}
+            >
+              <span>
+                Al crearte una cuenta, aceptas los{' '}
+                <Link to="/terms-conditions">términos y condiciones</Link> de Blui.{' '}
+              </span>
+            </Box>
+            <Box>
+              <Checkbox
+                checked={!!state.acceptedTerms}
+                onChange={handleAcceptTerms}
+                name="acceptedTerms"
+              />
+            </Box>
+          </FlexBox>
           <Box
             sx={{
               display: 'flex',
@@ -93,6 +116,7 @@ function RegistrarPrestador() {
                 // state.nombre === '' ||
                 // state.apellido === '' ||
                 // state.telefono === '' ||
+                !state.acceptedTerms ||
                 state.correo === '' ||
                 state.contrasena === '' ||
                 state.confirmarContrasena === '' ||

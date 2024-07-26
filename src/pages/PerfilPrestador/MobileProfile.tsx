@@ -81,8 +81,6 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     availability,
   } = prestador;
 
-  console.log(prestador.comunas);
-
   return (
     <Wrapper>
       <HeroContainer>

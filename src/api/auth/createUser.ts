@@ -18,10 +18,10 @@ export type CreateUserParams = {
   paraQuien: ForWhom;
   nombrePaciente?: string;
   rut: string;
-  comuna: string;
+  comuna: Comuna;
   correo: string;
   contrasena: string;
-  comunas?: Comuna[];
+  acceptedTerms: boolean;
 };
 
 export type ForWhom = 'paciente' | 'tercero' | '';
@@ -36,7 +36,8 @@ export async function createUser({
   rut,
   correo,
   contrasena,
-  comunas,
+  comuna,
+  acceptedTerms,
 }: CreateUserParams) {
   try {
     const userQuery = query(collection(db, 'users'), where('email', '==', correo));
@@ -66,7 +67,8 @@ export async function createUser({
       patientName: nombrePaciente ?? '',
       rut,
       gender: '',
-      comuna: comunas?.[0],
+      comuna: comuna,
+      acceptedTerms,
     };
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);

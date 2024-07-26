@@ -1,5 +1,5 @@
 import { malformedPayloadValidation, unAuthorized } from './validations';
-import { fetchAndCompileTemplate } from './utils/prepareEmailTemplate';
+import { fetchTemplate } from './utils/prepareEmailTemplate';
 import { sendEmailSettings } from './utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
@@ -13,7 +13,7 @@ export const sendEmail = onRequest(
     // validations
     unAuthorized(headers, res);
     malformedPayloadValidation(body, res);
-    
+
     // settings
     const { mailTransport } = sendEmailSettings();
     const { templateName, options } = body;
@@ -24,7 +24,7 @@ export const sendEmail = onRequest(
       let template = memoryCache.get(templateName);
       if (!template) {
         // Template not found in cache, fetch from storage
-        template = await fetchAndCompileTemplate(templateName);
+        template = await fetchTemplate(templateName);
         memoryCache.put(templateName, template, CACHE_EXPIRATION_TIME);
       }
 
@@ -33,6 +33,7 @@ export const sendEmail = onRequest(
       if (!customerSupportPhone) {
         throw new Error('Missing customer support phone env variable.');
       }
+      console.log('templateName', templateName);
       switch (templateName) {
         case 'failed-verify-prestador.html':
           templateData = {
@@ -50,6 +51,14 @@ export const sendEmail = onRequest(
           templateData = {
             firstname: body.firstname,
             redirect: `construir-perfil/servicios`,
+          };
+          break;
+        case 'new-message.html':
+          const { sentBy } = body;
+          templateData = {
+            recipientName: body.recipientName,
+            senderName: body.senderName,
+            redirect: sentBy === 'user' ?  `/prestador-inbox` : '/usuario-inbox',
           };
           break;
         default:

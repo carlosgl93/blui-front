@@ -162,6 +162,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/AdminLogin')),
     path: '/backoffice/login',
   },
+  [Pages.TermsConditions]: {
+    component: asyncComponentLoader(() => import('@/pages/TermsConditions')),
+    path: '/terms-conditions',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',

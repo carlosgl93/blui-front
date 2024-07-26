@@ -1,3 +1,3 @@
-import { Chat } from './Chat';
+import { UserChat } from './Chat';
 
-export default Chat;
+export default UserChat;

@@ -6,7 +6,7 @@ import { getStorage } from 'firebase-admin/storage';
  *
  */
 
-export async function fetchAndCompileTemplate(templateName: string): Promise<string> {
+export async function fetchTemplate(templateName: string): Promise<string> {
   const bucket = getStorage().bucket();
   const file = bucket.file(templateName);
   const [templateContent] = await file.download();
