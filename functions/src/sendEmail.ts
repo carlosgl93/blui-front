@@ -6,6 +6,7 @@ import * as logger from 'firebase-functions/logger';
 import { CACHE_EXPIRATION_TIME } from './config';
 import * as memoryCache from 'memory-cache';
 import { Handlebars } from './handlebars';
+import { getEnvUrl } from './utils';
 
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
@@ -58,7 +59,7 @@ export const sendEmail = onRequest(
           templateData = {
             recipientName: body.recipientName,
             senderName: body.senderName,
-            redirect: sentBy === 'user' ?  `/prestador-inbox` : '/usuario-inbox',
+            redirect: sentBy === 'user' ?  `${getEnvUrl()}/prestador-inbox` : `${getEnvUrl()}/usuario-inbox`,
           };
           break;
         default:
