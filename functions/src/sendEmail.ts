@@ -1,12 +1,11 @@
 import { malformedPayloadValidation, unAuthorized } from './validations';
-import { fetchTemplate } from './utils/prepareEmailTemplate';
 import { sendEmailSettings } from './utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { CACHE_EXPIRATION_TIME } from './config';
 import * as memoryCache from 'memory-cache';
 import { Handlebars } from './handlebars';
-import { getEnvUrl } from './utils';
+import { fetchAndCompileTemplate, getEnvUrl } from './utils';
 
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
@@ -25,7 +24,7 @@ export const sendEmail = onRequest(
       let template = memoryCache.get(templateName);
       if (!template) {
         // Template not found in cache, fetch from storage
-        template = await fetchTemplate(templateName);
+        template = await fetchAndCompileTemplate(templateName);
         memoryCache.put(templateName, template, CACHE_EXPIRATION_TIME);
       }
 

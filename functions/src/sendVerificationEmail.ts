@@ -1,10 +1,12 @@
-import { fetchTemplate } from './utils/prepareEmailTemplate';
+import { fetchAndCompileTemplate } from './utils/prepareEmailTemplate';
 import { sendEmailSettings } from './utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { unAuthorized } from './validations';
 import { Handlebars } from './handlebars';
 import { getAuth } from './index';
+import { getEnvUrl } from './utils';
+
 
 export const sendVerificationEmail = onRequest(
   // func settings
@@ -24,13 +26,14 @@ export const sendVerificationEmail = onRequest(
     }
 
     try {
-      const template = await fetchTemplate('verify-email.html');
-      const emailVerificationLink = await getAuth().generateEmailVerificationLink(to, {
-        url: 'https://blui.cl',
+      let template = await fetchAndCompileTemplate('verify-email.html');
+      console.log('email link:', `${getEnvUrl()}/email-verificado`);
+      const link = await getAuth().generateEmailVerificationLink(to, {
+        url: `${getEnvUrl}/email-verificado`,
       });
-      console.log('emailVerificationLink', emailVerificationLink);
+      
       const templateData = {
-        EMAIL_VERIFICATION_LINK: emailVerificationLink,
+        EMAIL_VERIFICATION_LINK: link,
       };
       // Compile the template with Handlebars
       const compiledTemplate = Handlebars.compile(template);

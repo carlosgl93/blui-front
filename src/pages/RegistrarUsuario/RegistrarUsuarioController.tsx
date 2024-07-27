@@ -1,9 +1,9 @@
 import { CreateUserParams, ForWhom } from '@/api/auth';
-import { useAuthNew } from '@/hooks';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { Comuna } from '@/types';
 import { ChangeEvent, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthNew } from '@/hooks';
+import { Comuna } from '@/types';
 
 type FormState = {
   error: string;
