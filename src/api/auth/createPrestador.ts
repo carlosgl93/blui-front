@@ -22,6 +22,7 @@ export type CreatePrestadorParams = {
   contrasena: string;
   comunas: Comuna[];
   servicio: Servicio | undefined;
+  acceptedTerms: boolean;
   // especialidad: Especialidad | undefined;
 };
 

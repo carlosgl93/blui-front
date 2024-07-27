@@ -123,5 +123,5 @@ export const StyledCustomerName = styled(Text)(({ theme }) => ({
 export const StyledProviderName = styled(Text)(({ theme }) => ({
   fontSize: '1rem',
   fontWeight: 'bold',
-  color: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
 }));

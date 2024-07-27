@@ -16,29 +16,25 @@ import {
 import Loading from '@/components/Loading';
 import { formatDate } from '@/utils/formatDate';
 import { Box } from '@mui/material';
-import { usePrestadorChatMessages } from '../PrestadorChat/usePrestadorChatMessages';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { useRecoilValue } from 'recoil';
 import { chatState } from '@/store/chat/chatStore';
-import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
-import { useChat } from '@/hooks';
+import { useChat, usePrestador } from '@/hooks';
 
-export const Chat = () => {
+export const UserChat = () => {
   const { user } = useAuthNew();
   const conversation = useRecoilValue(chatState);
-  const customer = user;
-  const prestador = useRecoilValue(interactedPrestadorState);
-  const customerId = customer?.id;
+  const { prestador } = usePrestador(conversation.providerId);
 
-  const { isSending, lastMessageRef } = usePrestadorChatMessages({
-    userId: customerId ?? '',
-    prestadorId: prestador?.id ?? '',
-  });
-
-  const { message, messagesLoading, setMessage, handleSaveMessage, sendWithEnter } = useChat(
-    customerId ?? '',
-    prestador?.id ?? '',
-  );
+  const {
+    message,
+    messagesLoading,
+    fetchMessages,
+    lastMessageRef,
+    setMessage,
+    handleSaveMessage,
+    sendWithEnter,
+  } = useChat(user?.id ?? '', prestador?.id ?? '');
 
   if (messagesLoading) {
     return (
@@ -50,18 +46,22 @@ export const Chat = () => {
 
   return (
     <ChatContainer>
-      {isSending ? (
+      {messagesLoading ? (
         <Loading />
       ) : (
-        conversation?.messages.map((m, index: number) => {
+        fetchMessages?.messages.map((m, index: number) => {
           const isLastMessage = index === conversation.messages.length - 1;
-          if (m.sentBy === 'provider') {
+          if (m?.sentBy === 'provider') {
             return (
               <StyledPrestadorMensajeContainer
                 key={m.id + m.timestamp}
                 ref={isLastMessage ? lastMessageRef : null}
               >
-                <StyledPrestadorName>{conversation.providerName}:</StyledPrestadorName>
+                {conversation.messages[index - 1]?.sentBy === 'provider' ? null : (
+                  <StyledPrestadorName>
+                    {conversation.providerName.includes('@') ? 'Tú' : conversation.providerName}:
+                  </StyledPrestadorName>
+                )}
                 <Box
                   sx={{
                     display: 'flex',
@@ -103,15 +103,11 @@ export const Chat = () => {
               message,
               sentBy: 'user',
               providerId: prestador?.id ?? '',
-              userId: customerId ?? '',
-              username: customer?.firstname
-                ? customer.firstname
-                : customer?.email
-                ? customer.email
-                : '',
-              providerName: prestador?.firstname?.length
-                ? prestador.firstname
-                : prestador?.email || '',
+              userId: user?.id ?? '',
+              username: user?.firstname ? user.firstname : user?.email ? user.email : '',
+              providerName: prestador?.firstname,
+              providerEmail: prestador?.email || '',
+              userEmail: user?.email || '',
             })
           }
         />
@@ -124,6 +120,8 @@ export const Chat = () => {
               userId: conversation.userId,
               username: conversation.username,
               providerName: conversation.providerName,
+              providerEmail: prestador?.email || '',
+              userEmail: user?.email || '',
             })
           }
           disabled={message.length === 0}

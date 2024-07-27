@@ -42,6 +42,7 @@ enum Pages {
   BackOffice,
   BackOfficePrestadores,
   BackOfficePagos,
+  TermsConditions,
   AdminLogin,
 }
 

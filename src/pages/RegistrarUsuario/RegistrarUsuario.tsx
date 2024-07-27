@@ -1,6 +1,6 @@
 import Meta from '@/components/Meta';
-import { FullSizeCenteredFlexBox } from '@/components/styled';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { FlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
+import { Box, Button, Checkbox, Typography, useTheme } from '@mui/material';
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarUsuarioController from './RegistrarUsuarioController';
 import { formInputs } from './formInputs';
@@ -11,17 +11,16 @@ import { useAuthNew } from '@/hooks/useAuthNew';
 import { Link } from 'react-router-dom';
 import { useComunas } from '@/hooks';
 import SearchBar from '../RecibeApoyo/SearchBar';
-import { CreateUserParams } from '@/api/auth';
 import { StyledInput } from './StyledInput';
 
 function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
-  const { state, handleChange, handleSubmit } = RegistrarUsuarioController();
+  const { state, handleChange, handleSubmit, handleAcceptTerms } = RegistrarUsuarioController();
   const { selectedComunas } = useComunas();
   const [user] = useAuth();
   const theme = useTheme();
 
-  const { createUser, createUserLoading } = useAuthNew();
+  const { createUserLoading } = useAuthNew();
 
   if (user.loading) return <Loading />;
 
@@ -104,6 +103,37 @@ function RegistrarUsuario() {
             }
           })}
           {/* TODO: ADD CAPTCHA */}
+          <FlexBox
+            sx={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: '2rem',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '1rem',
+                maxWidth: '50%',
+              }}
+            >
+              <span>
+                Al crearte una cuenta, aceptas los{' '}
+                <Link to="/terms-conditions">términos y condiciones</Link> de Blui.{' '}
+              </span>
+            </Box>
+            <Box>
+              <Checkbox
+                checked={!!state.acceptedTerms}
+                onChange={handleAcceptTerms}
+                name="acceptedTerms"
+              />
+            </Box>
+          </FlexBox>
           <Box
             sx={{
               display: 'flex',
@@ -132,17 +162,11 @@ function RegistrarUsuario() {
                 state.confirmarContrasena === '' ||
                 state.error !== '' ||
                 state.rut === '' ||
+                !state.acceptedTerms ||
                 createUserLoading
               }
               variant="contained"
-              onClick={() => {
-                const userParams = {
-                  ...state,
-                  paraQuien: forWhom,
-                  comunas: selectedComunas,
-                };
-                createUser(userParams as CreateUserParams);
-              }}
+              onClick={handleSubmit}
               sx={{
                 marginTop: '2.5vh',
               }}

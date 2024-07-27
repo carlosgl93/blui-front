@@ -4,7 +4,7 @@ import UserComunaSearchBar from './UserComunaSearchBar';
 import { SaveButton } from '@/components/SaveButton';
 import BackButton from '@/components/BackButton';
 import Loading from '@/components/Loading';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
 import { Comuna } from '@/types';
 
@@ -49,7 +49,7 @@ const StyledTextField = styled(TextField)(() => ({}));
 export const PerfilUsuario = () => {
   const { user, updateUserLoading, onSubmit } = usePerfilUsuarioController();
 
-  const { register, handleSubmit, formState, setValue } = useForm<IFormInput>({
+  const { register, handleSubmit, formState, setValue, control } = useForm<IFormInput>({
     defaultValues: {
       email: user?.email || '',
       firstname: user?.firstname || '',
@@ -101,23 +101,29 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.lastname)}
               helperText={errors.lastname?.message}
             />
-            <FormControl variant="outlined">
-              <InputLabel id="gender-label">Género</InputLabel>
-              <StyledSelect
-                labelId="gender-label"
-                label="Género"
-                {...register('gender', { required: 'Género es requerido' })}
-                error={Boolean(errors.gender)}
-                defaultValue={user?.gender}
-                value={user?.gender}
-              >
-                <MenuItem value="">Selecciona tu genero</MenuItem>
-                <MenuItem value="Masculino">Masculino</MenuItem>
-                <MenuItem value="Femenino">Femenino</MenuItem>
-                <MenuItem value="Otro">Otro</MenuItem>
-              </StyledSelect>
-              {errors.gender && <FormHelperText>{errors.gender.message}</FormHelperText>}
-            </FormControl>
+            <Controller
+              name="gender"
+              control={control}
+              rules={{ required: 'Género es requerido' }}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <FormControl variant="outlined" error={Boolean(error)}>
+                  <InputLabel id="gender-label">Género</InputLabel>
+                  <StyledSelect
+                    labelId="gender-label"
+                    label="Género"
+                    value={value}
+                    onChange={onChange}
+                    defaultValue={user?.gender}
+                  >
+                    <MenuItem value="">Selecciona tu genero</MenuItem>
+                    <MenuItem value="Masculino">Masculino</MenuItem>
+                    <MenuItem value="Femenino">Femenino</MenuItem>
+                    <MenuItem value="Otro">Otro</MenuItem>
+                  </StyledSelect>
+                  {error && <FormHelperText>{error.message}</FormHelperText>}
+                </FormControl>
+              )}
+            />
             <StyledTextField
               {...register('dob', { required: 'Fecha de Nacimiento es requerida' })}
               label="Fecha de Nacimiento"
@@ -146,7 +152,6 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.address)}
               helperText={errors.address?.message}
             />
-
             <SaveButton
               disabled={!isValid}
               style={{

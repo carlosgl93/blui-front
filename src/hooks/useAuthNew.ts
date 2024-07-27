@@ -20,6 +20,7 @@ import { redirectToAfterLoginState } from '@/store/auth';
 import { editDisponibilidadState } from '@/store/construirPerfil/availability';
 import { createPrestador, createUser } from '@/api/auth';
 import { sendVerificationEmailApi } from '@/api';
+import { determineRedirectAfterLogin } from '../utils/redirectAfterLoginLogic';
 
 export const useAuthNew = () => {
   const setNotification = useSetRecoilState(notificationState);
@@ -90,7 +91,9 @@ export const useAuthNew = () => {
       setUserState({ ...data, isLoggedIn: true } as User);
       queryClient.setQueryData(['user', data?.email], user);
       window.scrollTo(0, 0);
-      redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
+      redirectAfterLogin
+        ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'user'))
+        : navigate(`/usuario-dashboard`);
     },
     onError(error: Error) {
       setNotification({
@@ -184,11 +187,15 @@ export const useAuthNew = () => {
         });
         if (data?.role === 'user') {
           setUserState({ ...data.data, isLoggedIn: true } as User);
-          redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/usuario-dashboard`);
+          redirectAfterLogin
+            ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'user'))
+            : navigate(`/usuario-dashboard`);
         } else {
           if (data?.role === 'prestador') {
             setPrestadorState({ ...data.data, isLoggedIn: true } as Prestador);
-            redirectAfterLogin ? navigate(redirectAfterLogin) : navigate(`/prestador-dashboard`);
+            redirectAfterLogin
+              ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'provider'))
+              : navigate(`/prestador-dashboard`);
           }
         }
       },

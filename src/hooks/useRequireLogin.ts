@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { protectedRoutes } from '@/routes';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '@/store/auth/user';
 import { prestadorState } from '@/store/auth/prestador';
 import { redirectToAfterLoginState } from '@/store/auth';
 
 export function useRequireLogin() {
-  const setRedirectAfterLogin = useSetRecoilState(redirectToAfterLoginState);
+  const [redirectAfterLogin, setRedirectAfterLogin] = useRecoilState(redirectToAfterLoginState);
   const prestador = useRecoilValue(prestadorState);
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
@@ -17,31 +17,6 @@ export function useRequireLogin() {
   const userId = !!user?.id?.length;
 
   useEffect(() => {
-    // const storedPrestador = localStorage.getItem('prestador');
-    // const storedUser = localStorage.getItem('user');
-
-    // if (storedPrestador || storedUser)
-    //   if (storedPrestador) {
-    //     const prestadorData: Prestador = JSON.parse(storedPrestador);
-    //     setNotification({
-    //       message: `Bienvenido otra vez, ${prestadorData.firstname ? prestador?.firstname : prestador?.email}`,
-    //       open: true,
-    //       severity: 'success',
-    //     });
-    //     setPrestador(prestadorData);
-    //     redirectAfterLogin ? navigate(redirectAfterLogin) : navigate('/prestador-dashboard');
-    //   }
-
-    // if (storedUser) {
-    //   const userData: User = JSON.parse(storedUser);
-    //   setNotification({
-    //     message: `Bienvenido otra vez, ${userData.firstname}`,
-    //     open: true,
-    //     severity: 'success',
-    //   });
-    //   setUser(userData);
-    //   redirectAfterLogin ? navigate(redirectAfterLogin) : navigate('/usuario-dashboard');
-    // }
     if ((!prestadorId || !userId) && location.pathname.includes('/backoffice')) {
       setRedirectAfterLogin(location.pathname);
       navigate('/backoffice/login');
@@ -50,6 +25,25 @@ export function useRequireLogin() {
     if (!prestadorId && !userId && protectedRoutes?.includes(location.pathname)) {
       setRedirectAfterLogin(location.pathname);
       navigate('/ingresar');
+    }
+
+    if (prestadorId && !userId && location.pathname.includes('/ingresar')) {
+      navigate('/prestador-dashboard');
+    }
+
+    if (userId && !prestadorId && location.pathname.includes('/ingresar')) {
+      navigate('/usuario-dashboard');
+    }
+
+    if (userId && (location.pathname.includes('/chat') || redirectAfterLogin === '/chat')) {
+      navigate('/usuario-inbox');
+    }
+
+    if (
+      prestadorId &&
+      (location.pathname.includes('/prestador-chat') || redirectAfterLogin === '/prestador-chat')
+    ) {
+      navigate('/prestador-inbox');
     }
   }, [prestadorId, userId, protectedRoutes]);
 }

@@ -18,13 +18,12 @@ import {
 
 import { Prestador } from '@/types/Prestador';
 
-import { usePrestadorChatMessages } from './usePrestadorChatMessages';
 import Loading from '@/components/Loading';
 import { formatDate } from '@/utils/formatDate';
 import { Box } from '@mui/material';
 import { chatState } from '@/store/chat/chatStore';
 import { useRecoilValue } from 'recoil';
-import { useChat } from '@/hooks';
+import { useAuthNew, useChat, useUser } from '@/hooks';
 
 export type LocationState = {
   messages: Mensaje[];
@@ -33,31 +32,38 @@ export type LocationState = {
 };
 
 export const PrestadorChat = () => {
+  const { prestador } = useAuthNew();
+
   const conversation = useRecoilValue(chatState);
   const customerId = conversation.userId;
   const prestadorId = conversation.providerId;
-  const { handleSaveMessage, messagesLoading, sendWithEnter, message, setMessage } = useChat(
-    customerId,
-    prestadorId,
-  );
+  const { user } = useUser(customerId);
 
-  const { lastMessageRef } = usePrestadorChatMessages({
-    userId: customerId,
-    prestadorId,
-  });
+  const {
+    fetchMessages,
+    handleSaveMessage,
+    lastMessageRef,
+    messagesLoading,
+    sendWithEnter,
+    message,
+    setMessage,
+  } = useChat(customerId, prestadorId);
 
   return (
     <ChatContainer>
       {messagesLoading && <Loading />}
-      {conversation.messages.map((m, index: number) => {
+      {fetchMessages?.messages?.map((m, index: number) => {
         const isLastMessage = index === conversation.messages?.length - 1;
-        if (m.sentBy === 'provider') {
+        if (m?.sentBy === 'provider') {
           return (
-            <Box key={m.id}>
+            <Box key={m.id + m.message}>
               <StyledPrestadorMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
-                <StyledProviderName>
-                  {conversation.providerName.includes('@') ? 'Tú' : conversation.providerName}:
-                </StyledProviderName>
+                {conversation.messages[index - 1]?.sentBy === 'provider' ? null : (
+                  <StyledProviderName>
+                    {conversation.providerName.includes('@') ? 'Tú' : conversation.providerName}:
+                  </StyledProviderName>
+                )}
+
                 <StyledMensajeAndtTimestampContainer>
                   <StyledPrestadorMensajeText>{m.message}</StyledPrestadorMensajeText>
                   <StyledTimestampContainer>
@@ -69,9 +75,12 @@ export const PrestadorChat = () => {
           );
         } else {
           return (
-            <Box key={m.id}>
+            <Box key={m.id + m.message}>
               <StyledUsuarioMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
-                <StyledCustomerName>{conversation.username}:</StyledCustomerName>
+                {conversation.messages[index - 1]?.sentBy === 'user' ? null : (
+                  <StyledCustomerName>{conversation.username}:</StyledCustomerName>
+                )}
+
                 <StyledMensajeAndtTimestampContainer>
                   <StyledUsuarioMensajeText>{m.message}</StyledUsuarioMensajeText>
                   <StyledTimestampContainer>
@@ -92,8 +101,12 @@ export const PrestadorChat = () => {
             sendWithEnter(e, {
               message,
               sentBy: 'provider',
-              providerId: prestadorId,
-              userId: customerId,
+              providerId: prestador?.id ?? '',
+              userId: user?.id ?? '',
+              username: user?.firstname ? user.firstname : user?.email ? user.email : '',
+              providerName: prestador?.firstname,
+              providerEmail: prestador?.email || '',
+              userEmail: user?.email || '',
             })
           }
         />
@@ -102,8 +115,12 @@ export const PrestadorChat = () => {
             handleSaveMessage({
               message,
               sentBy: 'provider',
-              providerId: prestadorId,
-              userId: customerId,
+              providerId: conversation.providerId,
+              userId: conversation.userId,
+              username: conversation.username,
+              providerName: conversation.providerName,
+              providerEmail: prestador?.email || '',
+              userEmail: user?.email || '',
             })
           }
           disabled={message.length === 0}

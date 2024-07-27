@@ -37,6 +37,12 @@ export const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.dark,
 }));
 
+export const SubTitle = styled(Title)(({ theme }) => ({
+  fontSize: '1.5rem',
+  color: theme.palette.primary.main,
+  margin: '1rem',
+}));
+
 export const AvatarContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const sendEmailApi = axios.create({
+  method: 'post',
   headers: {
     authorization: `Bearer ${localStorage.getItem('token')}`,
   },

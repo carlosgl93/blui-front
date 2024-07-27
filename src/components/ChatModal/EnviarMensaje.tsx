@@ -87,6 +87,8 @@ export const EnviarMensaje = ({ message, setMessage, handleClose }: EnviarMensaj
                   providerName: prestador?.firstname?.length
                     ? prestador.firstname
                     : prestador.email,
+                  providerEmail: prestador.email,
+                  userEmail: user?.email ?? '',
                 })
               }
               disabled={message.length < 5}

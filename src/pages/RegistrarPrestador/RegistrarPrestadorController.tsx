@@ -15,6 +15,7 @@ type FormState = {
   contrasena: string;
   confirmarContrasena: string;
   comoEnteraste: string;
+  acceptedTerms: boolean;
 };
 
 type FormActions =
@@ -24,6 +25,9 @@ type FormActions =
         name: string;
         value: string;
       };
+    }
+  | {
+      type: 'ACCEPT TERMS';
     }
   | {
       type: 'ERROR';
@@ -38,6 +42,11 @@ const reducer = (state: FormState, action: FormActions) => {
       return {
         ...state,
         [action.payload.name]: action.payload.value,
+      };
+    case 'ACCEPT TERMS':
+      return {
+        ...state,
+        acceptedTerms: !state.acceptedTerms,
       };
     case 'ERROR':
       return {
@@ -68,6 +77,7 @@ const RegistrarPrestadorController = () => {
     comunas: selectedComunas,
     servicio: selectedServicio,
     especialidad: selectedEspecialidad,
+    acceptedTerms: false,
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -76,11 +86,15 @@ const RegistrarPrestadorController = () => {
     dispatch({ type: 'CHANGE', payload: { name, value } });
   };
 
+  const handleAcceptTerms = () => {
+    dispatch({ type: 'ACCEPT TERMS' });
+  };
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const rutRegex = /^[0-9]+-[0-9kK]{1}$/;
 
   const handleSubmit = async () => {
-    const { correo, rut, contrasena, confirmarContrasena, nombre, apellido } = state;
+    const { correo, rut, contrasena, confirmarContrasena, nombre, apellido, acceptedTerms } = state;
 
     if (!emailRegex.test(correo)) {
       dispatch({
@@ -134,6 +148,7 @@ const RegistrarPrestadorController = () => {
         contrasena,
         comunas: selectedComunas,
         servicio: selectedServicio ?? undefined,
+        acceptedTerms,
         // especialidad: selectedEspecialidad ?? undefined,
       };
 
@@ -151,6 +166,7 @@ const RegistrarPrestadorController = () => {
     handleChange,
     handleSubmit,
     handleSelect,
+    handleAcceptTerms,
   };
 };
 

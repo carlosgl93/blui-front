@@ -16,3 +16,4 @@ export * from './useExperiencia';
 export * from './useRenderFooter';
 export * from './useNavigationHistory';
 export * from './useAuthNew';
+export * from './useUser';
