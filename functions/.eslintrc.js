@@ -34,5 +34,7 @@ module.exports = {
     "operator-linebreak": "off",
     "spaced-comment": "off",
     "require-jsdoc": "off",
+    "no-case-declarations": "off",
+    "no-multi-spaces": "off",
   },
 };

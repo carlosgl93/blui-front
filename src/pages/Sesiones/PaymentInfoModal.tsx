@@ -1,14 +1,15 @@
 import { Box, IconButton, Modal, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { TisPaid } from '@/api/appointments';
 
 type PaymentInfoModalProps = {
-  isPaid: boolean | 'Confirmando' | 'Confirmada' | 'Transferencia no encontrada' | undefined;
+  isPaid: TisPaid;
   openInfo: boolean;
   handleClose: () => void;
 };
 
 export const PaymentInfoModal = ({ isPaid, openInfo, handleClose }: PaymentInfoModalProps) => {
-  if (isPaid === false) {
+  if (!isPaid) {
     return (
       <Modal open={openInfo} onClose={handleClose}>
         <Box

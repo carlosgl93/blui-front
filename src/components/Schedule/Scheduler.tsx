@@ -16,7 +16,6 @@ import ServiceSelector from './ServiceSelector';
 export const Scheduler = () => {
   const {
     handleCloseScheduleModal,
-    prestadorCreatedServicios,
     schedule,
     renderAvailableDay,
     setSchedule,
@@ -46,28 +45,26 @@ export const Scheduler = () => {
         }}
       >
         <StyledLabel htmlFor="service-selector">¿Qué servicio necesitas?</StyledLabel>
-        {prestadorCreatedServicios && (
-          <ServiceSelector
-            handleSelectServicio={handleSelectServicio}
-            prestadorCreatedServicios={prestadorCreatedServicios}
-          />
-        )}
+        <ServiceSelector handleSelectServicio={handleSelectServicio} />
 
-        {/* step two, if recurrent ask what days per week customer needs support, else ask for starting and end date and time and explain it has to be approximate (again in spanish) */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <StyledLabel>Fecha</StyledLabel>
-          <DateCalendar
-            shouldDisableDate={shouldDisableDay}
-            disablePast
-            slots={{ day: renderAvailableDay }}
-            onChange={handleSelectDate}
-          />
+        {schedule.selectedService && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <StyledLabel>Fecha</StyledLabel>
+            <DateCalendar
+              shouldDisableDate={shouldDisableDay}
+              disablePast
+              slots={{ day: renderAvailableDay }}
+              onChange={handleSelectDate}
+            />
+          </Box>
+        )}
+        <Box>
           {selectedService?.duration && selectedDate && (
             <>
               <StyledLabel>Horas disponibles</StyledLabel>
@@ -89,6 +86,7 @@ export const Scheduler = () => {
             </>
           )}
         </Box>
+
         <Box
           sx={{
             display: 'flex',

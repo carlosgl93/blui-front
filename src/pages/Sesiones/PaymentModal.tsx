@@ -2,8 +2,6 @@ import { Box, Button, IconButton, Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Text } from '@/components/StyledComponents';
 import { formatCLP } from '@/utils/formatCLP';
-import { PaymentController } from './PaymentController';
-import Loading from '@/components/Loading';
 
 type PaymentModalProps = {
   openPayment: boolean;
@@ -18,10 +16,6 @@ export const PaymentModal = ({
   paymentAmount,
   handlePayment,
 }: PaymentModalProps) => {
-  const { isLoadingVerifyPayment } = PaymentController();
-
-  if (isLoadingVerifyPayment) return <Loading />;
-
   return (
     <Modal open={openPayment} onClose={handleClose}>
       <Box

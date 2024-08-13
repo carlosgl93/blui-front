@@ -1,11 +1,11 @@
+import { providerAppointmentsState } from '@/store/appointments/providerAppointmentsState';
 import { userAppointmentsState } from '@/store/appointments';
+import { ProviderSessionCard } from './ProviderSessionCard';
 import { Text } from '@/components/StyledComponents';
 import { SessionCard } from './SessionCard';
 import { useRecoilValue } from 'recoil';
-import { Fragment } from 'react';
 import { useAuthNew } from '@/hooks';
-import { providerAppointmentsState } from '@/store/appointments/providerAppointmentsState';
-import { ProviderSessionCard } from './ProviderSessionCard';
+import { Fragment } from 'react';
 
 export const ListSesiones = () => {
   const userSessions = useRecoilValue(userAppointmentsState);

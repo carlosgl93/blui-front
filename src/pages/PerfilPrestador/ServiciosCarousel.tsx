@@ -26,7 +26,7 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
     >
       {(createdServicios ?? [])?.map((s) => (
         <Card
-          key={s.id}
+          key={s.id ? s.id : s.name + s.description}
           sx={{
             m: '1rem',
             boxShadow: 5,

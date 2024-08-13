@@ -1,22 +1,44 @@
-import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { createTransaction } from '@/api/payments/createTransaction';
 import { useMutation, useQueryClient } from 'react-query';
+import { notificationState } from '@/store/snackbar';
+import { useSetRecoilState } from 'recoil';
+import { useAuthNew } from '@/hooks';
 import {
   paymentVerificationFailedMutation,
   savePaymentMutation,
+  ScheduleServiceParams,
   verifyPaymentMutation,
 } from '@/api/appointments';
-import { notificationState } from '@/store/snackbar';
-import { useAuthNew } from '@/hooks';
 import axios from 'axios';
 
-export const PaymentController = (appointmentId?: string) => {
-  const [openPayment, setOpenPayment] = useState(false);
-  const handleOpenPayment = () => setOpenPayment(true);
-  const handleClosePayment = () => setOpenPayment(false);
+export const PaymentController = (appointment?: ScheduleServiceParams) => {
   const setNotification = useSetRecoilState(notificationState);
   const client = useQueryClient();
   const { user } = useAuthNew();
+
+  const handleSendUserToPayku = async () => {
+    console.log(appointment);
+    const paykuRes = await createTransaction(appointment);
+    // const paykuRes = await paykuApi.post('/transaction', {
+    //   email: appointment?.customer?.email,
+    //   order: uuidv4(),
+    //   subject: 'Initiating payment',
+    //   // amount: Number(
+    //   //   formatCLP(appointment?.servicio?.price ? +appointment?.servicio?.price * 1.05 : 999999999),
+    //   // ),
+    //   amount: appointment?.servicio?.price ? +appointment?.servicio?.price * 1.05 : 999999999,
+    //   currency: 'CLP',
+    //   payment: 99,
+    //   urlreturn: `https://blui.cl/successful-payment?appointmentId=${appointment?.id}`,
+    //   urlnotify: 'https://blui.cl/transaction-result-function-serverless-email-notification',
+    //   additional_parameters: {
+    //     username: user?.firstname,
+    //     prestadorname: appointment?.provider.firstname,
+    //   },
+    // });
+
+    window.location.href = paykuRes.data.url;
+  };
 
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: () => {
@@ -25,8 +47,8 @@ export const PaymentController = (appointmentId?: string) => {
           from: 'Francisco Durney <francisco.durney@blui.cl>',
           to: 'francisco.durney@blui.cl',
           subject: 'Usuario ha pagado una cita',
-          text: `${user?.email} claimed to have paid for appointment ${appointmentId}.`,
-          html: `<p>${user?.email} claimed to have paid for appointment ${appointmentId}.</p>`,
+          text: `${user?.email} claimed to have paid for appointment ${appointment?.id}.`,
+          html: `<p>${user?.email} claimed to have paid for appointment ${appointment?.id}.</p>`,
         },
       });
       client.invalidateQueries(['userAppointments', user?.id]);
@@ -35,7 +57,6 @@ export const PaymentController = (appointmentId?: string) => {
         message: 'Confirmaremos tu sesion en breve',
         severity: 'success',
       });
-      handleClosePayment();
     },
   });
 
@@ -66,8 +87,8 @@ export const PaymentController = (appointmentId?: string) => {
     });
 
   const handlePayment = () => {
-    if (!appointmentId) throw new Error('No appointment id provided');
-    savePayment(appointmentId);
+    if (!appointment?.id) throw new Error('No appointment id provided');
+    savePayment(appointment?.id);
   };
 
   const handleVerifyPayment = (appId: string) => {
@@ -79,14 +100,12 @@ export const PaymentController = (appointmentId?: string) => {
   };
 
   return {
-    openPayment,
     isLoading,
     isLoadingVerifyPayment,
     isLoadingPaymentVerificationFailed,
-    handleOpenPayment,
-    handleClosePayment,
     handlePayment,
     handleVerifyPayment,
     handlePaymentVerificationFailed,
+    handleSendUserToPayku,
   };
 };

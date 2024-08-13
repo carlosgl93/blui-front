@@ -5,8 +5,18 @@ import dayjs from 'dayjs';
 import { db } from '@/firebase/firebase';
 import { addDoc, collection, FieldValue } from 'firebase/firestore';
 
-type ScheduleAppointmentProvider = Pick<Prestador, 'id' | 'firstname' | 'lastname' | 'email'>;
-type ScheduleAppointmentCustomer = Pick<User, 'id' | 'firstname' | 'lastname' | 'email'>;
+export type ScheduleAppointmentProvider = Pick<
+  Prestador,
+  'id' | 'firstname' | 'lastname' | 'email'
+>;
+export type ScheduleAppointmentCustomer = Pick<User, 'id' | 'firstname' | 'lastname' | 'email'>;
+export type TisPaid =
+  | boolean
+  | 'Confirmando'
+  | 'Confirmada'
+  | 'Transferencia no encontrada'
+  | 'Pagado'
+  | undefined;
 
 export interface ScheduleServiceParams {
   id?: string;
@@ -15,7 +25,7 @@ export interface ScheduleServiceParams {
   customer: ScheduleAppointmentCustomer;
   scheduledDate: string;
   scheduledTime: string;
-  isPaid?: boolean | 'Confirmando' | 'Confirmada' | 'Transferencia no encontrada';
+  isPaid?: TisPaid;
   createdAt?: FieldValue | string | dayjs.Dayjs;
 }
 
@@ -35,9 +45,7 @@ export async function scheduleService({
     isPaid: false,
     createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   };
-
   const docRef = await addDoc(collection(db, 'appointments'), newAppointment);
   newAppointment.id = docRef.id;
-
   return newAppointment;
 }

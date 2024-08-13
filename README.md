@@ -20,6 +20,8 @@ Para comenzar a trabajar localmente en este proyecto, sigue estos pasos:
 
 6. Para trabajar con los emuladores de Firebase, debes establecer la variable de entorno `VITE_ENV=dev` antes de iniciar el proyecto. Copia y pega env.template y cambiale el nombre a .env ahora al variable `VITE_ENV=dev`.
 
+7. Add the service account from firebase to the functions folder under the file called: 'firebase-adminsdk.json'
+
 ## Contribuyendo
 
 Para contribuir debes crear una rama con la convencion `<type>/<description>`, por ejemplo: feat/prestador-experiencia.
