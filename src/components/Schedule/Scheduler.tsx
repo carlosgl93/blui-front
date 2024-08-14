@@ -25,6 +25,7 @@ export const Scheduler = () => {
     handleSubmit,
     shouldDisableDay,
     handleSelectDate,
+    scheduleServiceLoading,
   } = ScheduleController();
 
   const { selectedTime, selectedService, selectedDate } = schedule;
@@ -98,7 +99,9 @@ export const Scheduler = () => {
           </Button>
           <Button
             variant="contained"
-            disabled={!selectedService?.id || !selectedDate || !selectedTime}
+            disabled={
+              !selectedService?.id || !selectedDate || !selectedTime || scheduleServiceLoading
+            }
             onClick={handleSubmit}
           >
             Agendar

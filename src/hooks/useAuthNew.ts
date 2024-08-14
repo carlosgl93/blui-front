@@ -118,7 +118,7 @@ export const useAuthNew = () => {
         message: 'Iniciando sesión...',
         severity: 'info',
       });
-      return signInWithEmailAndPassword(auth, correo, contrasena).then(async () => {
+      return signInWithEmailAndPassword(auth, correo, contrasena).then(async (userCredential) => {
         const usersColectionRef = collection(db, 'users');
         const prestadorCollectionRef = collection(db, 'providers');
         const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
@@ -132,7 +132,9 @@ export const useAuthNew = () => {
 
         if (users.docs.length > 0) {
           const user = users.docs[0].data() as User;
-          setUserState({ ...user, isLoggedIn: true });
+          user.token = userCredential.user.refreshToken;
+          user.id = userCredential.user.uid;
+          setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
           queryClient.setQueryData(['user', correo], user);
           return { role: 'user', data: user };
         } else if (prestadores.docs.length > 0) {

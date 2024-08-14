@@ -13,9 +13,14 @@ export const ListSesiones = () => {
 
   const { user } = useAuthNew();
 
-  console.log(user);
-
   if (user?.id) {
+    if (!userSessions.length) {
+      return (
+        <>
+          <Text>Aun no tienes sesiones.</Text>
+        </>
+      );
+    }
     return userSessions?.map((appointment, i) => (
       <Fragment key={i}>
         {i === 0 ? (
@@ -31,6 +36,13 @@ export const ListSesiones = () => {
       </Fragment>
     ));
   } else {
+    if (!providerSessions.length) {
+      return (
+        <>
+          <Text>Aun no tienes sesiones.</Text>
+        </>
+      );
+    }
     return providerSessions?.map((appointment, i) => (
       <Fragment key={i}>
         {i === 0 ? (

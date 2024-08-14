@@ -33,9 +33,6 @@ export async function createTransaction(appointment: ScheduleServiceParams | und
       payment: paymentSettings.paymentMethods,
       urlreturn: `${baseUrl}/payment?appointmentId=${appointment?.id}`,
       urlnotify: `${String(notifyUrl)}?appointmentId=${appointment?.id}`,
-      additional_parameters: {
-        id: appointment?.id,
-      },
     });
 
     return paykuRes.data;

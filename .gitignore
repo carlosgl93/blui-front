@@ -38,3 +38,7 @@ functions/node_modules
 /playwright/.cache/
 ./firebase-adminsdk.json
 firebase-adminsdk.json
+.env.dev
+.env.prod
+./functions/lib
+./lib/

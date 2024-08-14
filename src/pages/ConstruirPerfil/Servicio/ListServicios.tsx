@@ -10,7 +10,6 @@ import { useAuthNew } from '@/hooks';
 import Loading from '@/components/Loading';
 import { formatCLP } from '@/utils/formatCLP';
 
-
 export const ListServicios = () => {
   const {
     prestadorCreatedServicios,
@@ -18,6 +17,7 @@ export const ListServicios = () => {
     deleteServicioLoading,
     handleIsCreatingServicio,
     handleDeleteServicio,
+    prestadorCreatedServiciosLoading,
   } = ServicioController();
 
   const { prestador } = useAuthNew();
@@ -47,7 +47,7 @@ export const ListServicios = () => {
 
       <StyledText>Clasificación: {prestadorServicio?.serviceName}</StyledText>
       <StyledText>
-        {prestadorCreatedServicios?.length === 1 ? 'Aun no tienes servicios creados' : ''}
+        {prestadorCreatedServicios?.length === 0 && 'Aun no tienes servicios creados'}
       </StyledText>
       <Box
         sx={{
@@ -63,7 +63,7 @@ export const ListServicios = () => {
         }}
       >
         <List>
-          {deleteServicioLoading ? (
+          {deleteServicioLoading || prestadorCreatedServiciosLoading ? (
             <Loading />
           ) : (
             <>
@@ -82,7 +82,6 @@ export const ListServicios = () => {
                       {servicio.name}
                     </StyledSubtitle>
                     <StyledText>Tarifa: {formatCLP(servicio.price)}</StyledText>
-
                   </Box>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteServicio(prestador?.id ?? '', servicio?.id ?? '')}
