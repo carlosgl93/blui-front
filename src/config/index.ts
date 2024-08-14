@@ -52,6 +52,12 @@ const defaultMetaTags = {
 };
 const giphy404 = 'https://giphy.com/embed/2asOjumchIeb5gZO9m';
 
+const paymentSettings = {
+  appCommission: 1.05,
+  currency: 'CLP',
+  paymentMethods: 99,
+};
+
 export {
   customerSupportPhone,
   loader,
@@ -63,4 +69,5 @@ export {
   title,
   defaultMetaTags,
   giphy404,
+  paymentSettings,
 };

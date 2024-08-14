@@ -224,24 +224,6 @@ export const ScheduleController = () => {
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
       onSuccess: async (data: ScheduleServiceParams) => {
-        // const paykuRes = await paykuApi.post('/transaction', {
-        //   email: data?.customer?.email,
-        //   order: uuidv4(),
-        //   subject: 'Initiating payment',
-        //   expired: data?.scheduledDate,
-        //   amount: Number(
-        //     formatCLP(data?.servicio?.price ? +data?.servicio?.price * 1.05 : 999999999),
-        //   ),
-        //   currency: 'CLP',
-        //   payment: 99,
-        //   urlreturn: `https://blui.cl/successful-payment?appointmentId=${data?.id}`,
-        //   urlnotify: 'https://blui.cl/transaction-result-function-serverless-email-notification',
-        //   additional_parameters: {
-        //     username: user?.firstname,
-        //     prestadorname: data?.provider.firstname,
-        //   },
-        // });
-        // window.location.href = paykuRes.data.url;
         setSchedule({
           selectedTime: null,
           selectedDate: null,

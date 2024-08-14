@@ -8,12 +8,22 @@
 import { db } from '@/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-export async function getPayment(appointmentId: string | null) {
+interface PaymentDetails {
+  isPaid: string;
+}
+
+export async function getPaymentStatus(appointmentId: string | null): Promise<PaymentDetails> {
   if (!appointmentId) {
     throw new Error('missing appointment details');
   }
 
   const paymentRef = doc(db, 'appointments', appointmentId);
-  const data = await getDoc(paymentRef);
-  return data;
+  const snapshot = await getDoc(paymentRef);
+
+  if (!snapshot.exists()) {
+    throw new Error(`No payment found for appointment ID: ${appointmentId}`);
+  }
+
+  const paymentStatus = snapshot.data().isPaid;
+  return paymentStatus as PaymentDetails;
 }

@@ -19,9 +19,22 @@ export const Payment = () => {
   const [params] = useSearchParams();
   const router = useNavigate();
   const theme = useTheme();
-  const { appointment, isLoadingAppointment } = useAppointment(params.get('appointmentId'));
+  const { appointment, isLoadingAppointment, appointmentError } = useAppointment(
+    params.get('appointmentId'),
+  );
 
   if (isLoadingAppointment) return <Loading />;
+
+  if (appointmentError)
+    return (
+      <StyledBox>
+        <StyledCard variant="outlined">
+          <CardContent>
+            <Title>Hubo un error al cargar esta informacion, por favor intentalo nuevamente</Title>
+          </CardContent>
+        </StyledCard>
+      </StyledBox>
+    );
 
   if (!appointment)
     return (
