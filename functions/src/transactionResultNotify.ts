@@ -6,29 +6,35 @@ export const transactionResultNotify = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
   async ({ headers, body, query }, res) => {
     logger.info('beggining notification of transaction', headers, body);
-    // const serviceAccount = require('../firebase-adminsdk.json');
-    // const app = initializeApp({
-    //   credential: serviceAccount,
-    // });
+    logger.info('body', body);
+    logger.info('QUERY', query);
+    
 
+    const { status } = body;
     const { appointmentId } = query;
-    console.log(appointmentId);
 
     if (!appointmentId) {
       res.status(400).send('Missing document ID in request');
       return;
     }
-    // getting the sesion document
     const db = getFirestore();
     const docRef = db.collection('appointments').doc(appointmentId as string);
     const docSnapshot = await docRef.get();
 
     if (docSnapshot.exists) {
-      await docRef.update({
-        isPaid: true,
-      });
-      res.status(200).send('Appointment updated successfully');
-      return;
+      if (status === 'success') {
+        await docRef.update({
+          isPaid: 'Pagado',
+        });
+        res.status(200).send('Appointment updated successfully');
+        return;
+      } else {
+        await docRef.update({
+          isPaid: 'failed',
+        });
+        res.status(400).send('Payment was not approved');
+        return;
+      }
     } else {
       res
         .status(404)

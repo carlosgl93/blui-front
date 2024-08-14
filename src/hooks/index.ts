@@ -17,3 +17,5 @@ export * from './useRenderFooter';
 export * from './useNavigationHistory';
 export * from './useAuthNew';
 export * from './useUser';
+export * from './usePayment';
+export * from './useAppointment';

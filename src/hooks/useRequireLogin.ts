@@ -45,5 +45,12 @@ export function useRequireLogin() {
     ) {
       navigate('/prestador-inbox');
     }
+    if (
+      !userId &&
+      !prestadorId &&
+      protectedRoutes.find((route) => location.pathname.includes(route))
+    ) {
+      navigate('/ingresar');
+    }
   }, [prestadorId, userId, protectedRoutes]);
 }

@@ -2,6 +2,7 @@ import { createTransaction } from '@/api/payments/createTransaction';
 import { useMutation, useQueryClient } from 'react-query';
 import { notificationState } from '@/store/snackbar';
 import { useSetRecoilState } from 'recoil';
+import { sendEmailApi } from '@/api';
 import { useAuthNew } from '@/hooks';
 import {
   paymentVerificationFailedMutation,
@@ -9,7 +10,6 @@ import {
   ScheduleServiceParams,
   verifyPaymentMutation,
 } from '@/api/appointments';
-import axios from 'axios';
 
 export const PaymentController = (appointment?: ScheduleServiceParams) => {
   const setNotification = useSetRecoilState(notificationState);
@@ -17,33 +17,17 @@ export const PaymentController = (appointment?: ScheduleServiceParams) => {
   const { user } = useAuthNew();
 
   const handleSendUserToPayku = async () => {
-    console.log(appointment);
     const paykuRes = await createTransaction(appointment);
-    // const paykuRes = await paykuApi.post('/transaction', {
-    //   email: appointment?.customer?.email,
-    //   order: uuidv4(),
-    //   subject: 'Initiating payment',
-    //   // amount: Number(
-    //   //   formatCLP(appointment?.servicio?.price ? +appointment?.servicio?.price * 1.05 : 999999999),
-    //   // ),
-    //   amount: appointment?.servicio?.price ? +appointment?.servicio?.price * 1.05 : 999999999,
-    //   currency: 'CLP',
-    //   payment: 99,
-    //   urlreturn: `https://blui.cl/successful-payment?appointmentId=${appointment?.id}`,
-    //   urlnotify: 'https://blui.cl/transaction-result-function-serverless-email-notification',
-    //   additional_parameters: {
-    //     username: user?.firstname,
-    //     prestadorname: appointment?.provider.firstname,
-    //   },
-    // });
-
-    window.location.href = paykuRes.data.url;
+    console.log(paykuRes);
+    if (paykuRes) {
+      window.location.href = paykuRes.url;
+    }
   };
 
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: () => {
-      axios.post('https://sendEmail-3qwroszdxa-tl.a.run.app', {
-        body: {
+      sendEmailApi({
+        data: {
           from: 'Francisco Durney <francisco.durney@blui.cl>',
           to: 'francisco.durney@blui.cl',
           subject: 'Usuario ha pagado una cita',

@@ -52,7 +52,7 @@ export const SessionCardContent = ({ appointment }: SessionCardContentProps) => 
           }}
         />
         <Text variant="body2" color="textSecondary">
-          {isPaid === false ? 'Pago pendiente' : isPaid}
+          {isPaid === false ? 'Pago pendiente' : isPaid === 'failed' ? 'Fallo el pago' : 'Pagada'}
         </Text>
         {isPaid === false && (
           <IconButton onClick={handleOpenInfo} onMouseOver={handleOpenInfo}>
@@ -63,11 +63,12 @@ export const SessionCardContent = ({ appointment }: SessionCardContentProps) => 
             />
           </IconButton>
         )}
-        {(!isPaid || isPaid === 'Transferencia no encontrada') && (
+        {(!isPaid || isPaid === 'Transferencia no encontrada' || isPaid === 'failed') && (
           <Button variant="contained" onClick={handleSendUserToPayku}>
             Pagar
           </Button>
         )}
+
         <PaymentInfoModal
           isPaid={appointment?.isPaid}
           openInfo={openInfo}

@@ -36,5 +36,7 @@ module.exports = {
     "require-jsdoc": "off",
     "no-case-declarations": "off",
     "no-multi-spaces": "off",
+    "camelcase": "off",
+    "comma-dangle": "off"
   },
 };

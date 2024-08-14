@@ -22,6 +22,7 @@ import { ExperienceType } from '@/store/construirPerfil/experiencia';
 import { ArrowDropDownCircleOutlined } from '@mui/icons-material';
 import Loading from '@/components/Loading';
 import { SaveButton } from '@/components/SaveButton';
+import { CenteredFlexBox } from '@/components/styled';
 
 export const Experiencia = () => {
   const {
@@ -154,7 +155,9 @@ export const Experiencia = () => {
                 </Accordion>
               ),
           )}
-          <SaveButton />
+          <CenteredFlexBox>
+            <SaveButton />
+          </CenteredFlexBox>
         </form>
       </Container>
     </Wrapper>

@@ -16,6 +16,8 @@ export type TisPaid =
   | 'Confirmada'
   | 'Transferencia no encontrada'
   | 'Pagado'
+  | 'failed'
+  | 'approved'
   | undefined;
 
 export interface ScheduleServiceParams {

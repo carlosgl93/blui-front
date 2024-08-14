@@ -13,6 +13,8 @@ export const ListSesiones = () => {
 
   const { user } = useAuthNew();
 
+  console.log(user);
+
   if (user?.id) {
     return userSessions?.map((appointment, i) => (
       <Fragment key={i}>
