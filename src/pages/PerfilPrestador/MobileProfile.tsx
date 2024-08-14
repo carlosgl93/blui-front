@@ -58,7 +58,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     handleSchedule,
     handleCloseScheduleModal,
     scheduleModalOpen,
-  } = usePerfilPrestador(prestador as Prestador);
+  } = usePerfilPrestador(prestador);
 
   const { id } = useParams();
   const { user } = useAuthNew();
@@ -80,8 +80,6 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     createdServicios,
     availability,
   } = prestador;
-
-  console.log(prestador.comunas);
 
   return (
     <Wrapper>
@@ -116,12 +114,14 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
                 message={message}
                 setMessage={setMessage}
               />
-              <StyledShortListButton
-                startIcon={<EditCalendarOutlinedIcon />}
-                onClick={handleSchedule}
-              >
-                Agendar
-              </StyledShortListButton>
+              {(createdServicios ?? []).length > 0 ? (
+                <StyledShortListButton
+                  startIcon={<EditCalendarOutlinedIcon />}
+                  onClick={handleSchedule}
+                >
+                  Agendar
+                </StyledShortListButton>
+              ) : null}
             </>
           )}
         </StyledCTAs>

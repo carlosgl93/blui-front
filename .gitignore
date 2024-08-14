@@ -36,3 +36,5 @@ functions/node_modules
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+./firebase-adminsdk.json
+firebase-adminsdk.json

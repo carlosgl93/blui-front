@@ -1,32 +1,38 @@
-import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { createTransaction } from '@/api/payments/createTransaction';
 import { useMutation, useQueryClient } from 'react-query';
+import { notificationState } from '@/store/snackbar';
+import { useSetRecoilState } from 'recoil';
+import { sendEmailApi } from '@/api';
+import { useAuthNew } from '@/hooks';
 import {
   paymentVerificationFailedMutation,
   savePaymentMutation,
+  ScheduleServiceParams,
   verifyPaymentMutation,
 } from '@/api/appointments';
-import { notificationState } from '@/store/snackbar';
-import { useAuthNew } from '@/hooks';
-import axios from 'axios';
 
-export const PaymentController = (appointmentId?: string) => {
-  const [openPayment, setOpenPayment] = useState(false);
-  const handleOpenPayment = () => setOpenPayment(true);
-  const handleClosePayment = () => setOpenPayment(false);
+export const PaymentController = (appointment?: ScheduleServiceParams) => {
   const setNotification = useSetRecoilState(notificationState);
   const client = useQueryClient();
   const { user } = useAuthNew();
 
+  const handleSendUserToPayku = async () => {
+    const paykuRes = await createTransaction(appointment);
+    console.log(paykuRes);
+    if (paykuRes) {
+      window.location.href = paykuRes.url;
+    }
+  };
+
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: () => {
-      axios.post('https://sendEmail-3qwroszdxa-tl.a.run.app', {
-        body: {
+      sendEmailApi({
+        data: {
           from: 'Francisco Durney <francisco.durney@blui.cl>',
           to: 'francisco.durney@blui.cl',
           subject: 'Usuario ha pagado una cita',
-          text: `${user?.email} claimed to have paid for appointment ${appointmentId}.`,
-          html: `<p>${user?.email} claimed to have paid for appointment ${appointmentId}.</p>`,
+          text: `${user?.email} claimed to have paid for appointment ${appointment?.id}.`,
+          html: `<p>${user?.email} claimed to have paid for appointment ${appointment?.id}.</p>`,
         },
       });
       client.invalidateQueries(['userAppointments', user?.id]);
@@ -35,7 +41,6 @@ export const PaymentController = (appointmentId?: string) => {
         message: 'Confirmaremos tu sesion en breve',
         severity: 'success',
       });
-      handleClosePayment();
     },
   });
 
@@ -66,8 +71,8 @@ export const PaymentController = (appointmentId?: string) => {
     });
 
   const handlePayment = () => {
-    if (!appointmentId) throw new Error('No appointment id provided');
-    savePayment(appointmentId);
+    if (!appointment?.id) throw new Error('No appointment id provided');
+    savePayment(appointment?.id);
   };
 
   const handleVerifyPayment = (appId: string) => {
@@ -79,14 +84,12 @@ export const PaymentController = (appointmentId?: string) => {
   };
 
   return {
-    openPayment,
     isLoading,
     isLoadingVerifyPayment,
     isLoadingPaymentVerificationFailed,
-    handleOpenPayment,
-    handleClosePayment,
     handlePayment,
     handleVerifyPayment,
     handlePaymentVerificationFailed,
+    handleSendUserToPayku,
   };
 };

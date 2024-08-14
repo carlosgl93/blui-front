@@ -166,6 +166,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/TermsConditions')),
     path: '/terms-conditions',
   },
+  [Pages.Payment]: {
+    component: asyncComponentLoader(() => import('@/pages/Payment')),
+    path: '/payment',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',
@@ -191,7 +195,7 @@ export const protectedRoutes = [
   '/perfil-usuario',
   '/usuario-dashboard',
   '/sesiones',
-  '/preview-perfil-prestador/',
+  '/preview-perfil-prestador',
 ];
 
 export default routes;

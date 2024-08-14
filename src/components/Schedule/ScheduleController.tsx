@@ -23,7 +23,8 @@ export const ScheduleController = () => {
   const prestador = useRecoilValue(interactedPrestadorState);
   const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
   const setUserAppointments = useSetRecoilState(userAppointmentsState);
-  const { prestadorCreatedServicios: prestadorServicios } = useServicios();
+  const { prestadorCreatedServicios: prestadorServicios, prestadorCreatedServiciosLoading } =
+    useServicios();
   const [schedule, setSchedule] = useRecoilState(ScheduleState);
   const setNotification = useSetRecoilState(notificationState);
   const [value, setValue] = useState<Dayjs | null>(null);
@@ -173,6 +174,8 @@ export const ScheduleController = () => {
   );
 
   const handleSelectServicio = (serviceId: string) => {
+    console.log(serviceId);
+    console.log(prestadorServicios);
     const selectedService = prestadorServicios?.find((s) => s?.id === serviceId);
     setSchedule({
       ...schedule,
@@ -220,7 +223,7 @@ export const ScheduleController = () => {
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
-      onSuccess: (data) => {
+      onSuccess: async (data: ScheduleServiceParams) => {
         setSchedule({
           selectedTime: null,
           selectedDate: null,
@@ -239,6 +242,13 @@ export const ScheduleController = () => {
         handleCloseScheduleModal();
         navigate('/sesiones');
       },
+      onError: async () => {
+        setNotification({
+          open: true,
+          message: 'Error al agendar el servicio',
+          severity: 'error',
+        });
+      },
     },
   );
   const { selectedService } = schedule;
@@ -247,6 +257,7 @@ export const ScheduleController = () => {
     selectedServiceDuration && selectedServiceDuration > 45 ? 60 : selectedServiceDuration;
 
   return {
+    prestadorCreatedServiciosLoading,
     providerAvailability,
     prestadorCreatedServicios: prestadorServicios,
     value,

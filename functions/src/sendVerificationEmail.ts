@@ -26,10 +26,10 @@ export const sendVerificationEmail = onRequest(
     }
 
     try {
-      let template = await fetchAndCompileTemplate('verify-email.html');
-      console.log('email link:', `${getEnvUrl()}/email-verificado`);
+      const template = await fetchAndCompileTemplate('verify-email.html');
+      const redirectURL = `${getEnvUrl()}/email-verificado`;
       const link = await getAuth().generateEmailVerificationLink(to, {
-        url: `${getEnvUrl}/email-verificado`,
+        url: redirectURL,
       });
       
       const templateData = {

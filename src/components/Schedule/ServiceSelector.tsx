@@ -1,15 +1,13 @@
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
+import { ScheduleController } from './ScheduleController';
 
 type ServiceSelectorProps = {
-  prestadorCreatedServicios: UserCreatedServicio[] | undefined;
   handleSelectServicio: (serviceId: string) => void;
 };
 
-const ServiceSelector = ({
-  prestadorCreatedServicios,
-  handleSelectServicio,
-}: ServiceSelectorProps) => {
+const ServiceSelector = ({ handleSelectServicio }: ServiceSelectorProps) => {
+  const { prestadorCreatedServicios } = ScheduleController();
+
   return (
     <FormControl
       sx={{
@@ -33,7 +31,7 @@ const ServiceSelector = ({
       >
         <MenuItem value="">Selecciona un servicio:</MenuItem>
         {prestadorCreatedServicios?.map((e) => (
-          <MenuItem key={e.id} value={e.id}>
+          <MenuItem key={e.id ? e.id : e.name} value={e.id}>
             {e.name}
           </MenuItem>
         ))}

@@ -6,6 +6,13 @@ export const StyledModal = styled(Modal)(() => ({
   alignItems: 'center',
   justifyContent: 'center',
   my: '5rem',
+  '&::-webkit-scrollbar': {
+    display: 'none', // Hide scrollbars for Chrome, Safari, and newer Edge versions
+  },
+  '&': {
+    scrollbarWidth: 'none', // Hide scrollbars for Firefox
+    msOverflowStyle: 'none', // Hide scrollbars for IE 10+
+  },
 }));
 
 export const ModalContent = styled(Box)(({ theme }) => ({
