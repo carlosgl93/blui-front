@@ -174,8 +174,6 @@ export const ScheduleController = () => {
   );
 
   const handleSelectServicio = (serviceId: string) => {
-    console.log(serviceId);
-    console.log(prestadorServicios);
     const selectedService = prestadorServicios?.find((s) => s?.id === serviceId);
     setSchedule({
       ...schedule,

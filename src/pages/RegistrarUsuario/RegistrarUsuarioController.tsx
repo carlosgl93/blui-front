@@ -93,8 +93,6 @@ const RegistrarUsuarioController = () => {
     acceptedTerms,
   } = state;
 
-  console.log(comuna);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     dispatch({ type: 'CHANGE', payload: { name, value } });
