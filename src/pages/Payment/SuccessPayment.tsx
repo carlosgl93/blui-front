@@ -22,7 +22,7 @@ export const SuccessPayment = ({ appointment, theme }: FailedPaymentProps) => {
       <StyledTitle>Pago exitoso</StyledTitle>
       <Text>
         <b>
-          {appointment.customer.firstname}, tu sesión con {appointment.provider.firstname} esta
+          {appointment.customer.firstname}, tu sesión con {appointment.provider.firstname} fue
           pagada exitosamente.
         </b>
       </Text>

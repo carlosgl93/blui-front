@@ -18,8 +18,8 @@ export const PaymentController = (appointment?: ScheduleServiceParams) => {
 
   const handleSendUserToPayku = async () => {
     const paykuRes = await createTransaction(appointment);
-    console.log(paykuRes);
     if (paykuRes) {
+      // window.open(paykuRes.url, '_blank');
       window.location.href = paykuRes.url;
     }
   };

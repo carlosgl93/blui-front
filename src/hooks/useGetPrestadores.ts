@@ -13,6 +13,8 @@ export const useGetPrestadores = () => {
     isError: allPrestadoresError,
   } = useQuery<Prestador[]>(['allPrestadores'], () => getAllPrestadores());
 
+  console.log(comuna, servicio, especialidad);
+
   const {
     data: verifiedPrestadores = [],
     isLoading,

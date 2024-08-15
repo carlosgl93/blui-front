@@ -21,8 +21,8 @@ import { NotificationSnackbar } from './components/Snackbar';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
     },
   },
 });

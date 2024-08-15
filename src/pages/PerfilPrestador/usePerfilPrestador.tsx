@@ -54,7 +54,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     setRedirectToAfterLogin(`/perfil-prestador/${prestadorId}`);
     setNotification({
       open: true,
-      message: 'Debes crearte una cuenta para poder contactar a un prestador',
+      message: 'Debes crearte una cuenta o iniciar sesión para poder contactar a un prestador',
       severity: 'info',
     });
     if (fromRecibeApoyo) {
@@ -74,7 +74,7 @@ export const usePerfilPrestador = (prestador: Prestador) => {
     setRedirectToAfterLogin(`/perfil-prestador/${prestadorId}`);
     setNotification({
       open: true,
-      message: 'Debes crearte una cuenta para poder agendar.',
+      message: 'Debes crearte una cuenta o iniciar sesión para poder agendar.',
       severity: 'info',
     });
 

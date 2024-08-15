@@ -10,6 +10,7 @@ import { fetchAndCompileTemplate, getEnvUrl } from './utils';
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
   async ({ headers, body }, res) => {
+    logger.info('beggining sendEmail execution');
     // validations
     unAuthorized(headers, res);
     malformedPayloadValidation(body, res);
@@ -58,7 +59,19 @@ export const sendEmail = onRequest(
           templateData = {
             recipientName: body.recipientName,
             senderName: body.senderName,
-            redirect: sentBy === 'user' ?  `${getEnvUrl()}/prestador-inbox` : `${getEnvUrl()}/usuario-inbox`,
+            redirect:
+              sentBy === 'user' ? `${getEnvUrl()}/prestador-inbox` : `${getEnvUrl()}/usuario-inbox`,
+          };
+          break;
+        case 'scheduled-appointment.html':
+          const { providerName, customerName, serviceName, scheduledDate, scheduledTime } = body;
+          templateData = {
+            providerName,
+            customerName,
+            serviceName,
+            scheduledDate,
+            scheduledTime,
+            redirect: `${getEnvUrl()}/sesiones`,
           };
           break;
         default:

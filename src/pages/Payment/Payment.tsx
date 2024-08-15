@@ -68,6 +68,7 @@ const StyledBox = styled(Box)(() => ({
   flexDirection: 'column',
   alignItems: 'left',
   padding: '1rem',
+  minHeight: '75vh',
 }));
 
 const StyledCard = styled(Card)(() => ({
