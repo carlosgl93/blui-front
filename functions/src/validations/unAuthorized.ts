@@ -1,6 +1,5 @@
 import { IncomingHttpHeaders } from "http2";
 import { Response } from 'express';
-import * as logger from 'firebase-functions/logger';
 
 
 /**;
@@ -13,7 +12,6 @@ import * as logger from 'firebase-functions/logger';
 
 export function unAuthorized(headers: IncomingHttpHeaders, res: Response) {
   const authToken = headers.authorization;
-  logger.info('auth token from unAuthorized helper', authToken);
   if (!authToken) {
     res.status(401).send('Unauthorized');
     return;
