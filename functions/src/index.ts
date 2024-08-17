@@ -11,7 +11,7 @@ import { getAccessToken } from './utils/getAccessToken';
 
 setGlobalOptions({ region: 'southamerica-west1', timeoutSeconds: 15 });
 const credential = applicationDefault();
-const token = getAccessToken(credential)
+const token = getAccessToken(credential);
 // Initialize Firebase Admin
 initializeApp({
   credential: credential,
