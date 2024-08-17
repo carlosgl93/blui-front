@@ -7,15 +7,25 @@ import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import { sendVerificationEmail } from './sendVerificationEmail';
 import { transactionResultNotify } from './transactionResultNotify';
+import { getAccessToken } from './utils/getAccessToken';
 
-// cors({ origin: true });
 setGlobalOptions({ region: 'southamerica-west1', timeoutSeconds: 15 });
-
+const credential = applicationDefault();
+const token = getAccessToken(credential);
 // Initialize Firebase Admin
 initializeApp({
-  credential: applicationDefault(),
+  credential: credential,
   storageBucket: 'blui-6ec33.appspot.com',
 });
 
 // Export the initialized services
-export { getStorage, getAuth, getFirestore, userPaidAppointment, sendEmail, sendVerificationEmail, transactionResultNotify};
+export {
+  getStorage,
+  getAuth,
+  getFirestore,
+  token,
+  userPaidAppointment,
+  sendEmail,
+  sendVerificationEmail,
+  transactionResultNotify,
+};

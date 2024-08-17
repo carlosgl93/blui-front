@@ -15,7 +15,7 @@ export const FailedPayment = ({ appointment, theme }: FailedPaymentProps) => {
       <ReportGmailerrorredOutlinedIcon
         sx={{
           fontSize: '3rem',
-          color: theme.palette.primary.main,
+          color: theme.palette.secondary.contrastText,
         }}
       />
       <StyledTitle>Pago fallido</StyledTitle>

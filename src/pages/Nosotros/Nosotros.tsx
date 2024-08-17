@@ -15,9 +15,9 @@ const lideres = [
     linkedinUrl: 'https://www.linkedin.com/in/franciscodurney/',
   },
   {
-    profileImg: '/images/person.png',
-    name: 'Jaime Saavedra',
-    linkedinUrl: 'https://www.linkedin.com/in/jaimesaavedra/',
+    profileImg: '/images/_cano.png',
+    name: 'Carlos Gumucio',
+    linkedinUrl: 'https://www.linkedin.com/in/carlos-gumucio-labb%C3%A9-30b01b70/',
   },
   {
     profileImg: '/images/_nicolas.jpeg',
@@ -150,9 +150,9 @@ function Nosotros() {
               discapacidad una mejor calidad de vida.
             </Text>
             <Text gutterBottom>
-              Es así como Francisco contacta a Nicolás Boetto y Jaime Saavedra para poder darle
-              forma a este innovador y desafiante proyecto que es lo que se conoce hoy en día como
-              Blui.
+              Es así como Francisco contacta a Nicolás Boetto y Carlos Gumucio Gumucio para poder
+              darle forma a este innovador y desafiante proyecto que es lo que se conoce hoy en día
+              como Blui.
             </Text>
           </Box>
         </TextContainer>
@@ -209,11 +209,7 @@ function Nosotros() {
         <AvatarContainer>
           {lideres.map((lider) => (
             <PersonContainer key={lider.name}>
-              <Avatar
-                sx={{ width: 120, height: 120, borderRadius: '50%' }}
-                src={lider.profileImg}
-                alt={lider.name}
-              />
+              <Avatar sx={{ width: 120, height: 120 }} src={lider.profileImg} alt={lider.name} />
               <PersonName variant="h6">{lider.name}</PersonName>
               <LinkedInLogo />
             </PersonContainer>
@@ -355,7 +351,6 @@ function Nosotros() {
             >
               <Typography
                 variant="h1"
-                gutterBottom
                 sx={{
                   fontWeight: 700,
                   fontSize: {
@@ -389,7 +384,6 @@ function Nosotros() {
             >
               <Typography
                 variant="h1"
-                gutterBottom
                 sx={{
                   fontWeight: 700,
                   fontSize: {
@@ -421,7 +415,6 @@ function Nosotros() {
             >
               <Typography
                 variant="h1"
-                gutterBottom
                 sx={{
                   fontWeight: 700,
                   fontSize: {
@@ -439,72 +432,37 @@ function Nosotros() {
                   flexDirection: { xs: 'column', md: 'row' },
                   justifyContent: 'center',
                   alignItems: 'center',
+                  color: theme.palette.primary.main,
+                  gap: 2,
                 }}
               >
-                <Box
+                <PeopleAltOutlinedIcon
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: 2,
+                    fontSize: '4rem',
                   }}
-                >
-                  <PeopleAltOutlinedIcon
-                    sx={{
-                      fontSize: '4rem',
-                    }}
-                  />
-                  <Typography variant="subtitle1">Colaboración</Typography>
-                </Box>
-                <Box
+                />
+                <Text variant="subtitle1">Colaboración</Text>
+
+                <VisibilityOutlinedIcon
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: 2,
+                    fontSize: '4rem',
                   }}
-                >
-                  <VisibilityOutlinedIcon
-                    sx={{
-                      fontSize: '4rem',
-                    }}
-                  />
-                  <Typography variant="subtitle1">Transparencia</Typography>
-                </Box>
-                <Box
+                />
+                <Text variant="subtitle1">Transparencia</Text>
+
+                <ShieldOutlinedIcon
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: 2,
+                    fontSize: '4rem',
                   }}
-                >
-                  <ShieldOutlinedIcon
-                    sx={{
-                      fontSize: '4rem',
-                    }}
-                  />
-                  <Typography variant="subtitle1">Seguridad</Typography>
-                </Box>
-                <Box
+                />
+                <Text variant="subtitle1">Seguridad</Text>
+
+                <FavoriteBorderOutlinedIcon
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: 2,
+                    fontSize: '4rem',
                   }}
-                >
-                  <FavoriteBorderOutlinedIcon
-                    sx={{
-                      fontSize: '4rem',
-                    }}
-                  />
-                  <Typography variant="subtitle1">Confianza</Typography>
-                </Box>
+                />
+                <Text variant="subtitle1">Confianza</Text>
               </Box>
             </TextContainer>
           </Box>
