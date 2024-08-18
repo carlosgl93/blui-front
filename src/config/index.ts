@@ -53,7 +53,7 @@ const defaultMetaTags = {
 const giphy404 = 'https://giphy.com/embed/2asOjumchIeb5gZO9m';
 
 const paymentSettings = {
-  appCommission: 1.05,
+  appCommission: 1.075,
   currency: 'CLP',
   paymentMethods: 99,
   providerPayAfterDays: 7,

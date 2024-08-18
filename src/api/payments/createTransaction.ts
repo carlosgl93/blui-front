@@ -6,11 +6,11 @@
  */
 
 import { paymentSettings } from '@/config';
-import { ScheduleServiceParams } from '../appointments';
+import { AppointmentParams } from '../appointments';
 import paykuApi from '../paykuApi';
 import { v4 as uuidv4 } from 'uuid';
 
-export async function createTransaction(appointment: ScheduleServiceParams | undefined) {
+export async function createTransaction(appointment: AppointmentParams | undefined) {
   if (!appointment) {
     throw new Error('Missing appointment details / no appointment object passed');
   }
@@ -22,7 +22,6 @@ export async function createTransaction(appointment: ScheduleServiceParams | und
   const baseUrl: string = import.meta.env.VITE_BASE_URL;
   const notifyUrl: string = import.meta.env.VITE_PAYMENT_NOTIFY_URL;
   const orderId = uuidv4();
-
   try {
     const paykuRes = await paykuApi.post('/transaction', {
       email: appointment?.customer?.email,

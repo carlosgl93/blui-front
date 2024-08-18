@@ -8,21 +8,19 @@ import { ScheduleState } from '@/store/schedule/sheduleState';
 import { useServicios } from '@/hooks/useServicios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useAppointments } from '@/hooks/useAppointments';
-import { scheduleService, ScheduleServiceParams } from '@/api/appointments';
+import { scheduleService, AppointmentParams } from '@/api/appointments';
 import { notificationState } from '@/store/snackbar';
-import { useNavigate } from 'react-router-dom';
 import { useState, useCallback } from 'react';
 import { Badge } from '@mui/material';
 import { useAuthNew } from '@/hooks';
 import dayjs, { Dayjs } from 'dayjs';
 import { Prestador } from '@/types';
-import { userAppointmentsState } from '@/store/appointments';
-import { sortUserAppointments } from '@/utils/sortUserAppointments';
+import { createTransaction } from '@/api/payments';
 
 export const ScheduleController = () => {
+  const [waitingForPayku, setWaitingForPayku] = useState(false);
   const prestador = useRecoilValue(interactedPrestadorState);
   const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
-  const setUserAppointments = useSetRecoilState(userAppointmentsState);
   const { prestadorCreatedServicios: prestadorServicios, prestadorCreatedServiciosLoading } =
     useServicios();
   const [schedule, setSchedule] = useRecoilState(ScheduleState);
@@ -31,8 +29,8 @@ export const ScheduleController = () => {
   const providerAvailability = prestador?.availability;
   const { providersAppointments } = useAppointments();
   const client = useQueryClient();
-  const navigate = useNavigate();
   const { user } = useAuthNew();
+  console.log(user);
 
   const shouldDisableDay = (date: dayjs.Dayjs) => {
     // Calculate the current time plus 24 hours to get the cutoff time
@@ -210,8 +208,19 @@ export const ScheduleController = () => {
         customer,
         scheduledDate,
         scheduledTime,
+        status: 'Agendada',
       });
     }
+  };
+
+  const handleSendUserToPayku = async (appointment: AppointmentParams) => {
+    setWaitingForPayku(!waitingForPayku);
+    const paykuRes = await createTransaction(appointment);
+    if (paykuRes) {
+      // window.open(paykuRes.url, '_blank');
+      window.location.href = paykuRes.url;
+    }
+    setWaitingForPayku(!waitingForPayku);
   };
 
   const { mutate: scheduleServiceMutate, isLoading: scheduleServiceLoading } = useMutation(
@@ -221,24 +230,25 @@ export const ScheduleController = () => {
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
-      onSuccess: async (data: ScheduleServiceParams) => {
-        setSchedule({
-          selectedTime: null,
-          selectedDate: null,
-        });
-        setValue(null);
-        setNotification({
-          open: true,
-          message: 'Servicio agendado correctamente',
-          severity: 'success',
-        });
-        setUserAppointments((prev) =>
-          sortUserAppointments([...prev, data as ScheduleServiceParams]),
-        );
+      onSuccess: async (data: AppointmentParams) => {
+        // setSchedule({
+        //   selectedTime: null,
+        //   selectedDate: null,
+        // });
+        // setValue(null);
+        // setNotification({
+        //   open: true,
+        //   message: 'Servicio agendado correctamente',
+        //   severity: 'success',
+        // });
+        // setUserAppointments((prev) =>
+        //   sortUserAppointments([...prev, data as ScheduleServiceParams]),
+        // );
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
-        handleCloseScheduleModal();
-        navigate('/sesiones');
+        // handleCloseScheduleModal();
+        handleSendUserToPayku(data);
+        // navigate('/sesiones');
       },
       onError: async () => {
         setNotification({
@@ -262,6 +272,7 @@ export const ScheduleController = () => {
     schedule,
     availableTimesStep,
     scheduleServiceLoading,
+    waitingForPayku,
     renderAvailableDay,
     shouldDisableTime,
     setSchedule,

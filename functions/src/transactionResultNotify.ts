@@ -1,6 +1,6 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
-import { getFirestore, token } from './index';
+import { getFirestore } from './index';
 import { defaultEmailSender, paymentSettings } from './config';
 import axios from 'axios';
 
@@ -14,7 +14,6 @@ export const transactionResultNotify = onRequest(
       res.send(200);
       return;
     }
-
     logger.info('beggining transaction result');
     const { status } = body;
     const { appointmentId } = query;
@@ -61,9 +60,7 @@ export const transactionResultNotify = onRequest(
           });
         }
       } else {
-        await docRef.update({
-          isPaid: 'failed',
-        });
+        await docRef.delete();
         res.status(422).send('Payment failed');
         return;
       }
@@ -73,22 +70,13 @@ export const transactionResultNotify = onRequest(
       return;
     }
     try {
-      const rawToken = await token;
+      // const rawToken = await token;
       const emailsCollectionRef = db.collection('emails');
       const emailSnap = await emailsCollectionRef.where('appointmentId', '==', appointmentId).get();
-      logger.info(emailSnap.docs);
       if (emailSnap.empty) {
         logger.info('inside emailSnap empty');
-        const emailRegistered = await emailsCollectionRef.add({
-          appointmentId,
-          sent: true,
-          date: new Date(),
-        });
         await axios.post(String(sendEmailUrl), {
           method: 'post',
-          headers: {
-            authorization: `Bearer ${rawToken}`,
-          },
           providerName: appointmentInfo?.provider.firstname,
           customerName: appointmentInfo?.customer.firstname,
           serviceName: appointmentInfo?.servicio.name,
@@ -102,10 +90,15 @@ export const transactionResultNotify = onRequest(
             text: `Hola ${appointmentInfo?.provider?.firstname}, tienes una nueva sesión de ${appointmentInfo?.servicio.name} confirmada para el día ${appointmentInfo?.scheduledDate} a las ${appointmentInfo?.scheduledTime} con ${appointmentInfo?.customer?.firstname} ${appointmentInfo?.customer?.lastname}`,
           },
         });
+        const emailRegistered = await emailsCollectionRef.add({
+          appointmentId,
+          sent: true,
+          date: new Date(),
+        });
 
         logger.info('email sent and record created', emailRegistered);
+        res.status(200).send('Email notification sent successfully');
       }
-      res.status(200).send('Email notification sent successfully');
     } catch (error) {
       logger.error('error sending the email notification', error);
       res.status(500).send('error sending the email notification');

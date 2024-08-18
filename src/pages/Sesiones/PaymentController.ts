@@ -7,11 +7,11 @@ import { useAuthNew } from '@/hooks';
 import {
   paymentVerificationFailedMutation,
   savePaymentMutation,
-  ScheduleServiceParams,
+  AppointmentParams,
   verifyPaymentMutation,
 } from '@/api/appointments';
 
-export const PaymentController = (appointment?: ScheduleServiceParams) => {
+export const PaymentController = (appointment?: AppointmentParams) => {
   const setNotification = useSetRecoilState(notificationState);
   const client = useQueryClient();
   const { user } = useAuthNew();

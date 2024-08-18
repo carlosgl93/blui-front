@@ -1,13 +1,13 @@
-import { ScheduleServiceParams } from '../../api/appointments/scheduleAppointmentMutation';
+import { AppointmentParams } from '../../../api/appointments/scheduleAppointmentMutation';
 import { Card, CardHeader } from '@mui/material';
-import { SessionCardContent } from './SessionCardContent';
+import { UserSessionCardContent } from './UserSessionCardContent';
 import { formatDate } from '@/utils/formatDate';
 
 type SessionCardProps = {
-  appointment: ScheduleServiceParams;
+  appointment: AppointmentParams;
 };
 
-export const SessionCard = ({ appointment }: SessionCardProps) => {
+export const UserSessionCard = ({ appointment }: SessionCardProps) => {
   const { scheduledDate, scheduledTime } = appointment;
 
   return (
@@ -16,12 +16,12 @@ export const SessionCard = ({ appointment }: SessionCardProps) => {
         title={`${formatDate(scheduledDate, true)}`}
         subheader={`a las ${scheduledTime}`}
         titleTypographyProps={{
-          variant: 'h5',
+          variant: 'h6',
           color: 'secondary.contrastText',
           fontWeight: 'bold',
         }}
       />
-      <SessionCardContent appointment={appointment} />
+      <UserSessionCardContent appointment={appointment} />
     </Card>
   );
 };

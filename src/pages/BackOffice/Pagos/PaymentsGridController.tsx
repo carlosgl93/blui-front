@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import { GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
-import { ScheduleServiceParams } from '@/api/appointments';
+import { AppointmentParams } from '@/api/appointments';
 import dayjs from 'dayjs';
 import { formatCLP } from '@/utils/formatCLP';
 import { PaymentController } from '@/pages/Sesiones/PaymentController';
 import { useRecoilState } from 'recoil';
 import { paymentsGridPaginationModelState } from '@/store/backoffice/payments';
 
-type PaymentsRow = ScheduleServiceParams;
+type PaymentsRow = AppointmentParams;
 
 export const PaymentsGridController = () => {
   const [paginationModel, setPaginationModel] = useRecoilState(paymentsGridPaginationModelState);

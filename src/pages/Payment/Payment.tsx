@@ -54,8 +54,8 @@ export const Payment = () => {
           )}
         </CardContent>
         <CardActions>
-          <Button variant="contained" onClick={() => router('/sesiones')}>
-            Sesiones
+          <Button variant="contained" onClick={() => router('/ingresar')}>
+            A mi cuenta
           </Button>
         </CardActions>
       </StyledCard>

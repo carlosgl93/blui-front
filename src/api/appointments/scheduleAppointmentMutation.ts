@@ -20,7 +20,9 @@ export type TisPaid =
   | 'approved'
   | undefined;
 
-export interface ScheduleServiceParams {
+export type TStatus = 'Agendada' | 'Realizada';
+
+export interface AppointmentParams {
   id?: string;
   provider: ScheduleAppointmentProvider;
   servicio: UserCreatedServicio;
@@ -29,6 +31,7 @@ export interface ScheduleServiceParams {
   scheduledTime: string;
   isPaid?: TisPaid;
   createdAt?: FieldValue | string | dayjs.Dayjs;
+  status: TStatus;
 }
 
 export async function scheduleService({
@@ -37,8 +40,9 @@ export async function scheduleService({
   customer,
   scheduledDate,
   scheduledTime,
-}: ScheduleServiceParams) {
-  const newAppointment: ScheduleServiceParams = {
+  status,
+}: AppointmentParams) {
+  const newAppointment: AppointmentParams = {
     provider,
     servicio,
     customer,
@@ -46,6 +50,7 @@ export async function scheduleService({
     scheduledTime,
     isPaid: false,
     createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    status,
   };
   const docRef = await addDoc(collection(db, 'appointments'), newAppointment);
   newAppointment.id = docRef.id;

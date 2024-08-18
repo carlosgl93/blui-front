@@ -9,10 +9,10 @@ import { fetchAndCompileTemplate, getEnvUrl } from './utils';
 
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
-  async ({ headers, body }, res) => {
+  async ({ body }, res) => {
     logger.info('beggining sendEmail execution');
     // validations
-    unAuthorized(headers, res);
+    // unAuthorized(headers, res);
     malformedPayloadValidation(body, res);
 
     // settings
@@ -64,15 +64,29 @@ export const sendEmail = onRequest(
           };
           break;
         case 'scheduled-appointment.html':
-          const { providerName, customerName, serviceName, scheduledDate, scheduledTime } = body;
-          templateData = {
-            providerName,
-            customerName,
-            serviceName,
-            scheduledDate,
-            scheduledTime,
-            redirect: `${getEnvUrl()}/sesiones`,
-          };
+          {
+            const { providerName, customerName, serviceName, scheduledDate, scheduledTime } = body;
+            templateData = {
+              providerName,
+              customerName,
+              serviceName,
+              scheduledDate,
+              scheduledTime,
+              redirect: `${getEnvUrl()}/ingresar`,
+            };
+          }
+          break;
+        case 'sesion-realizada.html':
+          {
+            logger.info('BODY', body);
+            const { providerName, customerName, serviceName } = body;
+            templateData = {
+              providerName,
+              customerName,
+              serviceName,
+              redirect: `${getEnvUrl()}/ingresar`,
+            };
+          }
           break;
         default:
           // Handle default case or throw an error if templateName is unexpected

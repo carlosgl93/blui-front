@@ -1,11 +1,9 @@
-import { providerAppointmentsState } from '@/store/appointments/providerAppointmentsState';
-import { userAppointmentsState } from '@/store/appointments';
-import { ProviderSessionCard } from './ProviderSessionCard';
-import { Text } from '@/components/StyledComponents';
-import { SessionCard } from './SessionCard';
-import { useRecoilValue } from 'recoil';
 import { useAuthNew } from '@/hooks';
-import { Fragment } from 'react';
+import { useRecoilValue } from 'recoil';
+import { ListUserSessions } from './User/ListUserSessions';
+import { userAppointmentsState } from '@/store/appointments';
+import { ListProviderSessions } from './Provider/ListProviderSessions';
+import { providerAppointmentsState } from '@/store/appointments/providerAppointmentsState';
 
 export const ListSesiones = () => {
   const userSessions = useRecoilValue(userAppointmentsState);
@@ -14,48 +12,8 @@ export const ListSesiones = () => {
   const { user } = useAuthNew();
 
   if (user?.id) {
-    if (!userSessions.length) {
-      return (
-        <>
-          <Text>Aun no tienes sesiones.</Text>
-        </>
-      );
-    }
-    return userSessions?.map((appointment, i) => (
-      <Fragment key={i}>
-        {i === 0 ? (
-          <Text
-            sx={{
-              px: '1rem',
-            }}
-          >
-            Tu siguiente sesión:
-          </Text>
-        ) : null}
-        <SessionCard appointment={appointment} />
-      </Fragment>
-    ));
+    return <ListUserSessions userSessions={userSessions} />;
   } else {
-    if (!providerSessions.length) {
-      return (
-        <>
-          <Text>Aun no tienes sesiones.</Text>
-        </>
-      );
-    }
-    return providerSessions?.map((appointment, i) => (
-      <Fragment key={i}>
-        {i === 0 ? (
-          <Text
-            sx={{
-              px: '1rem',
-            }}
-          >
-            Tu siguiente sesión:
-          </Text>
-        ) : null}
-        <ProviderSessionCard appointment={appointment} />
-      </Fragment>
-    ));
+    return <ListProviderSessions providerSessions={providerSessions} />;
   }
 };

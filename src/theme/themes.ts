@@ -12,6 +12,8 @@ const sharedTheme = {
     },
   },
   palette: {
+    primary: '#970B80',
+    secondary: '#E6AF2E',
     background: {
       default: '#fafafa',
       paper: '#fff',
