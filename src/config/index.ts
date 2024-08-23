@@ -56,7 +56,7 @@ const paymentSettings = {
   appCommission: 1.075,
   currency: 'CLP',
   paymentMethods: 99,
-  providerPayAfterDays: 7,
+  providerPayAfterDays: 3,
 };
 
 export {

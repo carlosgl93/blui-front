@@ -1,26 +1,29 @@
+import { UserAppointmentController } from './UserAppointmentController';
+import { Button, CardContent, CircularProgress } from '@mui/material';
 import { AppointmentParams } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
 import { FlexBox } from '@/components/styled';
-import { CardContent } from '@mui/material';
 import { Rate } from '@/components';
-import { useMemo } from 'react';
-import dayjs from 'dayjs';
 
 type SessionCardContentProps = {
   appointment: AppointmentParams;
 };
 
 export const UserSessionCardContent = ({ appointment }: SessionCardContentProps) => {
-  const { provider, servicio, isPaid, scheduledDate, scheduledTime } = appointment;
+  const { provider, servicio, isPaid, status, confirmedByUser } = appointment;
   const { firstname, lastname, email } = provider;
-  const isPast = useMemo(() => {
-    const dateTime = scheduledDate + ' ' + scheduledTime;
-    const sesionDate = typeof dateTime === 'string' ? dateTime : undefined;
-    return dayjs().isAfter(dayjs(sesionDate));
-  }, [scheduledDate, scheduledTime]);
+
+  const {
+    isPast,
+    rateAppointmentLoading,
+    confirmAppointmentDoneLoading,
+    handleConfirmAppointmentDone,
+    handleRateAppointment,
+  } = UserAppointmentController(appointment);
+  console.log(appointment);
 
   return (
     <CardContent>
@@ -50,11 +53,35 @@ export const UserSessionCardContent = ({ appointment }: SessionCardContentProps)
             color: isPaid ? 'primary.main' : 'secondary.contrastText',
           }}
         />
-        <Text variant="body2" color="textSecondary">
-          {isPaid && !isPast ? 'Pagada' : 'Realizada'}
+        <Text
+          variant="body2"
+          color="textSecondary"
+          sx={{
+            textAlign: 'start',
+          }}
+        >
+          {status === 'Esperando confirmación del cliente' ? 'Esperando tu confirmación' : status}
         </Text>
       </FlexBoxAlignCenter>
-      {isPast && <Rate />}
+      {confirmAppointmentDoneLoading && <CircularProgress />}
+      {isPast && status === 'Esperando confirmación del cliente' && !confirmAppointmentDoneLoading && (
+        <Button
+          sx={{
+            my: 2,
+          }}
+          variant="contained"
+          onClick={handleConfirmAppointmentDone}
+        >
+          Confirmar sesión recibida
+        </Button>
+      )}
+      {isPast &&
+        confirmedByUser &&
+        (rateAppointmentLoading ? (
+          <CircularProgress />
+        ) : (
+          <Rate rate={appointment.rating} handleRateAppointment={handleRateAppointment} />
+        ))}
     </CardContent>
   );
 };

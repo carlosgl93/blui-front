@@ -139,7 +139,8 @@ export const CreateServicio = () => {
             placeholder={formatCLP(Number(tarifa))}
             value={tarifa}
             onChange={handleChangeTarifa}
-            helperText="Sin puntos ni comas."
+            helperText="Sin puntos ni comas. Valor mínimo: 1000 CLP"
+            error={Number(tarifa) < 1000}
           />
 
           <Box

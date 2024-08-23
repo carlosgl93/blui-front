@@ -9,10 +9,10 @@ const communitySupportContent = [
     title: 'Valoraciones y reseñas',
     text: 'Creemos que quienes se encuentran en la mejor posición para evaluar el desempeño de las personas de apoyo es la misma comunidad. Por esta razón, nuestra plataforma ha incorporado un sistema de calificaciones y comentarios por parte de otros usuarios de Blui respecto a sus propias experiencias.',
   },
-  {
-    title: 'Cobertura de seguro',
-    text: 'Para protegerte a ti y a tu equipo de apoyo, nos hemos asociado con compañías de seguro con el propósito entregar las mejores coberturas que se ajusten a las necesidades de nuestra comunidad.',
-  },
+  // {
+  //   title: 'Cobertura de seguro',
+  //   text: 'Para protegerte a ti y a tu equipo de apoyo, nos hemos asociado con compañías de seguro con el propósito entregar las mejores coberturas que se ajusten a las necesidades de nuestra comunidad.',
+  // },
 ];
 
 function CommunitySupport() {
@@ -26,7 +26,7 @@ function CommunitySupport() {
         px: '10%',
       }}
     >
-      <Typography variant="h2" fontWeight="bold" mb="2rem" color="primary.dark">
+      <Typography variant="h4" fontWeight="bold" mb="2rem" color="primary.dark">
         Una comunidad de apoyo en la que puedes confiar
       </Typography>
       {communitySupportContent.map((item, index) => (
@@ -34,6 +34,8 @@ function CommunitySupport() {
           <Box
             sx={{
               display: 'flex',
+              alignItems: 'center',
+              mb: 2,
             }}
           >
             <img
@@ -45,7 +47,7 @@ function CommunitySupport() {
               }}
             />
 
-            <Typography variant="h5" fontWeight="bold" mb="1rem" color="primary.dark">
+            <Typography variant="h5" fontWeight="bold" color="primary.dark">
               {item.title}
             </Typography>
           </Box>

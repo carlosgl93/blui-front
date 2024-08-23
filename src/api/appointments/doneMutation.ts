@@ -12,7 +12,7 @@ export async function doneMutation(appointmentId: string) {
   const docRef = doc(db, 'appointments', appointmentId);
   try {
     await updateDoc(docRef, {
-      status: 'Realizada',
+      status: 'Esperando confirmación del cliente',
     });
   } catch (error) {
     console.log('Error setting appointment as done', error);

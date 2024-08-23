@@ -1,37 +1,52 @@
-import { useState } from 'react';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
-import StarIcon from '@mui/icons-material/Star'; // Filled star for selected state
 import { Box, Button, useTheme } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import { useEffect, useState } from 'react';
 
-export const Rate = () => {
-  const [rating, setRating] = useState(0);
+type RateProps = {
+  rate: number;
+  handleRateAppointment: (rating: number, comment?: string) => void;
+};
+
+export const Rate = ({ rate, handleRateAppointment }: RateProps) => {
+  const [rating, setRating] = useState(rate);
   const [hover, setHover] = useState(0);
   const theme = useTheme();
 
   const handleRating = (value: number) => {
+    if (rate !== 0) return;
     setRating(value);
   };
 
   const handleMouseOver = (value: number) => {
+    if (rate !== 0) return;
     setHover(value);
   };
 
   const handleMouseLeave = () => {
+    if (rate !== 0) return;
     setHover(0);
   };
 
   const handleTouchStart = (value: number) => {
+    if (rate !== 0) return;
     setHover(value);
   };
 
   const handleTouchEnd = () => {
+    if (rate !== 0) return;
     setHover(0);
   };
 
   const submitRating = () => {
-    console.log('Rating submitted:', rating);
-    // Here you can add the logic to submit the rating to your backend
+    if (rate !== 0) return;
+    handleRateAppointment(rating, '');
+    setRating(rating);
   };
+
+  useEffect(() => {
+    setRating(rate);
+  }, [rate]);
 
   return (
     <Box
@@ -41,7 +56,7 @@ export const Rate = () => {
         alignItems: 'center',
       }}
     >
-      {[...Array(5)].map((star, index) => {
+      {[...Array(5)].map((_star, index) => {
         const ratingValue = index + 1;
 
         return (
@@ -52,7 +67,11 @@ export const Rate = () => {
             onTouchStart={() => handleTouchStart(ratingValue)}
             onTouchEnd={handleTouchEnd}
             onClick={() => handleRating(ratingValue)}
-            sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            sx={{
+              cursor: rate !== 0 ? 'pointer' : 'default',
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
             {ratingValue <= (hover || rating) ? (
               <StarIcon sx={{ color: theme.palette.primary.main }} />
@@ -62,9 +81,11 @@ export const Rate = () => {
           </Box>
         );
       })}
-      <Button variant="contained" onClick={submitRating} disabled={!rating} sx={{ ml: 1 }}>
-        Calificar
-      </Button>
+      {rate === 0 && (
+        <Button variant="contained" onClick={submitRating} disabled={!rating} sx={{ ml: 1 }}>
+          Calificar
+        </Button>
+      )}
     </Box>
   );
 };

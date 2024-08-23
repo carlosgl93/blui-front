@@ -63,7 +63,7 @@ export const Scheduler = () => {
             <StyledLabel>Fecha</StyledLabel>
             <DateCalendar
               shouldDisableDate={shouldDisableDay}
-              // disablePast // todo, uncomment this after developing post service feature
+              disablePast={true}
               slots={{ day: renderAvailableDay }}
               onChange={handleSelectDate}
             />

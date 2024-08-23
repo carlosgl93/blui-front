@@ -1,3 +1,4 @@
+import { PaymentRecord } from '@/pages/BackOffice/Pagos/PaymentsGridController';
 import { atom } from 'recoil';
 
 export type PaginationModel = {
@@ -14,4 +15,14 @@ export const paymentsGridPaginationModelState = atom<{
     pageSize: 10,
     page: 0,
   },
+});
+
+export const showPaymentsDetailsState = atom<boolean>({
+  key: 'showPaymentsDetailsState',
+  default: false,
+});
+
+export const paymentDetailsParamsState = atom<PaymentRecord | null>({
+  key: 'paymentDetailsParamsState',
+  default: null,
 });

@@ -22,6 +22,7 @@ export async function createTransaction(appointment: AppointmentParams | undefin
   const baseUrl: string = import.meta.env.VITE_BASE_URL;
   const notifyUrl: string = import.meta.env.VITE_PAYMENT_NOTIFY_URL;
   const orderId = uuidv4();
+
   try {
     const paykuRes = await paykuApi.post('/transaction', {
       email: appointment?.customer?.email,

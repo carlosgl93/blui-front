@@ -7,12 +7,9 @@ export const formatDate = (dateString: Date | string, capitalize = false) => {
     now.getMonth() === date.getMonth() &&
     now.getFullYear() === date.getFullYear();
 
-  if (sameDay)
-    return date.toLocaleString('en-gb', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
+  if (sameDay) {
+    return 'Hoy';
+  }
 
   const yesterday = new Date(now);
   yesterday.setDate(now.getDate() - 1);

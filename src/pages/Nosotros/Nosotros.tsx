@@ -150,9 +150,9 @@ function Nosotros() {
               discapacidad una mejor calidad de vida.
             </Text>
             <Text gutterBottom>
-              Es así como Francisco contacta a Nicolás Boetto y Carlos Gumucio Gumucio para poder
-              darle forma a este innovador y desafiante proyecto que es lo que se conoce hoy en día
-              como Blui.
+              Es así como Francisco contacta a Nicolás Boetto y Carlos Gumucio para poder darle
+              forma a este innovador y desafiante proyecto que es lo que se conoce hoy en día como
+              Blui.
             </Text>
           </Box>
         </TextContainer>

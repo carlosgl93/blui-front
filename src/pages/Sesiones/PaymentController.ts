@@ -1,5 +1,5 @@
 import { createTransaction } from '@/api/payments/createTransaction';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { notificationState } from '@/store/snackbar';
 import { useSetRecoilState } from 'recoil';
 import { sendEmailApi } from '@/api';
@@ -10,19 +10,17 @@ import {
   AppointmentParams,
   verifyPaymentMutation,
 } from '@/api/appointments';
+import { getDuePayments } from '@/api/payments';
 
 export const PaymentController = (appointment?: AppointmentParams) => {
   const setNotification = useSetRecoilState(notificationState);
   const client = useQueryClient();
   const { user } = useAuthNew();
 
-  const handleSendUserToPayku = async () => {
-    const paykuRes = await createTransaction(appointment);
-    if (paykuRes) {
-      // window.open(paykuRes.url, '_blank');
-      window.location.href = paykuRes.url;
-    }
-  };
+  const { data: duePayments, isLoading: duePaymentsIsLoading } = useQuery(
+    'duePaymentsQuery',
+    async () => await getDuePayments(),
+  );
 
   const { mutate: savePayment, isLoading } = useMutation(savePaymentMutation, {
     onSuccess: () => {
@@ -70,6 +68,14 @@ export const PaymentController = (appointment?: AppointmentParams) => {
       },
     });
 
+  const handleSendUserToPayku = async () => {
+    const paykuRes = await createTransaction(appointment);
+    if (paykuRes) {
+      // window.open(paykuRes.url, '_blank');
+      window.location.href = paykuRes.url;
+    }
+  };
+
   const handlePayment = () => {
     if (!appointment?.id) throw new Error('No appointment id provided');
     savePayment(appointment?.id);
@@ -87,9 +93,11 @@ export const PaymentController = (appointment?: AppointmentParams) => {
     isLoading,
     isLoadingVerifyPayment,
     isLoadingPaymentVerificationFailed,
+    duePaymentsIsLoading,
     handlePayment,
     handleVerifyPayment,
     handlePaymentVerificationFailed,
     handleSendUserToPayku,
+    duePayments,
   };
 };

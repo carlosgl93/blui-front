@@ -28,35 +28,39 @@ export const transactionResultNotify = onRequest(
       res.status(400).send('Missing document ID in request');
       return;
     }
+    
+    const id = String(appointmentId);
 
     let appointmentInfo: FirebaseFirestore.DocumentData | undefined;
     const db = getFirestore();
     try {
-      const docRef = db.collection('appointments').doc(String(appointmentId));
-      logger.info('retrieving appointment document with id:', appointmentId);
+      const docRef = db.collection('appointments').doc(id);
+      logger.info('retrieving appointment document with id:', id);
       const docSnapshot = await docRef.get();
       appointmentInfo = docSnapshot.data();
       if (!docSnapshot.exists) {
         throw new Error('Appointment document does not exist');
       }
-      if (status === 'success') {
+      if (status === 'success' && docSnapshot.data()?.isPaid !== 'Pagado') {
         await docRef.update({
           isPaid: 'Pagado',
         });
         const paymentDate = new Date();
-        const paymentsCollectionRef = db.collection('payments');
-        const paymentQuerySnapshot = await paymentsCollectionRef
-          .where('appointmentId', '==', appointmentId)
-          .get();
-        if (paymentQuerySnapshot.empty) {
-          await paymentsCollectionRef.add({
+        const paymentDocRef = db.collection('payments').doc(id);
+        // const paymentQuerySnapshot = await paymentsCollectionRef
+        //   .where('appointmentId', '==', appointmentId)
+        //   .get();
+        const paymentRecord = await paymentDocRef.get();
+        if (!paymentRecord.exists) {
+          await paymentDocRef.create({
+            ...appointmentInfo,
             appointmentId,
-            status: 'pending',
+            paymentStatus: 'pending',
             paymentDate: new Date(),
             paymentDueDate: new Date(
               paymentDate.getTime() + paymentSettings.providerPayAfterDays * 24 * 60 * 60 * 1000,
             ),
-            amount: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
+            amountToPay: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
           });
         }
       } else {

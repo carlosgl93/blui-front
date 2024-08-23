@@ -1,44 +1,37 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+// import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { Text } from './StyledComponents';
+
+const content = [
+  {
+    icon: (
+      <PeopleAltOutlinedIcon
+        sx={{
+          fontSize: '3rem',
+        }}
+      />
+    ),
+    title: 'Libertad de elección',
+    text: 'Con Blui tendrás la libertad de elegir tu propio equipo de apoyo y diseñar un programa a tu medida, según tus necesidades, intereses y presupuesto.',
+  },
+
+  {
+    icon: (
+      <FavoriteBorderOutlinedIcon
+        sx={{
+          fontSize: '3rem',
+        }}
+      />
+    ),
+    title: 'Tranquilidad y confianza',
+    text: 'Con Blui puedes tener la tranquilidad y confianza que cada persona de apoyo ha sido sujeta a un exhaustivo control y verificación tanto personal como profesional, de manera de asegurarnos que tu experiencia sea segura y satisfactoria.',
+  },
+];
 
 function CommunityAdvantages() {
-  const content = [
-    {
-      icon: (
-        <PeopleAltOutlinedIcon
-          sx={{
-            fontSize: '3rem',
-          }}
-        />
-      ),
-      title: 'Libertad de Elección',
-      text: 'Con Blui tendrás la libertad de elegir tu propio equipo de apoyo y diseñar un programa a tu medida, según tus necesidades, intereses y presupuesto.',
-    },
-    {
-      icon: (
-        <AttachMoneyIcon
-          sx={{
-            fontSize: '3rem',
-          }}
-        />
-      ),
-      title: 'Precio Justo',
-      text: 'Al operar a través de Blui, podrás acordar directamente con la persona de apoyo el precio del servicio.',
-    },
-    {
-      icon: (
-        <FavoriteBorderOutlinedIcon
-          sx={{
-            fontSize: '3rem',
-          }}
-        />
-      ),
-      title: 'Tranquilidad y Confianza',
-      text: 'Con Blui puedes tener la tranquilidad y confianza que cada persona de apoyo ha sido sujeta a un exhaustivo control y verificación tanto personal como profesional, de manera de asegurarnos que tu experiencia sea segura y satisfactoria.',
-    },
-  ];
+  const theme = useTheme();
 
   return (
     <Box
@@ -57,7 +50,15 @@ function CommunityAdvantages() {
       }}
     >
       <Box sx={{ mb: { xs: '2rem', sm: 0 } }}>
-        <Typography variant="h3" sx={{ mb: '1rem', textAlign: 'center', fontWeight: 'bold' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            mb: '1rem',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            color: theme.palette.primary.dark,
+          }}
+        >
           Descubre las ventajas de pertenecer a la comunidad Blui
         </Typography>
         <Box
@@ -88,14 +89,20 @@ function CommunityAdvantages() {
                 },
               }}
             >
-              <Box>{item.icon}</Box>
+              <Box
+                sx={{
+                  color: theme.palette.primary.main,
+                }}
+              >
+                {item.icon}
+              </Box>
               <Box sx={{ mb: '1rem' }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', mb: '1rem' }}>
+                <Text variant="h5" sx={{ fontWeight: 'bold', mb: '1rem' }}>
                   {item.title}
-                </Typography>
-                <Typography variant="body1" sx={{}}>
+                </Text>
+                <Text variant="body1" sx={{}}>
                   {item.text}
-                </Typography>
+                </Text>
               </Box>
             </Box>
           ))}

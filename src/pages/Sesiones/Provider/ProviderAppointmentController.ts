@@ -4,12 +4,14 @@ import { doneMutation } from '@/api/appointments/doneMutation';
 import { notificationState } from '@/store/snackbar';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 export function ProviderAppointmentController(appointment: AppointmentParams) {
   const { provider, customer, scheduledDate, scheduledTime, servicio } = appointment;
   const setNotification = useSetRecoilState(notificationState);
+
+  const client = useQueryClient();
 
   const isPast = useMemo(() => {
     const dateTime = scheduledDate + ' ' + scheduledTime;
@@ -26,6 +28,7 @@ export function ProviderAppointmentController(appointment: AppointmentParams) {
           message: 'Sesión realizada.',
           severity: 'success',
         });
+        client.invalidateQueries(['providerAppointments', appointment.provider.id]);
         // trigger email notification to the user, so he can confirm it
         sendEmailApi.post('/', {
           customerName: customer.firstname,

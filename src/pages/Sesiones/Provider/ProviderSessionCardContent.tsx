@@ -1,12 +1,11 @@
 import { ProviderAppointmentController } from './ProviderAppointmentController';
-import { Box, Button, CardContent } from '@mui/material';
+import { Box, Button, CardContent, CircularProgress } from '@mui/material';
 import { AppointmentParams } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
 import { FlexBox } from '@/components/styled';
-import Loading from '@/components/Loading';
 
 type SessionCardContentProps = {
   appointment: AppointmentParams;
@@ -41,7 +40,7 @@ export const ProviderSessionCardContent = ({ appointment }: SessionCardContentPr
         </Text>
       </FlexBoxAlignCenter>
       {appointmentDoneLoading ? (
-        <Loading />
+        <CircularProgress />
       ) : (
         <>
           <FlexBoxAlignCenter>
@@ -50,7 +49,14 @@ export const ProviderSessionCardContent = ({ appointment }: SessionCardContentPr
                 color: isPaid ? 'primary.main' : 'secondary.contrastText',
               }}
             />
-            <Text variant="body2" color="textSecondary">
+            <Text
+              variant="body2"
+              color="textSecondary"
+              justifyContent="left"
+              sx={{
+                textAlign: 'start',
+              }}
+            >
               {status}
             </Text>
           </FlexBoxAlignCenter>

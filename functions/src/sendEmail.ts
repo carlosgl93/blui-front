@@ -1,4 +1,4 @@
-import { malformedPayloadValidation, unAuthorized } from './validations';
+import { malformedPayloadValidation } from './validations';
 import { sendEmailSettings } from './utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
@@ -14,7 +14,6 @@ export const sendEmail = onRequest(
     // validations
     // unAuthorized(headers, res);
     malformedPayloadValidation(body, res);
-
     // settings
     const { mailTransport } = sendEmailSettings();
     const { templateName, options } = body;
@@ -34,7 +33,6 @@ export const sendEmail = onRequest(
       if (!customerSupportPhone) {
         throw new Error('Missing customer support phone env variable.');
       }
-      console.log('templateName', templateName);
       switch (templateName) {
         case 'failed-verify-prestador.html':
           templateData = {
@@ -78,7 +76,6 @@ export const sendEmail = onRequest(
           break;
         case 'sesion-realizada.html':
           {
-            logger.info('BODY', body);
             const { providerName, customerName, serviceName } = body;
             templateData = {
               providerName,

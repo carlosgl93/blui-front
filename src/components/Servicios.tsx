@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Title } from './StyledComponents';
 
 const content = [
   {
@@ -48,9 +49,9 @@ function Servicios() {
         backgroundColor: 'white',
       }}
     >
-      <Typography variant="h2" fontWeight="bold" textAlign="center">
+      <Title variant="h2" fontWeight="bold" textAlign="center">
         Cómo puedes usar Blui
-      </Typography>
+      </Title>
       <Box
         sx={{
           display: 'flex',
@@ -181,7 +182,7 @@ function Servicios() {
           },
         }}
       >
-        <Link to={'/comenzar'}>
+        <Link to={'/comienzo'}>
           <Button
             variant="contained"
             sx={{

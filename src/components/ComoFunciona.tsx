@@ -13,7 +13,7 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
       component="section"
       sx={{
         py: {
-          xs: '5rem',
+          xs: '2.5rem',
         },
         px: {
           xs: '1rem',
@@ -26,11 +26,12 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
     >
       <Box>
         <Typography
-          variant="h1"
+          variant="h4"
           color="primary.dark"
           sx={{
             fontSize: '2.5rem',
             fontWeight: 'bold',
+            mb: 6,
           }}
         >
           Cómo funciona

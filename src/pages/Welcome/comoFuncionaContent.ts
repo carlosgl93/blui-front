@@ -22,6 +22,6 @@ export const comoFuncionaCardsContent: ComoFuncionaContent[] = [
     image: `/images/blui-icon-3.png`,
     imgAlt: 'Imagen de una casa en nuestras manos',
     title: 'Confía en nosotros ¡estás protegido!',
-    text: 'En Blui estamos constantemente preocupados por tu seguridad. Al formar parte de nuestra comunidad tanto tú como las personas de apoyo podrán acceder a coberturas de seguro. Además, ten la tranquilidad de estar en manos de personas que se encuentran debidamente certificadas y validadas por Blui.',
+    text: 'En Blui estamos constantemente preocupados por tu seguridad. Cada uno de los integrantes de Blui se encuentran debidamente certificadas y validadas por el registro nacional de prestadores de salud.',
   },
 ];
