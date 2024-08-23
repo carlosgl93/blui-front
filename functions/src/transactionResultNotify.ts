@@ -1,6 +1,7 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { getFirestore } from './index';
+
 import { defaultEmailSender, paymentSettings } from './config';
 import axios from 'axios';
 
@@ -14,6 +15,7 @@ export const transactionResultNotify = onRequest(
       res.send(200);
       return;
     }
+
     logger.info('beggining transaction result');
     const { status } = body;
     const { appointmentId } = query;
@@ -28,7 +30,6 @@ export const transactionResultNotify = onRequest(
       res.status(400).send('Missing document ID in request');
       return;
     }
-    
     const id = String(appointmentId);
 
     let appointmentInfo: FirebaseFirestore.DocumentData | undefined;
@@ -56,6 +57,7 @@ export const transactionResultNotify = onRequest(
             ...appointmentInfo,
             appointmentId,
             paymentStatus: 'pending',
+
             paymentDate: new Date(),
             paymentDueDate: new Date(
               paymentDate.getTime() + paymentSettings.providerPayAfterDays * 24 * 60 * 60 * 1000,
