@@ -1,4 +1,4 @@
-import { malformedPayloadValidation, unAuthorized } from './validations';
+import { malformedPayloadValidation } from './validations';
 import { sendEmailSettings } from './utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
@@ -9,12 +9,11 @@ import { fetchAndCompileTemplate, getEnvUrl } from './utils';
 
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
-  async ({ headers, body }, res) => {
+  async ({ body }, res) => {
     logger.info('beggining sendEmail execution');
     // validations
-    unAuthorized(headers, res);
+    // unAuthorized(headers, res);
     malformedPayloadValidation(body, res);
-
     // settings
     const { mailTransport } = sendEmailSettings();
     const { templateName, options } = body;
@@ -34,7 +33,6 @@ export const sendEmail = onRequest(
       if (!customerSupportPhone) {
         throw new Error('Missing customer support phone env variable.');
       }
-      console.log('templateName', templateName);
       switch (templateName) {
         case 'failed-verify-prestador.html':
           templateData = {
@@ -64,15 +62,28 @@ export const sendEmail = onRequest(
           };
           break;
         case 'scheduled-appointment.html':
-          const { providerName, customerName, serviceName, scheduledDate, scheduledTime } = body;
-          templateData = {
-            providerName,
-            customerName,
-            serviceName,
-            scheduledDate,
-            scheduledTime,
-            redirect: `${getEnvUrl()}/sesiones`,
-          };
+          {
+            const { providerName, customerName, serviceName, scheduledDate, scheduledTime } = body;
+            templateData = {
+              providerName,
+              customerName,
+              serviceName,
+              scheduledDate,
+              scheduledTime,
+              redirect: `${getEnvUrl()}/ingresar`,
+            };
+          }
+          break;
+        case 'sesion-realizada.html':
+          {
+            const { providerName, customerName, serviceName } = body;
+            templateData = {
+              providerName,
+              customerName,
+              serviceName,
+              redirect: `${getEnvUrl()}/ingresar`,
+            };
+          }
           break;
         default:
           // Handle default case or throw an error if templateName is unexpected

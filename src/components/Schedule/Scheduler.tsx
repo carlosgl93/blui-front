@@ -12,11 +12,14 @@ import { DateCalendar } from '@mui/x-date-pickers';
 import { ScheduleController } from './ScheduleController';
 import dayjs from 'dayjs';
 import ServiceSelector from './ServiceSelector';
+import Loading from '../Loading';
 
 export const Scheduler = () => {
   const {
-    handleCloseScheduleModal,
     schedule,
+    waitingForPayku,
+    scheduleServiceLoading,
+    handleCloseScheduleModal,
     renderAvailableDay,
     setSchedule,
     shouldDisableTime,
@@ -25,13 +28,14 @@ export const Scheduler = () => {
     handleSubmit,
     shouldDisableDay,
     handleSelectDate,
-    scheduleServiceLoading,
   } = ScheduleController();
 
   const { selectedTime, selectedService, selectedDate } = schedule;
   const selectedServiceDuration = selectedService?.duration;
   const availableTimesStep =
     selectedServiceDuration && selectedServiceDuration > 45 ? 60 : selectedServiceDuration;
+
+  if (scheduleServiceLoading || waitingForPayku) return <Loading />;
 
   return (
     <StyledScheduleContainer>
@@ -59,7 +63,7 @@ export const Scheduler = () => {
             <StyledLabel>Fecha</StyledLabel>
             <DateCalendar
               shouldDisableDate={shouldDisableDay}
-              disablePast
+              disablePast={true}
               slots={{ day: renderAvailableDay }}
               onChange={handleSelectDate}
             />
@@ -100,7 +104,11 @@ export const Scheduler = () => {
           <Button
             variant="contained"
             disabled={
-              !selectedService?.id || !selectedDate || !selectedTime || scheduleServiceLoading
+              !selectedService?.id ||
+              !selectedDate ||
+              !selectedTime ||
+              scheduleServiceLoading ||
+              waitingForPayku
             }
             onClick={handleSubmit}
           >

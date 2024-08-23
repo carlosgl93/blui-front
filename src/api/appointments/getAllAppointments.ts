@@ -9,7 +9,7 @@ import {
   DocumentData,
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { ScheduleServiceParams } from './scheduleAppointmentMutation';
+import { AppointmentParams } from './scheduleAppointmentMutation';
 import { PaginationModel } from '@/store/backoffice/payments';
 
 export const getAllAppointments = async (
@@ -40,7 +40,7 @@ export const getAllAppointments = async (
     appointments: querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    })) as ScheduleServiceParams[],
+    })) as AppointmentParams[],
     lastVisible,
   };
 };

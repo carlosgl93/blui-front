@@ -1,6 +1,6 @@
 import { db } from '@/firebase/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { ScheduleServiceParams } from './scheduleAppointmentMutation';
+import { AppointmentParams } from './scheduleAppointmentMutation';
 import { sortUserAppointments } from '@/utils/sortUserAppointments';
 
 export const getProviderAppointments = async (providerId: string) => {
@@ -11,6 +11,6 @@ export const getProviderAppointments = async (providerId: string) => {
   const q = query(appointmentsRef, where('provider.id', '==', providerId));
   const querySnapshot = await getDocs(q);
   return sortUserAppointments(
-    querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as ScheduleServiceParams[],
+    querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as AppointmentParams[],
   );
 };

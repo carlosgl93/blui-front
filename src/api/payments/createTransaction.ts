@@ -6,11 +6,11 @@
  */
 
 import { paymentSettings } from '@/config';
-import { ScheduleServiceParams } from '../appointments';
+import { AppointmentParams } from '../appointments';
 import paykuApi from '../paykuApi';
 import { v4 as uuidv4 } from 'uuid';
 
-export async function createTransaction(appointment: ScheduleServiceParams | undefined) {
+export async function createTransaction(appointment: AppointmentParams | undefined) {
   if (!appointment) {
     throw new Error('Missing appointment details / no appointment object passed');
   }

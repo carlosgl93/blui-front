@@ -67,23 +67,26 @@
           <!-- Centered content -->
           <table border="0" cellspacing="0" cellpadding="0" style="max-width: 960px; margin: auto">
             <tr>
-              <td align="center" style="max-width: 200px; height: auto;">
+              <td align="center">
                 <img
                   style="max-width: 200px; height: auto"
                   src="https://firebasestorage.googleapis.com/v0/b/blui-6ec33.appspot.com/o/emails-blui-logo.png?alt=media&token=d66f9486-ea3a-494c-a838-b49e5b2586d3"
                 />
-                <h1 style="color: #502048">Te han enviado un mensaje!</h1>
+                <h1 style="color: #502048">Sesión realizada</h1>
               </td>
             </tr>
             <tr>
               <td align="center">
-                <p>{{recipientName}}, {{senderName}} te ha enviado un mensaje, respondelo aqui!</p>
+                <p>
+                  {{customerName}}, por favor califica la sesión ({{serviceName}}) con
+                  {{providerName}}
+                </p>
               </td>
             </tr>
             <tr>
               <td align="center" style="padding: 20px">
                 <!-- Use an anchor tag for the button to ensure compatibility -->
-                <a href="{{redirect}}" class="button">Responder</a>
+                <a href="{{redirect}}" class="button">Calificar</a>
               </td>
             </tr>
           </table>

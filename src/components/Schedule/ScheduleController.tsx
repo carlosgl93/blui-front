@@ -8,21 +8,19 @@ import { ScheduleState } from '@/store/schedule/sheduleState';
 import { useServicios } from '@/hooks/useServicios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useAppointments } from '@/hooks/useAppointments';
-import { scheduleService, ScheduleServiceParams } from '@/api/appointments';
+import { scheduleService, AppointmentParams } from '@/api/appointments';
 import { notificationState } from '@/store/snackbar';
-import { useNavigate } from 'react-router-dom';
 import { useState, useCallback } from 'react';
 import { Badge } from '@mui/material';
 import { useAuthNew } from '@/hooks';
 import dayjs, { Dayjs } from 'dayjs';
 import { Prestador } from '@/types';
-import { userAppointmentsState } from '@/store/appointments';
-import { sortUserAppointments } from '@/utils/sortUserAppointments';
+import { createTransaction } from '@/api/payments';
 
 export const ScheduleController = () => {
+  const [waitingForPayku, setWaitingForPayku] = useState(false);
   const prestador = useRecoilValue(interactedPrestadorState);
   const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
-  const setUserAppointments = useSetRecoilState(userAppointmentsState);
   const { prestadorCreatedServicios: prestadorServicios, prestadorCreatedServiciosLoading } =
     useServicios();
   const [schedule, setSchedule] = useRecoilState(ScheduleState);
@@ -31,19 +29,21 @@ export const ScheduleController = () => {
   const providerAvailability = prestador?.availability;
   const { providersAppointments } = useAppointments();
   const client = useQueryClient();
-  const navigate = useNavigate();
   const { user } = useAuthNew();
+  const now = dayjs();
 
   const shouldDisableDay = (date: dayjs.Dayjs) => {
+    if (date.isBefore(now)) {
+      return true;
+    }
     // Calculate the current time plus 24 hours to get the cutoff time
-    const cutoffTime = dayjs().add(24, 'hour');
-
+    const cutoffTime = now.add(24, 'hour');
     // Disable the date if it is less than 24 hours from the current time
     // Note: We use .startOf('day') to compare only the date part, ignoring the time
+    // todo uncomment these lines to production
     if (date.diff(cutoffTime, 'days', true) < 0) {
       return true;
     }
-
     // Disable the date if the provider is not available on this day of the week
     const dayAvailability = providerAvailability?.find((d) => d?.id === date.get('day'));
     // If the day is not available, return true to disable it
@@ -51,11 +51,14 @@ export const ScheduleController = () => {
   };
   const renderAvailableDay = useCallback(
     (props: PickersDayProps<dayjs.Dayjs>) => {
+      const renderedDayIsPast = props.day.isBefore(now);
+
       // the day is available if the prestador availability includes that day of the week
       // and its not less than 24 hours from now
-      const isAvailable = providerAvailability?.find((d) => {
-        return d?.id === props.day.get('d');
-      })?.isAvailable;
+      const isAvailable =
+        providerAvailability?.find((d) => {
+          return d?.id === props.day.get('d');
+        })?.isAvailable && !renderedDayIsPast;
 
       if (isAvailable) {
         return (
@@ -126,17 +129,42 @@ export const ScheduleController = () => {
       const completeTime = time.format('HH:mm');
       const timeHour = time.get('hours');
       const timeMinutes = time.get('minutes');
+
       // Check if the selected time slot is already booked
-      const isTimeSlotBooked = providersAppointments?.some((appointment) => {
+      const isSomeTimeSlotBooked = providersAppointments?.some((appointment) => {
+        const serviceDuration = schedule.selectedService!.duration;
+        const appointmentStartTime = dayjs(appointment.scheduledTime, 'HH:mm');
+        const appointmentEndTime = appointmentStartTime.add(serviceDuration, 'minutes');
+        const serviceStartTime = dayjs(completeTime, 'HH:mm');
+        const serviceEndTime = serviceStartTime.add(serviceDuration, 'minutes');
+
         if (
           appointment.scheduledTime === completeTime &&
           appointment.scheduledDate === schedule?.selectedDate?.format('YYYY-MM-DD')
         ) {
           return true;
         }
+
+        // This conditional checks if the current time slot should be disabled based on the following criteria:
+        // 1. The appointment date matches the selected schedule date.
+        // 2. The appointment does not end before the service start time.
+        // 3. The appointment does not start after the service end time.
+        // 4. The current time is not before the appointment start time.
+        // 5. The current time is not after the appointment end time.
+        // This ensures that time slots overlapping with or within the duration of an existing appointment are disabled.
+        if (
+          dayjs(appointment.scheduledDate).format('YYYY-MM-DD') ===
+            schedule?.selectedDate?.format('YYYY-MM-DD') &&
+          !appointmentEndTime.isBefore(serviceStartTime) &&
+          !appointmentStartTime.isAfter(serviceEndTime) &&
+          !(time <= appointmentStartTime) &&
+          !(time >= dayjs(appointmentEndTime))
+        ) {
+          return true;
+        }
       });
 
-      if (isTimeSlotBooked) {
+      if (isSomeTimeSlotBooked) {
         return true;
       }
 
@@ -210,8 +238,21 @@ export const ScheduleController = () => {
         customer,
         scheduledDate,
         scheduledTime,
+        status: 'Agendada',
+        rating: 0,
+        confirmedByUser: false,
       });
     }
+  };
+
+  const handleSendUserToPayku = async (appointment: AppointmentParams) => {
+    setWaitingForPayku(!waitingForPayku);
+    const paykuRes = await createTransaction(appointment);
+    if (paykuRes) {
+      // window.open(paykuRes.url, '_blank');
+      window.location.href = paykuRes.url;
+    }
+    setWaitingForPayku(!waitingForPayku);
   };
 
   const { mutate: scheduleServiceMutate, isLoading: scheduleServiceLoading } = useMutation(
@@ -221,24 +262,25 @@ export const ScheduleController = () => {
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
-      onSuccess: async (data: ScheduleServiceParams) => {
-        setSchedule({
-          selectedTime: null,
-          selectedDate: null,
-        });
-        setValue(null);
-        setNotification({
-          open: true,
-          message: 'Servicio agendado correctamente',
-          severity: 'success',
-        });
-        setUserAppointments((prev) =>
-          sortUserAppointments([...prev, data as ScheduleServiceParams]),
-        );
+      onSuccess: async (data: AppointmentParams) => {
+        // setSchedule({
+        //   selectedTime: null,
+        //   selectedDate: null,
+        // });
+        // setValue(null);
+        // setNotification({
+        //   open: true,
+        //   message: 'Servicio agendado correctamente',
+        //   severity: 'success',
+        // });
+        // setUserAppointments((prev) =>
+        //   sortUserAppointments([...prev, data as ScheduleServiceParams]),
+        // );
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
-        handleCloseScheduleModal();
-        navigate('/sesiones');
+        // handleCloseScheduleModal();
+        handleSendUserToPayku(data);
+        // navigate('/sesiones');
       },
       onError: async () => {
         setNotification({
@@ -262,6 +304,7 @@ export const ScheduleController = () => {
     schedule,
     availableTimesStep,
     scheduleServiceLoading,
+    waitingForPayku,
     renderAvailableDay,
     shouldDisableTime,
     setSchedule,

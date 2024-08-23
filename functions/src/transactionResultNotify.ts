@@ -1,6 +1,7 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
-import { getFirestore, token } from './index';
+import { getFirestore } from './index';
+
 import { defaultEmailSender, paymentSettings } from './config';
 import axios from 'axios';
 
@@ -29,41 +30,43 @@ export const transactionResultNotify = onRequest(
       res.status(400).send('Missing document ID in request');
       return;
     }
+    const id = String(appointmentId);
 
     let appointmentInfo: FirebaseFirestore.DocumentData | undefined;
     const db = getFirestore();
     try {
-      const docRef = db.collection('appointments').doc(String(appointmentId));
-      logger.info('retrieving appointment document with id:', appointmentId);
+      const docRef = db.collection('appointments').doc(id);
+      logger.info('retrieving appointment document with id:', id);
       const docSnapshot = await docRef.get();
       appointmentInfo = docSnapshot.data();
       if (!docSnapshot.exists) {
         throw new Error('Appointment document does not exist');
       }
-      if (status === 'success') {
+      if (status === 'success' && docSnapshot.data()?.isPaid !== 'Pagado') {
         await docRef.update({
           isPaid: 'Pagado',
         });
         const paymentDate = new Date();
-        const paymentsCollectionRef = db.collection('payments');
-        const paymentQuerySnapshot = await paymentsCollectionRef
-          .where('appointmentId', '==', appointmentId)
-          .get();
-        if (paymentQuerySnapshot.empty) {
-          await paymentsCollectionRef.add({
+        const paymentDocRef = db.collection('payments').doc(id);
+        // const paymentQuerySnapshot = await paymentsCollectionRef
+        //   .where('appointmentId', '==', appointmentId)
+        //   .get();
+        const paymentRecord = await paymentDocRef.get();
+        if (!paymentRecord.exists) {
+          await paymentDocRef.create({
+            ...appointmentInfo,
             appointmentId,
-            status: 'pending',
+            paymentStatus: 'pending',
+
             paymentDate: new Date(),
             paymentDueDate: new Date(
               paymentDate.getTime() + paymentSettings.providerPayAfterDays * 24 * 60 * 60 * 1000,
             ),
-            amount: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
+            amountToPay: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
           });
         }
       } else {
-        await docRef.update({
-          isPaid: 'failed',
-        });
+        await docRef.delete();
         res.status(422).send('Payment failed');
         return;
       }
@@ -73,22 +76,13 @@ export const transactionResultNotify = onRequest(
       return;
     }
     try {
-      const rawToken = await token;
+      // const rawToken = await token;
       const emailsCollectionRef = db.collection('emails');
       const emailSnap = await emailsCollectionRef.where('appointmentId', '==', appointmentId).get();
-      logger.info(emailSnap.docs);
       if (emailSnap.empty) {
         logger.info('inside emailSnap empty');
-        const emailRegistered = await emailsCollectionRef.add({
-          appointmentId,
-          sent: true,
-          date: new Date(),
-        });
         await axios.post(String(sendEmailUrl), {
           method: 'post',
-          headers: {
-            authorization: `Bearer ${rawToken}`,
-          },
           providerName: appointmentInfo?.provider.firstname,
           customerName: appointmentInfo?.customer.firstname,
           serviceName: appointmentInfo?.servicio.name,
@@ -102,10 +96,15 @@ export const transactionResultNotify = onRequest(
             text: `Hola ${appointmentInfo?.provider?.firstname}, tienes una nueva sesión de ${appointmentInfo?.servicio.name} confirmada para el día ${appointmentInfo?.scheduledDate} a las ${appointmentInfo?.scheduledTime} con ${appointmentInfo?.customer?.firstname} ${appointmentInfo?.customer?.lastname}`,
           },
         });
+        const emailRegistered = await emailsCollectionRef.add({
+          appointmentId,
+          sent: true,
+          date: new Date(),
+        });
 
         logger.info('email sent and record created', emailRegistered);
+        res.status(200).send('Email notification sent successfully');
       }
-      res.status(200).send('Email notification sent successfully');
     } catch (error) {
       logger.error('error sending the email notification', error);
       res.status(500).send('error sending the email notification');

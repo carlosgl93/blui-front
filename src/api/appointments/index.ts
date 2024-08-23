@@ -9,3 +9,6 @@ export * from './paymentVerificationFailed';
 export * from './getAppointmentById';
 export * from './getTotalAppointments';
 export * from './getAllAppointments';
+export * from './doneMutation';
+export * from './confirmAppointmentDone';
+export * from './rateAppointment';

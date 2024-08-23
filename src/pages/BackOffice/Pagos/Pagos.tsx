@@ -5,29 +5,30 @@ import Loading from '@/components/Loading';
 import { PaymentsGridController } from './PaymentsGridController';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { PaymentDialog } from './PaymentDialog';
 
 export const Pagos = () => {
-  const {
-    allAppointments,
-    allAppointmentsLoading,
-    getTotalAppointments,
-    getTotalAppointmentsIsLoading,
-  } = useAppointments();
+  const { getTotalAppointments, getTotalAppointmentsIsLoading } = useAppointments();
   const {
     columns,
     isLoadingPaymentVerificationFailed,
     isLoadingVerifyPayment,
     paginationModel,
+    duePayments,
+    duePaymentsIsLoading,
+    showPaymentsDetails,
+    paymentDetailsParams,
     setPaginationModel,
+    handleOpenPaymentDetails,
   } = PaymentsGridController();
 
   const isLoading =
     isLoadingPaymentVerificationFailed ||
     isLoadingVerifyPayment ||
-    allAppointmentsLoading ||
-    getTotalAppointmentsIsLoading;
+    getTotalAppointmentsIsLoading ||
+    duePaymentsIsLoading;
 
-  if (allAppointments)
+  if (duePayments)
     return (
       <Wrapper>
         {isLoading ? (
@@ -58,15 +59,25 @@ export const Pagos = () => {
                 toolbar: GridToolbar,
               }}
               columns={columns}
-              rows={allAppointments}
+              rows={duePayments}
+              getRowId={(row) => row.appointmentId}
               paginationMode="server"
               rowCount={getTotalAppointments?.count || 0}
               paginationModel={paginationModel}
               onPaginationModelChange={setPaginationModel}
               pageSizeOptions={[10, 25]}
+              loading={isLoading}
+              onRowClick={(params) => {
+                handleOpenPaymentDetails(params.row);
+              }}
             />
           </>
         )}
+        <PaymentDialog
+          open={showPaymentsDetails}
+          paymentDetails={paymentDetailsParams}
+          onClose={handleOpenPaymentDetails}
+        />
       </Wrapper>
     );
 };
