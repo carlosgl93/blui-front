@@ -11,7 +11,7 @@ const Step3 = () => {
   const router = useNavigate();
 
   const handleNext = () => {
-    router('/resultados');
+    router('/registrar-usuario');
   };
 
   const handlePrevious = () => {
