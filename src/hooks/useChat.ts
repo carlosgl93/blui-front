@@ -21,22 +21,15 @@ export const useChat = (userId: string, providerId: string) => {
   const navigate = useNavigate();
 
   const client = useQueryClient();
+  // const messages: Conversation | undefined = client.getQueryData(['messages', userId, providerId]);
 
   const { mutate: handleSaveMessage, isLoading: savingMessageLoading } = useMutation(sendMessage, {
     onSuccess: async (data) => {
       await client.invalidateQueries(['messages', userId, providerId]);
       await client.invalidateQueries(['userMessages', userId]);
-      sendEmailApi.post('/', {
-        senderName: data.sentBy === 'provider' ? messages.providerName : messages.username,
-        recipientName: data.sentBy === 'provider' ? messages.username : messages.providerName,
-        templateName: 'new-message.html',
-        options: {
-          from: 'Blui.cl <francisco.durney@blui.cl>',
-          to: data.sentBy === 'provider' ? data.userEmail : data.providerEmail,
-          subject: 'Te han enviado un mensaje!',
-          text: 'Te han enviado un mensaje!',
-        },
-      });
+      setMessages((old) => ({ ...old, messages: [...old.messages, data.message] }));
+
+      setMessage('');
     },
     onError: (error, variables, context: Conversation | undefined) => {
       // context is the snapshot value returned from onMutate
@@ -44,7 +37,8 @@ export const useChat = (userId: string, providerId: string) => {
       console.log({ variables });
       console.log({ context });
       if (context) {
-        setMessages(context);
+        client.setQueryData(['messages', userId, providerId], () => context);
+        // setMessages(context);
       }
       setNotification({
         open: true,
@@ -52,32 +46,25 @@ export const useChat = (userId: string, providerId: string) => {
         severity: 'error',
       });
     },
-    onMutate: async (newMessage) => {
-      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-      await client.cancelQueries(['messages', userId, providerId]);
-
-      // Snapshot the previous value
-      const prevMessages = messages;
-      setMessage('');
-      // Optimistically update to the new value
-      setMessages((old) => {
-        newMessage.timestamp = new Date().toISOString();
-        return {
-          ...old,
-          messages: [...old.messages, newMessage],
-        } as Conversation;
-      });
-
-      // Return a context object with the snapshotted value
-      return prevMessages;
-    },
   });
 
   const { mutate: handleSendFirstMessage, isLoading: sendFirstMessageLoading } = useMutation(
     sendFirstMessage,
     {
-      onSuccess: async () => {
+      onSuccess: async (data) => {
         await client.invalidateQueries(['messages', userId, providerId]);
+        sendEmailApi.post('/', {
+          senderName: data?.sentBy === 'provider' ? data?.providerName : data?.username,
+          recipientName: data?.sentBy === 'provider' ? data?.username : data?.providerName,
+          templateName: 'new-message.html',
+          options: {
+            from: 'Blui.cl <francisco.durney@blui.cl>',
+            to: data?.sentBy === 'provider' ? data?.userEmail : data?.providerEmail,
+            subject: 'Te han enviado un mensaje!',
+            text: 'Te han enviado un mensaje!',
+          },
+        });
+        setMessages((old) => ({ ...old, data }));
         navigate('/chat', {
           state: {
             prestador: {
@@ -103,6 +90,9 @@ export const useChat = (userId: string, providerId: string) => {
       onError(err) {
         console.log('error getting messages', err);
       },
+      onSuccess(data) {
+        setMessages(data);
+      },
     },
   );
 
@@ -110,8 +100,8 @@ export const useChat = (userId: string, providerId: string) => {
     if (e.code === 'Enter') {
       handleSaveMessage({
         ...args,
-        providerId: messages.providerId,
-        providerName: messages.providerName,
+        providerId: messages?.providerId,
+        providerName: messages?.providerName,
       });
     } else {
       return;

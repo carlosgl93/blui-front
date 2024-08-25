@@ -20,10 +20,11 @@ import { Prestador } from '@/types/Prestador';
 
 import Loading from '@/components/Loading';
 import { formatDate } from '@/utils/formatDate';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { chatState } from '@/store/chat/chatStore';
 import { useRecoilValue } from 'recoil';
 import { useAuthNew, useChat, useUser } from '@/hooks';
+import { CenteredFlexBox } from '@/components/styled';
 
 export type LocationState = {
   messages: Mensaje[];
@@ -40,19 +41,20 @@ export const PrestadorChat = () => {
   const { user } = useUser(customerId);
 
   const {
-    fetchMessages,
-    handleSaveMessage,
+    messages,
+    savingMessageLoading,
     lastMessageRef,
     messagesLoading,
-    sendWithEnter,
     message,
+    sendWithEnter,
+    handleSaveMessage,
     setMessage,
   } = useChat(customerId, prestadorId);
 
   return (
     <ChatContainer>
       {messagesLoading && <Loading />}
-      {fetchMessages?.messages?.map((m, index: number) => {
+      {messages?.messages?.map((m, index: number) => {
         const isLastMessage = index === conversation.messages?.length - 1;
         if (m?.sentBy === 'provider') {
           return (
@@ -93,40 +95,53 @@ export const PrestadorChat = () => {
         }
       })}
       <StyledChatInputContainer>
-        <StyledChatInput
-          value={message}
-          placeholder="Escribe tu mensaje"
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) =>
-            sendWithEnter(e, {
-              message,
-              sentBy: 'provider',
-              providerId: prestador?.id ?? '',
-              userId: user?.id ?? '',
-              username: user?.firstname ? user.firstname : user?.email ? user.email : '',
-              providerName: prestador?.firstname,
-              providerEmail: prestador?.email || '',
-              userEmail: user?.email || '',
-            })
-          }
-        />
-        <StyledChatSendButton
-          onClick={() =>
-            handleSaveMessage({
-              message,
-              sentBy: 'provider',
-              providerId: conversation.providerId,
-              userId: conversation.userId,
-              username: conversation.username,
-              providerName: conversation.providerName,
-              providerEmail: prestador?.email || '',
-              userEmail: user?.email || '',
-            })
-          }
-          disabled={message.length === 0}
-        >
-          <SendOutlinedIcon />
-        </StyledChatSendButton>
+        {savingMessageLoading ? (
+          <CenteredFlexBox
+            sx={{
+              width: '100vw',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress sx={{ margin: '0 auto' }} />
+          </CenteredFlexBox>
+        ) : (
+          <>
+            <StyledChatInput
+              value={message}
+              placeholder="Escribe tu mensaje"
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) =>
+                sendWithEnter(e, {
+                  message,
+                  sentBy: 'provider',
+                  providerId: prestador?.id ?? '',
+                  userId: user?.id ?? '',
+                  username: user?.firstname ? user.firstname : user?.email ? user.email : '',
+                  providerName: prestador?.firstname,
+                  providerEmail: prestador?.email || '',
+                  userEmail: user?.email || '',
+                })
+              }
+            />
+            <StyledChatSendButton
+              onClick={() =>
+                handleSaveMessage({
+                  message,
+                  sentBy: 'provider',
+                  providerId: conversation.providerId,
+                  userId: conversation.userId,
+                  username: conversation.username,
+                  providerName: conversation.providerName,
+                  providerEmail: prestador?.email || '',
+                  userEmail: user?.email || '',
+                })
+              }
+              disabled={message.length === 0}
+            >
+              <SendOutlinedIcon />
+            </StyledChatSendButton>
+          </>
+        )}
       </StyledChatInputContainer>
     </ChatContainer>
   );
