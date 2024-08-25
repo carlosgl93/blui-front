@@ -16,7 +16,7 @@ const MobileHeaderContent = () => {
   const prestador = useRecoilValue(interactedPrestadorState);
   const chats = useRecoilValue(chatState);
   const username = chats?.username;
-  const prestadorName = chats.providerName;
+  const prestadorName = chats?.providerName;
   const isChat = location.pathname === '/chat' || location.pathname === '/prestador-chat';
 
   if (isChat && location.pathname === '/chat') {

@@ -53,6 +53,8 @@ export const sendFirstMessage = async ({
   sentBy,
   providerName,
   username,
+  userEmail,
+  providerEmail,
 }: SendMessageArgs) => {
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
   try {
@@ -63,15 +65,19 @@ export const sendFirstMessage = async ({
       sentBy,
       timestamp: new Date().toISOString(),
     };
-    const saveMessage = await setDoc(messagesRef, {
+    const conversation = {
       id: docId,
       userId,
       username,
       providerId,
       providerName,
       messages: [newMessage],
-    });
-    return saveMessage;
+      sentBy,
+      userEmail,
+      providerEmail,
+    };
+    await setDoc(messagesRef, conversation);
+    return conversation;
   } catch (error) {
     console.error('Error sending message', error);
   }

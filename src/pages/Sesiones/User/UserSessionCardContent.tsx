@@ -1,5 +1,6 @@
 import { UserAppointmentController } from './UserAppointmentController';
-import { Button, CardContent, CircularProgress } from '@mui/material';
+import { Box, Button, CardContent, CircularProgress } from '@mui/material';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import { AppointmentParams } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
@@ -7,12 +8,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
 import { FlexBox } from '@/components/styled';
 import { Rate } from '@/components';
+import { useNavigate } from 'react-router-dom';
 
 type SessionCardContentProps = {
   appointment: AppointmentParams;
 };
 
 export const UserSessionCardContent = ({ appointment }: SessionCardContentProps) => {
+  const navigate = useNavigate();
   const { provider, servicio, isPaid, status, confirmedByUser } = appointment;
   const { firstname, lastname, email } = provider;
 
@@ -23,7 +26,6 @@ export const UserSessionCardContent = ({ appointment }: SessionCardContentProps)
     handleConfirmAppointmentDone,
     handleRateAppointment,
   } = UserAppointmentController(appointment);
-  console.log(appointment);
 
   return (
     <CardContent>
@@ -47,22 +49,45 @@ export const UserSessionCardContent = ({ appointment }: SessionCardContentProps)
           {servicio?.name}
         </Text>
       </FlexBoxAlignCenter>
-      <FlexBoxAlignCenter>
-        <PaymentIcon
-          sx={{
-            color: isPaid ? 'primary.main' : 'secondary.contrastText',
-          }}
-        />
-        <Text
-          variant="body2"
-          color="textSecondary"
-          sx={{
-            textAlign: 'start',
-          }}
-        >
-          {status === 'Esperando confirmación del cliente' ? 'Esperando tu confirmación' : status}
-        </Text>
-      </FlexBoxAlignCenter>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <FlexBoxAlignCenter>
+          <PaymentIcon
+            sx={{
+              color: isPaid ? 'primary.main' : 'secondary.contrastText',
+            }}
+          />
+          <Text
+            variant="body2"
+            color="textSecondary"
+            sx={{
+              textAlign: 'start',
+            }}
+          >
+            {status === 'Esperando confirmación del cliente' ? 'Esperando tu confirmación' : status}
+          </Text>
+        </FlexBoxAlignCenter>
+        {!isPast && (
+          <Button
+            startIcon={<ChatOutlinedIcon />}
+            variant="contained"
+            onClick={() => {
+              navigate('/chat', {
+                state: {
+                  providerId: appointment?.provider?.id,
+                  userId: appointment?.customer?.id,
+                },
+              });
+            }}
+          >
+            Chat
+          </Button>
+        )}
+      </Box>
       {confirmAppointmentDoneLoading && <CircularProgress />}
       {isPast && status === 'Esperando confirmación del cliente' && !confirmAppointmentDoneLoading && (
         <Button
