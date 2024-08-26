@@ -19,3 +19,4 @@ export * from './useAuthNew';
 export * from './useUser';
 export * from './usePayment';
 export * from './useAppointment';
+export * from './useSobreMi';

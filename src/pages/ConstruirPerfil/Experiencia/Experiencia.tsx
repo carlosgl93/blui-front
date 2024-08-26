@@ -103,7 +103,7 @@ export const Experiencia = () => {
                         mt: '1rem',
                       }}
                     >
-                      Selecciona hasta 3 areas donde tengas la mayor experiencia
+                      Selecciona tu especialidad
                     </Text>
                     <FormGroup
                       sx={{
@@ -121,16 +121,15 @@ export const Experiencia = () => {
                         />
                       ))}
                     </FormGroup>
-                    {(aggregatedExperience?.find((e) => e?.id === exp?.id)?.mainAreas ?? [])
+                    {(aggregatedExperience?.find((e) => e?.id === exp?.id)?.mainArea ?? [])
                       ?.length < exp.specialities.length && (
                       <>
                         <Text>¿Tienes experiencia en otras areas?</Text>
                         <FormGroup>
                           {exp.specialities?.map((o) => {
                             const experienceAreaAlreadyInTheMainExperienceAreas =
-                              aggregatedExperience
-                                .find((e) => e.id === exp.id)
-                                ?.mainAreas.find((m) => m === o.label);
+                              aggregatedExperience.find((e) => e.id === exp.id)?.mainArea ===
+                              o.label;
                             if (!experienceAreaAlreadyInTheMainExperienceAreas) {
                               return (
                                 <FormControlLabel

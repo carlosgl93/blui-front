@@ -5,13 +5,14 @@
  *
  */
 
-import { Comuna, Prestador, Servicio } from '@/types';
+import { Comuna, Servicio } from '@/types';
 import { defaultAvailability } from '@/utils/constants';
 import dayjs from 'dayjs';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { db, auth } from '@/firebase/firebase';
 import { query, collection, where, getDocs, doc, setDoc, writeBatch } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
+import { Prestador } from '@/store/auth/prestador';
 
 export type CreatePrestadorParams = {
   nombre: string;
@@ -65,6 +66,7 @@ export async function createPrestador({
       offersFreeMeetAndGreet: false,
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       verified: false,
+      profileImageUrl: '',
       settings: {
         servicios: false,
         detallesBasicos: false,

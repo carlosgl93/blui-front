@@ -10,8 +10,7 @@ import {
 } from '../api/servicios/savePrestadorCreatedService';
 import { handleServicioState } from '@/store/construirPerfil/servicios';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
-import { defaultPrestador, prestadorState } from '@/store/auth/prestador';
-import { Prestador } from '@/types';
+import { defaultPrestador, Prestador, prestadorState } from '@/store/auth/prestador';
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { deleteService, DeleteServiceParams } from '../api/servicios/deleteService';
 

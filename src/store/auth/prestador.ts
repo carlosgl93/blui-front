@@ -27,6 +27,7 @@ export interface Prestador {
   createdServicios?: UserCreatedServicio[];
   createdAt?: string;
   verified?: boolean | 'Verificado' | 'Verificando' | 'Rechazado';
+  profileImageUrl: string;
   settings: {
     servicios: boolean;
     detallesBasicos: boolean;
@@ -129,6 +130,7 @@ export const defaultPrestador = {
   totalReviews: 0,
   description: '',
   offersFreeMeetAndGreet: false,
+  profileImageUrl: '',
   settings: {
     servicios: false,
     detallesBasicos: false,

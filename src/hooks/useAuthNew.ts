@@ -112,6 +112,7 @@ export const useAuthNew = () => {
   });
 
   const { mutate: login, isLoading: loginLoading } = useMutation(
+    'login',
     async ({ correo, contrasena }: { correo: string; contrasena: string }) => {
       setNotification({
         open: true,

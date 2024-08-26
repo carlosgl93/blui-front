@@ -14,8 +14,8 @@ import { useState, useCallback } from 'react';
 import { Badge } from '@mui/material';
 import { useAuthNew } from '@/hooks';
 import dayjs, { Dayjs } from 'dayjs';
-import { Prestador } from '@/types';
 import { createTransaction } from '@/api/payments';
+import { Prestador } from '@/store/auth/prestador';
 
 export const ScheduleController = () => {
   const [waitingForPayku, setWaitingForPayku] = useState(false);

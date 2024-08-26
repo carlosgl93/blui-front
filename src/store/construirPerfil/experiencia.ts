@@ -22,7 +22,7 @@ export type ExperienceOption = {
   checkedIcon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, 'svg'>> & {
     muiName: string;
   };
-  specialities: Array<{
+  specialities?: Array<{
     id: number;
     label: string;
   }>;
@@ -32,7 +32,7 @@ export type ExperienceState = {
   id: number;
   name: string;
   type: ExperienceType[];
-  mainAreas: string[];
+  mainArea: string;
   otherAreas: string[];
 }[];
 

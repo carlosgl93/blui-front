@@ -78,7 +78,7 @@ function useEntregaApoyo(): [EntregaApoyoState, Actions] {
 
     setApoyo((prev) => ({
       ...prev,
-      especialidadesFromServicio: servicio.especialidades,
+      especialidadesFromServicio: servicio?.especialidades || [],
     }));
   };
   const selectEspecialidad = (especialidad: Especialidad) => {

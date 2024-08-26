@@ -20,7 +20,7 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
 
   const especialidades = allServicios
     .map((s) => s.especialidades)
-    .map((e) => e.map((esp) => esp.especialidadName));
+    .map((e) => e?.map((esp) => esp.especialidadName));
 
   const handleSelectServicio = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === '') {
@@ -151,7 +151,7 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
             value={especialidad?.especialidadName}
             onChange={(e) => {
               selectEspecialidad(
-                servicio.especialidades.find((esp) => esp.especialidadName === e.target.value),
+                servicio?.especialidades?.find((esp) => esp.especialidadName === e.target.value),
               );
             }}
           >
