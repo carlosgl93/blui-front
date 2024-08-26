@@ -25,7 +25,7 @@ const DesktopFilters = () => {
 
   const especialidades = allServicios
     .map((s) => s.especialidades)
-    .map((e) => e.map((esp) => esp.especialidadName));
+    .map((e) => e?.map((esp) => esp.especialidadName));
 
   const handleSelectServicio = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedService = allServicios.find((s: Servicio) => s.serviceName === e.target.value);
@@ -111,7 +111,7 @@ const DesktopFilters = () => {
             value={especialidad?.especialidadName}
             onChange={(e) => {
               selectEspecialidad(
-                servicio.especialidades.find((esp) => esp.especialidadName === e.target.value),
+                servicio?.especialidades?.find((esp) => esp.especialidadName === e.target.value),
               );
             }}
           >

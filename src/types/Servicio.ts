@@ -1,6 +1,6 @@
 export type Servicio = {
   id: number;
-  especialidades: Especialidad[];
+  especialidades?: Especialidad[] | undefined;
   serviceName: string;
 };
 

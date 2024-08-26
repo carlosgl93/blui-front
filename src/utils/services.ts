@@ -2,128 +2,52 @@ import { Servicio } from '@/types/Servicio';
 
 export const services: Servicio[] = [
   {
+    id: 0,
     serviceName: 'Soporte Terapéutico',
     especialidades: [
       {
-        especialidadName: 'Ansiedad',
+        id: 0,
+        especialidadName: 'Kinesiologia',
       },
       {
-        especialidadName: 'Trastorno Bipolar',
+        id: 1,
+        especialidadName: 'Quiropractica',
       },
       {
-        especialidadName: 'Depresión',
+        id: 2,
+        especialidadName: 'Fonoaudiologia',
       },
       {
-        especialidadName: 'Trastornos Alimentarios',
+        id: 3,
+        especialidadName: 'Podologia',
       },
       {
-        especialidadName: 'Acumulación Compulsiva',
+        id: 4,
+        especialidadName: 'Estilista',
       },
       {
-        especialidadName: 'Trastorno Obsesivo-Compulsivo (TOC)',
-      },
-      {
-        especialidadName: 'Trastorno de Estrés Postraumático (TEPT)',
-      },
-      {
-        especialidadName: 'Esquizofrenia',
-      },
-      {
-        especialidadName: 'Abuso de Sustancias y Adicción',
+        id: 5,
+        especialidadName: 'Terapeuta Ocupacional',
       },
     ],
   },
   {
+    id: 1,
     serviceName: 'Servicios de enfermería',
     especialidades: [
+      { id: 6, especialidadName: 'Tecnico enfermeria' },
       {
-        especialidadName: 'Lesión Cerebral Adquirida',
-      },
-      {
-        especialidadName: 'Autismo',
-      },
-      {
-        especialidadName: 'Parálisis Cerebral',
-      },
-      {
-        especialidadName: 'Fibrosis Quística',
-      },
-      {
-        especialidadName: 'Síndrome de Down',
-      },
-      {
-        especialidadName: 'Epilepsia',
-      },
-      {
-        especialidadName: 'Discapacidad Auditiva',
-      },
-      {
-        especialidadName: 'Discapacidades Intelectuales',
-      },
-      {
-        especialidadName: 'Enfermedad del Neurona Motor',
-      },
-      {
-        especialidadName: 'Distrofia Muscular',
-      },
-      {
-        especialidadName: 'Discapacidades Físicas',
-      },
-      {
-        especialidadName: 'Espina Bífida',
-      },
-      {
-        especialidadName: 'Lesión de la Médula Espinal',
-      },
-      {
-        especialidadName: 'Discapacidad Visual',
+        id: 7,
+        especialidadName: 'Enfermeria general',
       },
     ],
   },
   {
-    serviceName: 'Apoyo en el hogar',
-    especialidades: [
-      {
-        especialidadName: 'Demencia senil',
-      },
-      {
-        especialidadName: 'Alzheimer',
-      },
-      {
-        especialidadName: 'Parkinson',
-      },
-    ],
-  },
-  {
+    id: 2,
     serviceName: 'Cuidadora',
-    especialidades: [
-      {
-        especialidadName: 'Artritis',
-      },
-      {
-        especialidadName: 'Asma',
-      },
-      {
-        especialidadName: 'Enfermedad Cardiovascular',
-      },
-      {
-        especialidadName: 'EPOC o Enfermedad Respiratoria',
-      },
-      {
-        especialidadName: 'Diabetes',
-      },
-    ],
   },
-
   {
+    id: 3,
     serviceName: 'Sana compañía',
-    especialidades: [],
   },
-].map((service, serviceId) => ({
-  ...service,
-  id: serviceId,
-  especialidades: service.especialidades.map((especialidad, especialidadId) => ({
-    ...especialidad,
-    id: especialidadId,
-  })),
-}));
+];

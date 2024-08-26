@@ -96,7 +96,7 @@ export const useExperiencia = () => {
             id,
             name: label,
             type: [],
-            mainAreas: [],
+            mainArea: '',
             otherAreas: [],
           },
         ];
@@ -119,8 +119,6 @@ export const useExperiencia = () => {
               type: exp.type.includes(type)
                 ? exp.type.filter((item) => item !== type)
                 : [...exp.type, type],
-              mainAreas: [...exp.mainAreas],
-              otherAreas: [...exp.otherAreas],
             };
           }
           return exp;
@@ -140,11 +138,7 @@ export const useExperiencia = () => {
           return {
             ...exp,
             type: [...exp.type],
-            mainAreas: exp.mainAreas.includes(label)
-              ? exp.mainAreas.filter((item) => item !== label)
-              : exp.mainAreas.length >= 3
-              ? [...exp.mainAreas.slice(1), label]
-              : [...exp.mainAreas, label],
+            mainArea: label,
             otherAreas: exp.otherAreas.includes(label)
               ? exp.otherAreas.filter((l) => l !== label)
               : [...exp.otherAreas, label],
@@ -156,7 +150,7 @@ export const useExperiencia = () => {
   };
 
   const detectMainExperienceAreas = (label: string, id: number) => {
-    return Boolean(aggregatedExperience?.find((e) => e.id === id)?.mainAreas.includes(label));
+    return Boolean(aggregatedExperience?.find((e) => e.id === id)?.mainArea.includes(label));
   };
 
   const detectOtherExperienceAreas = (label: string, id: number) => {
@@ -169,8 +163,6 @@ export const useExperiencia = () => {
         if (exp.id === id) {
           return {
             ...exp,
-            type: [...exp.type],
-            mainAreas: [...exp.mainAreas],
             otherAreas: exp.otherAreas.includes(label)
               ? exp.otherAreas.filter((item) => item !== label)
               : [...exp.otherAreas, label],

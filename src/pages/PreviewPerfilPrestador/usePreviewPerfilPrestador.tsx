@@ -36,7 +36,7 @@ export const usePreviewPerfilPrestador = () => {
       setPrestadorServicio(thisPrestadorServicio);
     }
 
-    const thisPrestadorEspecialidad = thisPrestadorServicio?.especialidades.find(
+    const thisPrestadorEspecialidad = thisPrestadorServicio?.especialidades?.find(
       (e) => e.especialidadName === especialidad,
     ) as Especialidad;
 

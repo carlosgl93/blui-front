@@ -6,7 +6,7 @@ import { Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Step2 = () => {
-  const [{ selectedServicio }, { decreaseStep }] = useEntregaApoyo();
+  const [{ selectedServicio }, { decreaseStep, increaseStep }] = useEntregaApoyo();
   const router = useNavigate();
 
   return (
@@ -42,7 +42,12 @@ const Step2 = () => {
         <Button
           disabled={selectedServicio === null}
           variant="contained"
-          onClick={() => router('/registrar-prestador')}
+          onClick={
+            selectedServicio?.serviceName === 'Cuidadora' ||
+            selectedServicio?.serviceName === 'Sana compañía'
+              ? () => router('/registrar-prestador')
+              : increaseStep
+          }
         >
           Siguiente
         </Button>

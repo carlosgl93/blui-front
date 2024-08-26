@@ -90,7 +90,7 @@ export const CreateServicio = () => {
               defaultValue=""
             >
               <MenuItem value="">Selecciona una especialidad:</MenuItem>
-              {prestadorServicio?.especialidades.map((e) => (
+              {prestadorServicio?.especialidades?.map((e) => (
                 <MenuItem key={e.id} value={e.especialidadName}>
                   {e.especialidadName}
                 </MenuItem>

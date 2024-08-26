@@ -90,6 +90,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/Experiencia')),
     path: '/construir-perfil/experiencia',
   },
+  [Pages.SobreMi]: {
+    component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/SobreMi')),
+    path: '/construir-perfil/sobreMi',
+  },
   [Pages.CuentaBancaria]: {
     component: asyncComponentLoader(() => import('@/pages/ConstruirPerfil/CuentaBancaria')),
     path: '/construir-perfil/cuentaBancaria',
