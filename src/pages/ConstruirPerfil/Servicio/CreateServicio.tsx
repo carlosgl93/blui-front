@@ -46,7 +46,6 @@ export const CreateServicio = () => {
   } = ServicioController();
 
   const { serviceName } = prestadorServicio as Servicio;
-  console.log(prestadorServicio);
 
   return (
     <>

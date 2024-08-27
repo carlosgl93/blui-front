@@ -2,12 +2,13 @@ import { Comuna } from '@/types';
 import regions from '../utils/regions.json';
 import { useMemo, useState } from 'react';
 import { notificationState } from '@/store/snackbar';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useAuthNew } from './useAuthNew';
 import { db } from '@/firebase/firebase';
 import { doc, collection, updateDoc, where, query, getDocs } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { comunasState } from '@/store/construirPerfil/comunas';
+import { Prestador, prestadorState } from '@/store/auth/prestador';
 
 const updateProviderComunas = async ({
   providerId,
@@ -60,6 +61,7 @@ export const useComunas = () => {
   const [selectedComunas, setSelectedComunas] = useRecoilState(comunasState);
   const [, setNotification] = useRecoilState(notificationState);
   const { prestador } = useAuthNew();
+  const setPrestador = useSetRecoilState(prestadorState);
   const queryClient = useQueryClient();
 
   const allComunas = useMemo(() => {
@@ -131,6 +133,16 @@ export const useComunas = () => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries('providerComunas');
+        setPrestador(
+          (prev) =>
+            ({
+              ...prev,
+              settings: {
+                ...prev?.settings,
+                comunas: true,
+              },
+            } as Prestador),
+        );
         setSelectedComunas(selectedComunas);
         setNotification({
           message: 'Comunas actualizadas',
