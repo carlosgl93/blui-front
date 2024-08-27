@@ -1,9 +1,9 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Card, CardHeader, CardContent } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 import { renderDuration } from '@/utils/renderDuration';
 import { Carousel } from 'react-responsive-carousel';
 import { formatCLP } from '@/utils/formatCLP';
-import { Text } from '@/components/StyledComponents';
+import { Text, Title } from '@/components/StyledComponents';
 import { UserCreatedServicio } from '../ConstruirPerfil/Servicio/types';
 
 type ServiciosCarouselProps = {
@@ -29,14 +29,21 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
           key={s.id ? s.id : s.name + s.description}
           sx={{
             m: '1rem',
-            boxShadow: 5,
-            height: 'fit-content',
+            boxShadow: `0px 4px 8px 0px`,
+            borderRadius: '1rem',
+            p: '1rem',
           }}
         >
-          <CardHeader
-            title={s.name}
-            subheader={`${renderDuration(s.duration)} - ${formatCLP(s.price)}`}
-          />
+          <Title
+            sx={{
+              fontSize: '1.5rem',
+            }}
+          >
+            {s.name}
+          </Title>
+          <Text variant="caption">
+            {renderDuration(s.duration)} - {formatCLP(s.price)}
+          </Text>
           <CardContent
             sx={{
               mb: '2rem',

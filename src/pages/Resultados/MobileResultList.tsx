@@ -21,7 +21,8 @@ export const MobileResultList = ({ filteredPrestadores }: MobileFilteredProps) =
     >
       {filteredPrestadores?.length > 0 ? (
         filteredPrestadores?.map((prestador) => {
-          const { id, firstname, lastname, averageReviews, totalReviews, email } = prestador;
+          const { id, firstname, lastname, averageReviews, totalReviews, email, profileImageUrl } =
+            prestador;
 
           return (
             <Link
@@ -54,6 +55,7 @@ export const MobileResultList = ({ filteredPrestadores }: MobileFilteredProps) =
                       height: '90px',
                       width: '90px',
                     }}
+                    src={profileImageUrl}
                   />
                 </Box>
                 <Box

@@ -1,37 +1,26 @@
-import { ChangeEvent } from 'react';
 import { List, ListItemButton, ListItemText, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { StyledSelect, Title } from '@/components/StyledComponents';
 import FiltersSearchBar from './FiltersSearchBar';
-import useRecibeApoyo from '@/store/recibeApoyo';
 import { Servicio } from '@/types/Servicio';
-import { useServicios } from '@/hooks/useServicios';
+import { FiltersController } from './FiltersController';
 
 type MobileFiltersProps = {
   closeFilters: () => void;
 };
 
 export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
-  const [{ servicio, especialidad, comuna }, { removeComuna, selectServicio, selectEspecialidad }] =
-    useRecibeApoyo();
-
-  const { allServicios } = useServicios();
-
-  const especialidades = allServicios
-    .map((s) => s.especialidades)
-    .map((e) => e?.map((esp) => esp.especialidadName));
-
-  const handleSelectServicio = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value === '') {
-      selectServicio(null);
-      selectEspecialidad(undefined);
-      return;
-    }
-    const selectedService = allServicios.find((s: Servicio) => s.serviceName === e.target.value);
-    selectEspecialidad(undefined);
-    selectServicio(selectedService as Servicio);
-  };
+  const {
+    comuna,
+    servicio,
+    allServicios,
+    especialidad,
+    especialidades,
+    removeComuna,
+    selectEspecialidad,
+    handleSelectServicio,
+  } = FiltersController();
 
   return (
     <Box
@@ -123,8 +112,6 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
             <option value={''} disabled>
               Elige un servicio
             </option>
-            {/* semantically clearer for the user to select "Todos" than going back to elige */}
-            {/* un servicio para denotar el sacar los filtros o querer todos los resultados. */}
             <option value={''}>Todos</option>
             {allServicios.map((servicio: Servicio) => {
               return (
@@ -137,7 +124,7 @@ export const MobileFilters = ({ closeFilters }: MobileFiltersProps) => {
         )}
       </Box>
 
-      {servicio && especialidades && (
+      {servicio && especialidades?.length && (
         <>
           <Title
             variant="h6"
