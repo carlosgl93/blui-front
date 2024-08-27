@@ -16,14 +16,11 @@ export async function updateDescription(
   description: string,
   profileImage: File,
 ): Promise<{ description: string; photoUrl: string }> {
-  console.log(id, description, profileImage);
   const docRef = doc(db, 'providers', id);
   const storageRef = ref(storage, `profileImages/${id}/${profileImage?.name}`);
   try {
     const snapshot = await uploadBytes(storageRef, profileImage);
     const photoUrl = await getDownloadURL(snapshot.ref);
-    console.log(photoUrl);
-
     await updateDoc(docRef, {
       description,
       profileImageUrl: photoUrl,
