@@ -29,7 +29,7 @@
     "preview": "vite preview",
     "https-preview": "serve dist",
     "prepare": "husky install",
-    "deploy": "npm run build && && firebase use production && firebase deploy",
+    "deploy": "npm run build && firebase deploy",
     "emulators": "firebase emulators:start"
   },
   "dependencies": {

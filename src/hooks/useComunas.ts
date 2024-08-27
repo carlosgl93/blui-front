@@ -20,6 +20,7 @@ const updateProviderComunas = async ({
 
   await updateDoc(providerRef, {
     comunas: comunas,
+    'settings.comunas': true,
   });
 };
 

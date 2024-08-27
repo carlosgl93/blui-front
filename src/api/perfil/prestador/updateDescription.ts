@@ -22,13 +22,12 @@ export async function updateDescription(
   try {
     const snapshot = await uploadBytes(storageRef, profileImage);
     const photoUrl = await getDownloadURL(snapshot.ref);
+    console.log(photoUrl);
 
     await updateDoc(docRef, {
       description,
       profileImageUrl: photoUrl,
-      settings: {
-        sobreMi: true,
-      },
+      'settings.sobreMi': true,
     });
     return {
       description,

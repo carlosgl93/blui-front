@@ -76,7 +76,7 @@ export const DetallesBasicos = () => {
           <Loading />
         ) : (
           <>
-            <StyledTitle>Actualizar Perfil</StyledTitle>
+            <StyledTitle>Detalles básicos</StyledTitle>
             <StyledTextField
               {...register('email', { required: 'Email es requerido' })}
               label="Email"

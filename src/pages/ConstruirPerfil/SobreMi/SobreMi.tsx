@@ -61,7 +61,13 @@ export const SobreMi = () => {
       }}
     >
       <BackButton to="/construir-perfil" />
-      <Container>
+      <Container
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <StyledTitle>Sobre mi</StyledTitle>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -88,7 +94,9 @@ export const SobreMi = () => {
                   height: '128px',
                 }}
                 alt="User profile picture"
-                src={imagePreview as string}
+                src={
+                  prestador?.profileImageUrl ? prestador.profileImageUrl : (imagePreview as string)
+                }
               />
             </Badge>
           </Box>
@@ -121,7 +129,14 @@ export const SobreMi = () => {
               Campo requerido
             </Text>
           )}
-          {updateDescriptionLoading ? <CircularProgress /> : <SaveButton disabled={disable} />}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {updateDescriptionLoading ? <CircularProgress /> : <SaveButton disabled={disable} />}
+          </Box>
         </form>
       </Container>
       <input

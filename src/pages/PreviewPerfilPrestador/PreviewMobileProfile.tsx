@@ -1,3 +1,12 @@
+import Reviews from '@/components/Reviews';
+import { Box, styled } from '@mui/material';
+import PerfilBackButton from './PerfilBackButton';
+import {
+  StyledContactButton,
+  StyledShortListButton,
+} from './DesktopPerfilPrestadorStyledComponents';
+import { Prestador } from '@/store/auth/prestador';
+import { DateCalendar } from '@mui/x-date-pickers';
 import {
   AboutContainer,
   AboutDescription,
@@ -11,17 +20,10 @@ import {
   StyledTitle,
   Wrapper,
 } from '../PerfilPrestador/MobilePerfilPrestadorStyledComponents';
-import Reviews from '@/components/Reviews';
-import { ListAvailableDays } from '../PerfilPrestador/ListAvailableDays';
-import { Box, styled } from '@mui/material';
-import PerfilBackButton from './PerfilBackButton';
-import { Prestador } from '@/store/auth/prestador';
-import {
-  StyledContactButton,
-  StyledShortListButton,
-} from './DesktopPerfilPrestadorStyledComponents';
-import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import { ServiciosCarousel } from '../PerfilPrestador/ServiciosCarousel';
+import { ListAvailableDays } from '../PerfilPrestador/ListAvailableDays';
+import { ScheduleController } from '@/components/Schedule/ScheduleController';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 
 const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -44,7 +46,6 @@ type PreviewMobileProfileProps = {
 export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps) => {
   const {
     firstname,
-    imageUrl,
     averageReviews,
     totalReviews,
     description,
@@ -53,13 +54,16 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
     especialidad,
     createdServicios,
     availability,
+    profileImageUrl,
   } = fullProvider as Prestador;
+
+  const { shouldDisableDay, renderAvailableDay } = ScheduleController();
 
   return (
     <Wrapper>
       <HeroContainer>
         <PerfilBackButton />
-        <StyledAvatar alt={`Imagen de perfil de ${firstname}`} src={imageUrl} />
+        <StyledAvatar alt={`Imagen de perfil de ${firstname}`} src={profileImageUrl} />
         <StyledNameContainer>
           <StyledTitle>{firstname ? firstname : email}</StyledTitle>
         </StyledNameContainer>
@@ -89,6 +93,12 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
       </SectionContainer>
       <SectionContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
+        <DateCalendar
+          shouldDisableDate={shouldDisableDay}
+          disablePast={true}
+          slots={{ day: renderAvailableDay }}
+          readOnly
+        />
         <ListAvailableDays disponibilidad={availability ?? []} />
       </SectionContainer>
     </Wrapper>

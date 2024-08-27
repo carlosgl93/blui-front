@@ -46,6 +46,7 @@ export const CreateServicio = () => {
   } = ServicioController();
 
   const { serviceName } = prestadorServicio as Servicio;
+  console.log(prestadorServicio);
 
   return (
     <>
@@ -72,31 +73,36 @@ export const CreateServicio = () => {
             },
           }}
         >
-          <FormControl>
-            <InputLabel id="service-speciality">Selecciona la especialidad del servicio</InputLabel>
-            <Select
-              labelId="service-speciality"
-              id="speciality-select"
-              value={especialidad}
-              label="Selecciona la especialidad del servicio"
-              onChange={handleChangeEspecialidad}
-              sx={{
-                width: {
-                  xs: '75vw',
-                  sm: '50vw',
-                  md: 'fit-content',
-                },
-              }}
-              defaultValue=""
-            >
-              <MenuItem value="">Selecciona una especialidad:</MenuItem>
-              {prestadorServicio?.especialidades?.map((e) => (
-                <MenuItem key={e.id} value={e.especialidadName}>
-                  {e.especialidadName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {prestadorServicio?.especialidades?.length && (
+            <FormControl>
+              <InputLabel id="service-speciality">
+                Selecciona la especialidad del servicio
+              </InputLabel>
+              <Select
+                labelId="service-speciality"
+                id="speciality-select"
+                value={especialidad}
+                label="Selecciona la especialidad del servicio"
+                onChange={handleChangeEspecialidad}
+                sx={{
+                  width: {
+                    xs: '75vw',
+                    sm: '50vw',
+                    md: 'fit-content',
+                  },
+                }}
+                defaultValue=""
+              >
+                <MenuItem value="">Selecciona una especialidad:</MenuItem>
+                {prestadorServicio?.especialidades?.map((e) => (
+                  <MenuItem key={e.id} value={e.especialidadName}>
+                    {e.especialidadName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
           <TextField
             label="Nombre del servicio"
             type="text"

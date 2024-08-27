@@ -23,7 +23,6 @@ export const useServicios = () => {
   const prestadorServicio = allServicios.find((s) => s.serviceName === prestador?.servicio);
 
   const queryClient = useQueryClient();
-
   const { data: prestadorCreatedServicios, isLoading: prestadorCreatedServiciosLoading } = useQuery<
     UserCreatedServicio[]
   >(

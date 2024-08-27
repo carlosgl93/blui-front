@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
+import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 
 const dayOrder = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 
@@ -33,6 +34,7 @@ const getPrestadorByIdFirestore = async (id: string): Promise<Prestador> => {
 
 export const usePrestador = (prestadorId: string) => {
   const setNotification = useSetRecoilState(notificationState);
+  const setInteractedPrestador = useSetRecoilState(interactedPrestadorState);
 
   const {
     data: prestador,
@@ -48,6 +50,9 @@ export const usePrestador = (prestadorId: string) => {
         message: 'Ocurrió un error al cargar el perfil del prestador',
         severity: 'error',
       });
+    },
+    onSuccess: (data) => {
+      setInteractedPrestador(data);
     },
   });
 

@@ -21,15 +21,16 @@ import {
 import { ChatModal } from '@/components/ChatModal';
 import { usePerfilPrestador } from './usePerfilPrestador';
 import PerfilBackButton from './PerfilBackButton';
-import { Box, styled } from '@mui/material';
+import { Box, styled, useTheme } from '@mui/material';
 import { Prestador } from '@/store/auth/prestador';
 import { useChat } from '@/hooks';
 import { useParams } from 'react-router-dom';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import Loading from '@/components/Loading';
 import { ScheduleModal } from '@/components/Schedule/ScheduleModal';
-import { ListAvailableDays } from './ListAvailableDays';
 import { ServiciosCarousel } from './ServiciosCarousel';
+import { DateCalendar } from '@mui/x-date-pickers';
+import { ScheduleController } from '@/components/Schedule/ScheduleController';
 
 export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -59,6 +60,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     handleCloseScheduleModal,
     scheduleModalOpen,
   } = usePerfilPrestador(prestador);
+  const theme = useTheme();
 
   const { id } = useParams();
   const { user } = useAuthNew();
@@ -70,7 +72,6 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
 
   const {
     firstname,
-    imageUrl,
     averageReviews,
     totalReviews,
     description,
@@ -78,14 +79,16 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     servicio,
     especialidad,
     createdServicios,
-    availability,
+    profileImageUrl,
   } = prestador;
+
+  const { shouldDisableDay, renderAvailableDay } = ScheduleController();
 
   return (
     <Wrapper>
       <HeroContainer>
         <PerfilBackButton />
-        <StyledAvatar alt={`Imágen de perfil de ${firstname}`} src={imageUrl} />
+        <StyledAvatar alt={`Imágen de perfil de ${firstname}`} src={profileImageUrl} />
         <StyledNameContainer>
           <StyledTitle>{firstname ? firstname : email}</StyledTitle>
         </StyledNameContainer>
@@ -97,7 +100,15 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
           {servicio} {especialidad && '/ especialidad'}
         </StyledServicio>
 
-        <StyledServicio>{prestador.comunas.map((c) => c.name)}</StyledServicio>
+        <StyledServicio>
+          {prestador.comunas.map((c, i) => {
+            if (i !== prestador?.comunas?.length - 1) {
+              return `${c.name} - `;
+            } else {
+              return c.name;
+            }
+          })}
+        </StyledServicio>
 
         <StyledCTAs>
           {messagesLoading ? (
@@ -136,9 +147,19 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         <SectionTitle>Servicios</SectionTitle>
         <ServiciosCarousel createdServicios={createdServicios} />
       </SectionContainer>
-      <SectionContainer>
+      <SectionContainer
+        sx={{
+          backgroundColor: theme.palette.background.default,
+        }}
+      >
         <SectionTitle>Disponibilidad</SectionTitle>
-        <ListAvailableDays disponibilidad={availability ?? []} />
+        <DateCalendar
+          shouldDisableDate={shouldDisableDay}
+          disablePast={true}
+          slots={{ day: renderAvailableDay }}
+          readOnly
+        />
+        {/* <ListAvailableDays disponibilidad={availability ?? []} /> */}
       </SectionContainer>
 
       <ScheduleModal handleClose={handleCloseScheduleModal} open={scheduleModalOpen} />
