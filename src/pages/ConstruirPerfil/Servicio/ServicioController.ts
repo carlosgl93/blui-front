@@ -1,10 +1,12 @@
 import { useAuthNew } from '@/hooks';
 import { useServicios } from '@/hooks/useServicios';
 import { handleServicioState } from '@/store/construirPerfil/servicios';
+import { notificationState } from '@/store/snackbar';
 import { SelectChangeEvent } from '@mui/material';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 export const ServicioController = () => {
+  const setNotification = useSetRecoilState(notificationState);
   const [servicioState, setServicioState] = useRecoilState(handleServicioState);
   const { description, especialidad, isCreatingServicio, nombreServicio, tarifa, duration } =
     servicioState;
@@ -51,8 +53,30 @@ export const ServicioController = () => {
     });
   };
 
+  const isTarifaFloat = tarifa.includes('.') || tarifa.includes(',');
+  const isTarifaAmountEnough = Number(tarifa) < 1000;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isTarifaFloat) {
+      setNotification({
+        open: true,
+        message: 'Ingresa el monto sin puntos ni comas',
+        severity: 'error',
+      });
+      return;
+    }
+
+    if (isTarifaAmountEnough) {
+      setNotification({
+        open: true,
+        message: 'El monto minimo es 1000',
+        severity: 'error',
+      });
+      return;
+    }
+
     const newServicio = {
       name: nombreServicio,
       description,

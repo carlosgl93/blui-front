@@ -3,6 +3,7 @@ import { Wrapper } from './MobilePerfilPrestadorStyledComponents';
 import { Box, styled } from '@mui/material';
 import { Title } from '@/components/StyledComponents';
 import { formatCLP } from '@/utils/formatCLP';
+import { paymentSettings } from '../../config';
 
 const StyledSubtitle = styled(Title)(({ theme }) => ({
   color: theme.palette.secondary.dark,
@@ -56,8 +57,7 @@ export const Tarifas = () => {
   const [{ tarifas, prestador }] = useConstruirPerfil();
 
   const freeMeetGreet = prestador?.offersFreeMeetAndGreet;
-  const fee = import.meta.env.VITE_TRANSACTION_FEE_PERCENTAGE;
-  const feePercentage = Number(fee) / 100;
+  const fee = paymentSettings.appCommission;
 
   return (
     <Wrapper>
@@ -71,9 +71,7 @@ export const Tarifas = () => {
           return (
             <StyledTarifaContainer key={id}>
               <StyledSubtitle>{dayName}</StyledSubtitle>
-              <StyledTarifa>
-                {formatCLP(Number(price) + Number(price) * feePercentage)} p/hr
-              </StyledTarifa>
+              <StyledTarifa>{formatCLP(Number(price) + Number(price) * fee)} p/hr</StyledTarifa>
               <StyledGreyText>
                 Basado en una tarifa indicada de {formatCLP(Number(price))}
               </StyledGreyText>

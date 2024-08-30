@@ -2,10 +2,8 @@ import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { getFirestore } from './index';
 
-import { defaultEmailSender, paymentSettings } from './config';
+import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
 import axios from 'axios';
-
-const sendEmailUrl = process.env.SEND_EMAIL_URL;
 
 export const transactionResultNotify = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
