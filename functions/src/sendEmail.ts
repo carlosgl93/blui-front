@@ -10,7 +10,7 @@ import { fetchAndCompileTemplate, getEnvUrl } from './utils';
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
   async ({ body }, res) => {
-    logger.info('beggining sendEmail execution');
+    logger.info('beggining sendEmail execution', body);
     // validations
     // unAuthorized(headers, res);
     malformedPayloadValidation(body, res);
@@ -29,7 +29,7 @@ export const sendEmail = onRequest(
       }
 
       let templateData;
-      const customerSupportPhone = process.env.CUSTOMER_SUPPORT_PHONE;
+      const customerSupportPhone = process.env.CUSTOMER_SUPPORT_NUMBER;
       if (!customerSupportPhone) {
         throw new Error('Missing customer support phone env variable.');
       }

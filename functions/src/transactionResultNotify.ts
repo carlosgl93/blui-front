@@ -2,21 +2,22 @@ import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { getFirestore } from './index';
 
-import { defaultEmailSender, paymentSettings } from './config';
+import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
 import axios from 'axios';
-
-const sendEmailUrl = process.env.SEND_EMAIL_URL;
 
 export const transactionResultNotify = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
   async ({ body, query, method }, res) => {
+    if (method !== 'POST') {
+      res.status(500).send(`Method ${method} not supported`);
+    }
     if (method === 'OPTIONS') {
       logger.info('options running');
       res.send(200);
       return;
     }
 
-    logger.info('beggining transaction result');
+    logger.info('beggining transaction result', body);
     const { status } = body;
     const { appointmentId } = query;
     if (!status) {
@@ -42,9 +43,10 @@ export const transactionResultNotify = onRequest(
       if (!docSnapshot.exists) {
         throw new Error('Appointment document does not exist');
       }
-      if (status === 'success' && docSnapshot.data()?.isPaid !== 'Pagado') {
+      if (status === 'success' && appointmentInfo?.isPaid !== 'Pagado') {
         await docRef.update({
           isPaid: 'Pagado',
+          status: 'Pagada',
         });
         const paymentDate = new Date();
         const paymentDocRef = db.collection('payments').doc(id);
@@ -65,9 +67,8 @@ export const transactionResultNotify = onRequest(
             amountToPay: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
           });
         }
-      } else {
-        await docRef.delete();
-        res.status(422).send('Payment failed');
+      } else if (status === 'success' && appointmentInfo?.isPaid === 'Pagado') {
+        res.status(200).send('Appointment successfuly scheduled');
         return;
       }
     } catch (error) {
@@ -80,7 +81,7 @@ export const transactionResultNotify = onRequest(
       const emailsCollectionRef = db.collection('emails');
       const emailSnap = await emailsCollectionRef.where('appointmentId', '==', appointmentId).get();
       if (emailSnap.empty) {
-        logger.info('inside emailSnap empty');
+        logger.info('beginning sending email notification');
         await axios.post(String(sendEmailUrl), {
           method: 'post',
           providerName: appointmentInfo?.provider.firstname,

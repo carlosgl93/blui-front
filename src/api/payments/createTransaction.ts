@@ -28,7 +28,7 @@ export async function createTransaction(appointment: AppointmentParams | undefin
       email: appointment?.customer?.email,
       order: orderId,
       subject: `Pago por servicio de ${appointment?.servicio?.name} al prestador ${appointment.provider.firstname} ${appointment.provider.lastname}`,
-      amount: +appointment?.servicio?.price * paymentSettings.appCommission,
+      amount: Math.round(+appointment?.servicio?.price * paymentSettings.appCommission),
       currency: paymentSettings.currency,
       payment: paymentSettings.paymentMethods,
       urlreturn: `${baseUrl}/payment?appointmentId=${appointment?.id}`,

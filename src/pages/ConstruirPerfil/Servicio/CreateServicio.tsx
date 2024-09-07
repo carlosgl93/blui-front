@@ -29,13 +29,11 @@ const serviceDurationOptions = [
 
 export const CreateServicio = () => {
   const {
-    especialidad,
     nombreServicio,
     tarifa,
     description,
     prestadorServicio,
     duration,
-    handleChangeEspecialidad,
     handleNombreServicioChange,
     handleChangeDescription,
     handleChangeTarifa,
@@ -72,7 +70,7 @@ export const CreateServicio = () => {
             },
           }}
         >
-          {prestadorServicio?.especialidades?.length && (
+          {/* {prestadorServicio?.especialidades?.length && (
             <FormControl>
               <InputLabel id="service-speciality">
                 Selecciona la especialidad del servicio
@@ -100,7 +98,7 @@ export const CreateServicio = () => {
                 ))}
               </Select>
             </FormControl>
-          )}
+          )} */}
 
           <TextField
             label="Nombre del servicio"

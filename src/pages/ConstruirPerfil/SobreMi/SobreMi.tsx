@@ -35,11 +35,8 @@ export const SobreMi = () => {
   const {
     errorTextColor,
     formState,
-    handleSubmit,
     overMaxLength,
-    register,
     validTextColor,
-    onSubmit,
     maxLength,
     theme,
     prestador,
@@ -47,9 +44,13 @@ export const SobreMi = () => {
     disable,
     updateDescriptionLoading,
     fileInputRef,
+    imagePreview,
+    register,
+    onSubmit,
+    handleSubmit,
     handleEditPicture,
     handleImageChange,
-    imagePreview,
+    loadingPreview,
   } = useSobreMi();
 
   const { errors } = formState;
@@ -88,16 +89,18 @@ export const SobreMi = () => {
                 </IconButton>
               }
             >
-              <Avatar
-                sx={{
-                  width: '128px',
-                  height: '128px',
-                }}
-                alt="User profile picture"
-                src={
-                  prestador?.profileImageUrl ? prestador.profileImageUrl : (imagePreview as string)
-                }
-              />
+              {loadingPreview ? (
+                <CircularProgress />
+              ) : (
+                <Avatar
+                  sx={{
+                    width: '128px',
+                    height: '128px',
+                  }}
+                  alt="User profile picture"
+                  src={imagePreview ? (imagePreview as string) : prestador?.profileImageUrl}
+                />
+              )}
             </Badge>
           </Box>
           <SubTitle>Agrega una descripción de ti.</SubTitle>
