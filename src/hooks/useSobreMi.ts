@@ -19,6 +19,7 @@ type UpdateDescriptionParams = {
 };
 
 export const useSobreMi = () => {
+  const [loadingPreview, setLoadingPreview] = useState(false);
   const setNotification = useSetRecoilState(notificationState);
   const [prestador, setPrestador] = useRecoilState(prestadorState);
   const [image, setImage] = useState<File | null>(null);
@@ -90,6 +91,8 @@ export const useSobreMi = () => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      console.log(file);
+      setLoadingPreview(true);
       setImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -97,6 +100,7 @@ export const useSobreMi = () => {
       };
       reader.readAsDataURL(file);
       setValue('profileImage', file, { shouldValidate: true });
+      setLoadingPreview(false);
     }
   };
 
@@ -112,6 +116,7 @@ export const useSobreMi = () => {
     onSubmit,
     register,
     watch,
+    loadingPreview,
     fileInputRef,
     theme,
     updateDescriptionLoading,

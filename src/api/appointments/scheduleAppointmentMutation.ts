@@ -20,7 +20,7 @@ export type TisPaid =
   | 'approved'
   | undefined;
 
-export type TStatus = 'Agendada' | 'Realizada' | 'Esperando confirmación del cliente';
+export type TStatus = 'Agendada' | 'Realizada' | 'Esperando confirmación del cliente' | 'Pendiente';
 
 export interface AppointmentParams {
   id?: string;
@@ -42,7 +42,6 @@ export async function scheduleService({
   customer,
   scheduledDate,
   scheduledTime,
-  status,
 }: AppointmentParams) {
   const newAppointment: AppointmentParams = {
     provider,
@@ -52,7 +51,7 @@ export async function scheduleService({
     scheduledTime,
     isPaid: false,
     createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    status,
+    status: 'Pendiente',
     rating: 0,
     confirmedByUser: false,
   };
