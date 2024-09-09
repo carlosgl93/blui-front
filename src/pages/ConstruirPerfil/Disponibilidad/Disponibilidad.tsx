@@ -23,25 +23,21 @@ export const Disponibilidad = () => {
         action={editDisponibilidad ? handleEditDisponibilidad : undefined}
         to="/construir-perfil"
       />
+      <StyledTitle>Disponibilidad</StyledTitle>
       <Container>
-        <StyledTitle>Disponibilidad</StyledTitle>
         <SubTitle>Dias y horas disponible</SubTitle>
         <StyledText>
           Agrega que dias y horas estas disponible para que te lleguen solicitudes que te acomoden.
         </StyledText>
         <Box
           sx={{
-            my: '1rem',
-            mx: 'auto',
-            width: {
-              xs: '75vw',
-              sm: '50vw',
-              md: 'fit-content',
-            },
+            my: '1.5rem',
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
           }}
         >
           <Button
-            fullWidth
             variant="outlined"
             startIcon={<EditOutlinedIcon />}
             onClick={handleEditDisponibilidad}

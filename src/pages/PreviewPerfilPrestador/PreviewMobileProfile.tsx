@@ -60,7 +60,12 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
   const { shouldDisableDay, renderAvailableDay } = ScheduleController();
 
   return (
-    <Wrapper>
+    <Wrapper
+      sx={{
+        px: 'auto',
+        margin: 'auto',
+      }}
+    >
       <HeroContainer>
         <PerfilBackButton />
         <StyledAvatar alt={`Imagen de perfil de ${firstname}`} src={profileImageUrl} />
@@ -81,13 +86,27 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
           </StyledShortListButton>
         </StyledCTAs>
       </HeroContainer>
-      <AboutContainer>
+      <AboutContainer
+        sx={{
+          width: {
+            xs: '100%',
+            md: '50%',
+          },
+        }}
+      >
         <AboutTitle>Sobre {firstname ? firstname : email}</AboutTitle>
         <AboutDescription>
           {description ? description : 'Este prestador aun no agrega información'}
         </AboutDescription>
       </AboutContainer>
-      <SectionContainer>
+      <SectionContainer
+        sx={{
+          width: {
+            xs: '100%',
+            md: '50%',
+          },
+        }}
+      >
         <SectionTitle>Servicios</SectionTitle>
         <ServiciosCarousel createdServicios={createdServicios} />
       </SectionContainer>

@@ -2,13 +2,15 @@ import { Title } from '@/components/StyledComponents';
 import { Box, Button, styled } from '@mui/material';
 
 export const Wrapper = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
   padding: '1rem',
-  minHeight: '75vh',
+  minHeight: '72.5vh',
 }));
 
 export const Container = styled(Box)(() => ({
-  width: '100%',
-  height: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'start',
@@ -18,6 +20,7 @@ export const Container = styled(Box)(() => ({
   backgroundColor: 'white',
   boxSizing: 'border-box',
   borderRadius: '.5rem',
+  width: 'fit-content',
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({
@@ -40,7 +43,6 @@ export const StyledList = styled('ul')(() => ({
 }));
 
 export const StyledButton = styled(Button)(() => ({
-  width: '100%',
   fontSize: '1rem',
   fontWeight: 'bold',
   color: 'white',

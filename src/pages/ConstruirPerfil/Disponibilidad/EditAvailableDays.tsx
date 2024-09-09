@@ -37,13 +37,21 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
           return (
             <StyledDayContainer key={id + day}>
               <CenteredDivider />
-              <StyledEditableDay>
+              <StyledEditableDay
+                sx={{
+                  width: {
+                    xs: '100%',
+                    sm: '100%',
+                    md: '50%',
+                  },
+                }}
+              >
                 <StyledToggleContainer>
+                  <StyledDayName>{day}</StyledDayName>
                   <Switch
                     checked={isAvailable}
                     onClick={() => handleToggleDisponibilidadDay(day)}
                   />
-                  <StyledDayName>{day}</StyledDayName>
                 </StyledToggleContainer>
                 {isAvailable && (
                   <StyledTimePickerContainer>

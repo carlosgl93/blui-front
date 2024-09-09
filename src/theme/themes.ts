@@ -15,8 +15,9 @@ const sharedTheme = {
     primary: '#970B80',
     secondary: '#E6AF2E',
     background: {
-      default: '#fafafa',
+      default: '#f2f2f2',
       paper: '#fff',
+      grey: '#f9f7f6',
     },
   },
   esES,

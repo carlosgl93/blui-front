@@ -20,7 +20,7 @@ type SettingsKey =
 export const construirPerfilOpciones: { key: SettingsKey; value: string; implemented: boolean }[] =
   [
     { key: 'sobreMi', value: 'Sobre mí', implemented: true },
-    { key: 'detallesBasicos', value: 'Detalles basicos', implemented: true },
+    { key: 'detallesBasicos', value: 'Detalles básicos', implemented: true },
     { key: 'servicios', value: 'Servicios ofrecidos', implemented: true },
     { key: 'disponibilidad', value: 'Disponibilidad', implemented: true },
     { key: 'comunas', value: 'Comunas', implemented: true },

@@ -21,6 +21,7 @@ const StyledTimeText = styled(Text)(() => ({
 export const StyledDayName = styled(SubTitle)(() => ({
   marginBottom: 0,
   fontSize: '1rem',
+  marginLeft: '0.66rem',
 }));
 
 export interface TimeSlot {
@@ -49,7 +50,11 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'start',
-        width: '100%',
+        width: {
+          xs: '100%',
+          sm: '100%',
+          md: '50%',
+        },
       }}
     >
       {availability.map((d) => {

@@ -16,9 +16,9 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
       autoPlay
       centerMode={createdServicios && createdServicios.length > 1 ? true : false}
       emulateTouch
-      showThumbs={false}
-      stopOnHover
-      showIndicators
+      showThumbs={true}
+      showIndicators={false}
+      stopOnHover={true}
       infiniteLoop
       interval={10000}
       width={'90vw'}
@@ -28,10 +28,22 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
         <Card
           key={s.id ? s.id : s.name + s.description}
           sx={{
-            m: '1rem',
+            mx: {
+              xs: '1rem',
+              md: '0',
+            },
+            my: '1rem',
             boxShadow: `0px 4px 8px 0px`,
             borderRadius: '1rem',
             p: '1rem',
+            maxWidth: {
+              xs: '100%',
+              sm: '90vw',
+              md: '33vw',
+            },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'start',
           }}
         >
           <Title
@@ -47,6 +59,7 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
           <CardContent
             sx={{
               mb: '2rem',
+              px: 0,
             }}
           >
             <Text>{s.description}</Text>

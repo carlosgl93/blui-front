@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useMediaQuery } from '@mui/material';
 import { tablet } from '../../theme/breakpoints';
 import MobileHeaderContent from './MobileHeaderContent';
-import DesktopHeaderContent from './DesktopHeaderContent';
+// import DesktopHeaderContent from './DesktopHeaderContent';
 import { useLocation } from 'react-router-dom';
 
 function Header() {
@@ -26,7 +26,8 @@ function Header() {
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          {isTablet ? <MobileHeaderContent /> : <DesktopHeaderContent />}
+          {/* {isTablet ? <MobileHeaderContent /> : <DesktopHeaderContent />} */}
+          <MobileHeaderContent />
         </Toolbar>
       </AppBar>
     </Box>

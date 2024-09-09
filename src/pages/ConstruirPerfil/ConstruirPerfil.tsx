@@ -1,13 +1,13 @@
 import './styles.css';
 import { Box, Button, List } from '@mui/material';
 import {
-  Container,
   StyledTitle,
   SubTitle,
   Wrapper,
 } from '../PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { construirPerfilOpciones } from './construirPerfilOpciones';
 import {
+  Container,
   StyledCheckedIcon,
   StyledLink,
   StyledListItem,
@@ -25,11 +25,21 @@ export const ConstruirPerfil = () => {
   const { settings } = useConstruirPerfilNew();
 
   return (
-    <Wrapper>
+    <Wrapper
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <BackButton displayText to="/prestador-dashboard" />
       <Box
         sx={{
           display: 'flex',
+          width: {
+            xs: '90vw',
+            sm: '75vw',
+            md: '45vw',
+          },
           justifyContent: 'space-between',
           mb: '1rem',
         }}

@@ -109,6 +109,7 @@ function SearchBar() {
                       '&:hover': {
                         backgroundColor: '#ccc',
                       },
+                      cursor: 'pointer',
                     }}
                     onClick={() => clickComunaHandler(comuna)}
                   >

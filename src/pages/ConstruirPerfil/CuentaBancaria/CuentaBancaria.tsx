@@ -62,8 +62,16 @@ export const CuentaBancaria = () => {
   return (
     <Wrapper>
       <BackButton to="/construir-perfil" />
-      <Container>
-        <StyledTitle>Cuenta Bancaria</StyledTitle>
+      <StyledTitle>Cuenta Bancaria</StyledTitle>
+      <Container
+        sx={{
+          width: {
+            xs: '100%',
+            sm: '100%',
+            md: '50%',
+          },
+        }}
+      >
         <SubTitle>
           Para poder pagarte lo antes posible, ingresa tus datos bancarios para que Blui pueda
           procesar pagos para ti departe de tus clientes.

@@ -13,22 +13,20 @@ export const Servicio = () => {
   const { isCreatingServicio, prestadorCreatedServiciosLoading, saveServicioLoading } =
     ServicioController();
 
-  if (prestadorCreatedServiciosLoading || saveServicioLoading) {
-    return (
-      <Wrapper>
-        <BackButton displayText />
-        <Container>
-          <StyledTitle>Servicios</StyledTitle>
-          {(prestadorCreatedServiciosLoading || saveServicioLoading) && <Loading />}
-        </Container>
-      </Wrapper>
-    );
-  }
+  if (prestadorCreatedServiciosLoading || saveServicioLoading) return <Loading />;
+
   return (
     <Wrapper>
       <BackButton displayText to="/construir-perfil" />
-      <Container>
-        <StyledTitle>Servicios</StyledTitle>
+      <StyledTitle>Servicios</StyledTitle>
+      <Container
+        sx={{
+          minHeight: '50vh',
+          minWidth: '50vw',
+          alignItems: 'start',
+          justifyContent: 'start',
+        }}
+      >
         {isCreatingServicio ? <CreateServicio /> : <ListServicios />}
       </Container>
     </Wrapper>

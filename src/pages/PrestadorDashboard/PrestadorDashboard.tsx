@@ -3,10 +3,11 @@ import {
   Container,
   StyledButton,
   StyledList,
-  SubTitle,
+  StyledTitle,
   Wrapper,
 } from './StyledPrestadorDashboardComponents';
 import { usePrestadorDashboard } from './usePrestadorDashboard';
+import { FlexBox } from '@/components/styled';
 
 export const PrestadorDashboard = () => {
   const { handleConstruirPerfil } = usePrestadorDashboard();
@@ -14,7 +15,7 @@ export const PrestadorDashboard = () => {
   return (
     <Wrapper>
       <Container>
-        <SubTitle>Construyamos tu perfil</SubTitle>
+        <StyledTitle>Construyamos tu perfil</StyledTitle>
         <Text>Construyamos un perfil ganador. Esta es tu oportunidad de:</Text>
         <StyledList>
           <li>
@@ -27,9 +28,16 @@ export const PrestadorDashboard = () => {
             <Text>Resaltar para los clientes al agregar tu experiencia e intereses.</Text>
           </li>
         </StyledList>
-        <StyledButton variant="contained" onClick={handleConstruirPerfil}>
-          Construir perfil
-        </StyledButton>
+        <FlexBox
+          sx={{
+            width: '100%',
+            justifyContent: 'center',
+          }}
+        >
+          <StyledButton variant="contained" onClick={handleConstruirPerfil}>
+            Construir perfil
+          </StyledButton>
+        </FlexBox>
       </Container>
     </Wrapper>
   );

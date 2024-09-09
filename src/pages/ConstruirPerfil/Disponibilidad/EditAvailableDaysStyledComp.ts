@@ -11,7 +11,7 @@ export const Container = styled(Box)(() => ({
 export const StyledDayContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'start',
+  alignItems: 'center',
   justifyContent: 'center',
   width: '80vw',
 }));
@@ -26,7 +26,8 @@ export const StyledEditableDay = styled(Box)(() => ({
 export const StyledToggleContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'start',
+  width: '100%',
+  justifyContent: 'space-between',
   alignItems: 'center',
 }));
 
