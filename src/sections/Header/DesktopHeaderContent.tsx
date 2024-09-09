@@ -15,9 +15,8 @@ import routes from '@/routes';
 import { useAuthNew } from '@/hooks';
 
 const DesktopHeaderContent = () => {
-  const { user, logout } = useAuthNew();
-
-  const theme = useTheme<Theme>();
+  const { user, prestador } = useAuthNew();
+  console.log(user);
 
   return (
     <FlexBox sx={{ alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
@@ -74,86 +73,11 @@ const DesktopHeaderContent = () => {
         {user?.role === 'admin' ? (
           <AdminHeaderContent />
         ) : user?.role === 'user' ? (
-          <>
-            <ListItem sx={{ mx: 'auto' }}>
-              <Button
-                component={Link}
-                to="/perfil-usuario"
-                variant="contained"
-                sx={{
-                  backgroundColor: theme.palette.secondary.main,
-                  color: theme.palette.primary.main,
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.main,
-                    color: theme.palette.secondary.main,
-                  },
-                }}
-              >
-                Perfil
-              </Button>
-            </ListItem>
-            <ListItem sx={{ mx: 'auto' }}>
-              <Button
-                onClick={() => logout()}
-                variant="contained"
-                sx={{
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.dark,
-                  },
-                }}
-              >
-                Salir
-              </Button>
-            </ListItem>
-          </>
+          <UserHeaderContent />
+        ) : prestador?.email ? (
+          <ProviderHeaderContent />
         ) : (
-          <>
-            <ListItem sx={{ mx: 'auto' }}>
-              <Button
-                component={Link}
-                to="/ingresar"
-                variant="contained"
-                sx={{
-                  backgroundColor: theme.palette.secondary.main,
-                  color: theme.palette.primary.main,
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.main,
-                    color: theme.palette.secondary.main,
-                  },
-                }}
-              >
-                Ingresar
-              </Button>
-            </ListItem>
-            <ListItem sx={{ mx: 'auto', width: '100%' }}>
-              <Button
-                component={Link}
-                to="/persona-de-apoyo"
-                sx={{
-                  whiteSpace: 'nowrap',
-                  width: 'auto',
-                  textOverflow: 'ellipsis',
-                }}
-                variant="outlined"
-              >
-                Conviértete en persona de apoyo
-              </Button>
-            </ListItem>
-            <ListItem sx={{ mx: 'auto' }}>
-              <Button
-                component={Link}
-                to="/comienzo"
-                variant="contained"
-                sx={{
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.dark,
-                  },
-                }}
-              >
-                Comenzar
-              </Button>
-            </ListItem>
-          </>
+          <UnauthenticatedHeaderContent />
         )}
       </List>
     </FlexBox>
@@ -197,6 +121,155 @@ const AdminHeaderContent = () => {
           onClick={() => logout()}
         >
           Salir
+        </Button>
+      </ListItem>
+    </>
+  );
+};
+
+const UserHeaderContent = () => {
+  const theme = useTheme();
+  const { logout } = useAuthNew();
+  return (
+    <>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          component={Link}
+          to="/resultados"
+          variant="contained"
+          sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
+            },
+          }}
+        >
+          Buscar
+        </Button>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          component={Link}
+          to="/perfil-usuario"
+          variant="contained"
+          sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
+            },
+          }}
+        >
+          Perfil
+        </Button>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          onClick={() => logout()}
+          variant="contained"
+          sx={{
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark,
+            },
+          }}
+        >
+          Salir
+        </Button>
+      </ListItem>
+    </>
+  );
+};
+
+const ProviderHeaderContent = () => {
+  const theme = useTheme();
+  const { logout } = useAuthNew();
+  return (
+    <>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          component={Link}
+          to="/prestador-dashboard"
+          variant="contained"
+          sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
+            },
+          }}
+        >
+          Perfil
+        </Button>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          onClick={() => logout()}
+          variant="contained"
+          sx={{
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark,
+            },
+          }}
+        >
+          Salir
+        </Button>
+      </ListItem>
+    </>
+  );
+};
+
+const UnauthenticatedHeaderContent = () => {
+  const theme = useTheme();
+
+  return (
+    <>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          component={Link}
+          to="/ingresar"
+          variant="contained"
+          sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
+            },
+          }}
+        >
+          Ingresar
+        </Button>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto', width: '100%' }}>
+        <Button
+          component={Link}
+          to="/persona-de-apoyo"
+          sx={{
+            whiteSpace: 'nowrap',
+            width: 'auto',
+            textOverflow: 'ellipsis',
+          }}
+          variant="outlined"
+        >
+          Conviértete en persona de apoyo
+        </Button>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          component={Link}
+          to="/comienzo"
+          variant="contained"
+          sx={{
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark,
+            },
+          }}
+        >
+          Comenzar
         </Button>
       </ListItem>
     </>

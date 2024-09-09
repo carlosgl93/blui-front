@@ -21,7 +21,6 @@ import {
   Wrapper,
 } from '../PerfilPrestador/MobilePerfilPrestadorStyledComponents';
 import { ServiciosCarousel } from '../PerfilPrestador/ServiciosCarousel';
-import { ListAvailableDays } from '../PerfilPrestador/ListAvailableDays';
 import { ScheduleController } from '@/components/Schedule/ScheduleController';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 
@@ -35,7 +34,7 @@ const SectionContainer = styled(Box)(() => ({
 }));
 
 const SectionTitle = styled(StyledTitle)(({ theme }) => ({
-  color: theme.palette.secondary.dark,
+  color: theme.palette.primary.dark,
   fontSize: '1.5rem',
 }));
 
@@ -53,7 +52,6 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
     servicio,
     especialidad,
     createdServicios,
-    availability,
     profileImageUrl,
   } = fullProvider as Prestador;
 
@@ -88,9 +86,11 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
       </HeroContainer>
       <AboutContainer
         sx={{
-          width: {
-            xs: '100%',
-            md: '50%',
+          width: '100%',
+          px: {
+            xs: '1rem',
+            sm: '2rem',
+            md: '33vw',
           },
         }}
       >
@@ -101,16 +101,13 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
       </AboutContainer>
       <SectionContainer
         sx={{
-          width: {
-            xs: '100%',
-            md: '50%',
-          },
+          width: '100%',
         }}
       >
         <SectionTitle>Servicios</SectionTitle>
         <ServiciosCarousel createdServicios={createdServicios} />
       </SectionContainer>
-      <SectionContainer>
+      <AboutContainer>
         <SectionTitle>Disponibilidad</SectionTitle>
         <DateCalendar
           shouldDisableDate={shouldDisableDay}
@@ -118,8 +115,8 @@ export const PreviewMobileProfile = ({ fullProvider }: PreviewMobileProfileProps
           slots={{ day: renderAvailableDay }}
           readOnly
         />
-        <ListAvailableDays disponibilidad={availability ?? []} />
-      </SectionContainer>
+        {/* <ListAvailableDays disponibilidad={availability ?? []} /> */}
+      </AboutContainer>
     </Wrapper>
   );
 };

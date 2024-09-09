@@ -20,9 +20,11 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
       showIndicators={false}
       stopOnHover={true}
       infiniteLoop
-      interval={10000}
+      interval={5000}
       width={'90vw'}
       className="hide-status"
+      showArrows={true}
+      useKeyboardArrows={true}
     >
       {(createdServicios ?? [])?.map((s) => (
         <Card

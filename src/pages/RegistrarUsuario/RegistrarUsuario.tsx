@@ -30,9 +30,12 @@ function RegistrarUsuario() {
       <FullSizeCenteredFlexBox
         sx={{
           flexDirection: 'column',
-          maxWidth: 500,
           textAlign: 'center',
           mb: '2rem',
+          p: {
+            xs: '2rem',
+            sm: '2rem',
+          },
         }}
       >
         <TextContainer>
@@ -47,7 +50,7 @@ function RegistrarUsuario() {
         </TextContainer>
         <Box
           component={'form'}
-          sx={{ width: '100%', gap: theme.spacing(2) }}
+          sx={{ gap: theme.spacing(2), display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
         >
           <Box

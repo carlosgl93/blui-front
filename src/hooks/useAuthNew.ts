@@ -88,6 +88,7 @@ export const useAuthNew = () => {
           text: `Verifica tu cuenta`,
         },
       });
+      console.log('REDIRECT TO:', redirectAfterLogin);
       setUserState({ ...data, isLoggedIn: true } as User);
       queryClient.setQueryData(['user', data?.email], user);
       window.scrollTo(0, 0);
@@ -188,6 +189,7 @@ export const useAuthNew = () => {
           message: `Sesión iniciada exitosamente`,
           severity: 'success',
         });
+        console.log('REDIRECT TO:', redirectAfterLogin);
         if (data?.role === 'user') {
           setUserState({ ...data.data, isLoggedIn: true } as User);
           redirectAfterLogin
