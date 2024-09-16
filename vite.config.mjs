@@ -17,15 +17,14 @@ export default defineConfig({
       injectManifest: true,
       manifest,
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      // devOptions: {
-      //   enabled: true,
-      //   type: 'module',
-      // },
-      workbox: {
-        clientsClaim: true,
-        skipWaiting: true,
+      devOptions: {
+        enabled: true,
+        type: 'module',
+        
       },
-      
+      workbox: {
+        globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
+      },
     }),
   ],
   resolve: {

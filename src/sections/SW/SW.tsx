@@ -49,20 +49,7 @@ function SW() {
     offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
-    onRegisterError,
-    onRegisteredSW,
-  } = useRegisterSW({
-    onRegistered(r) {
-      // eslint-disable-next-line prefer-template
-      console.log('SW Registered: ' + r);
-    },
-    onNeedRefresh() {
-      setNeedRefresh(true);
-    },
-    onRegisterError(error) {
-      console.log('SW registration error', error);
-    },
-  });
+  } = useRegisterSW();
 
   const close = useCallback(() => {
     setOfflineReady(false);
@@ -77,10 +64,6 @@ function SW() {
     // if ('serviceWorker' in navigator) {
     //   checkRegistration();
     // }
-
-    console.log('sw register error', onRegisterError);
-    console.log('sw registered', onRegisteredSW);
-    console.log('SW', offlineReady, needRefresh);
     if (offlineReady) {
       console.log('offlineReady');
       notificationsActions.push({
@@ -106,9 +89,6 @@ function SW() {
       });
     }
   }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);
-
-  console.log('needRefresh', needRefresh);
-  console.log('offlineReady', offlineReady);
 
   return null;
 }
