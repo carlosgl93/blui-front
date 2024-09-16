@@ -11,18 +11,19 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       injectRegister: 'script-defer',
-      strategies: 'injectManifest',
+      strategies: 'generateSW',
       injectManifest: true,
       manifest,
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       devOptions: {
         enabled: true,
-        type: 'module'
+        type: 'module',
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
+        clientsClaim: true,
+        skipWaiting: true,
       },
     }),
   ],

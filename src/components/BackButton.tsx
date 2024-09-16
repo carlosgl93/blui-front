@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, SxProps, Theme } from '@mui/material';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ type BackButtonProps = {
   action?: (() => void | null) | undefined;
   displayText?: boolean;
   ignoreMargin?: boolean;
-  style?: React.CSSProperties;
+  style?: SxProps<Theme>;
 };
 
 const BackButton = ({ to, action, displayText = true, ignoreMargin, style }: BackButtonProps) => {

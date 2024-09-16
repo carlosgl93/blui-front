@@ -1,4 +1,5 @@
 import {
+  BackButtonContainer,
   Container,
   StyledTitle,
   SubTitle,
@@ -19,10 +20,13 @@ export const Disponibilidad = () => {
 
   return (
     <Wrapper>
-      <BackButton
-        action={editDisponibilidad ? handleEditDisponibilidad : undefined}
-        to="/construir-perfil"
-      />
+      <BackButtonContainer>
+        <BackButton
+          action={editDisponibilidad ? handleEditDisponibilidad : undefined}
+          to="/construir-perfil"
+        />
+      </BackButtonContainer>
+
       <StyledTitle>Disponibilidad</StyledTitle>
       <Container>
         <SubTitle>Dias y horas disponible</SubTitle>

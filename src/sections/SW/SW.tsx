@@ -52,7 +52,6 @@ function SW() {
     onRegisterError,
     onRegisteredSW,
   } = useRegisterSW({
-    immediate: true,
     onRegistered(r) {
       // eslint-disable-next-line prefer-template
       console.log('SW Registered: ' + r);
@@ -107,6 +106,7 @@ function SW() {
       });
     }
   }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);
+
   console.log('needRefresh', needRefresh);
   console.log('offlineReady', offlineReady);
 

@@ -1,3 +1,4 @@
+import { FlexBox } from '@/components/styled';
 import { Title } from '@/components/StyledComponents';
 import { Box, Button, styled } from '@mui/material';
 
@@ -8,12 +9,14 @@ export const Wrapper = styled(Box)(() => ({
   justifyContent: 'center',
   padding: '1rem',
   minHeight: '72.5vh',
+  maxWidth: '600px',
+  margin: 'auto',
 }));
 
 export const Container = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'start',
+  alignItems: 'center',
   justifyContent: 'center',
   padding: '1rem',
   marginBottom: '1rem',
@@ -47,4 +50,18 @@ export const StyledButton = styled(Button)(() => ({
   fontWeight: 'bold',
   color: 'white',
   margin: '1rem 0',
+}));
+
+export const BackButtonContainer = styled(FlexBox)(() => ({
+  width: '100%',
+  justifyContent: 'flex-start',
+  maxWidth: '568px',
+}));
+
+export const SectionTitleContainer = styled(FlexBox)(() => ({
+  width: '100%',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '1rem',
+  maxWidth: '568px',
 }));

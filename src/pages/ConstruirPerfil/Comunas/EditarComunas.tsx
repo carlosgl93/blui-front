@@ -1,6 +1,9 @@
 import { Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Wrapper } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
+import {
+  BackButtonContainer,
+  Wrapper,
+} from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 import BackButton from '@/components/BackButton';
 import { ComunasSearchBar } from './ComunasSearchBar';
 import { useComunas } from '@/hooks/useComunas';
@@ -30,7 +33,9 @@ export const EditarComunas = () => {
 
   return (
     <Wrapper>
-      <BackButton to="/construir-perfil" />
+      <BackButtonContainer>
+        <BackButton to="/construir-perfil" />
+      </BackButtonContainer>
       {fetchPrestadorComunasIsLoading ? (
         <Loading />
       ) : (

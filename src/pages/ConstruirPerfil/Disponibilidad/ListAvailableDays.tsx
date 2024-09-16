@@ -50,11 +50,6 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'start',
-        width: {
-          xs: '100%',
-          sm: '100%',
-          md: '50%',
-        },
       }}
     >
       {availability.map((d) => {
@@ -67,7 +62,7 @@ export const ListAvailableDays = ({ availability }: ListAvailableDaysProps) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: { xs: '60vw' },
+                width: { xs: '60vw', sm: '60vw', md: '500px' },
               }}
             >
               <StyledDayName

@@ -4,7 +4,7 @@ import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { unAuthorized } from './validations';
 import { Handlebars } from './handlebars';
-import { getAuth } from './index';
+import { app, getAuth } from './index';
 import { getEnvUrl } from './utils';
 
 
@@ -28,7 +28,7 @@ export const sendVerificationEmail = onRequest(
     try {
       const template = await fetchAndCompileTemplate('verify-email.html');
       const redirectURL = `${getEnvUrl()}/email-verificado`;
-      const link = await getAuth().generateEmailVerificationLink(to, {
+      const link = await getAuth(app).generateEmailVerificationLink(to, {
         url: redirectURL,
       });
       

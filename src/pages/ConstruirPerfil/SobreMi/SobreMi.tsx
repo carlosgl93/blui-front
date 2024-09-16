@@ -4,19 +4,13 @@ import { Text } from '@/components/StyledComponents';
 import { useSobreMi } from '@/hooks';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {
+  BackButtonContainer,
+  Container,
   StyledTitle,
   SubTitle,
   Wrapper,
 } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
-import {
-  Avatar,
-  Badge,
-  Box,
-  CircularProgress,
-  Container,
-  IconButton,
-  TextareaAutosize,
-} from '@mui/material';
+import { Avatar, Badge, Box, CircularProgress, IconButton, TextareaAutosize } from '@mui/material';
 
 const textareaStyle = {
   width: '100%', // Full width
@@ -61,16 +55,12 @@ export const SobreMi = () => {
         minHeight: '75vh',
       }}
     >
-      <BackButton to="/construir-perfil" />
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <StyledTitle>Sobre mi</StyledTitle>
+      <BackButtonContainer>
+        <BackButton to="/construir-perfil" />
+      </BackButtonContainer>
 
+      <StyledTitle>Sobre mi</StyledTitle>
+      <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
             sx={{

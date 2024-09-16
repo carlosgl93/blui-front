@@ -20,3 +20,4 @@ export * from './useUser';
 export * from './usePayment';
 export * from './useAppointment';
 export * from './useSobreMi';
+export * from './useWidth';

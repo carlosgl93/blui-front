@@ -5,7 +5,11 @@ import { SaveButton } from '@/components/SaveButton';
 import { useDetallesBasicos } from './useDetallesBasicos';
 import Loading from '@/components/Loading';
 import BackButton from '@/components/BackButton';
-import { Container, Wrapper } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
+import {
+  BackButtonContainer,
+  Container,
+  Wrapper,
+} from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 
 export interface IDetallesBasicosInputs {
   email: string;
@@ -63,15 +67,18 @@ export const DetallesBasicos = () => {
 
   return (
     <Wrapper>
-      <BackButton
-        to="/construir-perfil"
-        ignoreMargin
-        displayText
-        style={{
-          margin: '1rem',
-          marginBottom: '0rem',
-        }}
-      />
+      <BackButtonContainer>
+        <BackButton
+          to="/construir-perfil"
+          ignoreMargin
+          displayText
+          style={{
+            margin: '1rem',
+            marginBottom: '0rem',
+          }}
+        />
+      </BackButtonContainer>
+
       <StyledTitle>Detalles básicos</StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         {updatePrestadorLoading ? (

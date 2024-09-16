@@ -1,5 +1,6 @@
 import BackButton from '@/components/BackButton';
 import {
+  BackButtonContainer,
   Container,
   StyledTitle,
   Wrapper,
@@ -17,7 +18,9 @@ export const Servicio = () => {
 
   return (
     <Wrapper>
-      <BackButton displayText to="/construir-perfil" />
+      <BackButtonContainer>
+        <BackButton displayText to="/construir-perfil" />
+      </BackButtonContainer>
       <StyledTitle>Servicios</StyledTitle>
       <Container
         sx={{

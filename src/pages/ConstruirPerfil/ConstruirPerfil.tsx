@@ -1,6 +1,8 @@
 import './styles.css';
-import { Box, Button, List } from '@mui/material';
+import { Button, List } from '@mui/material';
 import {
+  BackButtonContainer,
+  SectionTitleContainer,
   StyledTitle,
   SubTitle,
   Wrapper,
@@ -25,30 +27,16 @@ export const ConstruirPerfil = () => {
   const { settings } = useConstruirPerfilNew();
 
   return (
-    <Wrapper
-      sx={{
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <BackButton displayText to="/prestador-dashboard" />
-      <Box
-        sx={{
-          display: 'flex',
-          width: {
-            xs: '90vw',
-            sm: '75vw',
-            md: '45vw',
-          },
-          justifyContent: 'space-between',
-          mb: '1rem',
-        }}
-      >
+    <Wrapper>
+      <BackButtonContainer>
+        <BackButton displayText to="/prestador-dashboard" />
+      </BackButtonContainer>
+      <SectionTitleContainer>
         <StyledTitle>Mi perfil</StyledTitle>
         <Button variant="contained" onClick={handleVerPerfil}>
           Ver perfil
         </Button>
-      </Box>
+      </SectionTitleContainer>
       <Container>
         {construirPerfil.loading ? (
           <Loading />
