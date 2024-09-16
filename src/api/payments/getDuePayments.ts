@@ -16,6 +16,7 @@ export const getDuePayments = async (): Promise<PaymentRecord[]> => {
       where('paymentDueDate', '<', startOfTodayTimestamp),
     );
     const querySnapshot = await getDocs(duePaymentsQuery);
+    console.log(querySnapshot.docs);
     const docs: PaymentRecord[] = [];
     querySnapshot.forEach((doc) => docs.push(doc.data() as PaymentRecord));
     return docs;

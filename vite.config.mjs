@@ -12,19 +12,20 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt',
-      injectRegister: 'script-defer',
+      // injectRegister: 'script-defer',
       strategies: 'generateSW',
       injectManifest: true,
       manifest,
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      devOptions: {
-        enabled: true,
-        type: 'module',
-      },
+      // devOptions: {
+      //   enabled: true,
+      //   type: 'module',
+      // },
       workbox: {
         clientsClaim: true,
         skipWaiting: true,
       },
+      
     }),
   ],
   resolve: {

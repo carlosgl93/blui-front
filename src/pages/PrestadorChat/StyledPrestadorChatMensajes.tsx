@@ -2,8 +2,8 @@ import { Text } from '@/components/StyledComponents';
 import { Box, IconButton, TextField, Typography, styled } from '@mui/material';
 
 export const ChatContainer = styled(Box)(() => ({
-  minHeight: '72.5vh',
-  paddingTop: '3.75rem',
+  minHeight: '70vh',
+  paddingTop: '1.75rem',
   paddingBottom: '3.75rem',
   msOverflowStyle: 'none',
   scrollbarWidth: 'none',

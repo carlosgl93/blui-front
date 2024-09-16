@@ -28,6 +28,8 @@ export const Pagos = () => {
     getTotalAppointmentsIsLoading ||
     duePaymentsIsLoading;
 
+  console.log(duePayments);
+
   if (duePayments)
     return (
       <Wrapper>

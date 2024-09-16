@@ -36,8 +36,8 @@ export const PrestadorChat = () => {
   const { prestador } = useAuthNew();
 
   const conversation = useRecoilValue(chatState);
-  const customerId = conversation.userId;
-  const prestadorId = conversation.providerId;
+  const customerId = conversation?.userId;
+  const prestadorId = conversation?.providerId;
   const { user } = useUser(customerId);
 
   const {
@@ -58,7 +58,7 @@ export const PrestadorChat = () => {
         const isLastMessage = index === conversation.messages?.length - 1;
         if (m?.sentBy === 'provider') {
           return (
-            <Box key={m.id + m.message}>
+            <Box key={m.id}>
               <StyledPrestadorMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
                 {conversation.messages[index - 1]?.sentBy === 'provider' ? null : (
                   <StyledProviderName>
@@ -77,7 +77,7 @@ export const PrestadorChat = () => {
           );
         } else {
           return (
-            <Box key={m.id + m.message}>
+            <Box key={m.id}>
               <StyledUsuarioMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
                 {conversation.messages[index - 1]?.sentBy === 'user' ? null : (
                   <StyledCustomerName>{conversation.username}:</StyledCustomerName>

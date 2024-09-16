@@ -72,6 +72,7 @@ const StyledBox = styled(Box)(() => ({
 }));
 
 const StyledCard = styled(Card)(() => ({
+  margin: 'auto',
   padding: '2rem 1.2rem',
   justifyContent: 'space-between',
 }));

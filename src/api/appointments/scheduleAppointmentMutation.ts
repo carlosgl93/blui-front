@@ -20,7 +20,12 @@ export type TisPaid =
   | 'approved'
   | undefined;
 
-export type TStatus = 'Agendada' | 'Realizada' | 'Esperando confirmación del cliente' | 'Pendiente';
+export type TStatus =
+  | 'Agendada'
+  | 'Realizada'
+  | 'Esperando confirmación del cliente'
+  | 'Pendiente'
+  | 'Pagada';
 
 export interface AppointmentParams {
   id?: string;

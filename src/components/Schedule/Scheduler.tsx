@@ -26,7 +26,7 @@ export const Scheduler = () => {
     setValue,
     handleSelectServicio,
     handleSubmit,
-    shouldDisableDay,
+    // shouldDisableDay,
     handleSelectDate,
   } = ScheduleController();
 
@@ -62,8 +62,8 @@ export const Scheduler = () => {
           >
             <StyledLabel>Fecha</StyledLabel>
             <DateCalendar
-              shouldDisableDate={shouldDisableDay}
-              disablePast={true}
+              // shouldDisableDate={shouldDisableDay}
+              // disablePast={true}
               slots={{ day: renderAvailableDay }}
               onChange={handleSelectDate}
             />
