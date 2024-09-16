@@ -16,7 +16,7 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
       autoPlay
       centerMode={createdServicios && createdServicios.length > 1 ? true : false}
       emulateTouch
-      showThumbs={true}
+      showThumbs={false}
       showIndicators={false}
       stopOnHover={true}
       infiniteLoop

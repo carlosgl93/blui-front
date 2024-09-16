@@ -16,11 +16,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "./",
-    "types": ["vite-plugin-pwa/client", "jest"],
+    "types": ["vite-plugin-pwa/client", "jest", "vite-plugin-pwa/react"],
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "src/utils/seedDb.ts", "tests"],
+  "include": ["src", "src/utils/seedDb.ts", "tests", "public/sw.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

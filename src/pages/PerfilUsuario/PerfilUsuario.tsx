@@ -7,6 +7,7 @@ import Loading from '@/components/Loading';
 import { Controller, useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
 import { Comuna } from '@/types';
+import { Text } from '@/components/StyledComponents';
 
 export interface IFormInput {
   email: string;
@@ -152,8 +153,10 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.address)}
               helperText={errors.address?.message}
             />
+            {!isValid && (
+              <Text>Asegurate de rellenar todos los campos con información valida.</Text>
+            )}
             <SaveButton
-              disabled={!isValid}
               style={{
                 marginBottom: '2rem',
               }}

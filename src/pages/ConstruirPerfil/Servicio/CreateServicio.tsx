@@ -128,6 +128,7 @@ export const CreateServicio = () => {
             <Select
               labelId="service-duration-label"
               id="service-duration-select"
+              defaultValue={15}
               value={duration}
               label="Duración del servicio"
               onChange={handleSelectDuration}
@@ -154,8 +155,8 @@ export const CreateServicio = () => {
             placeholder={formatCLP(Number(tarifa))}
             value={tarifa}
             onChange={handleChangeTarifa}
-            helperText="Sin puntos ni comas. Valor mínimo: 1000 CLP"
-            error={Number(tarifa) < 1000}
+            helperText="Sin puntos ni comas. Valor mínimo: 100 CLP"
+            error={Number(tarifa) < 100}
           />
 
           <Box

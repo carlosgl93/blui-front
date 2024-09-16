@@ -17,6 +17,7 @@ function Sesiones() {
           flexDirection: 'column',
           minHeight: '80vh',
           p: '1rem',
+          mx: 'auto',
         }}
       >
         {userAppointmentsLoading ? (

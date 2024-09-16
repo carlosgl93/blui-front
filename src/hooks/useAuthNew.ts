@@ -189,7 +189,7 @@ export const useAuthNew = () => {
           message: `Sesión iniciada exitosamente`,
           severity: 'success',
         });
-        console.log('REDIRECT TO:', redirectAfterLogin);
+        console.log(redirectAfterLogin);
         if (data?.role === 'user') {
           setUserState({ ...data.data, isLoggedIn: true } as User);
           redirectAfterLogin
@@ -201,6 +201,14 @@ export const useAuthNew = () => {
             redirectAfterLogin
               ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'provider'))
               : navigate(`/prestador-dashboard`);
+          }
+          if (data?.role === 'admin') {
+            setUserState({
+              ...data.data,
+              isLoggedIn: true,
+              role: data.role,
+            } as User);
+            navigate(`/backoffice`);
           }
         }
       },

@@ -1,4 +1,4 @@
-import { Box, ListItem, Button } from '@mui/material';
+import { Box, ListItem, Button, Avatar } from '@mui/material';
 import { Text, Title } from '@/components/StyledComponents';
 import { Link } from 'react-router-dom';
 import Reviews from '@/components/Reviews';
@@ -13,7 +13,6 @@ type DesktopResultListProps = {
 
 const DesktopResultList = ({ filteredResults }: DesktopResultListProps) => {
   const { isLoading } = useGetPrestadores();
-  console.log(isLoading);
 
   if (isLoading) return <Loading />;
 
@@ -50,6 +49,7 @@ const DesktopResultList = ({ filteredResults }: DesktopResultListProps) => {
             especialidad,
             averageReviews,
             totalReviews,
+            profileImageUrl,
           } = prestador;
 
           return (
@@ -63,7 +63,7 @@ const DesktopResultList = ({ filteredResults }: DesktopResultListProps) => {
               <ListItem
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: '20% 80%',
+                  gridTemplateColumns: '30% 70%',
                   mb: '1rem',
                 }}
               >
@@ -76,13 +76,13 @@ const DesktopResultList = ({ filteredResults }: DesktopResultListProps) => {
                     alignItems: 'start',
                   }}
                 >
-                  {/* <Avatar
-                  sx={{
-                    height: '120px',
-                    width: '120px',
-                  }}
-                  src={imageUrl}
-                /> */}
+                  <Avatar
+                    sx={{
+                      height: '120px',
+                      width: '120px',
+                    }}
+                    src={profileImageUrl}
+                  />
                 </Box>
                 <Box
                   sx={{

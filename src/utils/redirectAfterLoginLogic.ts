@@ -40,6 +40,21 @@ export function determineRedirectAfterLogin(redirectURI: string, userType: 'user
       user: '/usuario-dashboard',
       provider: '/prestador-dashboard',
     },
+    '/usuario-dashboard': {
+      user: '/usuario-dashboard',
+      provider: '/prestador-dashboard',
+      admin: '/backoffice',
+    },
+    '/prestador-dashboard': {
+      user: '/usuario-dashboard',
+      provider: '/prestador-dashboard',
+      admin: '/backoffice',
+    },
+    '/construir-perfil': {
+      user: '/usuario-dashboard',
+      provider: '/construir-perfil',
+      admin: '/backoffice',
+    },
   };
 
   const userTypeRedirect = redirectMap[redirectURI]?.[userType];

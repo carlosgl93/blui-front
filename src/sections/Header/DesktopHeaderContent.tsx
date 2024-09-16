@@ -9,22 +9,37 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Button, useTheme, Box } from '@mui/material';
+import { Button, useTheme, IconButton } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import routes from '@/routes';
 import { useAuthNew } from '@/hooks';
+import useSidebar from '@/store/sidebar';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const DesktopHeaderContent = () => {
   const { user, prestador } = useAuthNew();
-  console.log(user);
+  const [, sidebarActions] = useSidebar();
 
   return (
     <FlexBox sx={{ alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
-      <Box
+      <FlexBox
         sx={{
           width: '30vw',
         }}
       >
+        {(user?.email || prestador?.email) && (
+          <IconButton
+            onClick={sidebarActions.toggle}
+            size="large"
+            edge="start"
+            color="primary"
+            aria-label="menu"
+            sx={{ mr: 1 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+
         <Link
           to="/"
           style={{
@@ -34,7 +49,7 @@ const DesktopHeaderContent = () => {
         >
           <HeaderIconImage src={`/images/blui-new.png`} alt="Blui logo" />
         </Link>
-      </Box>
+      </FlexBox>
 
       <List
         sx={{
@@ -152,7 +167,7 @@ const UserHeaderContent = () => {
       <ListItem sx={{ mx: 'auto' }}>
         <Button
           component={Link}
-          to="/perfil-usuario"
+          to="/usuario-dashboard"
           variant="contained"
           sx={{
             backgroundColor: theme.palette.secondary.main,

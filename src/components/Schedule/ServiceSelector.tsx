@@ -24,7 +24,7 @@ const ServiceSelector = ({ handleSelectServicio }: ServiceSelectorProps) => {
           width: {
             xs: '75vw',
             sm: '50vw',
-            md: 'fit-content',
+            md: '33vw',
           },
         }}
         defaultValue=""
