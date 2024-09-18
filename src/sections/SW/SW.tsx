@@ -61,9 +61,6 @@ function SW() {
   }, [setOfflineReady, setNeedRefresh, notificationsActions]);
 
   useEffect(() => {
-    // if ('serviceWorker' in navigator) {
-    //   checkRegistration();
-    // }
     if (offlineReady) {
       console.log('offlineReady');
       notificationsActions.push({
