@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useMediaQuery } from '@mui/material';
 import { tablet } from '../../theme/breakpoints';
 import MobileHeaderContent from './MobileHeaderContent';
-import DesktopHeaderContent from './DesktopHeaderContent';
+import DesktopHeaderContent from './Desktop/DesktopHeaderContent';
 
 function Header() {
   const isTablet = useMediaQuery(tablet);

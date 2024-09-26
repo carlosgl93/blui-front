@@ -1,7 +1,7 @@
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { routesToExcludeInHeader } from './routesToExcludeInHeader';
+import { routesToExcludeInHeader } from '../routesToExcludeInHeader';
 import { Link, useNavigate } from 'react-router-dom';
 import { FlexBox, HeaderIconImage } from '@/components/styled';
 import List from '@mui/material/List';
@@ -9,48 +9,102 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Button, useTheme, IconButton } from '@mui/material';
+import { Button, useTheme, IconButton, Box } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import routes from '@/routes';
 import { useAuthNew } from '@/hooks';
 import useSidebar from '@/store/sidebar';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Prestador } from '@/store/auth/prestador';
+import { User } from '@/store/auth/user';
+import BackButton from '@/components/BackButton';
+import { ChatTitle } from '@/pages/Chat/StyledChatMensajes';
+import { useRecoilValue } from 'recoil';
+import { chatState } from '@/store/chat/chatStore';
 
 const DesktopHeaderContent = () => {
   const { user, prestador } = useAuthNew();
   const [, sidebarActions] = useSidebar();
+  const chats = useRecoilValue(chatState);
+  const username = chats?.username;
+  const prestadorName = chats?.providerName;
+  const isUserChat = location.pathname === '/chat';
+  const isProviderChat = location.pathname === '/prestador-chat';
+
+  if (isUserChat) {
+    return (
+      <FlexBox
+        sx={{
+          alignItems: 'center',
+          width: '100%',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Box
+          sx={{
+            width: '100px',
+          }}
+        >
+          <BackButton ignoreMargin displayText={false} />
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+          }}
+        >
+          <ChatTitle
+            sx={{
+              fontSize: '1.5rem',
+            }}
+          >
+            Chateando con{' '}
+            {prestadorName
+              ? prestadorName
+              : prestador?.firstname
+              ? prestador?.firstname
+              : prestador?.email}
+          </ChatTitle>
+        </Box>
+      </FlexBox>
+    );
+  }
+
+  if (isProviderChat) {
+    return (
+      <FlexBox
+        sx={{
+          alignItems: 'center',
+          width: '100%',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Box
+          sx={{
+            width: '100px',
+          }}
+        >
+          <BackButton ignoreMargin displayText={false} />
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+          }}
+        >
+          <ChatTitle
+            sx={{
+              fontSize: '1.5rem',
+            }}
+          >
+            Chateando con {username}
+          </ChatTitle>
+        </Box>
+      </FlexBox>
+    );
+  }
 
   return (
     <FlexBox sx={{ alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
-      <FlexBox
-        sx={{
-          width: '30vw',
-        }}
-      >
-        {(user?.email || prestador?.email) && (
-          <IconButton
-            onClick={sidebarActions.toggle}
-            size="large"
-            edge="start"
-            color="primary"
-            aria-label="menu"
-            sx={{ mr: 1 }}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-
-        <Link
-          to="/"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <HeaderIconImage src={`/images/blui-new.png`} alt="Blui logo" />
-        </Link>
-      </FlexBox>
-
+      <BurgerIconWithLogo prestador={prestador} toggle={sidebarActions.toggle} user={user} />
       <List
         sx={{
           display: 'flex',
@@ -100,6 +154,45 @@ const DesktopHeaderContent = () => {
 };
 
 export default DesktopHeaderContent;
+
+type BurgerIconWithLogoProps = {
+  user: User | null;
+  prestador: Prestador | null;
+  toggle: () => void;
+};
+
+const BurgerIconWithLogo = ({ user, prestador, toggle }: BurgerIconWithLogoProps) => {
+  return (
+    <FlexBox
+      sx={{
+        width: '30vw',
+      }}
+    >
+      {(user?.email || prestador?.email) && (
+        <IconButton
+          onClick={toggle}
+          size="large"
+          edge="start"
+          color="primary"
+          aria-label="menu"
+          sx={{ mr: 1 }}
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+
+      <Link
+        to="/"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <HeaderIconImage src={`/images/blui-new.png`} alt="Blui logo" />
+      </Link>
+    </FlexBox>
+  );
+};
 
 const AdminHeaderContent = () => {
   const { logout } = useAuthNew();

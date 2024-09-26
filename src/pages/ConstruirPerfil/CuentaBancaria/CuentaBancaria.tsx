@@ -165,8 +165,15 @@ export const CuentaBancaria = () => {
               {Object.values(errors).map((e) => (
                 <ErrorMessage key={e.message}>*** {e.message} ***</ErrorMessage>
               ))}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <SaveButton />
+              </Box>
             </StyledForm>
-            <SaveButton />
           </>
         )}
       </Container>

@@ -8,7 +8,7 @@ export const Wrapper = styled(Box)(() => ({
   alignItems: 'center',
   justifyContent: 'center',
   padding: '1rem',
-  minHeight: '72.5vh',
+  minHeight: '80vh',
   maxWidth: '600px',
   margin: 'auto',
 }));

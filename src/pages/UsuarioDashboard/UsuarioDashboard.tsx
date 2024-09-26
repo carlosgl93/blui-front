@@ -12,6 +12,7 @@ export const UsuarioDashboard = () => {
           sm: '100%',
           md: '50%',
         },
+        minHeight: '80vh',
         mx: 'auto',
       }}
     >

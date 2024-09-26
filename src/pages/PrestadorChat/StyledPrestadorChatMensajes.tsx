@@ -99,10 +99,11 @@ export const StyledChatInputContainer = styled(Box)(() => ({
   marginTop: '1rem',
   padding: '0.3rem 0.3rem',
   backgroundColor: 'white',
+  width: '100%',
 }));
 
 export const StyledChatInput = styled(TextField)(() => ({
-  width: '80vw',
+  width: '100%',
 }));
 
 export const StyledChatSendButton = styled(IconButton)(({ theme }) => ({

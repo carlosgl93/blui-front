@@ -16,6 +16,7 @@ const Step3 = () => {
         sx={{
           maxWidth: 500,
           textAlign: 'center',
+          my: '2.5vh',
         }}
       >
         <Title

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useTheme } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { updateDescription } from '@/api/perfil/prestador/updateDescription';
+import { updateDescriptionAndImage } from '@/api/perfil/prestador/updateDescription';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
@@ -47,7 +47,7 @@ export const useSobreMi = () => {
   const { mutate: updateDescriptionMutation, isLoading: updateDescriptionLoading } = useMutation(
     'updateDescription',
     ({ id, description, profileImage }: UpdateDescriptionParams) =>
-      updateDescription(id, description, profileImage),
+      updateDescriptionAndImage(id, description, profileImage),
     {
       onSuccess(data: { description: string; photoUrl: string }) {
         setPrestador(
@@ -95,12 +95,15 @@ export const useSobreMi = () => {
       setLoadingPreview(true);
       setImage(file);
       const reader = new FileReader();
+
       reader.onloadend = () => {
+        console.log(reader);
         setImagePreview(reader.result);
+        setValue('profileImage', file, { shouldValidate: true });
+        setLoadingPreview(false);
       };
+
       reader.readAsDataURL(file);
-      setValue('profileImage', file, { shouldValidate: true });
-      setLoadingPreview(false);
     }
   };
 

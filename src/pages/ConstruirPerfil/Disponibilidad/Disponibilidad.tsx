@@ -2,7 +2,6 @@ import {
   BackButtonContainer,
   Container,
   StyledTitle,
-  SubTitle,
   Wrapper,
 } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 import BackButton from '@/components/BackButton';
@@ -29,7 +28,7 @@ export const Disponibilidad = () => {
 
       <StyledTitle>Disponibilidad</StyledTitle>
       <Container>
-        <SubTitle>Dias y horas disponible</SubTitle>
+        {/* <SubTitle>Dias y horas disponible</SubTitle> */}
         <StyledText>
           Agrega que dias y horas estas disponible para que te lleguen solicitudes que te acomoden.
         </StyledText>

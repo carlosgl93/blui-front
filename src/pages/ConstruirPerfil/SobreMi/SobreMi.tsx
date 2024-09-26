@@ -48,6 +48,8 @@ export const SobreMi = () => {
   } = useSobreMi();
 
   const { errors } = formState;
+  console.log('preview', imagePreview);
+  console.log('prestador imagurl', prestador?.profileImageUrl);
 
   return (
     <Wrapper

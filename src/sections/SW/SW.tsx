@@ -1,50 +1,16 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
-import type { SnackbarKey } from 'notistack';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import useNotifications from '@/store/notifications';
-
-// async function checkRegistration() {
-//   if ('serviceWorker' in navigator) {
-//     const registration = await navigator.serviceWorker.getRegistration();
-//     navigator.serviceWorker.getRegistrations().then((registrations) => {
-//       registrations.forEach((r) => {
-//         r.addEventListener('updatefound', () => {
-//           console.log('Service worker update found');
-//         });
-//       });
-//     });
-//     if (registration) {
-//       console.log('Service worker was registered on page load', registration);
-//     } else {
-//       console.log('No service worker is currently registered', registration);
-//       navigator.serviceWorker
-//         .register('/service-worker.js', {
-//           updateViaCache: 'none',
-//         })
-//         .then((registration) => {
-//           registration.addEventListener('updatefound', () => {
-//             // If updatefound is fired, it means that there's
-//             // a new service worker being installed.
-//             console.log(`Value of updateViaCache: ${registration.updateViaCache}`);
-//           });
-//         })
-//         .catch((error) => {
-//           console.error(`Service worker registration failed: ${error}`);
-//         });
-//     }
-//   } else {
-//     console.log('Service workers API not available');
-//   }
-// }
+import { useSetRecoilState } from 'recoil';
+import { notificationState } from '@/store/snackbar';
 
 function SW() {
+  const setNotification = useSetRecoilState(notificationState);
   const [, notificationsActions] = useNotifications();
-  const notificationKey = useRef<SnackbarKey | null>(null);
   const {
     offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
@@ -54,35 +20,46 @@ function SW() {
   const close = useCallback(() => {
     setOfflineReady(false);
     setNeedRefresh(false);
-
-    if (notificationKey.current) {
-      notificationsActions.close(notificationKey.current);
-    }
+    setNotification((prev) => ({ ...prev, open: false }));
   }, [setOfflineReady, setNeedRefresh, notificationsActions]);
 
   useEffect(() => {
     if (offlineReady) {
       console.log('offlineReady');
-      notificationsActions.push({
-        options: {
-          autoHideDuration: 4500,
-          content: <Alert severity="success">App is ready to work offline.</Alert>,
-        },
+      setNotification({
+        open: true,
+        message: 'Puedes instalar esta web!',
+        severity: 'success',
+        action: (
+          <Button
+            onClick={() => {
+              close();
+              setNotification((prev) => ({ ...prev, open: false }));
+            }}
+          >
+            Cerrar
+          </Button>
+        ),
       });
     } else if (needRefresh) {
       console.log('needRefresh');
-      notificationKey.current = notificationsActions.push({
-        message: 'New content is available, click on reload button to update.',
-        options: {
-          variant: 'warning',
-          persist: true,
-          action: (
-            <>
-              <Button onClick={() => updateServiceWorker(true)}>Reload</Button>
-              <Button onClick={close}>Close</Button>
-            </>
-          ),
-        },
+      setNotification({
+        open: true,
+        message:
+          'Hay una nueva versión disponible, haz click en el botón de recargar para actualizar.',
+        severity: 'success',
+        action: (
+          <Button
+            onClick={() => {
+              updateServiceWorker(true);
+              setNotification((prev) => ({ ...prev, open: false }));
+              close();
+            }}
+          >
+            Actualizar
+          </Button>
+        ),
+        persist: true,
       });
     }
   }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);

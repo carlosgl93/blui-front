@@ -15,6 +15,7 @@ import { generalOptionsDrawerList, usuarioDrawerOptions } from './usuarioDrawerO
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { User } from '@/store/auth/user';
+import { FlexBox } from '@/components/styled';
 
 type UsuarioDrawerListProps = {
   closeDrawer: () => void;
@@ -37,7 +38,11 @@ export const UsuarioDrawerList = ({ closeDrawer }: UsuarioDrawerListProps) => {
     >
       <ListItem
         sx={{
-          ml: '0.5rem',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          paddingLeft: '1.5rem',
         }}
       >
         <Avatar />
@@ -75,25 +80,43 @@ export const UsuarioDrawerList = ({ closeDrawer }: UsuarioDrawerListProps) => {
       </ListItem>
 
       <Divider />
-      {usuarioDrawerOptions.map(({ path, title, icon: Icon }) => (
-        <ListItem sx={{ p: '0 auto' }} key={path}>
-          <ListItemButton
-            component={Link}
-            to={path as string}
-            onClick={closeDrawer}
-            sx={{ py: '0' }}
-          >
-            {Icon && (
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-            )}
+      <FlexBox
+        sx={{
+          minHeight: '45vh',
+          flexDirection: 'column',
+          justifyContent: 'space-evenly',
+        }}
+      >
+        {usuarioDrawerOptions.map(({ path, title, icon: Icon }) => (
+          <ListItem sx={{ p: '0 auto' }} key={path}>
+            <ListItemButton
+              component={Link}
+              to={path as string}
+              onClick={closeDrawer}
+              sx={{ py: '0' }}
+            >
+              {Icon && (
+                <ListItemIcon>
+                  <Icon />
+                </ListItemIcon>
+              )}
 
-            <ListItemText>{title}</ListItemText>
-          </ListItemButton>
-        </ListItem>
-      ))}
+              <ListItemText>{title}</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </FlexBox>
       <Divider />
+      <FlexBox
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '.66rem',
+          mt: '1rem',
+        }}
+      />
       {generalOptionsDrawerList.map((item) => {
         const { title, path } = item;
         return (
