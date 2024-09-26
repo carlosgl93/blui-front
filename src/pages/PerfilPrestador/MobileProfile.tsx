@@ -144,7 +144,13 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         </AboutDescription>
       </AboutContainer>
       <SectionContainer>
-        <SectionTitle>Servicios</SectionTitle>
+        <AboutTitle
+          sx={{
+            my: '1rem',
+          }}
+        >
+          Servicios
+        </AboutTitle>
         <ServiciosCarousel createdServicios={createdServicios} />
       </SectionContainer>
       <SectionContainer
@@ -152,7 +158,13 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
           backgroundColor: theme.palette.background.default,
         }}
       >
-        <SectionTitle>Disponibilidad</SectionTitle>
+        <AboutTitle
+          sx={{
+            my: '1rem',
+          }}
+        >
+          Disponibilidad
+        </AboutTitle>
         <DateCalendar
           shouldDisableDate={shouldDisableDay}
           disablePast={true}

@@ -58,7 +58,7 @@ export async function createUser({
 
     const newUser: User = {
       ...defaultNewUser,
-      email: correo,
+      email: correo.toLowerCase(),
       id: user.uid,
       role: 'user',
       firstname: nombre,

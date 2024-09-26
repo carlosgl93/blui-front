@@ -2,8 +2,8 @@ import { atom } from 'recoil';
 
 export interface NotificationState {
   open: boolean;
-  message: string;
-  severity: 'success' | 'error' | 'warning' | 'info';
+  message?: string;
+  severity?: 'success' | 'error' | 'warning' | 'info';
   action?: JSX.Element;
   persist?: boolean;
 }

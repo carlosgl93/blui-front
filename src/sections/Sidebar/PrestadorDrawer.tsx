@@ -12,6 +12,7 @@ import { Prestador, prestadorState } from '@/store/auth/prestador';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { generalOptionsDrawerList, prestadorDrawerOptions } from './prestadorDrawerOptions';
+import { FlexBox } from '@/components/styled';
 
 type PrestadorDrawerListProps = {
   closeDrawer: () => void;
@@ -79,19 +80,27 @@ function PrestadorDrawerList({ closeDrawer }: PrestadorDrawerListProps) {
 
       <Divider />
 
-      {prestadorDrawerOptions.map(({ path, title, icon: Icon }) => (
-        <ListItem sx={{ p: 'auto' }} key={path}>
-          <ListItemButton component={Link} to={path as string} onClick={closeDrawer}>
-            {Icon && (
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-            )}
+      <FlexBox
+        sx={{
+          minHeight: '35vh',
+          flexDirection: 'column',
+          justifyContent: 'space-evenly',
+        }}
+      >
+        {prestadorDrawerOptions.map(({ path, title, icon: Icon }) => (
+          <ListItem sx={{ p: 'auto' }} key={path}>
+            <ListItemButton component={Link} to={path as string} onClick={closeDrawer}>
+              {Icon && (
+                <ListItemIcon>
+                  <Icon />
+                </ListItemIcon>
+              )}
 
-            <ListItemText>{title}</ListItemText>
-          </ListItemButton>
-        </ListItem>
-      ))}
+              <ListItemText>{title}</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </FlexBox>
       <Divider />
       {generalOptionsDrawerList.map((item) => {
         const { title, path } = item;

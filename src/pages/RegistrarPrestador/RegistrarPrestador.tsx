@@ -1,7 +1,7 @@
 import Meta from '@/components/Meta';
 import { FlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
 import { Box, Button, Checkbox, TextField, Typography, useTheme } from '@mui/material';
-import { TextContainer, Title } from '@/components/StyledComponents';
+import { Text, TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarPrestadorController from './RegistrarPrestadorController';
 import { formInputs } from './formInputs';
 import { useAuthNew } from '@/hooks/useAuthNew';
@@ -17,9 +17,12 @@ function RegistrarPrestador() {
       <FullSizeCenteredFlexBox
         sx={{
           flexDirection: 'column',
-          maxWidth: 500,
           textAlign: 'center',
           mb: '2rem',
+          p: {
+            xs: '2rem',
+            sm: '2rem',
+          },
         }}
       >
         <TextContainer>
@@ -34,7 +37,7 @@ function RegistrarPrestador() {
         </TextContainer>
         <Box
           component={'form'}
-          sx={{ width: '100%', gap: theme.spacing(2) }}
+          sx={{ gap: theme.spacing(2), display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
         >
           {state.error && (
@@ -87,21 +90,22 @@ function RegistrarPrestador() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                gap: '1rem',
-                maxWidth: '50%',
+                maxWidth: '75%',
               }}
             >
-              <span>
-                Al crearte una cuenta, aceptas los{' '}
-                <Link to="/terms-conditions">términos y condiciones</Link> de Blui.{' '}
-              </span>
-            </Box>
-            <Box>
-              <Checkbox
-                checked={!!state.acceptedTerms}
-                onChange={handleAcceptTerms}
-                name="acceptedTerms"
-              />
+              <Text>Al crearte una cuenta, aceptas los términos y condiciones de Blui.</Text>
+              <FlexBox
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
+                <Link to="/terms-conditions">Términos y condiciones</Link>
+                <Checkbox
+                  checked={!!state.acceptedTerms}
+                  onChange={handleAcceptTerms}
+                  name="acceptedTerms"
+                />
+              </FlexBox>
             </Box>
           </FlexBox>
           <Box

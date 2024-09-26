@@ -8,6 +8,6 @@ export const handleServicioState = atom({
     tarifa: '',
     description: '',
     isCreatingServicio: false,
-    duration: 0,
+    duration: 15,
   },
 });

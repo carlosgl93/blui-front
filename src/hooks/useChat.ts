@@ -19,16 +19,12 @@ export const useChat = (userId: string, providerId: string) => {
   const [message, setMessage] = useState('');
   const setNotification = useSetRecoilState(notificationState);
   const navigate = useNavigate();
-
   const client = useQueryClient();
-  // const messages: Conversation | undefined = client.getQueryData(['messages', userId, providerId]);
 
   const { mutate: handleSaveMessage, isLoading: savingMessageLoading } = useMutation(sendMessage, {
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       await client.invalidateQueries(['messages', userId, providerId]);
       await client.invalidateQueries(['userMessages', userId]);
-      setMessages((old) => ({ ...old, messages: [...old.messages, data.message] }));
-
       setMessage('');
     },
     onError: (error, variables, context: Conversation | undefined) => {
@@ -64,7 +60,6 @@ export const useChat = (userId: string, providerId: string) => {
             text: 'Te han enviado un mensaje!',
           },
         });
-        setMessages((old) => ({ ...old, data }));
         navigate('/chat', {
           state: {
             prestador: {
@@ -91,7 +86,9 @@ export const useChat = (userId: string, providerId: string) => {
         console.log('error getting messages', err);
       },
       onSuccess(data) {
-        setMessages(data);
+        if (data) {
+          setMessages(data);
+        }
       },
     },
   );

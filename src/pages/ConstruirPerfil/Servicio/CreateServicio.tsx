@@ -1,7 +1,5 @@
 import { FormControl, InputLabel, Select, MenuItem, TextField, Box, Button } from '@mui/material';
-import { StyledText } from '../StyledConstruirPerfilComponents';
 import { ServicioController } from './ServicioController';
-import { Servicio } from '@/types/Servicio';
 import { SubTitle } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { SaveButton } from '@/components/SaveButton';
 import Loading from '@/components/Loading';
@@ -32,7 +30,6 @@ export const CreateServicio = () => {
     nombreServicio,
     tarifa,
     description,
-    prestadorServicio,
     duration,
     handleNombreServicioChange,
     handleChangeDescription,
@@ -43,15 +40,27 @@ export const CreateServicio = () => {
     saveServicioLoading,
   } = ServicioController();
 
-  const { serviceName } = prestadorServicio as Servicio;
-
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        mx: 'auto',
+        gap: '1rem',
+        my: '1rem',
+        width: {
+          xs: '75vw',
+          sm: '50vw',
+          md: 'fit-content',
+        },
+      }}
+    >
       <SubTitle>Crea un servicio</SubTitle>
-      <StyledText>
-        Dado tu clasificación de {serviceName ?? ''}, puedes crear servicios en la siguientes
+      {/* <StyledText>
+        Dado tu clasificación de {serviceName ?? ''}, puedes crear los s servicios en la siguientes
         especialidades{' '}
-      </StyledText>
+      </StyledText> */}
       {saveServicioLoading ? (
         <Loading />
       ) : (
@@ -107,6 +116,8 @@ export const CreateServicio = () => {
             onChange={handleNombreServicioChange}
           />
           <TextField
+            multiline
+            rows={4}
             label="Descripción del servicio"
             type="text"
             value={description}
@@ -117,15 +128,17 @@ export const CreateServicio = () => {
             <Select
               labelId="service-duration-label"
               id="service-duration-select"
+              defaultValue={15}
               value={duration}
               label="Duración del servicio"
               onChange={handleSelectDuration}
               sx={{
-                width: {
-                  xs: '75vw',
-                  sm: '50vw',
-                  md: 'fit-content',
-                },
+                width: '100%',
+                // width: {
+                //   xs: '75vw',
+                //   sm: '50vw',
+                //   md: 'fit-content',
+                // },
               }}
             >
               <MenuItem value="">Selecciona una duración:</MenuItem>
@@ -142,8 +155,8 @@ export const CreateServicio = () => {
             placeholder={formatCLP(Number(tarifa))}
             value={tarifa}
             onChange={handleChangeTarifa}
-            helperText="Sin puntos ni comas. Valor mínimo: 1000 CLP"
-            error={Number(tarifa) < 1000}
+            helperText="Sin puntos ni comas. Valor mínimo: 100 CLP"
+            error={Number(tarifa) < 100}
           />
 
           <Box
@@ -164,6 +177,6 @@ export const CreateServicio = () => {
           </Box>
         </Box>
       )}
-    </>
+    </Box>
   );
 };

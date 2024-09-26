@@ -95,7 +95,8 @@ export const AboutDescription = styled(Text)(({ theme }) => ({
   fontSize: '0.95rem',
   fontWeight: 400,
   lineHeight: '1.5rem',
-  textAlign: 'start',
+  textAlign: 'center',
   color: theme.palette.primary.dark,
   marginTop: '1rem',
+  margin: '0 auto',
 }));

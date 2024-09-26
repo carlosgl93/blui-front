@@ -54,7 +54,7 @@ export const ServicioController = () => {
   };
 
   const isTarifaFloat = tarifa.includes('.') || tarifa.includes(',');
-  const isTarifaAmountEnough = Number(tarifa) < 1000;
+  const isTarifaAmountEnough = Number(tarifa) < 100;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,7 +71,7 @@ export const ServicioController = () => {
     if (isTarifaAmountEnough) {
       setNotification({
         open: true,
-        message: 'El monto minimo es 1000',
+        message: 'El monto minimo es 100',
         severity: 'error',
       });
       return;

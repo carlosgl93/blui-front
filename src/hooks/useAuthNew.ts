@@ -200,6 +200,14 @@ export const useAuthNew = () => {
               ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'provider'))
               : navigate(`/prestador-dashboard`);
           }
+          if (data?.role === 'admin') {
+            setUserState({
+              ...data.data,
+              isLoggedIn: true,
+              role: data.role,
+            } as User);
+            navigate(`/backoffice`);
+          }
         }
       },
     },
@@ -264,7 +272,6 @@ export const useAuthNew = () => {
         });
       },
       onSuccess(data) {
-        console.log('AUTH CURRENT USER', auth.currentUser);
         setNotification({
           open: true,
           message: `Sesión iniciada exitosamente`,

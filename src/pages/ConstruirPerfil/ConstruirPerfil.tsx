@@ -1,13 +1,15 @@
 import './styles.css';
-import { Box, Button, List } from '@mui/material';
+import { Button, List } from '@mui/material';
 import {
-  Container,
+  BackButtonContainer,
+  SectionTitleContainer,
   StyledTitle,
   SubTitle,
   Wrapper,
 } from '../PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { construirPerfilOpciones } from './construirPerfilOpciones';
 import {
+  Container,
   StyledCheckedIcon,
   StyledLink,
   StyledListItem,
@@ -26,19 +28,15 @@ export const ConstruirPerfil = () => {
 
   return (
     <Wrapper>
-      <BackButton displayText to="/prestador-dashboard" />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          mb: '1rem',
-        }}
-      >
+      <BackButtonContainer>
+        <BackButton displayText to="/prestador-dashboard" />
+      </BackButtonContainer>
+      <SectionTitleContainer>
         <StyledTitle>Mi perfil</StyledTitle>
         <Button variant="contained" onClick={handleVerPerfil}>
           Ver perfil
         </Button>
-      </Box>
+      </SectionTitleContainer>
       <Container>
         {construirPerfil.loading ? (
           <Loading />

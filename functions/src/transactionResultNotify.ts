@@ -67,8 +67,9 @@ export const transactionResultNotify = onRequest(
             amountToPay: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
           });
         }
+        res.status(200).send('Appointment was already successfuly scheduled');
       } else if (status === 'success' && appointmentInfo?.isPaid === 'Pagado') {
-        res.status(200).send('Appointment successfuly scheduled');
+        res.status(200).send('Appointment was already successfuly scheduled');
         return;
       }
     } catch (error) {
@@ -78,6 +79,7 @@ export const transactionResultNotify = onRequest(
     }
     try {
       // const rawToken = await token;
+      logger.info('beginning email notification');
       const emailsCollectionRef = db.collection('emails');
       const emailSnap = await emailsCollectionRef.where('appointmentId', '==', appointmentId).get();
       if (emailSnap.empty) {
@@ -104,11 +106,11 @@ export const transactionResultNotify = onRequest(
         });
 
         logger.info('email sent and record created', emailRegistered);
-        res.status(200).send('Email notification sent successfully');
+        // res.status(200).send('Email notification sent successfully');
       }
     } catch (error) {
       logger.error('error sending the email notification', error);
-      res.status(500).send('error sending the email notification');
+      // res.status(500).send('error sending the email notification');
       return;
     }
   },

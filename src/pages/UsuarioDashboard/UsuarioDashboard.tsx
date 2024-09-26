@@ -7,6 +7,13 @@ export const UsuarioDashboard = () => {
     <Box
       sx={{
         p: '1rem',
+        width: {
+          xs: '100%',
+          sm: '100%',
+          md: '50%',
+        },
+        minHeight: '80vh',
+        mx: 'auto',
       }}
     >
       <ActualizarPerfil />

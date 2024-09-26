@@ -1,6 +1,7 @@
 import { ComoFuncionaContent } from '@/pages/Welcome/comoFuncionaContent';
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Text, Title } from './StyledComponents';
 
 type ComoFuncionaProps = {
   subtitle: string;
@@ -25,7 +26,7 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
       }}
     >
       <Box>
-        <Typography
+        <Title
           variant="h4"
           color="primary.dark"
           sx={{
@@ -35,15 +36,15 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
           }}
         >
           Cómo funciona
-        </Typography>
-        <Typography
+        </Title>
+        <Text
           variant="subtitle1"
           sx={{
             fontSize: '1.5rem',
           }}
         >
           {subtitle}
-        </Typography>
+        </Text>
       </Box>
       <Box
         sx={{
@@ -56,7 +57,6 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
             xs: '2rem',
             md: '4rem',
           },
-
           justifyContent: 'space-between',
           alignItems: 'flex-start',
           mt: '2rem',
@@ -66,9 +66,6 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
           <Box
             key={index}
             sx={{
-              minHeight: {
-                md: '600px',
-              },
               width: {
                 xs: '100%',
                 sm: '30%',

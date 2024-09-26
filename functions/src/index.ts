@@ -13,13 +13,14 @@ setGlobalOptions({ region: 'southamerica-west1', timeoutSeconds: 15 });
 const credential = applicationDefault();
 const token = getAccessToken(credential);
 // Initialize Firebase Admin
-initializeApp({
+const app = initializeApp({
   credential: credential,
   storageBucket: 'blui-6ec33.appspot.com',
 });
 
 // Export the initialized services
 export {
+  app,
   getStorage,
   getAuth,
   getFirestore,

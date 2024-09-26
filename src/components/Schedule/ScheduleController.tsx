@@ -33,9 +33,9 @@ export const ScheduleController = () => {
   const now = dayjs();
 
   const shouldDisableDay = (date: dayjs.Dayjs) => {
-    if (date.isBefore(now)) {
-      return true;
-    }
+    // if (date.isBefore(now)) {
+    //   return true;
+    // }
     // Calculate the current time plus 24 hours to get the cutoff time
     const cutoffTime = now.add(24, 'hour');
     // Disable the date if it is less than 24 hours from the current time
@@ -51,14 +51,14 @@ export const ScheduleController = () => {
   };
   const renderAvailableDay = useCallback(
     (props: PickersDayProps<dayjs.Dayjs>) => {
-      const renderedDayIsPast = props.day.isBefore(now);
+      // const renderedDayIsPast = props.day.isBefore(now);
 
       // the day is available if the prestador availability includes that day of the week
       // and its not less than 24 hours from now
-      const isAvailable =
-        providerAvailability?.find((d) => {
-          return d?.id === props.day.get('d');
-        })?.isAvailable && !renderedDayIsPast;
+      const isAvailable = providerAvailability?.find((d) => {
+        return d?.id === props.day.get('d');
+      })?.isAvailable;
+      //  && !renderedDayIsPast;
 
       if (isAvailable) {
         return (

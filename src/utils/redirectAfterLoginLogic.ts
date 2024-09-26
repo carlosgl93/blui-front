@@ -9,6 +9,7 @@ type RedirectMap = {
   [key: string]: {
     user: string;
     provider: string;
+    admin?: string;
   };
 };
 
@@ -29,6 +30,30 @@ export function determineRedirectAfterLogin(redirectURI: string, userType: 'user
     '/prestador-inbox': {
       provider: '/prestador-inbox',
       user: '/',
+    },
+    '/backoffice/login': {
+      user: '/',
+      provider: '/',
+      admin: '/backoffice',
+    },
+    '/ingresar': {
+      user: '/usuario-dashboard',
+      provider: '/prestador-dashboard',
+    },
+    '/usuario-dashboard': {
+      user: '/usuario-dashboard',
+      provider: '/prestador-dashboard',
+      admin: '/backoffice',
+    },
+    '/prestador-dashboard': {
+      user: '/usuario-dashboard',
+      provider: '/prestador-dashboard',
+      admin: '/backoffice',
+    },
+    '/construir-perfil': {
+      user: '/usuario-dashboard',
+      provider: '/construir-perfil',
+      admin: '/backoffice',
     },
   };
 

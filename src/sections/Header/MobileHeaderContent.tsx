@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { FlexBox, HeaderIconImage } from '@/components/styled';
 import useSidebar from '@/store/sidebar';
@@ -13,13 +13,15 @@ import { chatState } from '@/store/chat/chatStore';
 
 const MobileHeaderContent = () => {
   const [, sidebarActions] = useSidebar();
+  const location = useLocation();
   const prestador = useRecoilValue(interactedPrestadorState);
   const chats = useRecoilValue(chatState);
   const username = chats?.username;
   const prestadorName = chats?.providerName;
-  const isChat = location.pathname === '/chat' || location.pathname === '/prestador-chat';
+  const isUserChat = location.pathname === '/chat';
+  const isProviderChat = location.pathname === '/prestador-chat';
 
-  if (isChat && location.pathname === '/chat') {
+  if (isUserChat) {
     return (
       <StyledChatHeaderContainer>
         <BackButton ignoreMargin displayText={false} />
@@ -34,7 +36,7 @@ const MobileHeaderContent = () => {
     );
   }
 
-  if (isChat && location.pathname === '/prestador-chat') {
+  if (isProviderChat) {
     return (
       <StyledChatHeaderContainer>
         <BackButton ignoreMargin displayText={false} />

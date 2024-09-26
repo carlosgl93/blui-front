@@ -9,6 +9,8 @@ import WorkIcon from '@mui/icons-material/Work';
 import { FlexBox } from '@/components/styled';
 import { Rate } from '@/components';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { chatState } from '@/store/chat/chatStore';
 
 type SessionCardContentProps = {
   appointment: AppointmentParams;
@@ -16,6 +18,7 @@ type SessionCardContentProps = {
 
 export const UserSessionCardContent = ({ appointment }: SessionCardContentProps) => {
   const navigate = useNavigate();
+  const setChatState = useSetRecoilState(chatState);
   const { provider, servicio, isPaid, status, confirmedByUser } = appointment;
   const { firstname, lastname, email } = provider;
 
@@ -76,6 +79,14 @@ export const UserSessionCardContent = ({ appointment }: SessionCardContentProps)
             startIcon={<ChatOutlinedIcon />}
             variant="contained"
             onClick={() => {
+              setChatState({
+                providerId: appointment?.provider?.id,
+                userId: appointment?.customer?.id,
+                providerName: appointment.provider.firstname ?? '',
+                username: appointment.customer.firstname ?? '',
+                id: '',
+                messages: [],
+              });
               navigate('/chat', {
                 state: {
                   providerId: appointment?.provider?.id,

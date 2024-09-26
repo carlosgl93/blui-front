@@ -11,12 +11,13 @@ import { db, storage } from '@/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
-export async function updateDescription(
+export async function updateDescriptionAndImage(
   id: string,
   description: string,
   profileImage: File,
 ): Promise<{ description: string; photoUrl: string }> {
   const docRef = doc(db, 'providers', id);
+  console.log('profileImage from updateDescription', profileImage);
   const storageRef = ref(storage, `profileImages/${id}/${profileImage?.name}`);
   try {
     const snapshot = await uploadBytes(storageRef, profileImage);

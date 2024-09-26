@@ -1,6 +1,7 @@
 import BackButton from '@/components/BackButton';
 import { Controller } from 'react-hook-form';
 import {
+  BackButtonContainer,
   Container,
   StyledTitle,
   SubTitle,
@@ -61,9 +62,11 @@ export const CuentaBancaria = () => {
 
   return (
     <Wrapper>
-      <BackButton to="/construir-perfil" />
+      <BackButtonContainer>
+        <BackButton to="/construir-perfil" />
+      </BackButtonContainer>
+      <StyledTitle>Cuenta Bancaria</StyledTitle>
       <Container>
-        <StyledTitle>Cuenta Bancaria</StyledTitle>
         <SubTitle>
           Para poder pagarte lo antes posible, ingresa tus datos bancarios para que Blui pueda
           procesar pagos para ti departe de tus clientes.
@@ -162,8 +165,14 @@ export const CuentaBancaria = () => {
               {Object.values(errors).map((e) => (
                 <ErrorMessage key={e.message}>*** {e.message} ***</ErrorMessage>
               ))}
-
-              <SaveButton />
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <SaveButton />
+              </Box>
             </StyledForm>
           </>
         )}

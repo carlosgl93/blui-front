@@ -24,7 +24,6 @@ const DesktopResults = ({ filteredPrestadores }: DesktopResultsProps) => {
         padding: '1rem',
       }}
     >
-      {/* FILTERS */}
       <DesktopFilters />
 
       <DesktopResultList filteredResults={filteredPrestadores} />

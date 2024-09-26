@@ -1,10 +1,15 @@
-import { TextField, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
 import { SaveButton } from '@/components/SaveButton';
 import { useDetallesBasicos } from './useDetallesBasicos';
 import Loading from '@/components/Loading';
 import BackButton from '@/components/BackButton';
+import {
+  BackButtonContainer,
+  Container,
+  Wrapper,
+} from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 
 export interface IDetallesBasicosInputs {
   email: string;
@@ -61,22 +66,30 @@ export const DetallesBasicos = () => {
   const { errors, isDirty } = formState;
 
   return (
-    <Box>
-      <BackButton
-        to="/construir-perfil"
-        ignoreMargin
-        displayText
-        style={{
-          margin: '1rem',
-          marginBottom: '0rem',
-        }}
-      />
+    <Wrapper>
+      <BackButtonContainer>
+        <BackButton
+          to="/construir-perfil"
+          ignoreMargin
+          displayText
+          style={{
+            margin: '1rem',
+            marginBottom: '0rem',
+          }}
+        />
+      </BackButtonContainer>
+
+      <StyledTitle>Detalles básicos</StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         {updatePrestadorLoading ? (
           <Loading />
         ) : (
-          <>
-            <StyledTitle>Detalles básicos</StyledTitle>
+          <Container
+            sx={{
+              gap: '1rem',
+              alignItems: 'center',
+            }}
+          >
             <StyledTextField
               {...register('email', { required: 'Email es requerido' })}
               label="Email"
@@ -148,9 +161,9 @@ export const DetallesBasicos = () => {
                 marginBottom: '2rem',
               }}
             />
-          </>
+          </Container>
         )}
       </StyledForm>
-    </Box>
+    </Wrapper>
   );
 };

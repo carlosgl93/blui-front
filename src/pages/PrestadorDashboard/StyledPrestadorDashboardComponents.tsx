@@ -1,23 +1,29 @@
+import { FlexBox } from '@/components/styled';
 import { Title } from '@/components/StyledComponents';
 import { Box, Button, styled } from '@mui/material';
 
 export const Wrapper = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
   padding: '1rem',
-  minHeight: '75vh',
+  minHeight: '80vh',
+  maxWidth: '600px',
+  margin: 'auto',
 }));
 
 export const Container = styled(Box)(() => ({
-  width: '100%',
-  height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'start',
+  alignItems: 'center',
   justifyContent: 'center',
   padding: '1rem',
   marginBottom: '1rem',
   backgroundColor: 'white',
   boxSizing: 'border-box',
   borderRadius: '.5rem',
+  width: 'fit-content',
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({
@@ -40,9 +46,22 @@ export const StyledList = styled('ul')(() => ({
 }));
 
 export const StyledButton = styled(Button)(() => ({
-  width: '100%',
   fontSize: '1rem',
   fontWeight: 'bold',
   color: 'white',
   margin: '1rem 0',
+}));
+
+export const BackButtonContainer = styled(FlexBox)(() => ({
+  width: '100%',
+  justifyContent: 'flex-start',
+  maxWidth: '568px',
+}));
+
+export const SectionTitleContainer = styled(FlexBox)(() => ({
+  width: '100%',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '1rem',
+  maxWidth: '568px',
 }));

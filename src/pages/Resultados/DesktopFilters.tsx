@@ -1,32 +1,19 @@
-import {
-  StyledSelect,
-  StyledUnorderedList,
-  StyledListItem,
-  StyledCheckboxInput,
-  Title,
-} from '@/components/StyledComponents';
-import { List, ListItemButton, ListItemText } from '@mui/material';
+import { StyledSelect, Title } from '@/components/StyledComponents';
+import { IconButton, List, ListItemButton, ListItemText } from '@mui/material';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Box } from '@mui/system';
 import FiltersSearchBar from './FiltersSearchBar';
 import useRecibeApoyo from '@/store/recibeApoyo';
 
-import { availability } from '@/utils/constants';
 import { Servicio } from '@/types/Servicio';
 import { ChangeEvent } from 'react';
 import { useServicios } from '@/hooks/useServicios';
 
 const DesktopFilters = () => {
-  const [
-    { servicio, especialidad, comuna },
-    { removeComuna, selectServicio, selectEspecialidad, setAvailability },
-  ] = useRecibeApoyo();
-
+  const [{ servicio, especialidad, comuna }, { removeComuna, selectServicio, selectEspecialidad }] =
+    useRecibeApoyo();
   const { allServicios } = useServicios();
-
-  const especialidades = allServicios
-    .map((s) => s.especialidades)
-    .map((e) => e?.map((esp) => esp.especialidadName));
-
+  const especialidades = servicio?.especialidades;
   const handleSelectServicio = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedService = allServicios.find((s: Servicio) => s.serviceName === e.target.value);
     selectServicio(selectedService as Servicio);
@@ -54,7 +41,6 @@ const DesktopFilters = () => {
           <ListItemButton
             onClick={() => removeComuna(comuna!)}
             sx={{
-              color: 'secondary.main',
               display: 'grid',
               gridTemplateColumns: '90% 10%',
               alignItems: 'center',
@@ -63,6 +49,7 @@ const DesktopFilters = () => {
               borderRadius: '0.25rem',
               padding: '0.5rem 1rem',
               backgroundColor: 'primary.main',
+              color: 'secondary.main',
               ':hover': {
                 backgroundColor: 'primary.light',
                 color: 'primary.dark',
@@ -71,6 +58,14 @@ const DesktopFilters = () => {
             }}
           >
             <ListItemText primary={comuna.name} />
+
+            <IconButton
+              sx={{
+                color: 'secondary.contrastText',
+              }}
+            >
+              <CancelOutlinedIcon />
+            </IconButton>
           </ListItemButton>
         </List>
       )}
@@ -97,7 +92,7 @@ const DesktopFilters = () => {
         </StyledSelect>
       )}
 
-      {servicio && especialidades && (
+      {servicio && especialidades?.length && (
         <>
           <Title
             variant="h6"
@@ -130,7 +125,7 @@ const DesktopFilters = () => {
       {/* ESPECIALIDAD */}
 
       {/* DISPONIBILIDAD */}
-      <Title
+      {/* <Title
         variant="h6"
         sx={{
           fontSize: '1.2rem',
@@ -153,7 +148,7 @@ const DesktopFilters = () => {
             </StyledListItem>
           );
         })}
-      </StyledUnorderedList>
+      </StyledUnorderedList> */}
     </Box>
   );
 };

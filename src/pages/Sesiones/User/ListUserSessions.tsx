@@ -29,6 +29,7 @@ export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
 
     return { userPastSessions, userFutureSessions };
   }, [userSessions]);
+
   if (!userSessions.length) {
     return (
       <>
@@ -55,11 +56,22 @@ export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
       </Box>
       {/* PAST SESSIONS MAP/ITERATION */}
       {showPastSessions &&
+        userPastSessions.length > 0 &&
         userPastSessions.map((appointment, y) => (
           <Fragment key={y}>
             <UserSessionCard appointment={appointment} />
           </Fragment>
         ))}
+      {showPastSessions && !userPastSessions.length && (
+        <Box
+          sx={{
+            margin: '2rem auto',
+          }}
+        >
+          <Text>No tienes sesiones pasadas.</Text>
+        </Box>
+      )}
+
       {/* FUTURE SESSIONS MAP/ITERATION */}
       {userFutureSessions?.map((appointment, i) => (
         <Fragment key={i}>

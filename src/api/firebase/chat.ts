@@ -101,6 +101,29 @@ export const sendMessage = async ({
     timestamp: new Date().toISOString().toString(),
   };
   try {
+    // first check if the conversation exists, if it does we update it otherwise we create it:
+    const docSnap = await getDoc(messagesRef);
+    if (!docSnap.exists()) {
+      await sendFirstMessage({
+        userId,
+        providerId,
+        message,
+        sentBy,
+        providerName,
+        username,
+        userEmail,
+        providerEmail,
+      });
+      return {
+        success: true,
+        message: newMessage,
+        sentBy,
+        providerName,
+        username,
+        userEmail,
+        providerEmail,
+      };
+    }
     await updateDoc(messagesRef, {
       messages: arrayUnion(newMessage),
     });

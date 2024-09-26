@@ -37,6 +37,7 @@ module.exports = {
     "no-case-declarations": "off",
     "no-multi-spaces": "off",
     "camelcase": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "linebreak-style": "off",
   },
 };
