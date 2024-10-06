@@ -64,7 +64,7 @@ export async function createPrestador({
       rut,
       comunas: comunas,
       servicio: servicio?.serviceName,
-      especialidad: especialidad?.especialidadName,
+      especialidad: especialidad?.especialidadName || '',
       offersFreeMeetAndGreet: false,
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       verified: false,

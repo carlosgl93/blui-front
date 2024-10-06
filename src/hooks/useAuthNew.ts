@@ -22,18 +22,19 @@ import { determineRedirectAfterLogin } from '../utils/redirectAfterLoginLogic';
 import { useResetState } from './useResetState';
 
 export const useAuthNew = () => {
-  const setNotification = useSetRecoilState(notificationState);
   const [user, setUserState] = useRecoilState(userState);
-  const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
-  // const [, { resetEntregaApoyoState }] = useEntregaApoyo();
-  // const [ , { resetRecibeApoyoState }] = useRecibeApoyo();
+  const setNotification = useSetRecoilState(notificationState);
+  const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const setEditDisponibilidad = useSetRecoilState(editDisponibilidadState);
   const { resetState } = useResetState();
 
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  console.log('user', user);
+  console.log('prestador', prestador);
 
   const { mutate: createPrestadorMutation, isLoading: createPrestadorLoading } = useMutation(
     createPrestador,
@@ -124,6 +125,7 @@ export const useAuthNew = () => {
         severity: 'info',
       });
       return signInWithEmailAndPassword(auth, correo, contrasena).then(async (userCredential) => {
+        console.log('signing in', userCredential);
         const usersColectionRef = collection(db, 'users');
         const prestadorCollectionRef = collection(db, 'providers');
         const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
@@ -139,11 +141,13 @@ export const useAuthNew = () => {
           const user = users.docs[0].data() as User;
           user.token = userCredential.user.refreshToken;
           user.id = userCredential.user.uid;
+          console.log('user from firebase', user);
           setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
           queryClient.setQueryData(['user', correo], user);
           return { role: 'user', data: user };
         } else if (prestadores.docs.length > 0) {
           const prestador = prestadores.docs[0].data() as Prestador;
+          console.log('prestador from firebase', prestador);
           const availabilityCollectionRef = collection(
             db,
             'providers',

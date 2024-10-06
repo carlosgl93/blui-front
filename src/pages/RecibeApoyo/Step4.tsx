@@ -4,6 +4,7 @@ import { recibeApoyoSteps } from './recibeApoyoSteps';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { useNavigate } from 'react-router-dom';
 import SpecialityList from './SpecialityList';
+import { useEffect } from 'react';
 
 const Step4 = () => {
   const [{ step, servicio }, { decreaseStep, resetServicio }] = useRecibeApoyo();
@@ -18,6 +19,15 @@ const Step4 = () => {
     resetServicio();
     decreaseStep();
   };
+
+  useEffect(() => {
+    if (!servicio) {
+      handlePrevious();
+    }
+    if (servicio?.serviceName === 'Cuidadora' || servicio?.serviceName === 'Sana Compañía') {
+      router('/registrar-usuario');
+    }
+  }, [servicio?.serviceName]);
 
   return (
     <>

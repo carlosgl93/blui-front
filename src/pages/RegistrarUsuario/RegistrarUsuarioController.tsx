@@ -67,7 +67,7 @@ const RegistrarUsuarioController = () => {
   const navigate = useNavigate();
   const setNotification = useSetRecoilState(notificationState);
 
-  const [{ forWhom, comuna, servicio, especialidad }] = useRecibeApoyo();
+  const [{ forWhom, comuna, servicio }] = useRecibeApoyo();
 
   const initialState = {
     error: '',
@@ -131,7 +131,7 @@ const RegistrarUsuarioController = () => {
         message: 'Debes seleccionar una comuna',
         severity: 'error',
       });
-    } else if (!servicio || !especialidad) {
+    } else if (!servicio) {
       setNotification({
         open: true,
         message: 'Debes seleccionar un servicio y una especialidad',
@@ -150,7 +150,6 @@ const RegistrarUsuarioController = () => {
         correo,
         acceptedTerms,
         servicio,
-        especialidad,
       };
 
       try {

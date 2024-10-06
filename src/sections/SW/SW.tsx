@@ -45,9 +45,9 @@ function SW() {
       console.log('needRefresh');
       setNotification({
         open: true,
-        message:
-          'Hay una nueva versión disponible, haz click en el botón de recargar para actualizar.',
+        message: 'Hay una nueva versión disponible, haz click en el botón para actualizar.',
         severity: 'success',
+        persist: true,
         action: (
           <Button
             onClick={() => {
@@ -59,7 +59,6 @@ function SW() {
             Actualizar
           </Button>
         ),
-        persist: true,
       });
     }
   }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);

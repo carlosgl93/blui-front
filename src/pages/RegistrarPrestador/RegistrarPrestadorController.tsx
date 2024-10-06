@@ -187,7 +187,7 @@ const RegistrarPrestadorController = () => {
   }, [user, prestador]);
 
   useEffect(() => {
-    if (!selectedServicio || !selectedComunas || !selectedEspecialidad) {
+    if (!selectedServicio || !selectedComunas) {
       navigate('/entrega-apoyo');
     }
   }, [selectedComunas, selectedServicio]);

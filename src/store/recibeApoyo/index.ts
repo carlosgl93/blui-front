@@ -7,6 +7,7 @@ import { Comuna } from '@/types/Comuna';
 import { Especialidad, Servicio } from '@/types/Servicio';
 import { Prestador } from '@/types/Prestador';
 import { ForWhom } from '@/api/auth';
+import { useNavigate } from 'react-router-dom';
 
 type RecibeApoyoState = {
   step: number;
@@ -40,6 +41,7 @@ const recibeApoyoState = atom<RecibeApoyoState>({
 
 function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   const [apoyo, setApoyo] = useRecoilState(recibeApoyoState);
+  const navigate = useNavigate();
 
   const resetComuna = () => {
     setApoyo((prev) => ({ ...prev, comuna: null }));
@@ -100,6 +102,11 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   };
 
   const increaseStep = () => {
+    if (
+      apoyo?.servicio?.serviceName === 'Cuidado' ||
+      apoyo?.servicio?.serviceName === 'Sana Compañía'
+    )
+      navigate('/registrar-usuario');
     setApoyo((prev) => ({
       ...prev,
       step: prev.step + 1,

@@ -23,7 +23,7 @@ export type CreateUserParams = {
   contrasena: string;
   acceptedTerms: boolean;
   servicio: Pick<Servicio, 'serviceName'>;
-  especialidad: Pick<Especialidad, 'especialidadName'>;
+  especialidad?: Pick<Especialidad, 'especialidadName'>;
 };
 
 export type ForWhom = 'paciente' | 'tercero' | '';
@@ -74,7 +74,7 @@ export async function createUser({
       comuna: comuna,
       acceptedTerms,
       service: servicio.serviceName,
-      speciality: especialidad.especialidadName,
+      speciality: especialidad?.especialidadName || '',
     };
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);

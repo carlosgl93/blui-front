@@ -14,8 +14,9 @@ export const NotificationSnackbar = () => {
         mb: '5vh',
       }}
       open={open}
-      autoHideDuration={persist ? null : 10000}
+      autoHideDuration={persist ? null : 10000} // null to persist.
       onClose={onClose}
+      onClick={onClose}
     >
       <Alert action={action} severity={severity}>
         {message}
