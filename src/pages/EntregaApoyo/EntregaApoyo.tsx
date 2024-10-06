@@ -20,7 +20,6 @@ function EntregaApoyo() {
           flexDirection: 'column',
           justifyContent: 'start',
           gap: 2,
-          pt: 4,
         }}
       >
         <Box

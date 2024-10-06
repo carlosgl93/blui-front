@@ -76,6 +76,8 @@ export const useDisponibilidadNew = () => {
   };
 
   const handleTimeChange = (e: Dayjs, id: number, startOrEnd: 'startTime' | 'endTime') => {
+    let showError = false;
+    let errorMessage = '';
     setAvailability((prev) => {
       const newDisponibilidad = prev.map((day) => {
         if (day.id !== id) {
@@ -88,22 +90,29 @@ export const useDisponibilidadNew = () => {
         // If updating start time, ensure it's before existing end time
         if (startOrEnd === 'startTime' && existingTime && e.isAfter(dayjs(existingTime, 'HH:mm'))) {
           console.error('Start time must be before end time');
-          setNotification({
-            open: true,
-            message: 'La hora de inicio debe ser antes de la hora de término',
-            severity: 'error',
-          });
+          showError = true;
+          errorMessage = 'La hora de inicio debe ser antes de la hora de término';
+          // setNotification((prev) => ({
+          //   ...prev,
+          //   open: true,
+          //   message: 'La hora de inicio debe ser antes de la hora de término',
+          //   severity: 'error',
+          // }));
           return day;
         }
 
         // If updating end time, ensure it's after existing start time
         if (startOrEnd === 'endTime' && existingTime && e.isBefore(dayjs(existingTime, 'HH:mm'))) {
           console.error('End time must be after start time');
-          setNotification({
-            open: true,
-            message: 'La hora de término debe ser despues de la hora de inicio',
-            severity: 'error',
-          });
+          console.error('End time must be after start time');
+          showError = true;
+          errorMessage = 'La hora de término debe ser después de la hora de inicio';
+          // setNotification((prev) => ({
+          //   ...prev,
+          //   open: true,
+          //   message: 'La hora de término debe ser despues de la hora de inicio',
+          //   severity: 'error',
+          // }));
           return day;
         }
 
@@ -120,6 +129,14 @@ export const useDisponibilidadNew = () => {
 
       return newDisponibilidad;
     });
+    if (showError) {
+      setNotification((prev) => ({
+        ...prev,
+        open: true,
+        message: errorMessage,
+        severity: 'error',
+      }));
+    }
   };
 
   const { mutate: handleSaveDisponibilidad, isLoading: saveDisponibilidadLoading } = useMutation(

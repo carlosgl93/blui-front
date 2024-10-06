@@ -13,23 +13,23 @@ import { notificationState } from '@/store/snackbar';
 import { FirebaseError } from 'firebase/app';
 import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
-import useEntregaApoyo from '@/store/entregaApoyo';
-import useRecibeApoyo from '@/store/recibeApoyo';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
 import { editDisponibilidadState } from '@/store/construirPerfil/availability';
 import { createPrestador, createUser } from '@/api/auth';
 import { sendVerificationEmailApi } from '@/api';
 import { determineRedirectAfterLogin } from '../utils/redirectAfterLoginLogic';
+import { useResetState } from './useResetState';
 
 export const useAuthNew = () => {
   const setNotification = useSetRecoilState(notificationState);
   const [user, setUserState] = useRecoilState(userState);
   const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
-  const [, { resetEntregaApoyoState }] = useEntregaApoyo();
-  const [, { resetRecibeApoyoState }] = useRecibeApoyo();
+  // const [, { resetEntregaApoyoState }] = useEntregaApoyo();
+  // const [ , { resetRecibeApoyoState }] = useRecibeApoyo();
   const setEditDisponibilidad = useSetRecoilState(editDisponibilidadState);
+  const { resetState } = useResetState();
 
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
   const navigate = useNavigate();
@@ -73,7 +73,11 @@ export const useAuthNew = () => {
     },
   );
 
-  const { mutate: createUserMutation, isLoading: createUserLoading } = useMutation(createUser, {
+  const {
+    mutate: createUserMutation,
+    isLoading: createUserLoading,
+    error: createUserError,
+  } = useMutation(createUser, {
     onSuccess(data) {
       setNotification({
         open: true,
@@ -294,11 +298,12 @@ export const useAuthNew = () => {
     onSuccess: () => {
       localStorage.removeItem('user');
       localStorage.removeItem('prestador');
+      resetState();
 
-      setUserState(null);
-      setPrestadorState(null);
-      resetEntregaApoyoState();
-      resetRecibeApoyoState();
+      // setUserState(null);
+      // setPrestadorState(null);
+      // resetEntregaApoyoState();
+      // resetRecibeApoyoState();
       queryClient.resetQueries();
       navigate('/ingresar');
       setEditDisponibilidad(false);
@@ -316,6 +321,7 @@ export const useAuthNew = () => {
     isLoggedIn,
     loginLoading,
     createUserLoading,
+    createUserError,
     adminLoginLoading,
     createPrestadorLoading,
   };

@@ -18,24 +18,11 @@ export interface User {
   address: string;
   token?: string;
   acceptedTerms: boolean;
+  service: string;
+  speciality: string;
 }
 
 export const userState = atom<null | User>({
   key: 'userState', // unique ID (with respect to other atoms/selectors)
-  default: {
-    email: '',
-    id: '',
-    role: '',
-    firstname: '',
-    lastname: '',
-    forWhom: '',
-    patientName: '',
-    rut: '',
-    isLoggedIn: false,
-    gender: '',
-    dob: '',
-    phone: '',
-    address: '',
-    acceptedTerms: false,
-  },
+  default: null,
 });

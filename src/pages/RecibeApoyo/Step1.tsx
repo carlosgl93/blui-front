@@ -23,10 +23,11 @@ const options: Options[] = [
 ];
 
 const Step1 = () => {
-  const [{ forWhom }, { increaseStep }] = useRecibeApoyo();
+  const [{ forWhom }, { increaseStep, resetRecibeApoyoState }] = useRecibeApoyo();
   const router = useNavigate();
 
   const handlePrevious = () => {
+    resetRecibeApoyoState();
     router('/comienzo');
   };
 

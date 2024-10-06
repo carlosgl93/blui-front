@@ -5,7 +5,7 @@
  *
  */
 
-import { Comuna, Servicio } from '@/types';
+import { Comuna, Especialidad, Servicio } from '@/types';
 import { defaultAvailability } from '@/utils/constants';
 import dayjs from 'dayjs';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
@@ -24,7 +24,7 @@ export type CreatePrestadorParams = {
   comunas: Comuna[];
   servicio: Servicio | undefined;
   acceptedTerms: boolean;
-  // especialidad: Especialidad | undefined;
+  especialidad: Especialidad | undefined;
 };
 
 export async function createPrestador({
@@ -35,6 +35,7 @@ export async function createPrestador({
   contrasena,
   comunas,
   servicio,
+  especialidad,
 }: CreatePrestadorParams) {
   try {
     // Check if a user with the given email already exists in the users collection
@@ -63,6 +64,7 @@ export async function createPrestador({
       rut,
       comunas: comunas,
       servicio: servicio?.serviceName,
+      especialidad: especialidad?.especialidadName,
       offersFreeMeetAndGreet: false,
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       verified: false,

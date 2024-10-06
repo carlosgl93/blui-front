@@ -1,29 +1,9 @@
 import { FormControl, InputLabel, Select, MenuItem, TextField, Box, Button } from '@mui/material';
-import { ServicioController } from './ServicioController';
+import { serviceDurationOptions, ServicioController } from './ServicioController';
 import { SubTitle } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { SaveButton } from '@/components/SaveButton';
 import Loading from '@/components/Loading';
 import { formatCLP } from '@/utils/formatCLP';
-
-const serviceDurationOptions = [
-  { value: 15, label: '15 minutos' },
-  { value: 30, label: '30 minutos' },
-  { value: 45, label: '45 minutos' },
-  { value: 60, label: '1 hora' },
-  { value: 120, label: '2 horas' },
-  { value: 180, label: '3 horas' },
-  { value: 240, label: '4 horas' },
-  { value: 300, label: '5 horas' },
-  { value: 360, label: '6 horas' },
-  { value: 420, label: '7 horas' },
-  { value: 480, label: '8 horas' },
-  { value: 540, label: '9 horas' },
-  { value: 600, label: '10 horas' },
-  { value: 660, label: '11 horas' },
-  { value: 720, label: '12 horas' },
-  { value: 960, label: '16 horas' },
-  { value: 1440, label: '24 horas' },
-];
 
 export const CreateServicio = () => {
   const {
@@ -155,8 +135,8 @@ export const CreateServicio = () => {
             placeholder={formatCLP(Number(tarifa))}
             value={tarifa}
             onChange={handleChangeTarifa}
-            helperText="Sin puntos ni comas. Valor mínimo: 100 CLP"
-            error={Number(tarifa) < 100}
+            helperText="Sin puntos ni comas. Valor mínimo: 1000 CLP"
+            error={Number(tarifa) < 1000}
           />
 
           <Box

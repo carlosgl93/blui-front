@@ -55,14 +55,14 @@ export const PrestadorChat = () => {
     <ChatContainer>
       {messagesLoading && <Loading />}
       {messages?.messages?.map((m, index: number) => {
-        const isLastMessage = index === conversation.messages?.length - 1;
+        const isLastMessage = index === conversation?.messages?.length - 1;
         if (m?.sentBy === 'provider') {
           return (
             <Box key={m.id}>
               <StyledPrestadorMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
-                {conversation.messages[index - 1]?.sentBy === 'provider' ? null : (
+                {conversation?.messages[index - 1]?.sentBy === 'provider' ? null : (
                   <StyledProviderName>
-                    {conversation.providerName.includes('@') ? 'Tú' : conversation.providerName}:
+                    {conversation?.providerName.includes('@') ? 'Tú' : conversation?.providerName}:
                   </StyledProviderName>
                 )}
 
@@ -79,8 +79,8 @@ export const PrestadorChat = () => {
           return (
             <Box key={m.id}>
               <StyledUsuarioMensajeContainer ref={isLastMessage ? lastMessageRef : null}>
-                {conversation.messages[index - 1]?.sentBy === 'user' ? null : (
-                  <StyledCustomerName>{conversation.username}:</StyledCustomerName>
+                {conversation?.messages[index - 1]?.sentBy === 'user' ? null : (
+                  <StyledCustomerName>{conversation?.username}:</StyledCustomerName>
                 )}
 
                 <StyledMensajeAndtTimestampContainer>
@@ -128,10 +128,10 @@ export const PrestadorChat = () => {
                 handleSaveMessage({
                   message,
                   sentBy: 'provider',
-                  providerId: conversation.providerId,
-                  userId: conversation.userId,
-                  username: conversation.username,
-                  providerName: conversation.providerName,
+                  providerId: conversation?.providerId,
+                  userId: conversation?.userId,
+                  username: conversation?.username,
+                  providerName: conversation?.providerName,
                   providerEmail: prestador?.email || '',
                   userEmail: user?.email || '',
                 })

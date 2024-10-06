@@ -4,12 +4,11 @@ import { Box, Button, Checkbox, TextField, Typography, useTheme } from '@mui/mat
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarPrestadorController from './RegistrarPrestadorController';
 import { formInputs } from './formInputs';
-import { useAuthNew } from '@/hooks/useAuthNew';
 import { Link } from 'react-router-dom';
 
 function RegistrarPrestador() {
-  const { state, handleChange, handleSubmit, handleAcceptTerms } = RegistrarPrestadorController();
-  const { createPrestadorLoading } = useAuthNew();
+  const { state, handleChange, handleSubmit, handleAcceptTerms, createPrestadorLoading } =
+    RegistrarPrestadorController();
   const theme = useTheme();
   return (
     <>
@@ -138,7 +137,7 @@ function RegistrarPrestador() {
                 marginTop: '5vh',
               }}
             >
-              Siguiente
+              Registrar
             </Button>
           </Box>
         </Box>

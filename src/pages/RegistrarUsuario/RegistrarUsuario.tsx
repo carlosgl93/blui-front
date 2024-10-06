@@ -5,7 +5,6 @@ import { Text, TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarUsuarioController from './RegistrarUsuarioController';
 import { formInputs } from './formInputs';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import useAuth from '@/store/auth';
 import Loading from '@/components/Loading';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { Link } from 'react-router-dom';
@@ -17,12 +16,23 @@ function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
   const { state, handleChange, handleSubmit, handleAcceptTerms } = RegistrarUsuarioController();
   const { selectedComunas } = useComunas();
-  const [user] = useAuth();
   const theme = useTheme();
 
-  const { createUserLoading } = useAuthNew();
+  const { createUserLoading, createUserError } = useAuthNew();
 
-  if (user.loading) return <Loading />;
+  if (createUserLoading) return <Loading />;
+
+  const shouldDisable =
+    state.nombre === '' ||
+    state.apellido === '' ||
+    state.correo === '' ||
+    state.contrasena === '' ||
+    state.confirmarContrasena === '' ||
+    state.error !== '' ||
+    state.rut === '' ||
+    !state.acceptedTerms ||
+    createUserLoading ||
+    !!createUserError;
 
   return (
     <>
@@ -32,9 +42,9 @@ function RegistrarUsuario() {
           flexDirection: 'column',
           textAlign: 'center',
           mb: '2rem',
-          p: {
-            xs: '2rem',
-            sm: '2rem',
+          px: {
+            xs: '1rem',
+            md: 'auto',
           },
         }}
       >
@@ -42,7 +52,7 @@ function RegistrarUsuario() {
           <Title
             sx={{
               fontSize: '1.4rem',
-              my: '2.5vh',
+              my: '1rem',
             }}
           >
             ¡Estas a un solo paso! Registrate para poder contactar a la persona que buscas.
@@ -50,7 +60,7 @@ function RegistrarUsuario() {
         </TextContainer>
         <Box
           component={'form'}
-          sx={{ gap: theme.spacing(2), display: 'flex', flexDirection: 'column' }}
+          sx={{ gap: theme.spacing(1), display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
         >
           <Box
@@ -111,7 +121,7 @@ function RegistrarUsuario() {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              mt: '2rem',
+              mt: '1rem',
             }}
           >
             <Box
@@ -145,29 +155,19 @@ function RegistrarUsuario() {
               alignItems: 'center',
             }}
           >
-            {user.error && (
+            {createUserError && (
               <Box>
                 <Text
                   sx={{
                     color: 'red',
                   }}
                 >
-                  {user.error}
+                  Hubo un error al crear tu cuenta. {createUserError.message}
                 </Text>
               </Box>
             )}
             <Button
-              disabled={
-                state.nombre === '' ||
-                state.apellido === '' ||
-                state.correo === '' ||
-                state.contrasena === '' ||
-                state.confirmarContrasena === '' ||
-                state.error !== '' ||
-                state.rut === '' ||
-                !state.acceptedTerms ||
-                createUserLoading
-              }
+              disabled={shouldDisable}
               variant="contained"
               onClick={handleSubmit}
               sx={{

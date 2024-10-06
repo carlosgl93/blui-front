@@ -7,19 +7,19 @@ export const services: Servicio[] = [
     especialidades: [
       {
         id: 0,
-        especialidadName: 'Kinesiologia',
+        especialidadName: 'Kinesiología',
       },
       {
         id: 1,
-        especialidadName: 'Quiropractica',
+        especialidadName: 'Quiropráctica',
       },
       {
         id: 2,
-        especialidadName: 'Fonoaudiologia',
+        especialidadName: 'Fonoaudiología',
       },
       {
         id: 3,
-        especialidadName: 'Podologia',
+        especialidadName: 'Podología',
       },
       {
         id: 4,
@@ -35,10 +35,10 @@ export const services: Servicio[] = [
     id: 1,
     serviceName: 'Servicios de enfermería',
     especialidades: [
-      { id: 6, especialidadName: 'Tecnico enfermeria' },
+      { id: 6, especialidadName: 'Técnico en enfermería' },
       {
         id: 7,
-        especialidadName: 'Enfermeria general',
+        especialidadName: 'Enfermería general',
       },
     ],
   },
@@ -48,6 +48,6 @@ export const services: Servicio[] = [
   },
   {
     id: 3,
-    serviceName: 'Sana compañía',
+    serviceName: 'Sana Compañía',
   },
 ];

@@ -1,4 +1,4 @@
-import { Conversation, Message } from '@/api/firebase/chat';
+import { Conversation } from '@/api/firebase/chat';
 import { atom } from 'recoil';
 
 export const chatState = atom<Conversation>({
@@ -10,9 +10,4 @@ export const chatState = atom<Conversation>({
     providerName: '',
     messages: [],
   },
-});
-
-export const prestadorChat = atom<Message[]>({
-  key: 'prestadorChatState',
-  default: [],
 });

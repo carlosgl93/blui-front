@@ -55,7 +55,7 @@ const giphy404 = 'https://giphy.com/embed/2asOjumchIeb5gZO9m';
 const paymentSettings = {
   appCommission: 1.02,
   currency: 'CLP',
-  paymentMethods: 99,
+  paymentMethods: 1,
   providerPayAfterDays: 3,
 };
 

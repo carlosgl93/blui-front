@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Title } from '@/components/StyledComponents';
 import Loading from '@/components/Loading';
 import { useAuthNew } from '@/hooks/useAuthNew';
@@ -10,12 +10,24 @@ import { useAuthNew } from '@/hooks/useAuthNew';
 function Ingresar() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loginLoading } = useAuthNew();
+  const navigate = useNavigate();
+  const { login, loginLoading, user, prestador } = useAuthNew();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     login({ correo: email, contrasena: password });
   };
+
+  useEffect(() => {
+    if (user?.email) {
+      navigate('/usuario-dashboard');
+      return;
+    }
+    if (prestador?.email) {
+      navigate('/prestador-dashboard');
+      return;
+    }
+  }, []);
 
   if (loginLoading) return <Loading />;
 

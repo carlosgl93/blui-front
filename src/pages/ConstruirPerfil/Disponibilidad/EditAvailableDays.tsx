@@ -1,5 +1,5 @@
 import { Box, Button, Switch } from '@mui/material';
-import { MobileTimePicker, TimePicker } from '@mui/x-date-pickers';
+import { TimePicker } from '@mui/x-date-pickers';
 import { AvailabilityData, StyledDayName } from './ListAvailableDays';
 import { CenteredDivider } from '@/components/StyledDivider';
 import {
@@ -64,7 +64,7 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                       />
                     </StyledTimerContainer>
                     <StyledTimerContainer>
-                      <MobileTimePicker
+                      <TimePicker
                         sx={{
                           display: 'flex',
                         }}
@@ -72,6 +72,7 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                         value={dayjs(times.endTime, 'HH:mm')}
                         onChange={(e) => handleTimeChange(e!, id, 'endTime')}
                         minutesStep={30}
+                        minTime={dayjs(times.startTime, 'HH:mm')}
                       />
                     </StyledTimerContainer>
                   </StyledTimePickerContainer>

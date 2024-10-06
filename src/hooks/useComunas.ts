@@ -82,6 +82,10 @@ export const useComunas = () => {
     return comunas;
   }, [regions]);
 
+  const resetComunas = () => {
+    setSelectedComunas([]);
+  };
+
   const handleChangeSearchComuna = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -213,5 +217,6 @@ export const useComunas = () => {
     handleSelectComuna,
     handleRemoveComuna,
     handleUpdatePrestadorComunas,
+    resetComunas,
   };
 };

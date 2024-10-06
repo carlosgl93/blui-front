@@ -41,6 +41,14 @@ const recibeApoyoState = atom<RecibeApoyoState>({
 function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   const [apoyo, setApoyo] = useRecoilState(recibeApoyoState);
 
+  const resetComuna = () => {
+    setApoyo((prev) => ({ ...prev, comuna: null }));
+  };
+
+  const resetServicio = () => {
+    setApoyo((prev) => ({ ...prev, servicio: null }));
+  };
+
   const resetRecibeApoyoState = () => {
     setApoyo({
       step: 0,
@@ -185,6 +193,8 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
       setComunas,
       setPrestadores,
       resetRecibeApoyoState,
+      resetComuna,
+      resetServicio,
     },
   ];
 }

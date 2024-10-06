@@ -18,6 +18,9 @@ export const recibeApoyoSteps = [
     options: [],
   },
   {
-    title: '¿Que tipo de apoyo necesitas?',
+    title: '¿Qué tipo de apoyo necesitas?',
+  },
+  {
+    title: 'Selecciona una especialidad',
   },
 ];

@@ -16,8 +16,8 @@ export const Section = styled(Box)(({ theme }) => ({
 export const TextContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
-  gap: '3rem',
+  justifyContent: 'start',
+  gap: '1rem',
   [theme.breakpoints.down('sm')]: {
     paddingBottom: theme.spacing(4),
   },
