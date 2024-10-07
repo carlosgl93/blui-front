@@ -7,7 +7,12 @@ export const usePrestadorDashboard = () => {
     router('/construir-perfil');
   };
 
+  const handleSesiones = () => {
+    router('/sesiones');
+  };
+
   return {
     handleConstruirPerfil,
+    handleSesiones,
   };
 };

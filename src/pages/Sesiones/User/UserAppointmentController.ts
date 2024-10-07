@@ -1,15 +1,19 @@
 import { AppointmentParams, confirmAppointmentDone, rateAppointment } from '@/api/appointments';
 import { db } from '@/firebase';
+import { chatState } from '@/store/chat/chatStore';
 import { notificationState } from '@/store/snackbar';
 import dayjs from 'dayjs';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 export function UserAppointmentController(appointment: AppointmentParams) {
   const { provider, scheduledDate, scheduledTime } = appointment;
   const setNotification = useSetRecoilState(notificationState);
+  const navigate = useNavigate();
+  const setChatState = useSetRecoilState(chatState);
 
   const isPast = useMemo(() => {
     const dateTime = scheduledDate + ' ' + scheduledTime;
@@ -65,15 +69,32 @@ export function UserAppointmentController(appointment: AppointmentParams) {
     }
   };
 
-  const handleRateAppointment = (rating: number) => {
+  const handleRateAppointment = (rating: number, comment?: string) => {
     if (appointment.id && provider.id) {
       rateAppointmentMutation({
         providerId: provider.id,
         appointmentId: appointment.id,
         rating,
-        comment: '',
+        comment: comment || '',
       });
     }
+  };
+
+  const handleChat = () => {
+    setChatState({
+      providerId: appointment?.provider?.id,
+      userId: appointment?.customer?.id,
+      providerName: appointment.provider.firstname ?? '',
+      username: appointment.customer.firstname ?? '',
+      id: '',
+      messages: [],
+    });
+    navigate('/chat', {
+      state: {
+        providerId: appointment?.provider?.id,
+        userId: appointment?.customer?.id,
+      },
+    });
   };
 
   useEffect(() => {
@@ -93,5 +114,6 @@ export function UserAppointmentController(appointment: AppointmentParams) {
     rateAppointmentLoading,
     handleConfirmAppointmentDone,
     handleRateAppointment,
+    handleChat,
   };
 }

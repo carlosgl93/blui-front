@@ -37,6 +37,7 @@ export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
       </>
     );
   }
+
   return (
     <>
       {/* PAST SESSIONS BUTTON */}

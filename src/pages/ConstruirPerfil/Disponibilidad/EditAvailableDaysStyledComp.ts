@@ -34,10 +34,11 @@ export const StyledToggleContainer = styled(Box)(() => ({
 export const StyledTimePickerContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
   gap: '1.5rem',
   padding: '1rem 0.5rem',
+  width: '100%',
 }));
 
 export const StyledTimerContainer = styled(Box)(() => ({

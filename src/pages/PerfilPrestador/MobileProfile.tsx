@@ -53,12 +53,12 @@ type MobileProfileProps = {
 
 export const MobileProfile = ({ prestador }: MobileProfileProps) => {
   const {
+    open,
+    scheduleModalOpen,
     handleClose,
     handleContact,
-    open,
     handleSchedule,
     handleCloseScheduleModal,
-    scheduleModalOpen,
   } = usePerfilPrestador(prestador);
   const theme = useTheme();
 

@@ -33,9 +33,6 @@ export const useAuthNew = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  console.log('user', user);
-  console.log('prestador', prestador);
-
   const { mutate: createPrestadorMutation, isLoading: createPrestadorLoading } = useMutation(
     createPrestador,
     {
@@ -124,44 +121,45 @@ export const useAuthNew = () => {
         message: 'Iniciando sesión...',
         severity: 'info',
       });
-      return signInWithEmailAndPassword(auth, correo, contrasena).then(async (userCredential) => {
-        console.log('signing in', userCredential);
-        const usersColectionRef = collection(db, 'users');
-        const prestadorCollectionRef = collection(db, 'providers');
-        const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
-        const prestadorQuery = query(
-          prestadorCollectionRef,
-          limit(1),
-          where('email', '==', correo),
-        );
-        const users = await getDocs(userQuery);
-        const prestadores = await getDocs(prestadorQuery);
-
-        if (users.docs.length > 0) {
-          const user = users.docs[0].data() as User;
-          user.token = userCredential.user.refreshToken;
-          user.id = userCredential.user.uid;
-          console.log('user from firebase', user);
-          setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
-          queryClient.setQueryData(['user', correo], user);
-          return { role: 'user', data: user };
-        } else if (prestadores.docs.length > 0) {
-          const prestador = prestadores.docs[0].data() as Prestador;
-          console.log('prestador from firebase', prestador);
-          const availabilityCollectionRef = collection(
-            db,
-            'providers',
-            prestador.id,
-            'availability',
+      return signInWithEmailAndPassword(auth, correo.toLowerCase(), contrasena).then(
+        async (userCredential) => {
+          const usersColectionRef = collection(db, 'users');
+          const prestadorCollectionRef = collection(db, 'providers');
+          const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
+          const prestadorQuery = query(
+            prestadorCollectionRef,
+            limit(1),
+            where('email', '==', correo),
           );
-          const availabilityData = await getDocs(availabilityCollectionRef);
-          const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
-          prestador.availability = availability;
-          setPrestadorState({ ...prestador, isLoggedIn: true });
-          queryClient.setQueryData(['prestador', correo], prestador);
-          return { role: 'prestador', data: prestador };
-        }
-      });
+          const users = await getDocs(userQuery);
+          const prestadores = await getDocs(prestadorQuery);
+
+          if (users.docs.length > 0) {
+            const user = users.docs[0].data() as User;
+            user.token = userCredential.user.refreshToken;
+            user.id = userCredential.user.uid;
+            setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
+            queryClient.setQueryData(['user', correo], user);
+            return { role: 'user', data: user };
+          } else if (prestadores.docs.length > 0) {
+            const prestador = prestadores.docs[0].data() as Prestador;
+            const availabilityCollectionRef = collection(
+              db,
+              'providers',
+              prestador.id,
+              'availability',
+            );
+            const availabilityData = await getDocs(availabilityCollectionRef);
+            const availability = availabilityData.docs.map((doc) =>
+              doc.data(),
+            ) as AvailabilityData[];
+            prestador.availability = availability;
+            setPrestadorState({ ...prestador, isLoggedIn: true });
+            queryClient.setQueryData(['prestador', correo], prestador);
+            return { role: 'prestador', data: prestador };
+          }
+        },
+      );
     },
     {
       onError(error: FirebaseError) {

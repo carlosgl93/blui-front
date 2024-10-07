@@ -10,7 +10,7 @@ import { usePrestadorDashboard } from './usePrestadorDashboard';
 import { FlexBox } from '@/components/styled';
 
 export const PrestadorDashboard = () => {
-  const { handleConstruirPerfil } = usePrestadorDashboard();
+  const { handleConstruirPerfil, handleSesiones } = usePrestadorDashboard();
 
   return (
     <Wrapper>
@@ -36,6 +36,31 @@ export const PrestadorDashboard = () => {
         >
           <StyledButton variant="contained" onClick={handleConstruirPerfil}>
             Construir perfil
+          </StyledButton>
+        </FlexBox>
+      </Container>
+      <Container>
+        <StyledTitle>Sesiones</StyledTitle>
+        <Text>Organiza, chatea y confirma tus sesiones aquí</Text>
+        <StyledList>
+          <li>
+            <Text>Revisa fechas, horarios y clientes</Text>
+          </li>
+          <li>
+            <Text>Chatea con tus clientes.</Text>
+          </li>
+          <li>
+            <Text>Confirma la realización de la sesión para recibir el pago.</Text>
+          </li>
+        </StyledList>
+        <FlexBox
+          sx={{
+            width: '100%',
+            justifyContent: 'center',
+          }}
+        >
+          <StyledButton variant="contained" onClick={handleSesiones}>
+            Ver mis sesiones
           </StyledButton>
         </FlexBox>
       </Container>

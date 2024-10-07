@@ -182,7 +182,6 @@ const RegistrarUsuarioController = () => {
   }, [user, prestador]);
 
   useEffect(() => {
-    console.log(servicio, comuna, forWhom);
     if (!servicio || !comuna || !forWhom) {
       navigate('/recibe-apoyo');
     }

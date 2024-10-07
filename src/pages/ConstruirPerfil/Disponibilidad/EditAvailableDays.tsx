@@ -61,6 +61,7 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                         value={dayjs(times.startTime, 'HH:mm')}
                         onChange={(e) => handleTimeChange(e!, id, 'startTime')}
                         minutesStep={30}
+                        ampm={false}
                       />
                     </StyledTimerContainer>
                     <StyledTimerContainer>
@@ -73,6 +74,8 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                         onChange={(e) => handleTimeChange(e!, id, 'endTime')}
                         minutesStep={30}
                         minTime={dayjs(times.startTime, 'HH:mm')}
+                        ampm={false}
+                        views={['hours', 'minutes']}
                       />
                     </StyledTimerContainer>
                   </StyledTimePickerContainer>
