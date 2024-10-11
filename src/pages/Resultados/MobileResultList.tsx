@@ -103,7 +103,7 @@ export const MobileResultList = ({ filteredPrestadores }: MobileFilteredProps) =
             px: '2rem',
           }}
         >
-          <Text>Conoces a alguien para esta comuna y servicio? Invitalo a Blui!</Text>
+          {/* <Text>Conoces a alguien para esta comuna y servicio? Invitalo a Blui!</Text> */}
         </Box>
       )}
     </List>

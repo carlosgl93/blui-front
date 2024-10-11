@@ -26,21 +26,21 @@ function SW() {
   useEffect(() => {
     if (offlineReady) {
       console.log('offlineReady');
-      setNotification({
-        open: true,
-        message: 'Puedes instalar esta web!',
-        severity: 'success',
-        action: (
-          <Button
-            onClick={() => {
-              close();
-              setNotification((prev) => ({ ...prev, open: false }));
-            }}
-          >
-            Cerrar
-          </Button>
-        ),
-      });
+      // setNotification({
+      //   open: true,
+      //   message: 'Puedes instalar esta web!',
+      //   severity: 'success',
+      //   action: (
+      //     <Button
+      //       onClick={() => {
+      //         close();
+      //         setNotification((prev) => ({ ...prev, open: false }));
+      //       }}
+      //     >
+      //       Cerrar
+      //     </Button>
+      //   ),
+      // });
     } else if (needRefresh) {
       console.log('needRefresh');
       setNotification({
