@@ -118,7 +118,7 @@ export const DetallesBasicos = () => {
                 label="Género"
                 {...register('gender', { required: 'Género es requerido' })}
                 error={Boolean(errors.gender)}
-                defaultValue={prestador?.gender}
+                defaultValue={''}
                 value={prestador?.gender}
               >
                 <MenuItem value="">Selecciona tu genero</MenuItem>
@@ -139,7 +139,6 @@ export const DetallesBasicos = () => {
               sx={{
                 minWidth: '220px',
               }}
-              // fullWidth
             />
             <StyledTextField
               {...register('telefono', { required: 'Teléfono es requerido' })}
@@ -147,6 +146,7 @@ export const DetallesBasicos = () => {
               variant="outlined"
               error={Boolean(errors.telefono)}
               helperText={errors.telefono?.message}
+              type="tel"
             />
             <StyledTextField
               {...register('address')}

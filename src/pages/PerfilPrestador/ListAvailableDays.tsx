@@ -49,11 +49,13 @@ type ListAvailableDaysProps = {
 };
 
 export const ListAvailableDays = ({ disponibilidad }: ListAvailableDaysProps) => {
+  console.log('listing available days');
   return (
     <StyledList>
       {disponibilidad.map((d) => {
         const { day, isAvailable, times } = d;
         const { startTime, endTime } = times;
+        console.log(endTime);
 
         return (
           <StyledListItem key={day}>
@@ -75,7 +77,7 @@ export const ListAvailableDays = ({ disponibilidad }: ListAvailableDaysProps) =>
               </StyledDayName>
               {!isAvailable ? (
                 <StyledTimeText>No disponible</StyledTimeText>
-              ) : startTime === '00:00' && endTime === '23:59' ? (
+              ) : startTime === '00:00' && (endTime === '23:59' || endTime === '00:00') ? (
                 <StyledTimeText>Todo el dia</StyledTimeText>
               ) : (
                 <StyledTimeText>

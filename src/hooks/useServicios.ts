@@ -8,7 +8,7 @@ import {
   savePrestadorCreatedService,
   SavePrestadorCreatedServiceParams,
 } from '../api/servicios/savePrestadorCreatedService';
-import { handleServicioState } from '@/store/construirPerfil/servicios';
+import { servicioState } from '@/store/construirPerfil/servicios';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 import { defaultPrestador, Prestador, prestadorState } from '@/store/auth/prestador';
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
@@ -16,7 +16,7 @@ import { deleteService, DeleteServiceParams } from '../api/servicios/deleteServi
 
 export const useServicios = () => {
   const setNotification = useSetRecoilState(notificationState);
-  const setServicioState = useSetRecoilState(handleServicioState);
+  const setServicioState = useSetRecoilState(servicioState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
   const allServicios: Servicio[] = services;
   const interactedPrestador = useRecoilValue(interactedPrestadorState);

@@ -26,28 +26,28 @@ function SW() {
   useEffect(() => {
     if (offlineReady) {
       console.log('offlineReady');
-      setNotification({
-        open: true,
-        message: 'Puedes instalar esta web!',
-        severity: 'success',
-        action: (
-          <Button
-            onClick={() => {
-              close();
-              setNotification((prev) => ({ ...prev, open: false }));
-            }}
-          >
-            Cerrar
-          </Button>
-        ),
-      });
+      // setNotification({
+      //   open: true,
+      //   message: 'Puedes instalar esta web!',
+      //   severity: 'success',
+      //   action: (
+      //     <Button
+      //       onClick={() => {
+      //         close();
+      //         setNotification((prev) => ({ ...prev, open: false }));
+      //       }}
+      //     >
+      //       Cerrar
+      //     </Button>
+      //   ),
+      // });
     } else if (needRefresh) {
       console.log('needRefresh');
       setNotification({
         open: true,
-        message:
-          'Hay una nueva versión disponible, haz click en el botón de recargar para actualizar.',
+        message: 'Hay una nueva versión disponible, haz click en el botón para actualizar.',
         severity: 'success',
+        persist: true,
         action: (
           <Button
             onClick={() => {
@@ -59,7 +59,6 @@ function SW() {
             Actualizar
           </Button>
         ),
-        persist: true,
       });
     }
   }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);

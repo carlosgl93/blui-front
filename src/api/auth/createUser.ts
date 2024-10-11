@@ -7,7 +7,7 @@
 
 import { auth, db } from '@/firebase';
 import { User } from '@/store/auth/user';
-import { Comuna } from '@/types';
+import { Comuna, Especialidad, Servicio } from '@/types';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { query, collection, where, getDocs, doc, setDoc } from 'firebase/firestore';
@@ -22,6 +22,8 @@ export type CreateUserParams = {
   correo: string;
   contrasena: string;
   acceptedTerms: boolean;
+  servicio: Pick<Servicio, 'serviceName'>;
+  especialidad?: Pick<Especialidad, 'especialidadName'>;
 };
 
 export type ForWhom = 'paciente' | 'tercero' | '';
@@ -38,6 +40,8 @@ export async function createUser({
   contrasena,
   comuna,
   acceptedTerms,
+  servicio,
+  especialidad,
 }: CreateUserParams) {
   try {
     const userQuery = query(collection(db, 'users'), where('email', '==', correo));
@@ -69,6 +73,8 @@ export async function createUser({
       gender: '',
       comuna: comuna,
       acceptedTerms,
+      service: servicio.serviceName,
+      speciality: especialidad?.especialidadName || '',
     };
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);

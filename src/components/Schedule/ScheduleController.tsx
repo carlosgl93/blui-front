@@ -4,7 +4,7 @@ import { usePerfilPrestador } from '@/pages/PerfilPrestador/usePerfilPrestador';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { PickersDayProps, PickersDay } from '@mui/x-date-pickers';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { ScheduleState } from '@/store/schedule/sheduleState';
+import { scheduleState } from '@/store/schedule/sheduleState';
 import { useServicios } from '@/hooks/useServicios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useAppointments } from '@/hooks/useAppointments';
@@ -23,7 +23,7 @@ export const ScheduleController = () => {
   const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
   const { prestadorCreatedServicios: prestadorServicios, prestadorCreatedServiciosLoading } =
     useServicios();
-  const [schedule, setSchedule] = useRecoilState(ScheduleState);
+  const [schedule, setSchedule] = useRecoilState(scheduleState);
   const setNotification = useSetRecoilState(notificationState);
   const [value, setValue] = useState<Dayjs | null>(null);
   const providerAvailability = prestador?.availability;

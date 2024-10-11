@@ -1,9 +1,10 @@
 import useEntregaApoyo from '@/store/entregaApoyo';
 import { notificationState } from '@/store/snackbar';
-import { ChangeEvent, useReducer } from 'react';
+import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useRecoilState } from 'recoil';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { CreatePrestadorParams } from '@/api/auth';
+import { useNavigate } from 'react-router-dom';
 
 type FormState = {
   error: string;
@@ -60,9 +61,10 @@ const reducer = (state: FormState, action: FormActions) => {
 
 const RegistrarPrestadorController = () => {
   const [notification, setNotification] = useRecoilState(notificationState);
-  const { createPrestador } = useAuthNew();
-
+  const { createPrestador, createPrestadorLoading, prestador, user } = useAuthNew();
   const [{ selectedComunas, selectedServicio, selectedEspecialidad }] = useEntregaApoyo();
+
+  const navigate = useNavigate();
 
   const initialState = {
     error: '',
@@ -95,6 +97,18 @@ const RegistrarPrestadorController = () => {
 
   const handleSubmit = async () => {
     const { correo, rut, contrasena, confirmarContrasena, nombre, apellido, acceptedTerms } = state;
+
+    if (!selectedComunas || !selectedServicio) {
+      navigate('/entrega-apoyo');
+      setNotification({
+        ...notification,
+        open: true,
+        message: 'Debes seleccionar una comuna y un servicio, tus datos estan guardados.',
+        severity: 'info',
+        persist: false,
+      });
+      return;
+    }
 
     if (!emailRegex.test(correo)) {
       dispatch({
@@ -149,7 +163,7 @@ const RegistrarPrestadorController = () => {
         comunas: selectedComunas,
         servicio: selectedServicio ?? undefined,
         acceptedTerms,
-        // especialidad: selectedEspecialidad ?? undefined,
+        especialidad: selectedEspecialidad ?? undefined,
       };
 
       createPrestador(prestador);
@@ -161,12 +175,30 @@ const RegistrarPrestadorController = () => {
     dispatch({ type: 'CHANGE', payload: { name, value } });
   };
 
+  useEffect(() => {
+    if (user?.email) {
+      navigate('/usuario-dashboard');
+      return;
+    }
+    if (prestador?.email) {
+      navigate('/prestador-dashboard');
+      return;
+    }
+  }, [user, prestador]);
+
+  useEffect(() => {
+    if (!selectedServicio || !selectedComunas) {
+      navigate('/entrega-apoyo');
+    }
+  }, [selectedComunas, selectedServicio]);
+
   return {
     state,
     handleChange,
     handleSubmit,
     handleSelect,
     handleAcceptTerms,
+    createPrestadorLoading,
   };
 };
 

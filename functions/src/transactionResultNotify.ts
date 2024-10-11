@@ -6,7 +6,7 @@ import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
 import axios from 'axios';
 
 export const transactionResultNotify = onRequest(
-  { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
+  { cors: true, region: 'southamerica-west1', memory: '256MiB', maxInstances: 5 },
   async ({ body, query, method }, res) => {
     if (method !== 'POST') {
       res.status(500).send(`Method ${method} not supported`);

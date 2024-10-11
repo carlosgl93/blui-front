@@ -2,19 +2,32 @@ import { Box, Button } from '@mui/material';
 import { TextContainer, Title } from '@/components/StyledComponents';
 import { recibeApoyoSteps } from './recibeApoyoSteps';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import ServiceTypeList from './ServiceTypeList';
+import { useNavigate } from 'react-router-dom';
+import SpecialityList from './SpecialityList';
+import { useEffect } from 'react';
 
-const Step3 = () => {
-  const [{ step, servicio }, { decreaseStep, increaseStep, resetServicio }] = useRecibeApoyo();
+const Step4 = () => {
+  const [{ step, servicio }, { decreaseStep, resetServicio }] = useRecibeApoyo();
+
+  const router = useNavigate();
 
   const handleNext = () => {
-    increaseStep();
+    router('/registrar-usuario');
   };
 
   const handlePrevious = () => {
     resetServicio();
     decreaseStep();
   };
+
+  useEffect(() => {
+    if (!servicio) {
+      handlePrevious();
+    }
+    if (servicio?.serviceName === 'Cuidadora' || servicio?.serviceName === 'Sana Compañía') {
+      router('/registrar-usuario');
+    }
+  }, [servicio?.serviceName]);
 
   return (
     <>
@@ -34,7 +47,7 @@ const Step3 = () => {
           {recibeApoyoSteps[step].title}
         </Title>
       </TextContainer>
-      <ServiceTypeList />
+      <SpecialityList />
       <Box
         sx={{
           display: 'flex',
@@ -53,4 +66,4 @@ const Step3 = () => {
   );
 };
 
-export default Step3;
+export default Step4;

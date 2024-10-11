@@ -32,4 +32,8 @@ export default defineConfig({
     files: ['src/**/*.test.tsx'],
     exclude: ['./tests/playwright', './node_modules/**', './functions/**'],
   },
+  server: {
+    host: true,
+    port: 3000,
+  },
 });

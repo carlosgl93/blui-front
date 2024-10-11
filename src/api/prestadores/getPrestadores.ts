@@ -30,5 +30,6 @@ export const getPrestadores = async (
   prestadoresQuery = query(prestadoresQuery, where('verified', '==', 'Verificado'));
   const querySnapshot = await getDocs(prestadoresQuery);
   const prestadores = querySnapshot.docs.map((doc) => doc.data());
+  console.log(prestadores);
   return prestadores as Prestador[];
 };

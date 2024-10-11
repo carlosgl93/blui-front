@@ -1,9 +1,11 @@
 import { CreateUserParams, ForWhom } from '@/api/auth';
 import useRecibeApoyo from '@/store/recibeApoyo';
-import { ChangeEvent, useReducer } from 'react';
+import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthNew } from '@/hooks';
 import { Comuna } from '@/types';
+import { useSetRecoilState } from 'recoil';
+import { notificationState } from '@/store/snackbar';
 
 type FormState = {
   error: string;
@@ -61,10 +63,11 @@ const reducer = (state: FormState, action: FormActions) => {
 };
 
 const RegistrarUsuarioController = () => {
-  const { createUser } = useAuthNew();
+  const { createUser, user, prestador } = useAuthNew();
   const navigate = useNavigate();
+  const setNotification = useSetRecoilState(notificationState);
 
-  const [{ forWhom, comuna }] = useRecibeApoyo();
+  const [{ forWhom, comuna, servicio }] = useRecibeApoyo();
 
   const initialState = {
     error: '',
@@ -123,6 +126,18 @@ const RegistrarUsuarioController = () => {
       setTimeout(() => dispatch({ type: 'ERROR', payload: { error: '' } }), 5000);
     } else if (!comuna) {
       navigate('/recibe-apoyo');
+      setNotification({
+        open: true,
+        message: 'Debes seleccionar una comuna',
+        severity: 'error',
+      });
+    } else if (!servicio) {
+      setNotification({
+        open: true,
+        message: 'Debes seleccionar un servicio y una especialidad',
+        severity: 'error',
+      });
+      navigate('/recibe-apoyo');
     } else {
       const newUser: CreateUserParams = {
         nombre,
@@ -134,6 +149,7 @@ const RegistrarUsuarioController = () => {
         comuna: comuna as Comuna,
         correo,
         acceptedTerms,
+        servicio,
       };
 
       try {
@@ -153,6 +169,23 @@ const RegistrarUsuarioController = () => {
     const { name, value } = e.target;
     dispatch({ type: 'CHANGE', payload: { name, value } });
   };
+
+  useEffect(() => {
+    if (user?.email) {
+      navigate('/usuario-dashboard');
+      return;
+    }
+    if (prestador?.email) {
+      navigate('/prestador-dashboard');
+      return;
+    }
+  }, [user, prestador]);
+
+  useEffect(() => {
+    if (!servicio || !comuna || !forWhom) {
+      navigate('/recibe-apoyo');
+    }
+  }, [servicio, comuna]);
 
   return {
     state,

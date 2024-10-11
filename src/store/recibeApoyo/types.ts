@@ -17,6 +17,8 @@ type Actions = {
   setComunas: (comunas: Comuna[]) => void;
   setPrestadores: (prestadores: Prestador[]) => void;
   resetRecibeApoyoState: () => void;
+  resetComuna: () => void;
+  resetServicio: () => void;
 };
 
 export type { Actions };

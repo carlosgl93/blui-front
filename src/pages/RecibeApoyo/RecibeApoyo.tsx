@@ -8,6 +8,7 @@ import { FullSizeCenteredFlexBox } from '@/components/styled';
 import { recibeApoyoSteps } from './recibeApoyoSteps';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import Loading from '@/components/Loading';
+import Step4 from './Step4';
 
 function Comienzo() {
   const [{ step }] = useRecibeApoyo();
@@ -20,7 +21,7 @@ function Comienzo() {
           flexDirection: 'column',
           justifyContent: 'start',
           gap: 2,
-          pt: 4,
+          pt: 0,
         }}
       >
         <Box
@@ -39,6 +40,7 @@ function Comienzo() {
           {step === 0 && <Step1 />}
           {step === 1 && <Step2 />}
           {step === 2 && <Step3 />}
+          {step === 3 && <Step4 />}
         </Suspense>
       </FullSizeCenteredFlexBox>
     </>

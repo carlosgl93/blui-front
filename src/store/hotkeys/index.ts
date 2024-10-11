@@ -2,7 +2,7 @@ import { atom, useRecoilState } from 'recoil';
 
 import type { Actions } from './types';
 
-const hotKeysDialogState = atom<boolean>({
+export const hotKeysDialogState = atom<boolean>({
   key: 'hotkeys-dialog-state',
   default: false,
 });

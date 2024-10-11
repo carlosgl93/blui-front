@@ -7,6 +7,6 @@ export const defaultEmailSender = 'Blui.cl <francisco.durney@blui.cl>';
 export const paymentSettings = {
   appCommission: 0.02,
   currency: 'CLP',
-  paymentMethods: 99,
+  paymentMethods: 1,
   providerPayAfterDays: 3
 };

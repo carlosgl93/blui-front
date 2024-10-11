@@ -8,13 +8,14 @@ import { useComunas } from '@/hooks';
 
 const Step2 = () => {
   const [, { increaseStep, decreaseStep }] = useRecibeApoyo();
-  const { selectedComunas, handleRemoveComuna } = useComunas();
+  const { selectedComunas, handleRemoveComuna, resetComunas } = useComunas();
 
   const handleNext = () => {
     increaseStep();
   };
 
   const handlePrevious = () => {
+    resetComunas();
     decreaseStep();
   };
 
@@ -40,6 +41,7 @@ const Step2 = () => {
             variant="h6"
             sx={{
               fontSize: '1.1rem',
+              my: 0,
             }}
           >
             Comuna seleccionada:

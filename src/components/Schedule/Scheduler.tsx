@@ -26,7 +26,7 @@ export const Scheduler = () => {
     setValue,
     handleSelectServicio,
     handleSubmit,
-    // shouldDisableDay,
+    // shouldDisableDay, uncomment this when tests are done
     handleSelectDate,
   } = ScheduleController();
 

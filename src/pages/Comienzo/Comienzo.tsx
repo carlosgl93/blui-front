@@ -1,9 +1,12 @@
-import { Box } from '@mui/material';
+import { useEffect } from 'react';
 
+import { Box } from '@mui/material';
 import Meta from '@/components/Meta';
+import useRecibeApoyo from '@/store/recibeApoyo';
+import StyledList from '@/components/StyledList';
+import useEntregaApoyo from '@/store/entregaApoyo';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
-import StyledList from '@/components/StyledList';
 
 const comienzoOptions = [
   {
@@ -17,6 +20,14 @@ const comienzoOptions = [
 ];
 
 function Comienzo() {
+  const [, { resetRecibeApoyoState }] = useRecibeApoyo();
+  const [, { resetEntregaApoyoState }] = useEntregaApoyo();
+
+  useEffect(() => {
+    resetRecibeApoyoState();
+    resetEntregaApoyoState();
+  }, []);
+
   return (
     <>
       <Meta title="Comienza a usar Blui" />

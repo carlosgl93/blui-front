@@ -1,13 +1,15 @@
 import { atom } from 'recoil';
 
-export const handleServicioState = atom({
-  key: 'handleServicioState',
-  default: {
-    especialidad: '',
-    nombreServicio: '',
-    tarifa: '',
-    description: '',
-    isCreatingServicio: false,
-    duration: 15,
-  },
+export const defaultServicio = {
+  especialidad: '',
+  nombreServicio: '',
+  tarifa: '',
+  description: '',
+  isCreatingServicio: false,
+  duration: 15,
+};
+
+export const servicioState = atom({
+  key: 'servicioState',
+  default: defaultServicio,
 });

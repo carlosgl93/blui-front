@@ -50,3 +50,7 @@ export const generalOptionsDrawerList = [
   { title: 'Acerca de nosotros', path: '/nosotros' },
   { title: 'Buscar prestadores', path: '/resultados' },
 ];
+
+export const providerGeneralOptions = [...generalOptionsDrawerList].filter(
+  (o) => o.title !== 'Buscar prestadores',
+);

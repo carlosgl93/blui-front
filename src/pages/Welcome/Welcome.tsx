@@ -13,7 +13,16 @@ function Welcome() {
       <ImageSlider />
       <ComoFunciona
         subtitle={
-          'Únete a Blui de forma gratuita y comienza a vivir esta nueva experiencia en la búsqueda de personas para ayudarte. Disfruta la posibilidad de poder formar tu propio equipo de apoyo de acuerdo a tus propias necesidades, intereses y presupuesto.'
+          //   `
+          //   Únete a Blui de forma gratuita y comienza a vivir esta nueva experiencia en la búsqueda de
+          //   personas para ayudarte. Disfruta la posibilidad de poder formar tu propio equipo de
+          //   apoyo de acuerdo a tus propias necesidades, intereses y presupuesto.'
+          // `} old text wasnt actually explaining how it works so...
+          `
+        Blui es una plataforma que te permite encontrar personas de confianza que pueda ayudarte. 
+        Puedes encontrar soporte terapeutico (ocupacional, kine, fono, podología y más), enfermería (general y técnico), cuidado o acompañamiento.
+        
+        `
         }
         steps={comoFuncionaCardsContent}
       />

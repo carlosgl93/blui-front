@@ -13,23 +13,21 @@ import { notificationState } from '@/store/snackbar';
 import { FirebaseError } from 'firebase/app';
 import { User, userState } from '@/store/auth/user';
 import { Prestador, prestadorState } from '@/store/auth/prestador';
-import useEntregaApoyo from '@/store/entregaApoyo';
-import useRecibeApoyo from '@/store/recibeApoyo';
 import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 import { redirectToAfterLoginState } from '@/store/auth';
 import { editDisponibilidadState } from '@/store/construirPerfil/availability';
 import { createPrestador, createUser } from '@/api/auth';
 import { sendVerificationEmailApi } from '@/api';
 import { determineRedirectAfterLogin } from '../utils/redirectAfterLoginLogic';
+import { useResetState } from './useResetState';
 
 export const useAuthNew = () => {
-  const setNotification = useSetRecoilState(notificationState);
   const [user, setUserState] = useRecoilState(userState);
-  const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const [prestador, setPrestadorState] = useRecoilState(prestadorState);
-  const [, { resetEntregaApoyoState }] = useEntregaApoyo();
-  const [, { resetRecibeApoyoState }] = useRecibeApoyo();
+  const setNotification = useSetRecoilState(notificationState);
+  const redirectAfterLogin = useRecoilValue(redirectToAfterLoginState);
   const setEditDisponibilidad = useSetRecoilState(editDisponibilidadState);
+  const { resetState } = useResetState();
 
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
   const navigate = useNavigate();
@@ -73,7 +71,11 @@ export const useAuthNew = () => {
     },
   );
 
-  const { mutate: createUserMutation, isLoading: createUserLoading } = useMutation(createUser, {
+  const {
+    mutate: createUserMutation,
+    isLoading: createUserLoading,
+    error: createUserError,
+  } = useMutation(createUser, {
     onSuccess(data) {
       setNotification({
         open: true,
@@ -119,41 +121,45 @@ export const useAuthNew = () => {
         message: 'Iniciando sesión...',
         severity: 'info',
       });
-      return signInWithEmailAndPassword(auth, correo, contrasena).then(async (userCredential) => {
-        const usersColectionRef = collection(db, 'users');
-        const prestadorCollectionRef = collection(db, 'providers');
-        const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
-        const prestadorQuery = query(
-          prestadorCollectionRef,
-          limit(1),
-          where('email', '==', correo),
-        );
-        const users = await getDocs(userQuery);
-        const prestadores = await getDocs(prestadorQuery);
-
-        if (users.docs.length > 0) {
-          const user = users.docs[0].data() as User;
-          user.token = userCredential.user.refreshToken;
-          user.id = userCredential.user.uid;
-          setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
-          queryClient.setQueryData(['user', correo], user);
-          return { role: 'user', data: user };
-        } else if (prestadores.docs.length > 0) {
-          const prestador = prestadores.docs[0].data() as Prestador;
-          const availabilityCollectionRef = collection(
-            db,
-            'providers',
-            prestador.id,
-            'availability',
+      return signInWithEmailAndPassword(auth, correo.toLowerCase(), contrasena).then(
+        async (userCredential) => {
+          const usersColectionRef = collection(db, 'users');
+          const prestadorCollectionRef = collection(db, 'providers');
+          const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
+          const prestadorQuery = query(
+            prestadorCollectionRef,
+            limit(1),
+            where('email', '==', correo),
           );
-          const availabilityData = await getDocs(availabilityCollectionRef);
-          const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
-          prestador.availability = availability;
-          setPrestadorState({ ...prestador, isLoggedIn: true });
-          queryClient.setQueryData(['prestador', correo], prestador);
-          return { role: 'prestador', data: prestador };
-        }
-      });
+          const users = await getDocs(userQuery);
+          const prestadores = await getDocs(prestadorQuery);
+
+          if (users.docs.length > 0) {
+            const user = users.docs[0].data() as User;
+            user.token = userCredential.user.refreshToken;
+            user.id = userCredential.user.uid;
+            setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
+            queryClient.setQueryData(['user', correo], user);
+            return { role: 'user', data: user };
+          } else if (prestadores.docs.length > 0) {
+            const prestador = prestadores.docs[0].data() as Prestador;
+            const availabilityCollectionRef = collection(
+              db,
+              'providers',
+              prestador.id,
+              'availability',
+            );
+            const availabilityData = await getDocs(availabilityCollectionRef);
+            const availability = availabilityData.docs.map((doc) =>
+              doc.data(),
+            ) as AvailabilityData[];
+            prestador.availability = availability;
+            setPrestadorState({ ...prestador, isLoggedIn: true });
+            queryClient.setQueryData(['prestador', correo], prestador);
+            return { role: 'prestador', data: prestador };
+          }
+        },
+      );
     },
     {
       onError(error: FirebaseError) {
@@ -294,11 +300,12 @@ export const useAuthNew = () => {
     onSuccess: () => {
       localStorage.removeItem('user');
       localStorage.removeItem('prestador');
+      resetState();
 
-      setUserState(null);
-      setPrestadorState(null);
-      resetEntregaApoyoState();
-      resetRecibeApoyoState();
+      // setUserState(null);
+      // setPrestadorState(null);
+      // resetEntregaApoyoState();
+      // resetRecibeApoyoState();
       queryClient.resetQueries();
       navigate('/ingresar');
       setEditDisponibilidad(false);
@@ -316,6 +323,7 @@ export const useAuthNew = () => {
     isLoggedIn,
     loginLoading,
     createUserLoading,
+    createUserError,
     adminLoginLoading,
     createPrestadorLoading,
   };

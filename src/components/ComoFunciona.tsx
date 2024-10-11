@@ -35,7 +35,7 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
             mb: 6,
           }}
         >
-          Cómo funciona
+          ¿Cómo funciona?
         </Title>
         <Text
           variant="subtitle1"
