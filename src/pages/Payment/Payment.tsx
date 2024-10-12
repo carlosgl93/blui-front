@@ -1,31 +1,28 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Title } from '@/components/StyledComponents';
 import { SuccessPayment } from './SuccessPayment';
 import Loading from '@/components/Loading';
 import { useAppointment } from '@/hooks';
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Container,
-  styled,
-  useTheme,
-} from '@mui/material';
+import { Box, Card, CardContent, Container, styled, useTheme } from '@mui/material';
 import { FailedPayment } from './FailedPayment';
 
 export const Payment = () => {
   const [params] = useSearchParams();
-  const router = useNavigate();
   const theme = useTheme();
-  const { appointment, isLoadingAppointment, appointmentError } = useAppointment(
-    params.get('appointmentId'),
-  );
+  const {
+    appointment,
+    isLoadingAppointment,
+    appointmentError,
+    paykuPayment,
+    isLoadingPaykuPayment,
+    paykuPaymentError,
+  } = useAppointment(params.get('appointmentId'));
 
-  if (isLoadingAppointment) return <Loading />;
+  console.log('appointment', appointment);
 
-  if (appointmentError)
+  if (isLoadingAppointment || isLoadingPaykuPayment) return <Loading />;
+
+  if (appointmentError || paykuPaymentError)
     return (
       <StyledBox>
         <StyledCard variant="outlined">
@@ -47,17 +44,12 @@ export const Payment = () => {
     <StyledBox>
       <StyledCard variant="outlined">
         <CardContent>
-          {appointment.isPaid === 'Pagado' ? (
+          {appointment.isPaid === 'Pagado' || paykuPayment?.status === 'success' ? (
             <SuccessPayment appointment={appointment} theme={theme} />
           ) : (
             <FailedPayment theme={theme} appointment={appointment} />
           )}
         </CardContent>
-        <CardActions>
-          <Button variant="contained" onClick={() => router('/ingresar')}>
-            A mi cuenta
-          </Button>
-        </CardActions>
       </StyledCard>
     </StyledBox>
   );
@@ -72,9 +64,13 @@ const StyledBox = styled(Box)(() => ({
 }));
 
 const StyledCard = styled(Card)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
   margin: 'auto',
   padding: '2rem 1.2rem',
   justifyContent: 'space-between',
+  textAlign: 'center',
+  alignItems: 'center',
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({

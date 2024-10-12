@@ -79,7 +79,24 @@ export const PerfilUsuario = () => {
         {updateUserLoading ? (
           <Loading />
         ) : (
-          <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1rem',
+              width: {
+                xs: '100%',
+                sm: '100%',
+                md: '33%',
+                lg: '50%',
+              },
+              margin: '0 auto',
+              backgroundColor: 'white',
+              borderRadius: '1rem',
+              p: '1rem 0.5rem',
+            }}
+          >
             <StyledTitle>Actualizar Perfil</StyledTitle>
             <StyledTextField
               {...register('email', { required: 'Email es requerido' })}
@@ -153,15 +170,22 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.address)}
               helperText={errors.address?.message}
             />
+
             {!isValid && (
-              <Text>Asegurate de rellenar todos los campos con información valida.</Text>
+              <Box
+                sx={{
+                  p: '1rem',
+                }}
+              >
+                <Text>Asegurate de rellenar todos los campos con información valida.</Text>
+              </Box>
             )}
             <SaveButton
               style={{
                 marginBottom: '2rem',
               }}
             />
-          </>
+          </Box>
         )}
       </StyledForm>
     </Box>

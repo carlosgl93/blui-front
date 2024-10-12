@@ -1,6 +1,7 @@
 import { UserAppointmentController } from './UserAppointmentController';
 import { Box, Button, CardContent, CircularProgress } from '@mui/material';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 import { AppointmentParams, TStatus } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
@@ -14,7 +15,7 @@ type SessionCardContentProps = {
 };
 
 export const UserSessionCardContent = ({ appointment }: SessionCardContentProps) => {
-  const { provider, servicio, isPaid, status, confirmedByUser, rating } = appointment;
+  const { provider, servicio, isPaid, status, confirmedByUser, rating, paykuId } = appointment;
   const { firstname, lastname, email } = provider;
 
   const {
@@ -24,22 +25,38 @@ export const UserSessionCardContent = ({ appointment }: SessionCardContentProps)
     handleConfirmAppointmentDone,
     handleRateAppointment,
     handleChat,
+    handlePayPending,
   } = UserAppointmentController(appointment);
 
   return (
-    <CardContent>
+    <CardContent
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+      }}
+    >
       <Person firstname={firstname} lastname={lastname} email={email} />
       <Work serviceName={servicio?.name} />
       <Payment isPaid={isPaid} status={status} />
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'end',
         }}
       >
-        {!isPast && (
+        {!isPast && status !== 'Pendiente de pago' ? (
           <Button startIcon={<ChatOutlinedIcon />} variant="contained" onClick={handleChat}>
             Chat
+          </Button>
+        ) : null}
+        {status === 'Pendiente de pago' && paykuId && (
+          <Button
+            startIcon={<PaymentOutlinedIcon />}
+            variant="contained"
+            onClick={handlePayPending}
+          >
+            Pagar
           </Button>
         )}
       </Box>

@@ -1,4 +1,5 @@
 import { AppointmentParams, confirmAppointmentDone, rateAppointment } from '@/api/appointments';
+import { getPaykuTransaction } from '@/api/payments/payku/getPaykuTransaction';
 import { db } from '@/firebase';
 import { chatState } from '@/store/chat/chatStore';
 import { notificationState } from '@/store/snackbar';
@@ -10,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 export function UserAppointmentController(appointment: AppointmentParams) {
-  const { provider, scheduledDate, scheduledTime } = appointment;
+  const { provider, scheduledDate, scheduledTime, paykuId } = appointment;
   const setNotification = useSetRecoilState(notificationState);
   const navigate = useNavigate();
   const setChatState = useSetRecoilState(chatState);
@@ -97,6 +98,39 @@ export function UserAppointmentController(appointment: AppointmentParams) {
     });
   };
 
+  const handlePayPending = async () => {
+    if (!handlePayPending) {
+      throw new Error('No payku ID associated with this transaction/appointment');
+    }
+    console.log('paykuId', paykuId);
+
+    try {
+      const paykuTransaction = await getPaykuTransaction(paykuId || '');
+      console.log('paykuTransaction', paykuTransaction);
+      if (paykuTransaction.status === 'Pagado') {
+        setNotification({
+          open: true,
+          message: 'La transacción ya fue pagada',
+          severity: 'info',
+        });
+        return;
+      }
+
+      if (!appointment.paykuPaymentURL) {
+        setNotification({
+          open: true,
+          message: 'No existe la URL para pagar',
+          severity: 'error',
+        });
+        return;
+      }
+      window.location.href = appointment.paykuPaymentURL;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error fetching payku transaction');
+    }
+  };
+
   useEffect(() => {
     if (appointment.status === 'Agendada' && appointment.isPaid === false && appointment.id) {
       console.log('running delete appointment in case wrong schedule');
@@ -115,5 +149,6 @@ export function UserAppointmentController(appointment: AppointmentParams) {
     handleConfirmAppointmentDone,
     handleRateAppointment,
     handleChat,
+    handlePayPending,
   };
 }

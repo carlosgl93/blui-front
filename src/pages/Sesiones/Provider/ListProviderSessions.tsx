@@ -55,26 +55,61 @@ export const ListProviderSessions = ({ providerSessions }: ListProviderSessionsP
         </Button>
       </Box>
       {/* PAST SESSIONS MAP/ITERATION */}
-      {showPastSessions &&
-        providerPastSessions.map((appointment, y) => (
-          <Fragment key={y}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr 1fr',
+            lg: '1fr 1fr 1fr',
+          },
+          gridTemplateRows: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr',
+          },
+        }}
+      >
+        {showPastSessions &&
+          providerPastSessions.length > 0 &&
+          providerPastSessions.map((appointment, y) => (
+            <Fragment key={y}>
+              <ProviderSessionCard appointment={appointment} />
+            </Fragment>
+          ))}
+      </Box>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr 1fr',
+            lg: '1fr 1fr 1fr',
+          },
+          gridTemplateRows: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr',
+          },
+        }}
+      >
+        {providerFutureSessions?.map((appointment, i) => (
+          <Fragment key={i}>
+            {i === 0 ? (
+              <Text
+                sx={{
+                  px: '1rem',
+                }}
+              >
+                Tu siguiente sesión:
+              </Text>
+            ) : null}
             <ProviderSessionCard appointment={appointment} />
           </Fragment>
         ))}
-      {providerFutureSessions?.map((appointment, i) => (
-        <Fragment key={i}>
-          {i === 0 ? (
-            <Text
-              sx={{
-                px: '1rem',
-              }}
-            >
-              Tu siguiente sesión:
-            </Text>
-          ) : null}
-          <ProviderSessionCard appointment={appointment} />
-        </Fragment>
-      ))}
+      </Box>
     </>
   );
 };

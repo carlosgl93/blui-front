@@ -13,7 +13,28 @@ export const PrestadorDashboard = () => {
   const { handleConstruirPerfil, handleSesiones } = usePrestadorDashboard();
 
   return (
-    <Wrapper>
+    <Wrapper
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          sm: '1fr 1fr',
+          md: '1fr 1fr',
+          lg: '1fr 1fr 1fr',
+        },
+        gridTemplateRows: {
+          xs: '1fr 1fr 1fr',
+          sm: '1fr 1fr 1fr',
+          md: '0.5fr 0.5fr',
+          lg: '0.5fr 0.5fr',
+        },
+        gap: '2rem',
+        p: '1rem',
+        borderRadius: '1rem',
+        minHeight: '75vh',
+        width: '100%',
+      }}
+    >
       <Container>
         <StyledTitle>Construyamos tu perfil</StyledTitle>
         <Text>Construyamos un perfil ganador. Esta es tu oportunidad de:</Text>
@@ -39,7 +60,7 @@ export const PrestadorDashboard = () => {
           </StyledButton>
         </FlexBox>
       </Container>
-      <Container>
+      <Container sx={{}}>
         <StyledTitle>Sesiones</StyledTitle>
         <Text>Organiza, chatea y confirma tus sesiones aquí</Text>
         <StyledList>

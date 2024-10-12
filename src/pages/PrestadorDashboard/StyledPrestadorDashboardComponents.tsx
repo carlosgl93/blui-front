@@ -9,7 +9,6 @@ export const Wrapper = styled(Box)(() => ({
   justifyContent: 'center',
   padding: '1rem',
   minHeight: '80vh',
-  maxWidth: '600px',
   margin: 'auto',
 }));
 
@@ -23,7 +22,7 @@ export const Container = styled(Box)(() => ({
   backgroundColor: 'white',
   boxSizing: 'border-box',
   borderRadius: '.5rem',
-  width: 'fit-content',
+  width: '100%',
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({

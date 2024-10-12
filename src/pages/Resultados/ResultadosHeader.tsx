@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { StyledTitle } from '../UsuarioDashboard/EncuentraApoyo';
+import { StyledTitle } from '../UsuarioDashboard/StyledComponents';
 
 const Wrapper = styled(Box)(() => ({
   display: 'flex',

@@ -11,7 +11,14 @@ export const UserSessionCard = ({ appointment }: SessionCardProps) => {
   const { scheduledDate, scheduledTime } = appointment;
 
   return (
-    <Card sx={{ my: 2, borderRadius: '1rem', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
+    <Card
+      sx={{
+        width: '100%',
+        my: 2,
+        borderRadius: '1rem',
+        boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      }}
+    >
       <CardHeader
         title={`${formatDate(scheduledDate, true)}`}
         subheader={`a las ${scheduledTime}`}
