@@ -16,13 +16,14 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup node LTS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'pnpm'
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 6.32.9
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
 
       - name: Install pnpm
         run: npm install -g pnpm
