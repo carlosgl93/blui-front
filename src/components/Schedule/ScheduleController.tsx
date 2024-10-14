@@ -16,6 +16,7 @@ import { useAuthNew } from '@/hooks';
 import dayjs, { Dayjs } from 'dayjs';
 import { createTransaction } from '@/api/payments';
 import { Prestador } from '@/store/auth/prestador';
+import { updateAppointment } from '@/api/appointments/updateAppointment';
 
 export const ScheduleController = () => {
   const [waitingForPayku, setWaitingForPayku] = useState(false);
@@ -248,9 +249,11 @@ export const ScheduleController = () => {
   const handleSendUserToPayku = async (appointment: AppointmentParams) => {
     setWaitingForPayku(!waitingForPayku);
     const paykuRes = await createTransaction(appointment);
-    if (paykuRes) {
-      // window.open(paykuRes.url, '_blank');
+    if (paykuRes && appointment.id) {
+      await updateAppointment(appointment, paykuRes);
       window.location.href = paykuRes.url;
+    } else {
+      throw new Error('Error al crear la transacción');
     }
     setWaitingForPayku(!waitingForPayku);
   };
@@ -263,24 +266,14 @@ export const ScheduleController = () => {
         client.invalidateQueries(['providerAppointments', prestador?.id]);
       },
       onSuccess: async (data: AppointmentParams) => {
-        // setSchedule({
-        //   selectedTime: null,
-        //   selectedDate: null,
-        // });
-        // setValue(null);
-        // setNotification({
-        //   open: true,
-        //   message: 'Servicio agendado correctamente',
-        //   severity: 'success',
-        // });
-        // setUserAppointments((prev) =>
-        //   sortUserAppointments([...prev, data as ScheduleServiceParams]),
-        // );
+        setSchedule({
+          selectedTime: null,
+          selectedDate: null,
+        });
+        setValue(null);
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
-        // handleCloseScheduleModal();
         handleSendUserToPayku(data);
-        // navigate('/sesiones');
       },
       onError: async () => {
         setNotification({

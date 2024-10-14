@@ -17,6 +17,7 @@ export async function markAsPaid(id: string | undefined) {
   try {
     await updateDoc(docRef, {
       paymentStatus: 'Pagado',
+      isPaid: 'Pagado',
     });
   } catch (error) {
     console.error(error);

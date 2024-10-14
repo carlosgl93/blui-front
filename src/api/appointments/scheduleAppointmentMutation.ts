@@ -24,7 +24,7 @@ export type TStatus =
   | 'Agendada'
   | 'Realizada'
   | 'Esperando confirmación del cliente'
-  | 'Pendiente'
+  | 'Pendiente de pago'
   | 'Pagada';
 
 export interface AppointmentParams {
@@ -39,6 +39,8 @@ export interface AppointmentParams {
   status: TStatus;
   rating: number;
   confirmedByUser: boolean;
+  paykuId?: string;
+  paykuPaymentURL?: string;
 }
 
 export async function scheduleService({
@@ -56,7 +58,7 @@ export async function scheduleService({
     scheduledTime,
     isPaid: false,
     createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    status: 'Pendiente',
+    status: 'Pendiente de pago',
     rating: 0,
     confirmedByUser: false,
   };

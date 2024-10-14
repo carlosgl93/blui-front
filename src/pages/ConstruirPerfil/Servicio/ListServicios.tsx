@@ -9,7 +9,6 @@ import { UserCreatedServicio } from './types';
 import { useAuthNew } from '@/hooks';
 import Loading from '@/components/Loading';
 import { formatCLP } from '@/utils/formatCLP';
-import { FullSizeCenteredFlexBox } from '@/components/styled';
 
 export const ListServicios = () => {
   const {
@@ -56,18 +55,12 @@ export const ListServicios = () => {
           flexDirection: 'column',
           gap: '1rem',
           my: '1rem',
-          width: {
-            xs: '75vw',
-            sm: '50vw',
-            md: 'fit-content',
-          },
+          width: '100%',
         }}
       >
         <List>
           {deleteServicioLoading || prestadorCreatedServiciosLoading ? (
-            <FullSizeCenteredFlexBox>
-              <Loading />
-            </FullSizeCenteredFlexBox>
+            <Loading />
           ) : (
             <>
               {prestadorCreatedServicios?.map((servicio: UserCreatedServicio) => (
@@ -79,8 +72,6 @@ export const ListServicios = () => {
                     alignItems: 'center',
                     width: {
                       xs: '100%',
-                      md: '580px',
-                      lg: '700px',
                     },
                   }}
                 >

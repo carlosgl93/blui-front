@@ -1,4 +1,5 @@
 import { getAppointmentByIdQuery } from '@/api/appointments';
+import { getPaykuTransaction } from '@/api/payments/payku/getPaykuTransaction';
 import { useQuery } from 'react-query';
 
 export const useAppointment = (appointmentId: string | null) => {
@@ -12,9 +13,18 @@ export const useAppointment = (appointmentId: string | null) => {
     error: appointmentError,
   } = useQuery(['appointment', appointmentId], () => getAppointmentByIdQuery(appointmentId));
 
+  const {
+    data: paykuPayment,
+    isLoading: isLoadingPaykuPayment,
+    error: paykuPaymentError,
+  } = useQuery(['paymentStatus', appointmentId], () => getPaykuTransaction(appointmentId));
+
   return {
     appointment,
     isLoadingAppointment,
     appointmentError,
+    paykuPayment,
+    isLoadingPaykuPayment,
+    paykuPaymentError,
   };
 };

@@ -44,6 +44,11 @@ function UserComunaSearchBar({ register }: UserComunaSearchBarProps) {
       <OutlinedInput
         id="searchByComuna"
         type={'text'}
+        sx={{
+          backgroundColor: 'white',
+          borderRadius: '2rem',
+          mt: '1rem',
+        }}
         endAdornment={
           <InputAdornment position="end">
             <IconButton aria-label="buscar por comuna" edge="end">
@@ -69,28 +74,10 @@ function UserComunaSearchBar({ register }: UserComunaSearchBarProps) {
           </InputAdornment>
         }
         placeholder={comunaName ? comunaName : 'Indicanos tu comuna'}
-        sx={{
-          width: {
-            xs: '80%',
-            sm: '80vw',
-            md: '60vw',
-            lg: '50vw',
-          },
-
-          backgroundColor: 'white',
-          borderRadius: '2rem',
-          mt: '1rem',
-        }}
         onChange={onChangeHandler}
       />
       <Box
         sx={{
-          width: {
-            xs: '80%',
-            sm: '80vw',
-            md: '60vw',
-            lg: '50vw',
-          },
           backgroundColor: 'white',
           borderRadius: '5px',
           maxHeight: '10rem',

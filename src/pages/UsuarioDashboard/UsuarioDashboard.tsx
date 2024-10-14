@@ -1,23 +1,34 @@
 import { Box } from '@mui/material';
 import { EncuentraApoyo } from './EncuentraApoyo';
 import { ActualizarPerfil } from './ActualizarPerfil';
+import { SesionesDashboardTile } from './SesionesDashboardTile';
 
 export const UsuarioDashboard = () => {
   return (
     <Box
       sx={{
-        p: '1rem',
-        width: {
-          xs: '100%',
-          sm: '100%',
-          md: '50%',
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          sm: '1fr 1fr',
+          md: '1fr 1fr',
+          lg: '1fr 1fr 1fr',
         },
-        minHeight: '80vh',
-        mx: 'auto',
+        gridTemplateRows: {
+          xs: '1fr 1fr 1fr',
+          sm: '1fr 1fr 1fr',
+          md: '0.5fr',
+          lg: '0.5fr',
+        },
+        gap: '3rem',
+        p: '1rem',
+        borderRadius: '1rem',
+        minHeight: '75vh',
       }}
     >
       <ActualizarPerfil />
       <EncuentraApoyo />
+      <SesionesDashboardTile />
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 /**;
  *
  * @param appointment Object containing the service, provider, customer, scheduledDate and scheduledTime
- * @returns Url to send the user to the payment provider
+ * @returns an object of the type: CreatedTransaction with the URL to send the user to the payment provider
  *
  */
 
@@ -9,8 +9,11 @@ import { paymentSettings } from '@/config';
 import { AppointmentParams } from '../appointments';
 import paykuApi from '../paykuApi';
 import { v4 as uuidv4 } from 'uuid';
+import { CreatedTransaction } from './payku/models';
 
-export async function createTransaction(appointment: AppointmentParams | undefined) {
+export async function createTransaction(
+  appointment: AppointmentParams | undefined,
+): Promise<CreatedTransaction> {
   if (!appointment) {
     throw new Error('Missing appointment details / no appointment object passed');
   }

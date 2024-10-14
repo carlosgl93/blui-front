@@ -27,7 +27,12 @@ export const Disponibilidad = () => {
       </BackButtonContainer>
 
       <StyledTitle>Disponibilidad</StyledTitle>
-      <Container>
+      <Container
+        sx={{
+          width: 'fit-content',
+          p: '1.5rem',
+        }}
+      >
         {/* <SubTitle>Dias y horas disponible</SubTitle> */}
         <StyledText>
           Agrega que dias y horas estas disponible para que te lleguen solicitudes que te acomoden.

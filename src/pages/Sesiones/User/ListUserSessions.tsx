@@ -38,6 +38,12 @@ export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
     );
   }
 
+  const pastSessionsList = userPastSessions.map((appointment, y) => (
+    <Fragment key={y}>
+      <UserSessionCard appointment={appointment} />
+    </Fragment>
+  ));
+
   return (
     <>
       {/* PAST SESSIONS BUTTON */}
@@ -56,13 +62,6 @@ export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
         </Button>
       </Box>
       {/* PAST SESSIONS MAP/ITERATION */}
-      {showPastSessions &&
-        userPastSessions.length > 0 &&
-        userPastSessions.map((appointment, y) => (
-          <Fragment key={y}>
-            <UserSessionCard appointment={appointment} />
-          </Fragment>
-        ))}
       {showPastSessions && !userPastSessions.length && (
         <Box
           sx={{
@@ -72,22 +71,59 @@ export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
           <Text>No tienes sesiones pasadas.</Text>
         </Box>
       )}
+      {showPastSessions && userPastSessions.length > 0 && (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: '1fr 1fr',
+              md: '1fr 1fr 1fr',
+              lg: '1fr 1fr 1fr',
+            },
+            gridTemplateRows: {
+              xs: '1fr',
+              sm: '1fr 1fr',
+              md: '1fr 1fr',
+            },
+          }}
+        >
+          {pastSessionsList}
+        </Box>
+      )}
 
       {/* FUTURE SESSIONS MAP/ITERATION */}
-      {userFutureSessions?.map((appointment, i) => (
-        <Fragment key={i}>
-          {i === 0 && (
-            <Text
-              sx={{
-                px: '1rem',
-              }}
-            >
-              Tu siguiente sesión:
-            </Text>
-          )}
-          <UserSessionCard appointment={appointment} />
-        </Fragment>
-      ))}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr',
+            lg: '1fr 1fr 1fr',
+          },
+          gridTemplateRows: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr',
+          },
+        }}
+      >
+        {userFutureSessions?.map((appointment, i) => (
+          <Fragment key={i}>
+            {i === 0 && (
+              <Text
+                sx={{
+                  px: '1rem',
+                }}
+              >
+                Tu siguiente sesión:
+              </Text>
+            )}
+            <UserSessionCard key={i} appointment={appointment} />
+          </Fragment>
+        ))}
+      </Box>
     </>
   );
 };

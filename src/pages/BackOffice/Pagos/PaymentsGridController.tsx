@@ -13,7 +13,7 @@ import {
 } from '@/store/backoffice/payments';
 import { paymentSettings } from '@/config';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { getProviderBankDetails } from '@/api/cuentaBancaria';
+import { getProviderBankDetails, notifyMissingBankDetails } from '@/api/cuentaBancaria';
 import { markAsPaid } from '@/api/payments';
 import { notificationState } from '@/store/snackbar';
 
@@ -166,6 +166,23 @@ export const PaymentsGridController = () => {
     },
   });
 
+  const { mutate: notifyMissingBankDetailsMutation, isLoading: notifyMissingBankDetailsIsLoading } =
+    useMutation('notifyMissingBankDetails', notifyMissingBankDetails, {
+      onSuccess() {
+        setNotification({
+          open: true,
+          message: 'Prestador notificado',
+          severity: 'success',
+        });
+      },
+      onError() {
+        setNotification({
+          open: true,
+          message: 'Hubo un error, intentalo nuevamente',
+          severity: 'error',
+        });
+      },
+    });
   const handleOpenPaymentDetails = async (params: PaymentRecord) => {
     setPaymentDetailsParams(params);
     setShowPaymentsDetails(!showPaymentsDetails);
@@ -187,8 +204,10 @@ export const PaymentsGridController = () => {
     providerBankDetails,
     providerBankDetailsIsLoading,
     markAsPaidIsLoading,
+    notifyMissingBankDetailsIsLoading,
     setPaginationModel,
     handleOpenPaymentDetails,
     handleMarkAsPaid,
+    notifyMissingBankDetailsMutation,
   };
 };

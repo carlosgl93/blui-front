@@ -2,23 +2,23 @@ import { Text } from '@/components/StyledComponents';
 import { useNavigate } from 'react-router-dom';
 import { ButtonCTA, DashboardTileContainer, StyledTitle, SubTitle } from './StyledComponents';
 
-export const EncuentraApoyo = () => {
+export const SesionesDashboardTile = () => {
   const router = useNavigate();
 
   const handleBuscarPrestadores = () => {
-    router('/resultados');
+    router('/sesiones');
   };
 
   return (
     <DashboardTileContainer>
-      <StyledTitle>Encuentra apoyo</StyledTitle>
-      <SubTitle>Explora los perfiles de los prestadores.</SubTitle>
+      <StyledTitle>Sesiones</StyledTitle>
+      <SubTitle>Revisa tus futuras y pasadas sesiones.</SubTitle>
       <Text>
-        Filtra por comuna, tipo de servicio y especialidad, luego chatea con los prestadores acerca
-        de los servicios que necesitas.
+        Puedes revisar la información de tus sesiones. Si tienes alguna pendiente puedes reanudar el
+        pago.
       </Text>
       <ButtonCTA variant="contained" onClick={handleBuscarPrestadores}>
-        Buscar prestadores
+        Ver sesiones
       </ButtonCTA>
     </DashboardTileContainer>
   );
