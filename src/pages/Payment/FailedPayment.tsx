@@ -1,32 +1,27 @@
 import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
 import { AppointmentParams } from '@/api/appointments';
-import { Box, styled, Theme, Typography } from '@mui/material';
+import { Box, styled, Theme } from '@mui/material';
 import { ButtonCTA } from '../UsuarioDashboard/StyledComponents';
 import { customerSupportPhone } from '@/config';
+import { Text } from '@/components/StyledComponents';
 
 type FailedPaymentProps = {
   appointment: AppointmentParams;
   theme: Theme;
 };
 
-const StyledTitle = styled(Typography)(({ theme }) => ({
+const StyledTitle = styled(Text)(({ theme }) => ({
   fontSize: '2rem',
   color: theme.palette.primary.main,
   marginBottom: '1rem',
 }));
 
-const Text = styled(Typography)(({ theme }) => ({
-  fontSize: '1rem',
-  color: theme.palette.text.primary,
-  marginBottom: '1rem',
-}));
-
-const ButtonContainer = styled(Box)({
+const ButtonContainer = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'center',
   gap: '1rem',
   marginTop: '2rem',
-});
+}));
 
 export const FailedPayment = ({ appointment, theme }: FailedPaymentProps) => {
   return (

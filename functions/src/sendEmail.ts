@@ -18,6 +18,8 @@ export const sendEmail = onRequest(
     const { mailTransport } = sendEmailSettings();
     const { templateName, options } = body;
 
+    logger.info('Template name received:', templateName); // Log the template name
+
     try {
       const { to } = options;
       // checking cache for template
@@ -82,6 +84,25 @@ export const sendEmail = onRequest(
               customerName,
               serviceName,
               redirect: `${getEnvUrl()}/ingresar`,
+            };
+          }
+          break;
+        case 'bank-details-missing.html':
+          {
+            const { providerName } = body;
+            templateData = {
+              providerName,
+              redirect: `${getEnvUrl()}/construir-perfil/cuentaBancaria`,
+            };
+          }
+          break;
+        case 'send-support-email.html':
+          {
+            const { senderName, senderEmail, message } = body;
+            templateData = {
+              senderName,
+              message,
+              senderEmail
             };
           }
           break;

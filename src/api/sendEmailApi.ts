@@ -10,8 +10,6 @@ export const sendEmailApi = axios.create({
       from: 'Blui.cl <francisco.durney@blui.cl>',
     },
   },
-  baseURL:
-    import.meta.env.VITE_ENV === 'production'
-      ? import.meta.env.VITE_EMAIL_API_URL
-      : 'http://localhost:5001/blui-6ec33/southamerica-west1/sendEmail',
+  baseURL: import.meta.env.VITE_EMAIL_API_URL,
+  // : 'http://localhost:5001/blui-6ec33/southamerica-west1/sendEmail',
 });

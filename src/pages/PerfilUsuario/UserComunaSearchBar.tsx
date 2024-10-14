@@ -45,12 +45,6 @@ function UserComunaSearchBar({ register }: UserComunaSearchBarProps) {
         id="searchByComuna"
         type={'text'}
         sx={{
-          width: {
-            xs: '80%',
-            sm: '80vw',
-            md: '60%',
-          },
-
           backgroundColor: 'white',
           borderRadius: '2rem',
           mt: '1rem',
@@ -84,12 +78,6 @@ function UserComunaSearchBar({ register }: UserComunaSearchBarProps) {
       />
       <Box
         sx={{
-          width: {
-            xs: '80%',
-            sm: '80vw',
-            md: '60vw',
-            lg: '50vw',
-          },
           backgroundColor: 'white',
           borderRadius: '5px',
           maxHeight: '10rem',

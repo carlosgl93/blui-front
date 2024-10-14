@@ -60,7 +60,7 @@ export const PrestadorDashboard = () => {
           </StyledButton>
         </FlexBox>
       </Container>
-      <Container sx={{}}>
+      <Container>
         <StyledTitle>Sesiones</StyledTitle>
         <Text>Organiza, chatea y confirma tus sesiones aquí</Text>
         <StyledList>

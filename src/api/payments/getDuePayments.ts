@@ -1,22 +1,27 @@
 import { db } from '@/firebase';
 import { PaymentRecord } from '@/pages/BackOffice/Pagos/PaymentsGridController';
-import { collection, getDocs, query, Timestamp, where } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  // Timestamp,
+  // where
+} from 'firebase/firestore';
 
 export const getDuePayments = async (): Promise<PaymentRecord[]> => {
   try {
     const paymentsRef = collection(db, 'payments');
     // Create a Timestamp for the start of today
-    const now = new Date();
-    const startOfTodayTimestamp = Timestamp.fromDate(now);
+    // const now = new Date();
+    // const startOfTodayTimestamp = Timestamp.fromDate(now);
 
     // Query for payments that are "Ready to pay" and due before today
     const duePaymentsQuery = query(
       paymentsRef,
-      where('paymentStatus', '==', 'Ready to pay'),
-      where('paymentDueDate', '<', startOfTodayTimestamp),
+      // where('paymentStatus', '==', 'Ready to pay'),
+      // where('paymentDueDate', '<', startOfTodayTimestamp),
     );
     const querySnapshot = await getDocs(duePaymentsQuery);
-    console.log(querySnapshot.docs);
     const docs: PaymentRecord[] = [];
     querySnapshot.forEach((doc) => docs.push(doc.data() as PaymentRecord));
     return docs;

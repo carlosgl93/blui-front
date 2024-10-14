@@ -13,7 +13,7 @@ const routes: Routes = {
     title: 'Nosotros',
   },
   [Pages.Ayuda]: {
-    component: asyncComponentLoader(() => import('@/pages/Page2')),
+    component: asyncComponentLoader(() => import('@/pages/Help')),
     path: '/ayuda',
     title: 'Ayuda',
   },

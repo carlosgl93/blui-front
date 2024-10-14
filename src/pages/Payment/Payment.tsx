@@ -18,8 +18,6 @@ export const Payment = () => {
     paykuPaymentError,
   } = useAppointment(params.get('appointmentId'));
 
-  console.log('appointment', appointment);
-
   if (isLoadingAppointment || isLoadingPaykuPayment) return <Loading />;
 
   if (appointmentError || paykuPaymentError)

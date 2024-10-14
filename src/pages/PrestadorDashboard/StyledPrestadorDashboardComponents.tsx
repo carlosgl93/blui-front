@@ -23,6 +23,7 @@ export const Container = styled(Box)(() => ({
   boxSizing: 'border-box',
   borderRadius: '.5rem',
   width: '100%',
+  height: '100%',
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({

@@ -17,15 +17,17 @@ export const Servicio = () => {
   if (prestadorCreatedServiciosLoading || saveServicioLoading) return <Loading />;
 
   return (
-    <Wrapper>
+    <Wrapper
+      sx={{
+        justifyContent: 'start',
+      }}
+    >
       <BackButtonContainer>
         <BackButton displayText to="/construir-perfil" />
       </BackButtonContainer>
       <StyledTitle>Servicios</StyledTitle>
       <Container
         sx={{
-          minHeight: '50vh',
-          minWidth: '50vw',
           alignItems: 'start',
           justifyContent: 'start',
         }}
