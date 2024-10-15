@@ -25,18 +25,6 @@ jobs:
           node-version: '18'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Cache pnpm store
-        id: cache-pnpm-store
-        uses: actions/cache@v3
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
       - name: Create .env.test file
         run: |
           echo "VITE_ENV=test" >> .env.test
@@ -51,6 +39,9 @@ jobs:
           echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.test
         shell: bash
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies
         run: pnpm install
 
@@ -59,9 +50,18 @@ jobs:
 
       - name: Authenticate Firebase CLI
         run: firebase login:ci --token "${{ secrets.FIREBASE_TOKEN }}"
-     
+
       - name: Run tests
         run: firebase emulators:exec --project blui-6ec33 '/.run-unit-tests.sh'
+
+      - name: Cache pnpm store
+        id: cache-pnpm-store
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
         # - name: Install Dependencies
         #   run: npm ci && cd functions && npm ci
 
