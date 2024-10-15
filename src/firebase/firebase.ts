@@ -13,8 +13,6 @@ const messagingSenderId = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
 const appId = import.meta.env.VITE_FIREBASE_APP_ID;
 const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
 
-console.log(import.meta.env.MODE);
-
 const firebaseConfig = {
   apiKey,
   authDomain,
@@ -24,6 +22,11 @@ const firebaseConfig = {
   appId,
   measurementId,
 };
+
+const env = import.meta.env.VITE_ENV;
+const mode = import.meta.env.MODE;
+
+console.log(env, mode, firebaseConfig);
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig, 'blui');
@@ -36,7 +39,7 @@ functions.region = 'southamerica-west1';
 // Check if window is defined before initializing Firebase Analytics
 export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
 
-if (import.meta.env.VITE_ENV === 'dev') {
+if (import.meta.env.VITE_ENV === 'dev' || import.meta.env.MODE === 'test') {
   console.log('connecting to emulators');
   connectAuthEmulator(auth, 'http://localhost:9099/auth');
   connectFirestoreEmulator(db, 'localhost', 8080);
