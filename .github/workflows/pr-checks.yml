@@ -56,7 +56,7 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-key.json
 
       - name: Run tests
-        run: firebase emulators:exec --project blui-6ec33 'pnpm run test:unit'
+        run: firebase emulators:exec --project blui-6ec33 \"pnpm run test:unit\"
 
       - name: Cache pnpm store
         id: cache-pnpm-store
