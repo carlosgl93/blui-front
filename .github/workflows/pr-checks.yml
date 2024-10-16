@@ -37,6 +37,8 @@ jobs:
           echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" >> .env.test
           echo "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}" >> .env.test
           echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.test
+          echo "FIREBASE_TOKEN=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.test
+          
         shell: bash
 
       - name: Install pnpm
@@ -48,15 +50,15 @@ jobs:
       - name: Install Firebase CLI
         run: pnpm install -g firebase-tools
       
-      - name: Authenticate Firebase CLI
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > $HOME/firebase-key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-key.json
+      # - name: Authenticate Firebase CLI
+      #   env:
+      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      #   run: |
+      #     echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > $HOME/firebase-key.json
+      #     export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-key.json
 
       - name: Run tests
-        run: firebase emulators:exec --project blui-6ec33 "pnpm run test:unit"
+        run: firebase emulators:exec --token "$FIREBASE_TOKEN" --project blui-6ec33 "pnpm run test:unit"
 
       - name: Cache pnpm store
         id: cache-pnpm-store
