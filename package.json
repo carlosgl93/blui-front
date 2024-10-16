@@ -21,8 +21,9 @@
     }
   },
   "scripts": {
-    "test": "vitest --pool=forks",
+    "test:unit": "vitest run --run",
     "test:e2e": "npx playwright test",
+    "test": "vitest --pool=forks",
     "coverage": "vitest run --coverage",
     "dev": "vite",
     "build": "tsc && vite build",
