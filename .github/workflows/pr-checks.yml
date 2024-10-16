@@ -47,9 +47,13 @@ jobs:
 
       - name: Install Firebase CLI
         run: pnpm install -g firebase-tools
-
+      
       - name: Authenticate Firebase CLI
-        run: firebase login:ci --token "${{ secrets.FIREBASE_TOKEN }}"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          echo "${{ secrets.FIREBASE_TOKEN }}" > $HOME/firebase-key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-key.json
 
       - name: Run tests
         run: firebase emulators:exec --project blui-6ec33 '/.run-unit-tests.sh'
