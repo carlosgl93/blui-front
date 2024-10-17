@@ -77,7 +77,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: process.env.CI ? 'pnpm run build && npm run preview' : 'pnpm run dev',
-    url: process.env.ENV === 'dev' ? 'http://localhost:5173' : 'https://blui-6ec33.web.app/',
+    url: 'https://blui-dev.web.app/',
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
