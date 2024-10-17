@@ -34,7 +34,7 @@ jobs:
           echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.staging
           echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> .env.staging
       - name: Build for staging
-        run: pnpm run build --env staging
+        run: pnpm run build --mode staging
 
       - name: Deploy to staging
         run: firebase deploy --project blui-dev
