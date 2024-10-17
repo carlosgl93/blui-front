@@ -36,14 +36,13 @@ jobs:
 
       - name: Build for staging
         run: pnpm run build --mode staging
+        
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.FIREBASE_CREDENTIALS_STAGING }}'
 
       - name: Deploy to staging
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --project blui-dev
-          appId: ${{ secrets.FIREBASE_APP_ID_STAGING }}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIALS_STAGING }}
-          run: firebase deploy --project blui-dev
+        run: firebase deploy --project blui-dev
 
       - name: Run e2e tests against staging
         run: pnpm run test:e2e
