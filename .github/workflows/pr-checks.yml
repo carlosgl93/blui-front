@@ -21,7 +21,7 @@ jobs:
           npm install -g pnpm
           pnpm install
           npm install -g firebase-tools  # Install Firebase CLI
-          
+
       - name: Create .env.staging file
         run: |
           echo "VITE_ENV=staging" >> .env.staging
@@ -33,13 +33,17 @@ jobs:
           echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID_STAGING }}" >> .env.staging
           echo "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID_STAGING }}" >> .env.staging
           echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.staging
-          echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> .env.staging
-      
+
       - name: Build for staging
         run: pnpm run build --mode staging
 
       - name: Deploy to staging
-        run: firebase deploy --project blui-dev
-        
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --project blui-dev
+          appId: ${{ secrets.FIREBASE_APP_ID_STAGING }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIALS_STAGING }}
+          run: firebase deploy --project blui-dev
+
       - name: Run e2e tests against staging
         run: pnpm run test:e2e
