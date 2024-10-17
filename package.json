@@ -22,7 +22,7 @@
   },
   "scripts": {
     "test:unit": "vitest run --run",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "npx playwright test --ui",
     "test": "vitest --pool=forks",
     "coverage": "vitest run --coverage",
     "dev": "vite",

@@ -98,8 +98,11 @@ function RegistrarPrestador() {
                   alignItems: 'center',
                 }}
               >
-                <Link to="/terms-conditions">Términos y condiciones</Link>
+                <label htmlFor="acceptedTerms">
+                  <Link to="/terms-conditions">Términos y condiciones</Link>
+                </label>
                 <Checkbox
+                  data-testid="terms-conditions-checkbox"
                   checked={!!state.acceptedTerms}
                   onChange={handleAcceptTerms}
                   name="acceptedTerms"
