@@ -16,6 +16,8 @@ test('Creates a new prestador', async ({ page }) => {
   await page.getByRole('button', { name: 'Siguiente' }).click();
   await page.getByRole('button', { name: 'Soporte Terapéutico' }).click();
   await page.getByRole('button', { name: 'Siguiente' }).click();
+  await page.getByRole('button', { name: 'Kinesiología' }).click();
+  await page.getByRole('button', { name: 'Siguiente' }).click();
   await page.getByPlaceholder('Ingresa tu nombre').click();
   await page.getByPlaceholder('Ingresa tu nombre').fill('prestador');
   await page.getByPlaceholder('Ingresa tu nombre').press('Tab');
@@ -29,7 +31,8 @@ test('Creates a new prestador', async ({ page }) => {
   await page.getByPlaceholder('Ingrese una contraseña').press('Tab');
   await page.getByPlaceholder('Confirme su contraseña').fill('123456');
   await page.getByPlaceholder('Confirme su contraseña').press('Tab');
-  await page.getByRole('button', { name: 'Siguiente' }).press('Enter');
-  await page.waitForTimeout(10000);
+  await page.getByRole('checkbox').click();
+  await page.getByRole('button', { name: 'Registrar' }).press('Enter');
+  await page.waitForTimeout(20000);
   await expect(page.locator('#root')).toContainText('Construyamos tu perfil');
 });

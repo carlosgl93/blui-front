@@ -27,9 +27,10 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'jsdom',
     globals: true,
-    files: ['src/**/*.test.tsx'],
+    environment: 'jsdom',
+    files: ['tests/unit/**/*.test.tsx'],
+    setupFiles: './tests/unit/setupTests.ts',
     exclude: ['./tests/playwright', './node_modules/**', './functions/**'],
   },
   server: {
