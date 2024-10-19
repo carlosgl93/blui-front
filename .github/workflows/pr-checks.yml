@@ -40,18 +40,11 @@ jobs:
 
       - name: Build for staging
         run: pnpm run build --mode staging
-      
-      - name: log secrets
-        run: | 
-          echo ${{ secrets.FIREBASE_CREDENTIALS_STAGING }}
-          echo ${{ secrets.FIREBASE_TOKEN }}
         
-      - uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.FIREBASE_CREDENTIALS_STAGING }}'
-
       - name: Deploy to staging
-        run: firebase deploy --project blui-dev
+        run: | 
+          echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} > credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS=credentials.json firebase deploy --project blui-dev
 
       - name: Run e2e tests against staging
         run: pnpm run test:e2e
