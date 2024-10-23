@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 type FailedPaymentProps = {
   appointment: AppointmentParams;
-  theme: Theme;
+  theme?: Theme;
 };
 
 const StyledTitle = styled(Title)(({ theme }) => ({
@@ -25,12 +25,23 @@ const ButtonContainer = styled(Box)({
 
 export const SuccessPayment = ({ appointment, theme }: FailedPaymentProps) => {
   const navigate = useNavigate();
+  const appDateFormatted = formatDate(appointment.scheduledDate, true);
+  const sameDayAppointmetNode = (
+    <Text data-testid="same-day-app">
+      Recuerda que la sesión es hoy a las {appointment.scheduledTime}.
+    </Text>
+  );
+  const differentDayAppointmentNode = (
+    <Text data-testid="future-app">
+      Recuerda que será el día {appDateFormatted} a las {appointment.scheduledTime}.
+    </Text>
+  );
   return (
     <>
       <CheckCircleOutlinedIcon
         sx={{
           fontSize: '3rem',
-          color: theme.palette.secondary.contrastText,
+          color: theme?.palette.secondary.contrastText,
         }}
       />
       <StyledTitle>Pago exitoso</StyledTitle>
@@ -40,10 +51,7 @@ export const SuccessPayment = ({ appointment, theme }: FailedPaymentProps) => {
           pagada exitosamente.
         </b>
       </Text>
-      <Text>
-        Recuerda que será el dia {formatDate(appointment.scheduledDate, true)} a las{' '}
-        {appointment.scheduledTime}.
-      </Text>
+      {appDateFormatted === 'Hoy' ? sameDayAppointmetNode : differentDayAppointmentNode}
       <Text>
         Servicio: <b>{appointment.servicio.name}</b>
       </Text>
