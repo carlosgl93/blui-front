@@ -47,12 +47,12 @@ jobs:
       #     echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.test
       #   shell: bash
 
-      # - name: Unit Tests
-      #   run: npm run test
-
+      
     - name: Build
       run: pnpm run build
-
+    
+    - name: Unit Tests
+      run: pnpm run test
       # - name: Install Firebase CLI
       #   run: npm install -g firebase-tools
 
