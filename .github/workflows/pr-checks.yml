@@ -1,4 +1,4 @@
-name: Check Codebase
+name: Deploy to staging and run E2E tests
 
 on:
   workflow_dispatch:
@@ -7,65 +7,44 @@ on:
       - main
 
 jobs:
-  build:
-    environment:
-      name: production
-      url: https://blui.cl/
-
-    name: Check Codebase
-    runs-on: ubuntu-22.04
-
+  build-and-test:
+    
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: pnpm/action-setup@v2
-      with:
-        version: 6.32.9
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'pnpm'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Cache pnpm store
-        id: cache-pnpm-store
-        uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Create .env.test file
-        run: |
-          echo "VITE_ENV=test" >> .env.test
-          echo "VITE_EMAIL_API_URL=${{ secrets.VITE_EMAIL_API_URL }}" >> .env.test
-          echo "TRANSACTION_FEE_PERCENTAGE=${{ secrets.TRANSACTION_FEE_PERCENTAGE }}" >> .env.test
-          echo "VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}" >> .env.test
-          echo "VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}" >> .env.test
-          echo "VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }}" >> .env.test
-          echo "VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}" >> .env.test
-          echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" >> .env.test
-          echo "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}" >> .env.test
-          echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.test
-        shell: bash
+          node-version: 18
 
       - name: Install dependencies
-        run: pnpm install
-      # - name: Install Dependencies
-      #   run: npm ci && cd functions && npm ci
+          using pnpm
+        run: |
+          npm install -g pnpm
+          pnpm install
+          npm install -g firebase-tools  # Install Firebase CLI
 
-      # - name: Unit Tests
-      #   run: npm run test
+      - name: Create .env.staging file
+        run: |
+          echo "VITE_ENV=staging" >> .env.staging
+          echo "VITE_EMAIL_API_URL=${{ secrets.VITE_EMAIL_API_URL }}" >> .env.staging
+          echo "VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY_STAGING }}" >> .env.staging
+          echo "VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.VITE_FIREBASE_AUTH_DOMAIN_STAGING }}" >> .env.staging
+          echo "VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID_STAGING }}" >> .env.staging
+          echo "VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET_STAGING }}" >> .env.staging
+          echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID_STAGING }}" >> .env.staging
+          echo "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID_STAGING }}" >> .env.staging
+          echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env.staging
 
-      # - name: Build
-      #   run: npm run build
+      - name: Build for staging
+        run: pnpm run build --mode staging
+        
+      - name: Deploy to staging
+        run: | 
+          echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} > credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS=credentials.json firebase deploy --project blui-dev
 
-      # - name: Install Firebase CLI
-      #   run: npm install -g firebase-tools
-
-      # - name: Deploy to Firebase
-      #   run: firebase deploy --token "$FIREBASE_TOKEN"
-      #   env:
-      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Run e2e tests against staging
+        run: pnpm run test:e2e
