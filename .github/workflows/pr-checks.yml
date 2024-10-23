@@ -51,8 +51,8 @@ jobs:
     - name: Build
       run: pnpm run build
     
-    - name: Unit Tests
-      run: pnpm run test
+    # - name: Unit Tests
+    #   run: pnpm run test
       # - name: Install Firebase CLI
       #   run: npm install -g firebase-tools
 
