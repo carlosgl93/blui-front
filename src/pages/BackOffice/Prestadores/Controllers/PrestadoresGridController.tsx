@@ -68,7 +68,17 @@ export const PrestadoresGridController = () => {
           return row?.servicio;
         },
         headerName: 'Servicio',
-        width: 200,
+        width: 175,
+        editable: false,
+      },
+      {
+        field: 'especialidad',
+        valueGetter: (_value, row) => {
+          console.log(row);
+          return row?.especialidad;
+        },
+        headerName: 'Especialidad',
+        width: 100,
         editable: false,
       },
       {

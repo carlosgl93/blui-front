@@ -4,6 +4,7 @@ import { getFirestore } from './index';
 
 import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 export const transactionResultNotify = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '256MiB', maxInstances: 5 },
@@ -45,25 +46,23 @@ export const transactionResultNotify = onRequest(
       }
       if (status === 'success' && appointmentInfo?.isPaid !== 'Pagado') {
         await docRef.update({
+          paymentDate: dayjs(),
           isPaid: 'Pagado',
           status: 'Pagada',
         });
-        const paymentDate = new Date();
         const paymentDocRef = db.collection('payments').doc(id);
         // const paymentQuerySnapshot = await paymentsCollectionRef
         //   .where('appointmentId', '==', appointmentId)
         //   .get();
         const paymentRecord = await paymentDocRef.get();
         if (!paymentRecord.exists) {
+          const appointmentPaymentDate = dayjs();
           await paymentDocRef.create({
             ...appointmentInfo,
             appointmentId,
             paymentStatus: 'pending',
-
-            paymentDate: new Date(),
-            paymentDueDate: new Date(
-              paymentDate.getTime() + paymentSettings.providerPayAfterDays * 24 * 60 * 60 * 1000,
-            ),
+            paymentDate: appointmentPaymentDate,
+            paymentDueDate: appointmentPaymentDate.add(paymentSettings.providerPayAfterDays, 'day'),
             amountToPay: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
           });
         }

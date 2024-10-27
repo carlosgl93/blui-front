@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
 import InfoIcon from '@mui/icons-material/Info';
 import { AppointmentParams } from '@/api/appointments';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { formatCLP } from '@/utils/formatCLP';
 import { PaymentController } from '@/pages/Sesiones/PaymentController';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -21,6 +21,7 @@ export interface PaymentRecord extends AppointmentParams {
   amountToPay: number;
   appointmentId: string;
   paymentStatus: string;
+  paymentDueDate: Dayjs;
 }
 type PaymentsRow = PaymentRecord;
 

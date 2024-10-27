@@ -2,6 +2,7 @@ import { Box, Dialog } from '@mui/material';
 import { ProviderBankDetails } from './ProviderBankDetails';
 import { ButtonCTA } from '@/pages/UsuarioDashboard/StyledComponents';
 import { PaymentRecord, PaymentsGridController } from './PaymentsGridController';
+import dayjs from 'dayjs';
 
 type PaymentDialogProps = {
   open: boolean;
@@ -16,6 +17,8 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
     handleMarkAsPaid,
     notifyMissingBankDetailsMutation,
   } = PaymentsGridController();
+
+  const today = dayjs();
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -45,7 +48,8 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
                 mt: 4,
               }}
               onClick={() => handleMarkAsPaid(paymentDetails?.appointmentId)}
-              disabled={markAsPaidIsLoading}
+              // disabled if createdAt is 3 days before the rendered date of today
+              disabled={markAsPaidIsLoading || today.isBefore(paymentDetails?.paymentDueDate)}
             >
               Marcar como pagado
             </ButtonCTA>
