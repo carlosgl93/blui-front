@@ -17,18 +17,20 @@ import dayjs, { Dayjs } from 'dayjs';
 import { createTransaction } from '@/api/payments';
 import { Prestador } from '@/store/auth/prestador';
 import { updateAppointment } from '@/api/appointments/updateAppointment';
+import { useNavigate } from 'react-router-dom';
 
 export const ScheduleController = () => {
-  const [waitingForPayku, setWaitingForPayku] = useState(false);
-  const prestador = useRecoilValue(interactedPrestadorState);
-  const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
   const { prestadorCreatedServicios: prestadorServicios, prestadorCreatedServiciosLoading } =
     useServicios();
+  const prestador = useRecoilValue(interactedPrestadorState);
+  const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
+  const [waitingForPayku, setWaitingForPayku] = useState(false);
   const [schedule, setSchedule] = useRecoilState(scheduleState);
   const setNotification = useSetRecoilState(notificationState);
   const [value, setValue] = useState<Dayjs | null>(null);
   const providerAvailability = prestador?.availability;
   const { providersAppointments } = useAppointments();
+  const navigate = useNavigate();
   const client = useQueryClient();
   const { user } = useAuthNew();
   const now = dayjs();
@@ -218,6 +220,11 @@ export const ScheduleController = () => {
   };
 
   const handleSubmit = () => {
+    navigate('/booking-confirmation');
+    return;
+  };
+
+  const handleConfirmBooking = () => {
     const scheduledTime = schedule?.selectedTime!.format('HH:mm');
     const scheduledDate = schedule?.selectedDate!.format('YYYY-MM-DD');
     if (prestador && user && schedule.selectedService) {
@@ -298,6 +305,7 @@ export const ScheduleController = () => {
     availableTimesStep,
     scheduleServiceLoading,
     waitingForPayku,
+    prestador,
     renderAvailableDay,
     shouldDisableTime,
     setSchedule,
@@ -307,5 +315,6 @@ export const ScheduleController = () => {
     handleSubmit,
     shouldDisableDay,
     handleSelectDate,
+    handleConfirmBooking,
   };
 };
