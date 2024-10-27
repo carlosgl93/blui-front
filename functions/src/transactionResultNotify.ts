@@ -50,7 +50,6 @@ export const transactionResultNotify = onRequest(
           isPaid: 'Pagado',
           status: 'Pagada',
         });
-        const paymentDate = new Date();
         const paymentDocRef = db.collection('payments').doc(id);
         // const paymentQuerySnapshot = await paymentsCollectionRef
         //   .where('appointmentId', '==', appointmentId)
