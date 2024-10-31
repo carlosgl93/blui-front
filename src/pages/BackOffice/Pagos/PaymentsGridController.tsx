@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
 import InfoIcon from '@mui/icons-material/Info';
-import { AppointmentParams } from '@/api/appointments';
-import dayjs, { Dayjs } from 'dayjs';
+import { PaymentRecord } from '@/api/appointments';
+import dayjs from 'dayjs';
 import { formatCLP } from '@/utils/formatCLP';
 import { PaymentController } from '@/pages/Sesiones/PaymentController';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -16,14 +16,6 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getProviderBankDetails, notifyMissingBankDetails } from '@/api/cuentaBancaria';
 import { markAsPaid } from '@/api/payments';
 import { notificationState } from '@/store/snackbar';
-
-export interface PaymentRecord extends AppointmentParams {
-  amountToPay: number;
-  appointmentId: string;
-  paymentStatus: string;
-  paymentDueDate: Dayjs;
-}
-type PaymentsRow = PaymentRecord;
 
 export const PaymentsGridController = () => {
   const [paginationModel, setPaginationModel] = useRecoilState(paymentsGridPaginationModelState);
@@ -41,7 +33,7 @@ export const PaymentsGridController = () => {
     duePaymentsIsLoading,
   } = PaymentController();
 
-  const columns = useMemo<GridColDef<PaymentsRow>[]>(
+  const columns = useMemo<GridColDef<PaymentRecord>[]>(
     () => [
       { field: 'appointmentId', headerName: 'ID', width: 90 },
       {

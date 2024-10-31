@@ -1,12 +1,13 @@
 import { Box, Dialog } from '@mui/material';
 import { ProviderBankDetails } from './ProviderBankDetails';
 import { ButtonCTA } from '@/pages/UsuarioDashboard/StyledComponents';
-import { PaymentRecord, PaymentsGridController } from './PaymentsGridController';
+import { PaymentsGridController } from './PaymentsGridController';
 import dayjs from 'dayjs';
+import { PaymentRecord } from '@/api/appointments';
 
 type PaymentDialogProps = {
   open: boolean;
-  paymentDetails: PaymentRecord | null;
+  paymentDetails: PaymentRecord;
   onClose: (params: PaymentRecord) => void;
 };
 
@@ -19,6 +20,8 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
   } = PaymentsGridController();
 
   const today = dayjs();
+
+  const { amountToPay, appointmentId, paymentDueDate, provider } = paymentDetails;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -39,17 +42,18 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
         {providerBankDetails ? (
           <>
             <ProviderBankDetails
-              amountToPay={paymentDetails?.amountToPay ?? 0}
+              amountToPay={amountToPay ? amountToPay : 0}
               providerBankDetails={providerBankDetails}
+              providerEmail={provider.email!}
             />
             <ButtonCTA
               variant="contained"
               sx={{
                 mt: 4,
               }}
-              onClick={() => handleMarkAsPaid(paymentDetails?.appointmentId)}
+              onClick={() => handleMarkAsPaid(appointmentId)}
               // disabled if createdAt is 3 days before the rendered date of today
-              disabled={markAsPaidIsLoading || today.isBefore(paymentDetails?.paymentDueDate)}
+              disabled={markAsPaidIsLoading || today.isBefore(paymentDueDate)}
             >
               Marcar como pagado
             </ButtonCTA>
@@ -59,8 +63,8 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
             variant="contained"
             onClick={() =>
               notifyMissingBankDetailsMutation({
-                providerEmail: paymentDetails!.provider.email!,
-                providerName: paymentDetails!.provider.firstname!,
+                providerEmail: provider.email!,
+                providerName: provider.firstname!,
               })
             }
           >
