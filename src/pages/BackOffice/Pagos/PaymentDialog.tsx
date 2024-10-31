@@ -7,7 +7,7 @@ import { PaymentRecord } from '@/api/appointments';
 
 type PaymentDialogProps = {
   open: boolean;
-  paymentDetails: PaymentRecord;
+  paymentDetails: PaymentRecord | null;
   onClose: (params: PaymentRecord) => void;
 };
 
@@ -20,6 +20,8 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
   } = PaymentsGridController();
 
   const today = dayjs();
+
+  if (!paymentDetails) return null;
 
   const { amountToPay, appointmentId, paymentDueDate, provider } = paymentDetails;
 
