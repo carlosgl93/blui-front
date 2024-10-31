@@ -1,4 +1,4 @@
-import { PaymentRecord } from '@/pages/BackOffice/Pagos/PaymentsGridController';
+import { PaymentRecord } from '@/api/appointments';
 import { atom } from 'recoil';
 
 export type PaginationModel = {

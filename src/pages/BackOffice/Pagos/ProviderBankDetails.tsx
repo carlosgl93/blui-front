@@ -6,11 +6,13 @@ import { formatCLP } from '@/utils/formatCLP';
 type ProviderBankDetailsProps = {
   amountToPay: number;
   providerBankDetails: BankAccount | undefined;
+  providerEmail: string;
 };
 
 export const ProviderBankDetails = ({
   amountToPay,
   providerBankDetails,
+  providerEmail,
 }: ProviderBankDetailsProps) => {
   if (!providerBankDetails?.id) null;
   return (
@@ -26,7 +28,22 @@ export const ProviderBankDetails = ({
               <Text variant="body1">{providerBankDetails?.titular}</Text>
             </TableCell>
           </TableRow>
-
+          <TableRow>
+            <TableCell>
+              <Text variant="body1">RUT:</Text>
+            </TableCell>
+            <TableCell>
+              <Text variant="body1">{providerBankDetails?.rut}</Text>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Text variant="body1">RUT:</Text>
+            </TableCell>
+            <TableCell>
+              <Text variant="body1">{providerEmail}</Text>
+            </TableCell>
+          </TableRow>
           <TableRow>
             <TableCell>
               <Text variant="body1">Banco:</Text>
@@ -49,14 +66,6 @@ export const ProviderBankDetails = ({
             </TableCell>
             <TableCell>
               <Text variant="body1">{providerBankDetails?.numeroCuenta}</Text>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Text variant="body1">RUT:</Text>
-            </TableCell>
-            <TableCell>
-              <Text variant="body1">{providerBankDetails?.rut}</Text>
             </TableCell>
           </TableRow>
           <TableRow>

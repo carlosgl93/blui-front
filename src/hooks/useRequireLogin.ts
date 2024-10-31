@@ -13,8 +13,8 @@ export function useRequireLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const prestadorId = !!prestador?.id?.length;
-  const userId = !!user?.id?.length;
+  const prestadorId = prestador?.id?.length;
+  const userId = user?.id?.length;
 
   useEffect(() => {
     if ((!prestadorId || !userId) && location.pathname.includes('/backoffice')) {

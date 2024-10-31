@@ -1,12 +1,6 @@
 import { db } from '@/firebase';
-import { PaymentRecord } from '@/pages/BackOffice/Pagos/PaymentsGridController';
-import {
-  collection,
-  getDocs,
-  query,
-  // Timestamp,
-  // where
-} from 'firebase/firestore';
+import { PaymentRecord } from '../appointments';
+import { collection, getDocs, query } from 'firebase/firestore';
 
 export const getDuePayments = async (): Promise<PaymentRecord[]> => {
   try {

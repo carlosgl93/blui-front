@@ -45,11 +45,12 @@ export const transactionResultNotify = onRequest(
         throw new Error('Appointment document does not exist');
       }
       if (status === 'success' && appointmentInfo?.isPaid !== 'Pagado') {
-        await docRef.update({
-          paymentDate: dayjs(),
+        const updatedDoc = {
+          paymentDate: dayjs().toString(),
           isPaid: 'Pagado',
           status: 'Pagada',
-        });
+        };
+        await docRef.update(updatedDoc);
         const paymentDocRef = db.collection('payments').doc(id);
         // const paymentQuerySnapshot = await paymentsCollectionRef
         //   .where('appointmentId', '==', appointmentId)
@@ -57,12 +58,15 @@ export const transactionResultNotify = onRequest(
         const paymentRecord = await paymentDocRef.get();
         if (!paymentRecord.exists) {
           const appointmentPaymentDate = dayjs();
+          const paymentDueDate = appointmentPaymentDate
+            .add(paymentSettings.providerPayAfterDays, 'day')
+            .toString();
           await paymentDocRef.create({
             ...appointmentInfo,
             appointmentId,
             paymentStatus: 'pending',
-            paymentDate: appointmentPaymentDate,
-            paymentDueDate: appointmentPaymentDate.add(paymentSettings.providerPayAfterDays, 'day'),
+            paymentDate: appointmentPaymentDate.toString(),
+            paymentDueDate,
             amountToPay: appointmentInfo?.servicio?.price * (1 - paymentSettings.appCommission),
           });
         }
