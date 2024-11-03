@@ -8,6 +8,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import { sendVerificationEmail } from './sendVerificationEmail';
 import { transactionResultNotify } from './transactionResultNotify';
 import { getAccessToken } from './utils/getAccessToken';
+import { deleteUnpaidAppointments } from './autoDeleteUnpaidAppointments';
 
 setGlobalOptions({ region: 'southamerica-west1', timeoutSeconds: 15 });
 const credential = applicationDefault();
@@ -29,4 +30,5 @@ export {
   sendEmail,
   sendVerificationEmail,
   transactionResultNotify,
+  deleteUnpaidAppointments,
 };
