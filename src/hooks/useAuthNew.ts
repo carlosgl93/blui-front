@@ -2,7 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import { auth, db } from '@/firebase/firebase';
 import {
+  browserLocalPersistence,
   browserSessionPersistence,
+  onAuthStateChanged,
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
@@ -20,6 +22,7 @@ import { createPrestador, createUser } from '@/api/auth';
 import { sendVerificationEmailApi } from '@/api';
 import { determineRedirectAfterLogin } from '../utils/redirectAfterLoginLogic';
 import { useResetState } from './useResetState';
+import { useEffect } from 'react';
 
 export const useAuthNew = () => {
   const [user, setUserState] = useRecoilState(userState);
@@ -32,6 +35,57 @@ export const useAuthNew = () => {
   const isLoggedIn = user?.isLoggedIn || prestador?.isLoggedIn;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        const correo = authUser.email;
+        const usersColectionRef = collection(db, 'users');
+        const prestadorCollectionRef = collection(db, 'providers');
+        const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
+        const prestadorQuery = query(
+          prestadorCollectionRef,
+          limit(1),
+          where('email', '==', correo),
+        );
+
+        const [users, prestadores] = await Promise.all([
+          getDocs(userQuery),
+          getDocs(prestadorQuery),
+        ]);
+
+        if (users.docs.length > 0) {
+          const user = users.docs[0].data() as User;
+          user.token = authUser.refreshToken;
+          user.id = authUser.uid;
+          setUserState({ ...user, isLoggedIn: true, token: authUser.refreshToken });
+          queryClient.setQueryData(['user', correo], user);
+        } else if (prestadores.docs.length > 0) {
+          const prestador = prestadores.docs[0].data() as Prestador;
+          const availabilityCollectionRef = collection(
+            db,
+            'providers',
+            prestador.id,
+            'availability',
+          );
+          const availabilityData = await getDocs(availabilityCollectionRef);
+          const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
+          prestador.availability = availability;
+          setPrestadorState({ ...prestador, isLoggedIn: true });
+          queryClient.setQueryData(['prestador', correo], prestador);
+        } else {
+          console.error('No user or provider found with the given email.');
+        }
+      } else {
+        // User is signed out
+        setUserState(null);
+        setPrestadorState(null);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [queryClient, setUserState, setPrestadorState]);
 
   const { mutate: createPrestadorMutation, isLoading: createPrestadorLoading } = useMutation(
     createPrestador,
@@ -121,45 +175,40 @@ export const useAuthNew = () => {
         message: 'Iniciando sesión...',
         severity: 'info',
       });
-      return signInWithEmailAndPassword(auth, correo.toLowerCase(), contrasena).then(
-        async (userCredential) => {
-          const usersColectionRef = collection(db, 'users');
-          const prestadorCollectionRef = collection(db, 'providers');
-          const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
-          const prestadorQuery = query(
-            prestadorCollectionRef,
-            limit(1),
-            where('email', '==', correo),
-          );
-          const users = await getDocs(userQuery);
-          const prestadores = await getDocs(prestadorQuery);
 
-          if (users.docs.length > 0) {
-            const user = users.docs[0].data() as User;
-            user.token = userCredential.user.refreshToken;
-            user.id = userCredential.user.uid;
-            setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
-            queryClient.setQueryData(['user', correo], user);
-            return { role: 'user', data: user };
-          } else if (prestadores.docs.length > 0) {
-            const prestador = prestadores.docs[0].data() as Prestador;
-            const availabilityCollectionRef = collection(
-              db,
-              'providers',
-              prestador.id,
-              'availability',
-            );
-            const availabilityData = await getDocs(availabilityCollectionRef);
-            const availability = availabilityData.docs.map((doc) =>
-              doc.data(),
-            ) as AvailabilityData[];
-            prestador.availability = availability;
-            setPrestadorState({ ...prestador, isLoggedIn: true });
-            queryClient.setQueryData(['prestador', correo], prestador);
-            return { role: 'prestador', data: prestador };
-          }
-        },
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        correo.toLowerCase(),
+        contrasena,
       );
+
+      const usersColectionRef = collection(db, 'users');
+      const prestadorCollectionRef = collection(db, 'providers');
+      const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
+      const prestadorQuery = query(prestadorCollectionRef, limit(1), where('email', '==', correo));
+
+      const [users, prestadores] = await Promise.all([getDocs(userQuery), getDocs(prestadorQuery)]);
+
+      if (users.docs.length > 0) {
+        const user = users.docs[0].data() as User;
+        user.token = userCredential.user.refreshToken;
+        user.id = userCredential.user.uid;
+        setUserState({ ...user, isLoggedIn: true, token: userCredential.user.refreshToken });
+        queryClient.setQueryData(['user', correo], user);
+        return { role: 'user', data: user };
+      } else if (prestadores.docs.length > 0) {
+        const prestador = prestadores.docs[0].data() as Prestador;
+        const availabilityCollectionRef = collection(db, 'providers', prestador.id, 'availability');
+        const availabilityData = await getDocs(availabilityCollectionRef);
+        const availability = availabilityData.docs.map((doc) => doc.data()) as AvailabilityData[];
+        prestador.availability = availability;
+        setPrestadorState({ ...prestador, isLoggedIn: true });
+        queryClient.setQueryData(['prestador', correo], prestador);
+        return { role: 'prestador', data: prestador };
+      } else {
+        throw new Error('No user or provider found with the given email.');
+      }
     },
     {
       onError(error: FirebaseError) {
@@ -199,26 +248,22 @@ export const useAuthNew = () => {
           redirectAfterLogin
             ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'user'))
             : navigate(`/usuario-dashboard`);
-        } else {
-          if (data?.role === 'prestador') {
-            setPrestadorState({ ...data.data, isLoggedIn: true } as Prestador);
-            redirectAfterLogin
-              ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'provider'))
-              : navigate(`/prestador-dashboard`);
-          }
-          if (data?.role === 'admin') {
-            setUserState({
-              ...data.data,
-              isLoggedIn: true,
-              role: data.role,
-            } as User);
-            navigate(`/backoffice`);
-          }
+        } else if (data?.role === 'prestador') {
+          setPrestadorState({ ...data.data, isLoggedIn: true } as Prestador);
+          redirectAfterLogin
+            ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'provider'))
+            : navigate(`/prestador-dashboard`);
+        } else if (data?.role === 'admin') {
+          setUserState({
+            ...data.data,
+            isLoggedIn: true,
+            role: data.role,
+          } as User);
+          navigate(`/backoffice`);
         }
       },
     },
   );
-
   const { mutate: adminLogin, isLoading: adminLoginLoading } = useMutation(
     async ({ correo, contrasena }: { correo: string; contrasena: string }) => {
       setNotification({

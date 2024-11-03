@@ -1,10 +1,9 @@
-import { onRequest } from 'firebase-functions/v2/https';
-import * as logger from 'firebase-functions/logger';
-import { getFirestore } from './index';
-
-import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { getFirestore } from './index';
+import * as logger from 'firebase-functions/logger';
+import { onRequest } from 'firebase-functions/v2/https';
+import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
 
 export const transactionResultNotify = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '256MiB', maxInstances: 5 },
@@ -81,7 +80,6 @@ export const transactionResultNotify = onRequest(
       return;
     }
     try {
-      // const rawToken = await token;
       logger.info('beginning email notification');
       const emailsCollectionRef = db.collection('emails');
       const emailSnap = await emailsCollectionRef.where('appointmentId', '==', appointmentId).get();

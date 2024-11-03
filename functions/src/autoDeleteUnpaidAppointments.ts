@@ -2,10 +2,9 @@ import { getFirestore } from './index';
 import { pubsub } from 'firebase-functions';
 import * as logger from 'firebase-functions/logger';
 
-const db = getFirestore();
-
 export const deleteUnpaidAppointments = pubsub.schedule('every day 00:00').onRun(async () => {
   try {
+    const db = getFirestore();
     const appointmentsRef = db.collection('appointments');
     const unpaidAppointmentsSnapshot = await appointmentsRef
       .where('status', '==', 'Pendiente de pago')

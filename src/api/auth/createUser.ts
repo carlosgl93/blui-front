@@ -9,7 +9,11 @@ import { auth, db } from '@/firebase';
 import { User } from '@/store/auth/user';
 import { Comuna, Especialidad, Servicio } from '@/types';
 import { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  setPersistence,
+} from 'firebase/auth';
 import { query, collection, where, getDocs, doc, setDoc } from 'firebase/firestore';
 
 export type CreateUserParams = {
@@ -57,6 +61,7 @@ export async function createUser({
       throw new Error('Este email ya tiene una cuenta.');
     }
 
+    await setPersistence(auth, browserLocalPersistence);
     const { user } = await createUserWithEmailAndPassword(auth, correo, contrasena);
     localStorage.setItem('token', JSON.stringify(user.refreshToken));
 

@@ -8,7 +8,12 @@
 import { Comuna, Especialidad, Servicio } from '@/types';
 import { defaultAvailability } from '@/utils/constants';
 import dayjs from 'dayjs';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  setPersistence,
+} from 'firebase/auth';
 import { db, auth } from '@/firebase/firebase';
 import { query, collection, where, getDocs, doc, setDoc, writeBatch } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
@@ -52,6 +57,7 @@ export async function createPrestador({
       throw new Error('Este email ya tiene una cuenta.');
     }
 
+    await setPersistence(auth, browserLocalPersistence);
     const userCredentials = await createUserWithEmailAndPassword(auth, correo, contrasena);
     const { user } = userCredentials;
     await sendEmailVerification(user);
