@@ -25,102 +25,107 @@ const DesktopFilters = () => {
         display: 'flex',
         flexDirection: 'column',
         alignContent: 'center',
+        gap: '1rem',
       }}
     >
-      <Title
-        variant="h6"
-        sx={{
-          fontSize: '1.2rem',
-        }}
-      >
-        Comunas
-      </Title>
-      <FiltersSearchBar />
-      {comuna && (
-        <List>
-          <ListItemButton
-            onClick={() => removeComuna(comuna!)}
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: '90% 10%',
-              alignItems: 'center',
-              border: '1px solid',
-              borderColor: 'primary.dark',
-              borderRadius: '0.25rem',
-              padding: '0.5rem 1rem',
-              backgroundColor: 'primary.main',
-              color: 'secondary.main',
-              ':hover': {
-                backgroundColor: 'primary.light',
-                color: 'primary.dark',
-              },
-              my: '1vh',
-            }}
-          >
-            <ListItemText primary={comuna.name} />
-
-            <IconButton
+      <Box>
+        <Title
+          variant="h6"
+          sx={{
+            fontSize: '1.2rem',
+          }}
+        >
+          Comunas
+        </Title>
+        <FiltersSearchBar />
+        {comuna && (
+          <List>
+            <ListItemButton
+              onClick={() => removeComuna(comuna!)}
               sx={{
-                color: 'secondary.contrastText',
+                display: 'grid',
+                gridTemplateColumns: '90% 10%',
+                alignItems: 'center',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                borderRadius: '0.25rem',
+                padding: '0.5rem 1rem',
+                backgroundColor: 'primary.main',
+                color: 'secondary.main',
+                ':hover': {
+                  backgroundColor: 'primary.light',
+                  color: 'primary.dark',
+                },
+                my: '1vh',
               }}
             >
-              <CancelOutlinedIcon />
-            </IconButton>
-          </ListItemButton>
-        </List>
-      )}
+              <ListItemText primary={comuna.name} />
+
+              <IconButton
+                sx={{
+                  color: 'secondary.contrastText',
+                }}
+              >
+                <CancelOutlinedIcon />
+              </IconButton>
+            </ListItemButton>
+          </List>
+        )}
+      </Box>
 
       {/* SERVICIO */}
-      <Title
-        variant="h6"
-        sx={{
-          fontSize: '1.2rem',
-        }}
-      >
-        Servicio
-      </Title>
-      {allServicios && (
-        <StyledSelect value={servicio?.serviceName || ''} onChange={handleSelectServicio}>
-          <option>Selecciona un servicio</option>
-          {allServicios.map((servicio: Servicio) => {
-            return (
-              <option key={servicio.id} value={servicio.serviceName}>
-                {servicio.serviceName}
-              </option>
-            );
-          })}
-        </StyledSelect>
-      )}
-
-      {servicio && especialidades?.length && (
-        <>
-          <Title
-            variant="h6"
-            sx={{
-              fontSize: '1.2rem',
-            }}
-          >
-            Especialidad
-          </Title>
-          <StyledSelect
-            value={especialidad?.especialidadName}
-            onChange={(e) => {
-              selectEspecialidad(
-                servicio?.especialidades?.find((esp) => esp.especialidadName === e.target.value),
-              );
-            }}
-          >
-            <option value="">Selecciona una especialidad</option>
-            {servicio.especialidades?.map((especialidad) => {
+      <Box>
+        <Title
+          variant="h6"
+          sx={{
+            fontSize: '1.2rem',
+          }}
+        >
+          Servicio
+        </Title>
+        {allServicios && (
+          <StyledSelect value={servicio?.serviceName || ''} onChange={handleSelectServicio}>
+            <option>Selecciona un servicio</option>
+            {allServicios.map((servicio: Servicio) => {
               return (
-                <option key={especialidad.id} value={especialidad.especialidadName}>
-                  {especialidad.especialidadName}
+                <option key={servicio.id} value={servicio.serviceName}>
+                  {servicio.serviceName}
                 </option>
               );
             })}
           </StyledSelect>
-        </>
-      )}
+        )}
+
+        {servicio && especialidades?.length && (
+          <>
+            <Title
+              variant="h6"
+              sx={{
+                fontSize: '1.2rem',
+              }}
+            >
+              Especialidad
+            </Title>
+            <StyledSelect
+              value={especialidad?.especialidadName}
+              onChange={(e) => {
+                selectEspecialidad(
+                  servicio?.especialidades?.find((esp) => esp.especialidadName === e.target.value),
+                );
+              }}
+            >
+              <option value="">Selecciona una especialidad</option>
+              {servicio.especialidades?.map((especialidad) => {
+                return (
+                  <option key={especialidad.id} value={especialidad.especialidadName}>
+                    {especialidad.especialidadName}
+                  </option>
+                );
+              })}
+            </StyledSelect>
+          </>
+        )}
+      </Box>
 
       {/* ESPECIALIDAD */}
 

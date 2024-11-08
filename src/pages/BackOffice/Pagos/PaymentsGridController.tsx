@@ -48,7 +48,7 @@ export const PaymentsGridController = () => {
       {
         field: 'customer',
         valueGetter: (_value, row) => {
-          return `${row.customer.firstname} ${row?.provider.lastname}`;
+          return `${row.customer.firstname} ${row?.customer.lastname}`;
         },
         headerName: 'Cliente',
         width: 150,
