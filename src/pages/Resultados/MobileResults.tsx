@@ -1,25 +1,22 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import Loading from '@/components/Loading';
+import { MobileFilters } from './MobileFilters';
+import { Text } from '@/components/StyledComponents';
+import { MobileResultList } from './MobileResultList';
+import { useGetPrestadores } from '@/hooks/useGetPrestadores';
 import { Box, Drawer, useTheme, Button } from '@mui/material';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 
-import { MobileFilters } from './MobileFilters';
-import { MobileResultList } from './MobileResultList';
-import { Prestador } from '@/store/auth/prestador';
-import { Text } from '@/components/StyledComponents';
-
-type MobileResultsProps = {
-  filteredPrestadores: Prestador[];
-};
-
-const MobileResults = ({ filteredPrestadores }: MobileResultsProps) => {
+const MobileResults = () => {
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { verifiedPrestadores } = useGetPrestadores();
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const resultsLength = filteredPrestadores?.length;
+  const resultsLength = verifiedPrestadores?.prestadores?.length;
 
   return (
     <>
@@ -65,7 +62,7 @@ const MobileResults = ({ filteredPrestadores }: MobileResultsProps) => {
         }}
       >
         <Text>
-          {resultsLength > 0
+          {resultsLength && resultsLength > 0
             ? `${resultsLength} ${
                 resultsLength === 1 ? 'prestador encontrado' : 'prestadores encontrados'
               }`
@@ -84,7 +81,9 @@ const MobileResults = ({ filteredPrestadores }: MobileResultsProps) => {
           <MobileFilters closeFilters={toggleDrawer} />
         </Drawer>
 
-        <MobileResultList filteredPrestadores={filteredPrestadores} />
+        <Suspense fallback={<Loading />}>
+          <MobileResultList />
+        </Suspense>
       </Box>
     </>
   );

@@ -57,7 +57,7 @@ export const Prestadores = () => {
               columns={columns}
               rows={rows}
               paginationMode="server"
-              rowCount={totalPrestadores?.count || 0}
+              rowCount={totalPrestadores || 0}
               paginationModel={paginationModel}
               onPaginationModelChange={setPaginationModel}
               pageSizeOptions={[10, 25]}

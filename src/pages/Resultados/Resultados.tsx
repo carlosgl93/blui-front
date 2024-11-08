@@ -1,15 +1,15 @@
-import Meta from '@/components/Meta';
-import { useMediaQuery } from '@mui/material';
-import { tablet } from '../../theme/breakpoints';
-import DesktopResults from './DesktopResults';
-import MobileResults from './MobileResults';
-import Loading from '@/components/Loading';
-import { ResultadosHeader } from './ResultadosHeader';
 import { Suspense } from 'react';
+import Meta from '@/components/Meta';
+import Loading from '@/components/Loading';
+import MobileResults from './MobileResults';
+import { useMediaQuery } from '@mui/material';
+import DesktopResults from './DesktopResults';
+import { tablet } from '../../theme/breakpoints';
+import { ResultadosHeader } from './ResultadosHeader';
 import { useGetPrestadores } from '@/hooks/useGetPrestadores';
 
 function Resultados() {
-  const { data, isLoading } = useGetPrestadores();
+  const { isLoading } = useGetPrestadores();
   const isTablet = useMediaQuery(tablet);
 
   return (
@@ -21,9 +21,11 @@ function Resultados() {
       {isLoading ? (
         <Loading />
       ) : isTablet ? (
-        <MobileResults filteredPrestadores={data} />
+        // <MobileResults filteredPrestadores={data} />
+        <MobileResults />
       ) : (
-        <DesktopResults filteredPrestadores={data} />
+        // <DesktopResults filteredPrestadores={data} />
+        <DesktopResults />
       )}
     </Suspense>
   );

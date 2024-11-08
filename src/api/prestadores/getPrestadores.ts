@@ -1,4 +1,12 @@
-import { collection, query, limit, where, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  limit,
+  where,
+  getDocs,
+  startAfter,
+  QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import { Especialidad, Servicio } from '@/types/Servicio';
 import { Prestador } from '@/store/auth/prestador';
 import { db } from '@/firebase/firebase';
@@ -8,9 +16,17 @@ export const getPrestadores = async (
   comuna: Comuna | null,
   servicio: Servicio | null,
   especialidad: Especialidad | null,
+  lastVisible: QueryDocumentSnapshot<Prestador> | null = null,
+  pageSize = 10,
 ) => {
   const prestadorCollectionRef = collection(db, 'providers');
-  let prestadoresQuery = query(prestadorCollectionRef, where('verified', '!=', false), limit(15));
+  let prestadoresQuery = query(
+    prestadorCollectionRef,
+    where('verified', '!=', false),
+    limit(pageSize),
+  );
+
+  console.log(comuna);
 
   if (comuna) {
     prestadoresQuery = query(prestadoresQuery, where('comunas', 'array-contains', comuna));
@@ -27,8 +43,13 @@ export const getPrestadores = async (
     );
   }
 
+  if (lastVisible) {
+    prestadoresQuery = query(prestadoresQuery, startAfter(lastVisible));
+  }
   prestadoresQuery = query(prestadoresQuery, where('verified', '==', 'Verificado'));
+
   const querySnapshot = await getDocs(prestadoresQuery);
-  const prestadores = querySnapshot.docs.map((doc) => doc.data());
-  return prestadores as Prestador[];
+  const prestadores = querySnapshot.docs.map((doc) => doc.data() as Prestador);
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { prestadores, lastDoc };
 };
