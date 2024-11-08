@@ -49,6 +49,9 @@ export const useGetPrestadores = () => {
     ['verifiedProvidersInfinite', comuna, servicio, especialidad],
     ({ pageParam = null }) => getPrestadores(comuna, servicio, especialidad, pageParam, limit),
     {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
       getNextPageParam: (lastPage) => lastPage.lastDoc,
       onSuccess(data) {
         console.log(data);
