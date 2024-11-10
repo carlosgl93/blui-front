@@ -5,8 +5,11 @@ import Meta from '@/components/Meta';
 import Servicios from '@/components/Servicios';
 import CommunitySupport from '@/components/CommunitySupport';
 import { comoFuncionaCardsContent } from './comoFuncionaContent';
+import dayjs from 'dayjs';
 
 function Welcome() {
+  console.log(dayjs('2024-08-08T08:50:00.000Z').toISOString());
+
   return (
     <>
       <Meta title="Blui: Inicio" />

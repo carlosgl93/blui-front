@@ -41,6 +41,7 @@ export interface AppointmentParams {
   confirmedByUser: boolean;
   paykuId?: string;
   paykuPaymentURL?: string;
+  scheduledDateISO?: string;
 }
 
 export interface PaymentRecord extends AppointmentParams {
@@ -57,6 +58,7 @@ export async function scheduleService({
   scheduledDate,
   scheduledTime,
 }: AppointmentParams) {
+  const scheduledDateISO = dayjs(`${scheduledDate}T${scheduledTime}:00.000Z`).toISOString();
   const newAppointment: AppointmentParams = {
     provider,
     servicio,
@@ -68,6 +70,7 @@ export async function scheduleService({
     status: 'Pendiente de pago',
     rating: 0,
     confirmedByUser: false,
+    scheduledDateISO,
   };
   const docRef = await addDoc(collection(db, 'appointments'), newAppointment);
   newAppointment.id = docRef.id;

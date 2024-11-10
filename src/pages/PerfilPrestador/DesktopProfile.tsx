@@ -80,6 +80,8 @@ export const DesktopProfile = ({ prestador }: DesktopProfileProps) => {
   //   }
   // }, [allServicios, service_id, speciality_id]);
 
+  console.log(especialidad);
+
   return (
     <>
       <StyledHeroBox>

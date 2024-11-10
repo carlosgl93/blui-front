@@ -1,12 +1,11 @@
-import { fetchAndCompileTemplate } from './utils/prepareEmailTemplate';
-import { sendEmailSettings } from './utils/sendEmailSettings';
+import { fetchAndCompileTemplate } from '../utils/prepareEmailTemplate';
+import { sendEmailSettings } from '../utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
-import { unAuthorized } from './validations';
-import { Handlebars } from './handlebars';
-import { app, getAuth } from './index';
-import { getEnvUrl } from './utils';
-
+import { unAuthorized } from '../validations';
+import { Handlebars } from '../handlebars';
+import { app, getAuth } from '../index';
+import { getEnvUrl } from '../utils';
 
 export const sendVerificationEmail = onRequest(
   // func settings
@@ -31,7 +30,7 @@ export const sendVerificationEmail = onRequest(
       const link = await getAuth(app).generateEmailVerificationLink(to, {
         url: redirectURL,
       });
-      
+
       const templateData = {
         EMAIL_VERIFICATION_LINK: link,
       };

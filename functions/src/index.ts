@@ -1,14 +1,16 @@
-import { setGlobalOptions } from 'firebase-functions/v2/options';
-import { userPaidAppointment } from './userPaidAppointment';
-import { sendEmail } from './sendEmail';
-import { initializeApp, applicationDefault } from 'firebase-admin/app';
-import { getStorage } from 'firebase-admin/storage';
 import { getAuth } from 'firebase-admin/auth';
+import { getStorage } from 'firebase-admin/storage';
 import { getFirestore } from 'firebase-admin/firestore';
-import { sendVerificationEmail } from './sendVerificationEmail';
-import { transactionResultNotify } from './transactionResultNotify';
 import { getAccessToken } from './utils/getAccessToken';
-import { deleteUnpaidAppointments } from './autoDeleteUnpaidAppointments';
+import {
+  sendEmail,
+  userPaidAppointment,
+  sendVerificationEmail,
+  transactionResultNotify,
+} from './functions';
+import { setGlobalOptions } from 'firebase-functions/v2/options';
+import { initializeApp, applicationDefault } from 'firebase-admin/app';
+import { deleteUnpaidAppointments, markSessionsReadyToPay } from './pubsubs';
 
 setGlobalOptions({ region: 'southamerica-west1', timeoutSeconds: 15 });
 const credential = applicationDefault();
@@ -26,9 +28,10 @@ export {
   getAuth,
   getFirestore,
   token,
-  userPaidAppointment,
   sendEmail,
+  userPaidAppointment,
   sendVerificationEmail,
   transactionResultNotify,
   deleteUnpaidAppointments,
+  markSessionsReadyToPay as markAsreadyToPayDoneSessions,
 };
