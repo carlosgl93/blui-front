@@ -24,6 +24,7 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
   if (!paymentDetails) return null;
 
   const { amountToPay, appointmentId, paymentDueDate, provider } = paymentDetails;
+  const paymentDisabledDueToDate = today.isBefore(paymentDueDate);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -55,9 +56,11 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
               }}
               onClick={() => handleMarkAsPaid(appointmentId)}
               // disabled if createdAt is 3 days before the rendered date of today
-              disabled={markAsPaidIsLoading || today.isBefore(paymentDueDate)}
+              disabled={markAsPaidIsLoading || paymentDisabledDueToDate}
             >
-              Marcar como pagado
+              {paymentDisabledDueToDate
+                ? `Deshabilidato por que debe pagarse el ${paymentDueDate}`
+                : 'Marcar como pagado'}
             </ButtonCTA>
           </>
         ) : (

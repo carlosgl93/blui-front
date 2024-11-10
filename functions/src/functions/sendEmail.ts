@@ -1,11 +1,11 @@
-import { malformedPayloadValidation } from './validations';
-import { sendEmailSettings } from './utils/sendEmailSettings';
+import { malformedPayloadValidation } from '../validations';
+import { sendEmailSettings } from '../utils/sendEmailSettings';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
-import { CACHE_EXPIRATION_TIME } from './config';
+import { CACHE_EXPIRATION_TIME } from '../config';
 import * as memoryCache from 'memory-cache';
-import { Handlebars } from './handlebars';
-import { fetchAndCompileTemplate, getEnvUrl } from './utils';
+import { Handlebars } from '../handlebars';
+import { fetchAndCompileTemplate, getEnvUrl } from '../utils';
 
 export const sendEmail = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
@@ -102,7 +102,7 @@ export const sendEmail = onRequest(
             templateData = {
               senderName,
               message,
-              senderEmail
+              senderEmail,
             };
           }
           break;

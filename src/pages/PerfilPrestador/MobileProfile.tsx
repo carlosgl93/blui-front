@@ -97,7 +97,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         </ReviewsContainer>
 
         <StyledServicio>
-          {servicio} {especialidad && '/ especialidad'}
+          {servicio} {especialidad && `/ ${especialidad}`}
         </StyledServicio>
 
         <StyledServicio>

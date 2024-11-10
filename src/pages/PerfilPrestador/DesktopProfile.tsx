@@ -8,7 +8,6 @@ import {
   StyledAvatar,
   StyledBackButton,
   StyledCTAs,
-  StyledContactButton,
   StyledHeroBox,
   StyledHeroContent,
   StyledName,
@@ -24,9 +23,7 @@ type DesktopProfileProps = {
 };
 
 export const DesktopProfile = ({ prestador }: DesktopProfileProps) => {
-  // const [{ isLoggedIn, user }, { updateRedirectToAfterLogin }] = useAuth();
   const {
-    // id,
     firstname,
     lastname,
     averageReviews,
@@ -35,50 +32,7 @@ export const DesktopProfile = ({ prestador }: DesktopProfileProps) => {
     servicio,
     especialidad,
     description,
-    // isLoggedIn,
   } = prestador;
-
-  // const {
-  //   id,
-  //   firstname,
-  //   lastname,
-  //   imageUrl,
-  //   service_id,
-  //   speciality_id,
-  //   average_review,
-  //   total_reviews,
-  //   description,
-  // } = prestador;
-  // const [{ allServicios }] = useRecibeApoyo();
-  // const [prestadorServicio, setPrestadorServicio] = useState({} as Servicio);
-  // const [prestadorEspecialidad, setPrestadorEspecialidad] = useState({} as Especialidad);
-  // const navigate = useNavigate();
-
-  const handleContact = () => {
-    // if (isLoggedIn && user) {
-    //   navigate(`/chat/${id}`);
-    return;
-  };
-
-  //   updateRedirectToAfterLogin(`/perfil-prestador/${id}`);
-  //   navigate('/registrar-usuario');
-  //   return;
-  // };
-
-  // useEffect(() => {
-  //   const thisPrestadorServicio = allServicios?.find((s) => s.id === service_id);
-  //   if (thisPrestadorServicio) {
-  //     setPrestadorServicio(thisPrestadorServicio);
-  //   }
-
-  //   const thisPrestadorEspecialidad = thisPrestadorServicio?.especialidades.find(
-  //     (e) => e.id === speciality_id,
-  //   ) as Especialidad;
-
-  //   if (thisPrestadorEspecialidad) {
-  //     setPrestadorEspecialidad(thisPrestadorEspecialidad);
-  //   }
-  // }, [allServicios, service_id, speciality_id]);
 
   return (
     <>
@@ -108,7 +62,7 @@ export const DesktopProfile = ({ prestador }: DesktopProfileProps) => {
               {servicio} / {especialidad}
             </StyledServicio>
             <StyledCTAs>
-              <StyledContactButton onClick={handleContact}>Contactar</StyledContactButton>
+              {/* <StyledContactButton onClick={handleContact}>Contactar</StyledContactButton> */}
               <StyledShortListButton startIcon={<BookmarkBorderOutlinedIcon />}>
                 Guardar
               </StyledShortListButton>

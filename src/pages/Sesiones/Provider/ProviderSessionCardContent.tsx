@@ -98,7 +98,7 @@ export const ProviderSessionCardContent = ({ appointment }: SessionCardContentPr
         )}
         {isPast && (status === 'Agendada' || status === 'Pagada') && (
           <Box>
-            <Button sx={{}} variant="contained" onClick={handleAppointmentDone}>
+            <Button variant="contained" onClick={handleAppointmentDone}>
               Realizada
             </Button>
           </Box>

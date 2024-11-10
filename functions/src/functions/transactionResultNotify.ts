@@ -1,9 +1,9 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { getFirestore } from './index';
+import { getFirestore } from '../index';
 import * as logger from 'firebase-functions/logger';
 import { onRequest } from 'firebase-functions/v2/https';
-import { defaultEmailSender, paymentSettings, sendEmailUrl } from './config';
+import { defaultEmailSender, paymentSettings, sendEmailUrl } from '../config';
 
 export const transactionResultNotify = onRequest(
   { cors: true, region: 'southamerica-west1', memory: '256MiB', maxInstances: 5 },
