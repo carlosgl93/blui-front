@@ -54,15 +54,6 @@ function CommunitySupport() {
           <Typography variant="body1">{item.text}</Typography>
         </Box>
       ))}
-      <Box>
-        <img
-          src="/images/una-comunidad-de-apoyo.png"
-          style={{
-            width: '100%',
-            height: 'auto',
-          }}
-        />
-      </Box>
     </Box>
   );
 }

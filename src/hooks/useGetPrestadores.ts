@@ -29,11 +29,7 @@ export const useGetPrestadores = () => {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       onSuccess(data) {
-        console.log(data);
         setLastDoc(data.lastDoc as QueryDocumentSnapshot<Prestador>);
-      },
-      onError(err) {
-        console.log(err);
       },
     },
   );
@@ -53,9 +49,6 @@ export const useGetPrestadores = () => {
       refetchOnWindowFocus: false,
       refetchOnReconnect: true,
       getNextPageParam: (lastPage) => lastPage.lastDoc,
-      onSuccess(data) {
-        console.log(data);
-      },
     },
   );
 
@@ -67,11 +60,8 @@ export const useGetPrestadores = () => {
 
   useEffect(() => {
     const sentinel = document.querySelector('.bottomSentinel');
-    console.log({ sentinel });
     const observer = new IntersectionObserver((entries) => {
-      console.log(entries[0].isIntersecting);
       if (entries[0].isIntersecting && hasNextPage) {
-        console.log('fetching new page');
         fetchNextPage();
       }
     });

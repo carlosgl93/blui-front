@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { Title } from './StyledComponents';
 
 const content = [
-  {
-    title: 'Apoyo en el hogar',
-    image: `/images/apoyo-hogar.jpg`,
-  },
+  // {
+  //   title: 'Apoyo en el hogar',
+  //   image: `/images/apoyo-hogar.jpg`,
+  // },
   {
     title: 'Cuidadora',
     image: `/images/cuidadora.jpg`,

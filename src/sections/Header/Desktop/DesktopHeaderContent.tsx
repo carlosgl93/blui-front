@@ -369,6 +369,20 @@ const UnauthenticatedHeaderContent = () => {
       <ListItem sx={{ mx: 'auto' }}>
         <Button
           component={Link}
+          to="/resultados"
+          variant="contained"
+          sx={{
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark,
+            },
+          }}
+        >
+          Explorar
+        </Button>
+      </ListItem>
+      <ListItem sx={{ mx: 'auto' }}>
+        <Button
+          component={Link}
           to="/comienzo"
           variant="contained"
           sx={{

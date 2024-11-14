@@ -1,5 +1,5 @@
 import { ComoFuncionaContent } from '@/pages/Welcome/comoFuncionaContent';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, List, ListItem, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Text, Title } from './StyledComponents';
 
@@ -45,6 +45,16 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
         >
           {subtitle}
         </Text>
+        <Box>
+          <List>
+            <ListItem>
+              Servicios Terapéuticos (Terapia Ocupacional, Kinesiología, Fonoaudiología, Podología y
+              más)
+            </ListItem>
+            <ListItem>Servicios de Enfermería y Técnico en Enfermería (TENS)</ListItem>
+            <ListItem>Servicios de Cuidado o Acompañamiento.</ListItem>
+          </List>
+        </Box>
       </Box>
       <Box
         sx={{
