@@ -1,6 +1,5 @@
-import { db } from '@/firebase/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { Appointment } from './scheduleAppointmentMutation';
+import { getAppointmentByIdQuery } from './getAppointmentById';
 
 /**
  * Fetches an appointment by its ID from the Firestore database.
@@ -13,15 +12,16 @@ export const getAppointmentsByIdsQuery = async (ids: string[]): Promise<Appointm
   if (!ids || ids.length === 0) {
     throw new Error('missing appointments ids');
   }
+  console.log({ ids });
+  const promises: Promise<Appointment>[] = [];
+  ids.forEach((id) => {
+    promises.push(getAppointmentByIdQuery(id));
+  });
   try {
-    const appointmentRef = collection(db, 'appointments');
-    const q = query(appointmentRef, where('id', 'in', ids));
-    const appsSnapshot = await getDocs(q);
-    if (!appsSnapshot.empty) {
-      throw new Error(`No appointments found for IDs: ${JSON.stringify(ids)}`);
-    }
-    const data: Appointment[] = appsSnapshot.docs.map((doc) => doc.data() as Appointment);
-    return data;
+    const docsSnaps = await Promise.all(promises);
+    const results = docsSnaps.map((docSnap) => docSnap as Appointment);
+    console.log({ results });
+    return results;
   } catch (error) {
     throw new Error(
       `Failed to fetch appointment: ${error instanceof Error ? error.message : error}`,

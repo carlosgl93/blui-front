@@ -29,8 +29,6 @@ function BookingConfirmation() {
   const { firstname, lastname, email, profileImageUrl } = interactedPrestador;
   const { name, price, duration } = selectedService;
 
-  console.log({ selectedDates, selectedTimes });
-
   return (
     <>
       <Meta title="Confirmación de la reserva" />

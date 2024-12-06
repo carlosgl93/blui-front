@@ -43,37 +43,19 @@ export const Payment = () => {
     );
 
   console.log({ multipleAppointments });
-
-  return multipleAppointments.map((appointment) => {
-    return (
-      <StyledBox key={appointment.id}>
-        <StyledCard variant="outlined">
-          <CardContent>
-            {appointment.isPaid === 'Pagado' ? (
-              // || paykuPayment?.status === 'success'
-              <SuccessPayment appointment={appointment} theme={theme} />
-            ) : (
-              <FailedPayment theme={theme} appointment={appointment} />
-            )}
-          </CardContent>
-        </StyledCard>
-      </StyledBox>
-    );
-  });
-
-  // return (
-  //   <StyledBox>
-  //     <StyledCard variant="outlined">
-  //       <CardContent>
-  //         {appointment.isPaid === 'Pagado' || paykuPayment?.status === 'success' ? (
-  //           <SuccessPayment appointment={appointment} theme={theme} />
-  //         ) : (
-  //           <FailedPayment theme={theme} appointment={appointment} />
-  //         )}
-  //       </CardContent>
-  //     </StyledCard>
-  //   </StyledBox>
-  // );
+  return (
+    <StyledBox>
+      <StyledCard variant="outlined">
+        <CardContent>
+          {multipleAppointments.some((appointment) => appointment.isPaid === 'Pagado') ? (
+            <SuccessPayment appointments={multipleAppointments} theme={theme} />
+          ) : (
+            <FailedPayment appointments={multipleAppointments} theme={theme} />
+          )}
+        </CardContent>
+      </StyledCard>
+    </StyledBox>
+  );
 };
 
 const StyledBox = styled(Box)(() => ({

@@ -6,7 +6,7 @@ import { formatDate } from '@/utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 
 type FailedPaymentProps = {
-  appointment: Appointment;
+  appointments: Appointment[];
   theme?: Theme;
 };
 
@@ -23,17 +23,19 @@ const ButtonContainer = styled(Box)({
   marginTop: '2rem',
 });
 
-export const SuccessPayment = ({ appointment, theme }: FailedPaymentProps) => {
+export const SuccessPayment = ({ appointments, theme }: FailedPaymentProps) => {
   const navigate = useNavigate();
+  const appointment = appointments[0];
   const appDateFormatted = formatDate(appointment.scheduledDate, true);
   const sameDayAppointmetNode = (
     <Text data-testid="same-day-app">
-      Recuerda que la sesión es hoy a las {appointment.scheduledTime}.
+      Recuerda que tu siguiente sesión es hoy a las {appointment.scheduledTime}.
     </Text>
   );
   const differentDayAppointmentNode = (
     <Text data-testid="future-app">
-      Recuerda que será el día {appDateFormatted} a las {appointment.scheduledTime}.
+      Recuerda que tu siguiente sesión será el día {appDateFormatted} a las{' '}
+      {appointment.scheduledTime}.
     </Text>
   );
   return (
@@ -47,9 +49,14 @@ export const SuccessPayment = ({ appointment, theme }: FailedPaymentProps) => {
       <StyledTitle>Pago exitoso</StyledTitle>
       <Text>
         <b>
-          {appointment.customer.firstname}, tu sesión con {appointment.provider.firstname} fue
-          pagada exitosamente.
+          {appointment.customer.firstname}, {appointments.length > 1 ? 'tus sesiones' : 'tu sesión'}{' '}
+          con {appointment.provider.firstname}{' '}
+          {appointments.length > 1 ? 'fueron pagadas ' : 'fue pagada '} exitosamente.
         </b>
+      </Text>
+      <Text>
+        Si agendaste más sesiones sin pagarlas, estas quedaron agendadas y se te solicitara
+        confirmarlas en el futuro.
       </Text>
       {appDateFormatted === 'Hoy' ? sameDayAppointmetNode : differentDayAppointmentNode}
       <Text>
@@ -61,8 +68,19 @@ export const SuccessPayment = ({ appointment, theme }: FailedPaymentProps) => {
           {appointment.provider.firstname} {appointment.provider.lastname}
         </b>
       </Text>
+      <Text>Fechas: </Text>
+      <Text
+        sx={{
+          textJustify: 'left',
+        }}
+      >
+        {appointments
+          .map((app) => formatDate(app.scheduledDate, true) + ' a las ' + app.scheduledTime)
+          .join(' - ')}
+      </Text>
       <Text>
-        Puedes seguir chateando con {appointment.provider.firstname} en la vista de tus sesiones.
+        Puedes seguir chateando con {appointment.provider.firstname} en la sección "Mis sesiones" de
+        tu perfil.
       </Text>
       <Text>
         Por favor, revisa tu correo electrónico para más detalles e instrucciones adicionales.

@@ -2,15 +2,17 @@ import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerro
 import { Appointment } from '@/api/appointments';
 import { Box, styled, Theme } from '@mui/material';
 import { ButtonCTA } from '../UsuarioDashboard/StyledComponents';
-import { customerSupportPhone } from '@/config';
-import { Text } from '@/components/StyledComponents';
+import { customerSupportPhone, email as customerSupportEmail } from '@/config';
+import { Text, Title } from '@/components/StyledComponents';
+import { formatDate } from '@/utils/formatDate';
+import { getOS } from '@/utils';
 
 type FailedPaymentProps = {
-  appointment: Appointment;
+  appointments: Appointment[];
   theme: Theme;
 };
 
-const StyledTitle = styled(Text)(({ theme }) => ({
+const StyledTitle = styled(Title)(({ theme }) => ({
   fontSize: '2rem',
   color: theme.palette.primary.main,
   marginBottom: '1rem',
@@ -23,7 +25,19 @@ const ButtonContainer = styled(Box)(() => ({
   marginTop: '2rem',
 }));
 
-export const FailedPayment = ({ appointment, theme }: FailedPaymentProps) => {
+export const FailedPayment = ({ appointments, theme }: FailedPaymentProps) => {
+  const appointment = appointments[0];
+  const getSupportHref = () => {
+    const userAgent = getOS();
+
+    if (userAgent === 'iOS' || userAgent === 'Android') {
+      return `tel:${customerSupportPhone}`;
+    } else {
+      return `mailto:${customerSupportEmail}`;
+    }
+  };
+
+  const href = getSupportHref();
   return (
     <>
       <ReportGmailerrorredOutlinedIcon
@@ -52,23 +66,32 @@ export const FailedPayment = ({ appointment, theme }: FailedPaymentProps) => {
           {appointment.provider.firstname} {appointment.provider.lastname}
         </b>
       </Text>
+      <Text>Fechas:</Text>
+      <Text
+        sx={{
+          textJustify: 'left',
+        }}
+      >
+        {appointments
+          .map((app) => formatDate(app.scheduledDate, true) + ' a las ' + app.scheduledTime)
+          .join(' - ')}
+      </Text>
       <Text>
         Por favor, revisa tu correo electrónico para más detalles e instrucciones adicionales.
       </Text>
       <ButtonContainer>
-        <ButtonCTA
-          variant="contained"
-          color="primary"
-          onClick={() => (window.location.href = appointment!.paykuPaymentURL!)}
-        >
-          Reintentar pago
-        </ButtonCTA>
-        <ButtonCTA
-          variant="contained"
-          color="primary"
-          href={(window.location.href = `tel:${customerSupportPhone}`)}
-        >
-          Contactar soporte
+        <ButtonCTA variant="contained" color="primary">
+          <a
+            href={href}
+            rel="noreferrer"
+            target="_blank"
+            style={{
+              textDecoration: 'none',
+              color: 'white',
+            }}
+          >
+            Contactar soporte
+          </a>
         </ButtonCTA>
       </ButtonContainer>
     </>

@@ -69,7 +69,6 @@ export const ScheduleController = () => {
   }, [selectedService, selectedDates, selectedTimes, waitingForPayku, howManySessionsToSchedule]);
 
   useEffect(() => {
-    console.log({ selectedDates, selectedTimes });
     if (selectedDates?.length === howManySessionsToSchedule) {
       const timesToSchedule = document.getElementById('select-session-time');
       if (timesToSchedule) {

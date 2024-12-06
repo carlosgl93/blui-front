@@ -74,6 +74,7 @@ export const useAppointments = (appointmentsIds?: string) => {
         severity: 'error',
       });
     },
+    refetchOnWindowFocus: false,
   });
 
   const {
@@ -94,6 +95,7 @@ export const useAppointments = (appointmentsIds?: string) => {
           severity: 'error',
         });
       },
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -108,6 +110,7 @@ export const useAppointments = (appointmentsIds?: string) => {
           severity: 'error',
         });
       },
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -124,14 +127,17 @@ export const useAppointments = (appointmentsIds?: string) => {
         severity: 'error',
       });
     },
+    refetchOnWindowFocus: false,
   });
 
   const {
     data: multipleAppointments,
     isLoading: isLoadingMultipleAppointments,
     error: multipleAppointmentsError,
-  } = useQuery(['appointmentsByIds'], () =>
-    getAppointmentsByIdsQuery((appointmentsIds && appointmentsIds.split('-')) || []),
+  } = useQuery(
+    ['appointmentsByIds', appointmentsIds],
+    () => getAppointmentsByIdsQuery((appointmentsIds && appointmentsIds.split('-')) || []),
+    { enabled: !!appointmentsIds },
   );
 
   return {
