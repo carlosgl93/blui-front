@@ -16,8 +16,9 @@ export async function notifyMissingBankDetails({
   providerEmail: string;
 }) {
   try {
+    console.log(providerName);
     await sendEmailApi.post('/', {
-      recipientName: providerName,
+      recipientName: providerName || 'Estimado',
       templateName: 'bank-details-missing.html',
       options: {
         from: 'Blui.cl <francisco.durney@blui.cl>',

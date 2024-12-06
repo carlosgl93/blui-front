@@ -8,11 +8,11 @@
 
 import { db } from '@/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
-import { AppointmentParams } from './scheduleAppointmentMutation';
+import { ScheduleAppointmentParams } from './scheduleAppointmentMutation';
 import { CreatedTransaction } from '../payments/payku/models';
 
 export async function updateAppointment(
-  appointment: AppointmentParams,
+  appointment: ScheduleAppointmentParams,
   createdTransaction: CreatedTransaction,
 ): Promise<void> {
   const { id, url } = createdTransaction;

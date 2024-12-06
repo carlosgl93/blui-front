@@ -1,5 +1,5 @@
 import { sendEmailApi } from '@/api';
-import { AppointmentParams } from '@/api/appointments';
+import { ScheduleAppointmentParams } from '@/api/appointments';
 import { doneMutation } from '@/api/appointments/doneMutation';
 import { notificationState } from '@/store/snackbar';
 import dayjs from 'dayjs';
@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
-export function ProviderAppointmentController(appointment: AppointmentParams) {
+export function ProviderAppointmentController(appointment: ScheduleAppointmentParams) {
   const { provider, customer, scheduledDate, scheduledTime, servicio } = appointment;
   const setNotification = useSetRecoilState(notificationState);
 

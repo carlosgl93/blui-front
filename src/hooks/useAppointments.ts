@@ -4,6 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   getAllAppointments,
   getAppointmentByIdQuery,
+  getAppointmentsByIdsQuery,
   getProviderAppointments,
   getTotalAppointmentsQuery,
   getUserAppointments,
@@ -19,7 +20,7 @@ import { paymentsGridPaginationModelState } from '@/store/backoffice/payments';
 import { useState } from 'react';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
-export const useAppointments = () => {
+export const useAppointments = (appointmentsIds?: string) => {
   const interactedPrestador = useRecoilValue(interactedPrestadorState);
   const setUserAppointments = useSetRecoilState(userAppointmentsState);
   const setPrestadorAppointments = useSetRecoilState(providerAppointmentsState);
@@ -125,6 +126,14 @@ export const useAppointments = () => {
     },
   });
 
+  const {
+    data: multipleAppointments,
+    isLoading: isLoadingMultipleAppointments,
+    error: multipleAppointmentsError,
+  } = useQuery(['appointmentsByIds'], () =>
+    getAppointmentsByIdsQuery((appointmentsIds && appointmentsIds.split('-')) || []),
+  );
+
   return {
     getAppointmentById,
     allAppointments: allAppointments?.appointments,
@@ -140,5 +149,8 @@ export const useAppointments = () => {
     getAppointmentByIdError,
     getTotalAppointments,
     getTotalAppointmentsIsLoading,
+    multipleAppointments,
+    isLoadingMultipleAppointments,
+    multipleAppointmentsError,
   };
 };

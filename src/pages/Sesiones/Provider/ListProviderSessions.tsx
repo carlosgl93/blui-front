@@ -3,18 +3,18 @@ import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import { Fragment, useMemo, useState } from 'react';
 import { Text } from '@/components/StyledComponents';
-import { AppointmentParams } from '@/api/appointments';
+import { ScheduleAppointmentParams } from '@/api/appointments';
 import { ProviderSessionCard } from './ProviderSessionCard';
 
 type ListProviderSessionsProps = {
-  providerSessions: AppointmentParams[];
+  providerSessions: ScheduleAppointmentParams[];
 };
 
 export const ListProviderSessions = ({ providerSessions }: ListProviderSessionsProps) => {
   const [showPastSessions, setShowPastSessions] = useState(false);
   const { providerPastSessions, providerFutureSessions } = useMemo(() => {
-    const providerPastSessions: AppointmentParams[] = [];
-    const providerFutureSessions: AppointmentParams[] = [];
+    const providerPastSessions: ScheduleAppointmentParams[] = [];
+    const providerFutureSessions: ScheduleAppointmentParams[] = [];
 
     providerSessions.forEach((session) => {
       const dateTime = session.scheduledDate + ' ' + session.scheduledTime;

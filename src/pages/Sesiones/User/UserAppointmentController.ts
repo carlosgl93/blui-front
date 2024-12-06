@@ -1,4 +1,8 @@
-import { AppointmentParams, confirmAppointmentDone, rateAppointment } from '@/api/appointments';
+import {
+  ScheduleAppointmentParams,
+  confirmAppointmentDone,
+  rateAppointment,
+} from '@/api/appointments';
 import { getPaykuTransaction } from '@/api/payments/payku/getPaykuTransaction';
 import { db } from '@/firebase';
 import { chatState } from '@/store/chat/chatStore';
@@ -10,7 +14,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-export function UserAppointmentController(appointment: AppointmentParams) {
+export function UserAppointmentController(appointment: ScheduleAppointmentParams) {
   const { provider, scheduledDate, scheduledTime, paykuId } = appointment;
   const setNotification = useSetRecoilState(notificationState);
   const navigate = useNavigate();

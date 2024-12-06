@@ -1,6 +1,6 @@
 import { ProviderAppointmentController } from './ProviderAppointmentController';
 import { Box, Button, CardContent } from '@mui/material';
-import { AppointmentParams } from '@/api/appointments';
+import { ScheduleAppointmentParams } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
 import PersonIcon from '@mui/icons-material/Person';
@@ -13,7 +13,7 @@ import { useSetRecoilState } from 'recoil';
 import { chatState } from '@/store/chat/chatStore';
 
 type SessionCardContentProps = {
-  appointment: AppointmentParams;
+  appointment: ScheduleAppointmentParams;
 };
 
 export const ProviderSessionCardContent = ({ appointment }: SessionCardContentProps) => {

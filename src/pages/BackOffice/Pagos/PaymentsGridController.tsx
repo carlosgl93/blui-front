@@ -85,10 +85,10 @@ export const PaymentsGridController = () => {
         field: 'isPaid',
         headerName: 'Estado de pago',
         valueGetter: (_value, row) => {
-          if (row.isPaid === false) {
+          if (row.paymentStatus === 'pending') {
             return 'No pagado';
           }
-          return row.isPaid;
+          return row.paymentStatus;
         },
         width: 150,
         editable: false,
@@ -160,7 +160,7 @@ export const PaymentsGridController = () => {
   });
 
   const { mutate: notifyMissingBankDetailsMutation, isLoading: notifyMissingBankDetailsIsLoading } =
-    useMutation('notifyMissingBankDetails', notifyMissingBankDetails, {
+    useMutation(notifyMissingBankDetails, {
       onSuccess() {
         setNotification({
           open: true,

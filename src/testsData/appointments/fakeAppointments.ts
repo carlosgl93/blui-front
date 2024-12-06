@@ -1,7 +1,7 @@
-import { AppointmentParams } from '@/api/appointments';
+import { Appointment } from '@/api/appointments';
 import dayjs from 'dayjs';
 
-export const fakeTodayAppointment: AppointmentParams = {
+export const fakeTodayAppointment: Appointment = {
   id: '12345',
   provider: {
     id: 'provider123',
@@ -34,7 +34,7 @@ export const fakeTodayAppointment: AppointmentParams = {
   paykuPaymentURL: 'https://payku.com/payment/12345',
 };
 
-export const fakeFutureApp: AppointmentParams = {
+export const fakeFutureApp: Appointment = {
   id: '12345',
   provider: {
     id: 'provider123',

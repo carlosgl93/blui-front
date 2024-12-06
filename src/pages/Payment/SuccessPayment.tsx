@@ -1,12 +1,12 @@
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { Text, Title } from '@/components/StyledComponents';
-import { AppointmentParams } from '@/api/appointments';
+import { Appointment } from '@/api/appointments';
 import { Box, Button, styled, Theme } from '@mui/material';
 import { formatDate } from '@/utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 
 type FailedPaymentProps = {
-  appointment: AppointmentParams;
+  appointment: Appointment;
   theme?: Theme;
 };
 

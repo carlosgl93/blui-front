@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { DocumentData } from 'firebase/firestore';
 import { atom } from 'recoil';
 import { User } from '../auth/user';
-import { AppointmentParams } from '@/api/appointments';
+import { ScheduleAppointmentParams } from '@/api/appointments';
 
 export type UserAppointment = {
   scheduledTimeAndDate: dayjs.Dayjs;
@@ -12,7 +12,7 @@ export type UserAppointment = {
   customer: User;
 };
 
-export const userAppointmentsState = atom<AppointmentParams[]>({
+export const userAppointmentsState = atom<ScheduleAppointmentParams[]>({
   key: 'userAppointmentsState',
   default: [],
 });

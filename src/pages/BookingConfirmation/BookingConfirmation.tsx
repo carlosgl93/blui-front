@@ -1,7 +1,7 @@
-import { Box } from '@mui/material';
 import Meta from '@/components/Meta';
 import { useRecoilValue } from 'recoil';
 import { paymentSettings } from '@/config';
+import { Box, styled } from '@mui/material';
 import { formatDate } from '@/utils/formatDate';
 import { formatCLP } from '../../utils/formatCLP';
 import { formatMinutes } from '@/utils/formatMinutes';
@@ -16,11 +16,20 @@ import { StyledAvatar } from '../PerfilPrestador/MobilePerfilPrestadorStyledComp
 
 function BookingConfirmation() {
   const { schedule, handleConfirmBooking } = ScheduleController();
-  const { selectedDate, selectedTime, selectedService } = schedule;
+  const {
+    isMultiple,
+    selectedDates,
+    selectedTimes,
+    selectedService,
+    howManySessionsToConfirm,
+    howManySessionsToSchedule,
+  } = schedule;
   const interactedPrestador = useRecoilValue(interactedPrestadorState);
-  if (!selectedService || !selectedDate || !selectedTime || !interactedPrestador) return null;
+  if (!selectedService || !selectedDates || !selectedTimes || !interactedPrestador) return null;
   const { firstname, lastname, email, profileImageUrl } = interactedPrestador;
   const { name, price, duration } = selectedService;
+
+  console.log({ selectedDates, selectedTimes });
 
   return (
     <>
@@ -31,19 +40,7 @@ function BookingConfirmation() {
           alignItems: 'center',
         }}
       >
-        <Container
-          sx={{
-            maxWidth: {
-              xs: '90%',
-              md: '600px',
-            },
-            padding: {
-              xs: '1rem',
-              md: '2rem',
-            },
-            my: '1rem',
-          }}
-        >
+        <StyledContainer>
           <Title
             sx={{
               fontSize: '2rem',
@@ -52,20 +49,8 @@ function BookingConfirmation() {
           >
             Confirmación de la reserva
           </Title>
-          <FlexBox
-            sx={{
-              width: '100%',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyItems: 'space-between',
-            }}
-          >
-            <FlexBox
-              sx={{
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
+          <StyledFlexBox>
+            <StyledFlexBoxInner>
               <StyledAvatar
                 sx={{
                   width: '90px',
@@ -75,159 +60,135 @@ function BookingConfirmation() {
                 alt={`Imágen de perfil de ${firstname}`}
                 src={profileImageUrl}
               />
-            </FlexBox>
+            </StyledFlexBoxInner>
 
             <CenteredDivider />
 
-            <Box
-              sx={{
-                width: '100%',
-                my: '1rem',
-              }}
-            >
-              <FlexBox
-                sx={{
-                  px: '1rem',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                }}
-              >
-                <Text>Prestador</Text>
-                <Text
-                  sx={{
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'break-word',
-                    textAlign: 'end',
-                  }}
-                >
-                  {firstname ? `${firstname} ${lastname}` : email}
-                </Text>
-              </FlexBox>
+            <StyledBox>
+              <StyledFlexBoxInner>
+                <StyledLeftText>Prestador</StyledLeftText>
+                <StyledText>{firstname ? `${firstname} ${lastname}` : email}</StyledText>
+              </StyledFlexBoxInner>
 
-              <FlexBox
-                sx={{
-                  px: '1rem',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                }}
-              >
-                <Text>Servicio</Text>
-                <Text
-                  sx={{
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'break-word',
-                    textAlign: 'end',
-                  }}
-                >
-                  {name}
-                </Text>
-              </FlexBox>
-              <FlexBox
-                sx={{
-                  px: '1rem',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                }}
-              >
-                <Text>Duración</Text>
-                <Text
-                  sx={{
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'break-word',
-                    textAlign: 'end',
-                  }}
-                >
-                  {formatMinutes(duration)}
-                </Text>
-              </FlexBox>
-              <FlexBox
-                sx={{
-                  px: '1rem',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                }}
-              >
-                <Text>Cuando</Text>
-                <Text
-                  sx={{
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'break-word',
-                    textAlign: 'end',
-                  }}
-                >
-                  {formatDate(selectedDate?.toDate()).toString()?.[0].toUpperCase() +
-                    formatDate(selectedDate?.toDate()).toString()?.slice(1)}
-                </Text>
-              </FlexBox>
-            </Box>
+              <StyledFlexBoxInner>
+                <StyledLeftText>Servicio</StyledLeftText>
+                <StyledText>{name}</StyledText>
+              </StyledFlexBoxInner>
+
+              <StyledFlexBoxInner>
+                <StyledLeftText>Duración</StyledLeftText>
+                <StyledText>{formatMinutes(duration)}</StyledText>
+              </StyledFlexBoxInner>
+
+              <StyledFlexBoxInner>
+                <StyledLeftText>Cuando</StyledLeftText>
+                <StyledText>
+                  {selectedDates.map(
+                    (selectedDate) =>
+                      formatDate(selectedDate?.toDate()).toString()?.[0].toUpperCase() +
+                      formatDate(selectedDate?.toDate()).toString()?.slice(1) +
+                      ' a las ' +
+                      selectedTimes[selectedDate.format('YYYY-MM-DD') as unknown as number].format(
+                        'HH:mm',
+                      ) +
+                      '\n',
+                  )}
+                </StyledText>
+              </StyledFlexBoxInner>
+
+              {isMultiple && (
+                <>
+                  <StyledFlexBoxInner>
+                    <StyledLeftText>Cuantas sesiones a agendar:</StyledLeftText>
+                    <StyledText>{howManySessionsToSchedule}</StyledText>
+                  </StyledFlexBoxInner>
+                  <StyledFlexBoxInner>
+                    <StyledLeftText>Sesiones a confirmar/pagar ahora</StyledLeftText>
+                    <StyledText>{howManySessionsToConfirm}</StyledText>
+                  </StyledFlexBoxInner>
+                </>
+              )}
+            </StyledBox>
 
             <CenteredDivider />
-            <FlexBox
-              sx={{
-                my: '1rem',
-                px: '1rem',
-                height: '60px',
-                width: '100%',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-              }}
-            >
-              <FlexBox
-                sx={{
-                  width: '100%',
-                  gap: '1rem',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Text>Valor</Text>
-                <Text
-                  sx={{
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'break-word',
-                    textAlign: 'end',
-                  }}
-                >
-                  {formatCLP(price)} CLP
-                </Text>
-              </FlexBox>
-              <FlexBox
-                sx={{
-                  gap: '1rem',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Text>Comisión Blui: </Text>
-                <Text
-                  sx={{
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'break-word',
-                    textAlign: 'end',
-                  }}
-                >
-                  {formatCLP(Math.ceil((paymentSettings.appCommission - 1) * Number(price)))} CLP
-                </Text>
-              </FlexBox>
-            </FlexBox>
+
+            <StyledBox>
+              <StyledFlexBoxInner>
+                <StyledLeftText>Valor a pagar hoy:</StyledLeftText>
+                <StyledText>
+                  {formatCLP(Number(price) * (howManySessionsToConfirm || 1))} CLP
+                </StyledText>
+              </StyledFlexBoxInner>
+              <StyledFlexBoxInner>
+                <StyledLeftText>Comisión Blui: </StyledLeftText>
+                <StyledText>
+                  {formatCLP(
+                    Math.round(
+                      (paymentSettings.appCommission - 1) *
+                        Number(price) *
+                        (howManySessionsToConfirm || 1),
+                    ),
+                  )}{' '}
+                  CLP
+                </StyledText>
+              </StyledFlexBoxInner>
+            </StyledBox>
 
             <CenteredDivider />
             <ButtonCTA variant="contained" onClick={handleConfirmBooking}>
               Agendar
             </ButtonCTA>
-          </FlexBox>
-        </Container>
+          </StyledFlexBox>
+        </StyledContainer>
       </FullSizeCenteredFlexBox>
     </>
   );
 }
 
 export default BookingConfirmation;
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  maxWidth: '100%', // default value
+  [theme.breakpoints.up('xs')]: {
+    maxWidth: '90%',
+    padding: '1rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    maxWidth: '600px',
+    padding: '2rem',
+  },
+  margin: '1rem 0',
+}));
+
+const StyledFlexBox = styled(FlexBox)({
+  width: '100%',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyItems: 'space-between',
+});
+
+const StyledFlexBoxInner = styled(FlexBox)({
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  px: '1rem',
+  width: '100%',
+  gap: '1rem',
+});
+
+const StyledBox = styled(Box)({
+  width: '100%',
+  margin: '1rem 0',
+});
+
+const StyledText = styled(Text)({
+  wordBreak: 'break-word',
+  whiteSpace: 'pre-wrap',
+  overflowWrap: 'break-word',
+  textAlign: 'end',
+  fontSize: '1rem',
+});
+
+const StyledLeftText = styled(Text)({
+  textAlign: 'start',
+  fontSize: '1rem',
+});

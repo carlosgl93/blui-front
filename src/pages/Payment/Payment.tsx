@@ -2,25 +2,29 @@ import { useSearchParams } from 'react-router-dom';
 import { Title } from '@/components/StyledComponents';
 import { SuccessPayment } from './SuccessPayment';
 import Loading from '@/components/Loading';
-import { useAppointment } from '@/hooks';
 import { Box, Card, CardContent, Container, styled, useTheme } from '@mui/material';
 import { FailedPayment } from './FailedPayment';
+import { useAppointments } from '@/hooks/useAppointments';
 
 export const Payment = () => {
   const [params] = useSearchParams();
   const theme = useTheme();
   const {
-    appointment,
-    isLoadingAppointment,
-    appointmentError,
-    paykuPayment,
-    isLoadingPaykuPayment,
-    paykuPaymentError,
-  } = useAppointment(params.get('appointmentId'));
+    multipleAppointments,
+    isLoadingMultipleAppointments: isLoadingAppointment,
+    multipleAppointmentsError: appointmentError,
+  } = useAppointments(params.get('appointmentsIds') || '');
 
-  if (isLoadingAppointment || isLoadingPaykuPayment) return <Loading />;
+  if (
+    isLoadingAppointment
+    // || isLoadingPaykuPayment
+  )
+    return <Loading />;
 
-  if (appointmentError || paykuPaymentError)
+  if (
+    appointmentError
+    // || paykuPaymentError
+  )
     return (
       <StyledBox>
         <StyledCard variant="outlined">
@@ -31,26 +35,45 @@ export const Payment = () => {
       </StyledBox>
     );
 
-  if (!appointment)
+  if (!multipleAppointments || multipleAppointments.length === 0)
     return (
       <Container>
-        <Title>No se encontró ninguna sesión con este id</Title>
+        <Title>No se encontró ninguna sesión con estos detalles</Title>
       </Container>
     );
 
-  return (
-    <StyledBox>
-      <StyledCard variant="outlined">
-        <CardContent>
-          {appointment.isPaid === 'Pagado' || paykuPayment?.status === 'success' ? (
-            <SuccessPayment appointment={appointment} theme={theme} />
-          ) : (
-            <FailedPayment theme={theme} appointment={appointment} />
-          )}
-        </CardContent>
-      </StyledCard>
-    </StyledBox>
-  );
+  console.log({ multipleAppointments });
+
+  return multipleAppointments.map((appointment) => {
+    return (
+      <StyledBox key={appointment.id}>
+        <StyledCard variant="outlined">
+          <CardContent>
+            {appointment.isPaid === 'Pagado' ? (
+              // || paykuPayment?.status === 'success'
+              <SuccessPayment appointment={appointment} theme={theme} />
+            ) : (
+              <FailedPayment theme={theme} appointment={appointment} />
+            )}
+          </CardContent>
+        </StyledCard>
+      </StyledBox>
+    );
+  });
+
+  // return (
+  //   <StyledBox>
+  //     <StyledCard variant="outlined">
+  //       <CardContent>
+  //         {appointment.isPaid === 'Pagado' || paykuPayment?.status === 'success' ? (
+  //           <SuccessPayment appointment={appointment} theme={theme} />
+  //         ) : (
+  //           <FailedPayment theme={theme} appointment={appointment} />
+  //         )}
+  //       </CardContent>
+  //     </StyledCard>
+  //   </StyledBox>
+  // );
 };
 
 const StyledBox = styled(Box)(() => ({

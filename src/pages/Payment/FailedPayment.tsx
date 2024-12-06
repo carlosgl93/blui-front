@@ -1,12 +1,12 @@
 import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
-import { AppointmentParams } from '@/api/appointments';
+import { Appointment } from '@/api/appointments';
 import { Box, styled, Theme } from '@mui/material';
 import { ButtonCTA } from '../UsuarioDashboard/StyledComponents';
 import { customerSupportPhone } from '@/config';
 import { Text } from '@/components/StyledComponents';
 
 type FailedPaymentProps = {
-  appointment: AppointmentParams;
+  appointment: Appointment;
   theme: Theme;
 };
 
