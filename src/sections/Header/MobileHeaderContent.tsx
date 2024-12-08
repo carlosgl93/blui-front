@@ -74,7 +74,7 @@ export default MobileHeaderContent;
 
 const StyledChatHeaderContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: '20% 80%',
+  gridTemplateColumns: '20% 75%',
   gridColumnGap: theme.spacing(4),
   height: theme.spacing(10),
   width: '100%',

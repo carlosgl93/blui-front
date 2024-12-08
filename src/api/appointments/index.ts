@@ -12,3 +12,4 @@ export * from './getAllAppointments';
 export * from './doneMutation';
 export * from './confirmAppointmentDone';
 export * from './rateAppointment';
+export * from './getAppointmentsByIds';

@@ -1,6 +1,6 @@
 import { db } from '@/firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { AppointmentParams } from './scheduleAppointmentMutation';
+import { Appointment } from './scheduleAppointmentMutation';
 
 /**
  * Fetches an appointment by its ID from the Firestore database.
@@ -9,7 +9,7 @@ import { AppointmentParams } from './scheduleAppointmentMutation';
  * @throws Error if the appointment ID is missing or if fetching the appointment fails.
  */
 
-export const getAppointmentByIdQuery = async (id: string): Promise<AppointmentParams> => {
+export const getAppointmentByIdQuery = async (id: string): Promise<Appointment> => {
   if (!id) {
     throw new Error('missing appointment id');
   }
@@ -20,7 +20,7 @@ export const getAppointmentByIdQuery = async (id: string): Promise<AppointmentPa
     if (!data) {
       throw new Error(`No appointment found for ID: ${id}`);
     }
-    return data as AppointmentParams;
+    return data as Appointment;
   } catch (error) {
     throw new Error(
       `Failed to fetch appointment: ${error instanceof Error ? error.message : error}`,

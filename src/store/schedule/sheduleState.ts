@@ -3,15 +3,34 @@ import dayjs from 'dayjs';
 import { atom, useRecoilState } from 'recoil';
 
 export type TScheduleState = {
+  isMultiple: boolean;
+  howManySessionsToConfirm: number;
+  howManySessionsToSchedule: number;
   selectedService?: UserCreatedServicio;
-  selectedTime: dayjs.Dayjs | null;
-  selectedDate: dayjs.Dayjs | null;
+  selectedTimes: {
+    [x: number]: dayjs.Dayjs;
+    length?: number | undefined;
+    toString?: (() => string) | undefined;
+    toLocaleString?:
+      | {
+          (): string;
+          (
+            locales: string | string[],
+            options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions,
+          ): string;
+        }
+      | undefined;
+  } | null;
+  selectedDates: Array<dayjs.Dayjs> | null;
 };
 
 export const defaultScheduleState: TScheduleState = {
+  isMultiple: false,
+  howManySessionsToConfirm: 1,
+  howManySessionsToSchedule: 1,
   selectedService: undefined,
-  selectedTime: null,
-  selectedDate: null,
+  selectedTimes: null,
+  selectedDates: null,
 };
 
 export const scheduleModalState = atom<boolean>({
@@ -21,11 +40,7 @@ export const scheduleModalState = atom<boolean>({
 
 export const scheduleState = atom<TScheduleState>({
   key: 'scheduleState',
-  default: {
-    selectedService: undefined,
-    selectedTime: null,
-    selectedDate: null,
-  },
+  default: defaultScheduleState,
 });
 
 export const useSchedule = () => {

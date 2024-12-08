@@ -27,7 +27,7 @@ const ServiceSelector = ({ handleSelectServicio }: ServiceSelectorProps) => {
             md: '33vw',
           },
         }}
-        defaultValue=""
+        defaultValue={''}
       >
         <MenuItem value="">Selecciona un servicio:</MenuItem>
         {prestadorCreatedServicios?.map((e) => (

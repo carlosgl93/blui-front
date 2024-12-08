@@ -1,4 +1,4 @@
-import { AppointmentParams } from '@/api/appointments';
+import { Appointment } from '@/api/appointments';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import dayjs from 'dayjs';
@@ -7,14 +7,14 @@ import { Text } from '@/components/StyledComponents';
 import { UserSessionCard } from './UserSessionCard';
 
 type ListUserSessionsProps = {
-  userSessions: AppointmentParams[];
+  userSessions: Appointment[];
 };
 
 export const ListUserSessions = ({ userSessions }: ListUserSessionsProps) => {
   const [showPastSessions, setShowPastSessions] = useState(false);
   const { userPastSessions, userFutureSessions } = useMemo(() => {
-    const userPastSessions: AppointmentParams[] = [];
-    const userFutureSessions: AppointmentParams[] = [];
+    const userPastSessions: Appointment[] = [];
+    const userFutureSessions: Appointment[] = [];
 
     userSessions.forEach((session) => {
       const dateTime = session.scheduledDate + ' ' + session.scheduledTime;

@@ -4,6 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   getAllAppointments,
   getAppointmentByIdQuery,
+  getAppointmentsByIdsQuery,
   getProviderAppointments,
   getTotalAppointmentsQuery,
   getUserAppointments,
@@ -19,7 +20,7 @@ import { paymentsGridPaginationModelState } from '@/store/backoffice/payments';
 import { useState } from 'react';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
-export const useAppointments = () => {
+export const useAppointments = (appointmentsIds?: string) => {
   const interactedPrestador = useRecoilValue(interactedPrestadorState);
   const setUserAppointments = useSetRecoilState(userAppointmentsState);
   const setPrestadorAppointments = useSetRecoilState(providerAppointmentsState);
@@ -73,6 +74,7 @@ export const useAppointments = () => {
         severity: 'error',
       });
     },
+    refetchOnWindowFocus: false,
   });
 
   const {
@@ -93,6 +95,7 @@ export const useAppointments = () => {
           severity: 'error',
         });
       },
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -107,6 +110,7 @@ export const useAppointments = () => {
           severity: 'error',
         });
       },
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -123,7 +127,18 @@ export const useAppointments = () => {
         severity: 'error',
       });
     },
+    refetchOnWindowFocus: false,
   });
+
+  const {
+    data: multipleAppointments,
+    isLoading: isLoadingMultipleAppointments,
+    error: multipleAppointmentsError,
+  } = useQuery(
+    ['appointmentsByIds', appointmentsIds],
+    () => getAppointmentsByIdsQuery((appointmentsIds && appointmentsIds.split('-')) || []),
+    { enabled: !!appointmentsIds },
+  );
 
   return {
     getAppointmentById,
@@ -140,5 +155,8 @@ export const useAppointments = () => {
     getAppointmentByIdError,
     getTotalAppointments,
     getTotalAppointmentsIsLoading,
+    multipleAppointments,
+    isLoadingMultipleAppointments,
+    multipleAppointmentsError,
   };
 };

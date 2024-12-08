@@ -3,7 +3,8 @@ import { User } from '@/store/auth/user';
 import { Prestador } from '@/types';
 import dayjs, { Dayjs } from 'dayjs';
 import { db } from '@/firebase/firebase';
-import { addDoc, collection, FieldValue } from 'firebase/firestore';
+import { addDoc, collection, DocumentReference, FieldValue } from 'firebase/firestore';
+import { AvailabilityData } from '@/pages/ConstruirPerfil/Disponibilidad/ListAvailableDays';
 
 export type ScheduleAppointmentProvider = Pick<
   Prestador,
@@ -27,7 +28,7 @@ export type TStatus =
   | 'Pendiente de pago'
   | 'Pagada';
 
-export interface AppointmentParams {
+export interface Appointment {
   id?: string;
   provider: ScheduleAppointmentProvider;
   servicio: UserCreatedServicio;
@@ -44,35 +45,43 @@ export interface AppointmentParams {
   scheduledDateISO?: string;
 }
 
-export interface PaymentRecord extends AppointmentParams {
+export interface ScheduleAppointmentParams extends Appointment {
+  isMultiple?: boolean;
+  howManySessionsToConfirm?: number;
+  totalPaidScheduling?: number;
+  providersAvailability: AvailabilityData[] | undefined;
+}
+
+export interface PaymentRecord extends ScheduleAppointmentParams {
   amountToPay: number;
   appointmentId: string;
   paymentStatus: string;
   paymentDueDate: Dayjs;
 }
 
-export async function scheduleService({
-  provider,
-  servicio,
-  customer,
-  scheduledDate,
-  scheduledTime,
-}: AppointmentParams) {
-  const scheduledDateISO = dayjs(`${scheduledDate}T${scheduledTime}:00.000Z`).toISOString();
-  const newAppointment: AppointmentParams = {
-    provider,
-    servicio,
-    customer,
-    scheduledDate,
-    scheduledTime,
-    isPaid: false,
-    createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    status: 'Pendiente de pago',
-    rating: 0,
-    confirmedByUser: false,
-    scheduledDateISO,
-  };
-  const docRef = await addDoc(collection(db, 'appointments'), newAppointment);
-  newAppointment.id = docRef.id;
-  return newAppointment;
+export async function scheduleService(appointments: ScheduleAppointmentParams[]) {
+  const promises: Promise<DocumentReference>[] = [];
+  const newAppointments: Appointment[] = [];
+  appointments.forEach((app) => {
+    const scheduledDateISO = dayjs(
+      `${app.scheduledDate}T${app.scheduledTime}:00.000Z`,
+    ).toISOString();
+    const newAppointment: Appointment = {
+      provider: app.provider,
+      servicio: app.servicio,
+      customer: app.customer,
+      scheduledDate: app.scheduledDate,
+      scheduledTime: app.scheduledTime,
+      isPaid: false,
+      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      status: 'Pendiente de pago',
+      rating: 0,
+      confirmedByUser: false,
+      scheduledDateISO,
+    };
+    promises.push(addDoc(collection(db, 'appointments'), newAppointment));
+    newAppointments.push(newAppointment);
+  });
+  const results = await Promise.all(promises);
+  return newAppointments.map((app, i) => ({ ...app, id: results[i].id }));
 }

@@ -1,14 +1,20 @@
-import { malformedPayloadValidation } from '../validations';
-import { sendEmailSettings } from '../utils/sendEmailSettings';
-import { onRequest } from 'firebase-functions/v2/https';
-import * as logger from 'firebase-functions/logger';
-import { CACHE_EXPIRATION_TIME } from '../config';
-import * as memoryCache from 'memory-cache';
 import { Handlebars } from '../handlebars';
+import * as memoryCache from 'memory-cache';
+import { CACHE_EXPIRATION_TIME } from '../config';
+import * as logger from 'firebase-functions/logger';
+import { onRequest } from 'firebase-functions/v2/https';
+import { malformedPayloadValidation } from '../validations';
 import { fetchAndCompileTemplate, getEnvUrl } from '../utils';
+import { sendEmailSettings } from '../utils/sendEmailSettings';
 
 export const sendEmail = onRequest(
-  { cors: true, region: 'southamerica-west1', memory: '128MiB', maxInstances: 1 },
+  {
+    cors: true,
+    region: 'southamerica-west1',
+    memory: '128MiB',
+    maxInstances: 1,
+    timeoutSeconds: 15,
+  },
   async ({ body }, res) => {
     logger.info('beggining sendEmail execution', body);
     // validations
@@ -25,6 +31,7 @@ export const sendEmail = onRequest(
       // checking cache for template
       let template = memoryCache.get(templateName);
       if (!template) {
+        logger.info('TEMPLATE WAS NOT CACHED');
         // Template not found in cache, fetch from storage
         template = await fetchAndCompileTemplate(templateName);
         memoryCache.put(templateName, template, CACHE_EXPIRATION_TIME);
@@ -55,10 +62,10 @@ export const sendEmail = onRequest(
           };
           break;
         case 'new-message.html':
-          const { sentBy } = body;
+          const { sentBy, recipientName, senderName } = body;
           templateData = {
-            recipientName: body.recipientName,
-            senderName: body.senderName,
+            recipientName: recipientName,
+            senderName: senderName,
             redirect:
               sentBy === 'user' ? `${getEnvUrl()}/prestador-inbox` : `${getEnvUrl()}/usuario-inbox`,
           };
@@ -89,9 +96,9 @@ export const sendEmail = onRequest(
           break;
         case 'bank-details-missing.html':
           {
-            const { providerName } = body;
+            const { recipientName } = body;
             templateData = {
-              providerName,
+              recipientName,
               redirect: `${getEnvUrl()}/construir-perfil/cuentaBancaria`,
             };
           }

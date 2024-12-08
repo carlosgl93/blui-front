@@ -66,7 +66,12 @@ export const CuentaBancaria = () => {
         <BackButton to="/construir-perfil" />
       </BackButtonContainer>
       <StyledTitle>Cuenta Bancaria</StyledTitle>
-      <Container>
+      <Container
+        sx={{
+          width: 'fit-content',
+          p: '1.5rem',
+        }}
+      >
         <SubTitle>
           Para poder pagarte lo antes posible, ingresa tus datos bancarios para que Blui pueda
           procesar pagos para ti departe de tus clientes.
@@ -206,7 +211,6 @@ const SmallerTitle = styled(StyledTitle)(() => ({
 const StyledTextField = styled(TextField)(() => ({}));
 
 const StyledForm = styled('form')(() => ({
-  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
@@ -221,7 +225,6 @@ const ErrorMessage = styled('p')(({ theme }) => ({
 
 const StyledSelect = styled('select')(() => ({
   padding: '1rem 8px',
-  width: '100%',
   borderRadius: '4px',
   border: '1px solid #ccc',
   fontFamily: 'inherit',

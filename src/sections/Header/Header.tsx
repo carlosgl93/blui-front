@@ -21,7 +21,7 @@ function Header() {
           position: 'static',
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Toolbar sx={{ justifyContent: 'space-between', pr: 0 }}>
           {isTablet ? <MobileHeaderContent /> : <DesktopHeaderContent />}
         </Toolbar>
       </AppBar>

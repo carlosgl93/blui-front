@@ -90,6 +90,9 @@ export const useChat = (userId: string, providerId: string) => {
           setMessages(data);
         }
       },
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
     },
   );
 

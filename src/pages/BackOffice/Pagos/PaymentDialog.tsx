@@ -66,12 +66,13 @@ export const PaymentDialog = ({ open, paymentDetails, onClose }: PaymentDialogPr
         ) : (
           <ButtonCTA
             variant="contained"
-            onClick={() =>
+            onClick={() => {
+              console.log({ provider });
               notifyMissingBankDetailsMutation({
                 providerEmail: provider.email!,
                 providerName: provider.firstname!,
-              })
-            }
+              });
+            }}
           >
             Notificar falta detalles bancarios
           </ButtonCTA>

@@ -24,6 +24,10 @@ const StyledListItem = styled(ListItem)(() => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '1rem',
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: '#f5f5f5',
+  },
 }));
 
 const ChatAvatar = styled(StyledAvatar)(() => ({
@@ -43,7 +47,11 @@ export const UsuarioInbox = () => {
   const { fetchUserChat, isLoadingUserChats, handleClickChat } = useUsuarioInbox();
 
   return (
-    <Wrapper>
+    <Wrapper
+      sx={{
+        justifyContent: 'start',
+      }}
+    >
       <TitleContainer>
         <StyledTitle>Inbox</StyledTitle>
       </TitleContainer>
