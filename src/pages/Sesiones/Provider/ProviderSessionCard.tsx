@@ -1,10 +1,10 @@
-import { ScheduleAppointmentParams } from '../../../api/appointments/scheduleAppointmentMutation';
+import { Appointment } from '../../../api/appointments/scheduleAppointmentMutation';
 import { Card, CardHeader } from '@mui/material';
 import { formatDate } from '@/utils/formatDate';
 import { ProviderSessionCardContent } from './ProviderSessionCardContent';
 
 type SessionCardProps = {
-  appointment: ScheduleAppointmentParams;
+  appointment: Appointment;
 };
 
 export const ProviderSessionCard = ({ appointment }: SessionCardProps) => {

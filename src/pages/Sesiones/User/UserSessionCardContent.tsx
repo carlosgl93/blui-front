@@ -2,7 +2,7 @@ import { UserAppointmentController } from './UserAppointmentController';
 import { Box, Button, CardContent, CircularProgress } from '@mui/material';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
-import { ScheduleAppointmentParams, TStatus } from '@/api/appointments';
+import { Appointment, TStatus } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
 import PersonIcon from '@mui/icons-material/Person';
@@ -11,7 +11,7 @@ import { FlexBox } from '@/components/styled';
 import { Rate } from '@/components';
 
 type SessionCardContentProps = {
-  appointment: ScheduleAppointmentParams;
+  appointment: Appointment;
 };
 
 export const UserSessionCardContent = ({ appointment }: SessionCardContentProps) => {
@@ -92,6 +92,7 @@ type FlexBoxAlignCenterProps = {
   children: React.ReactNode;
 };
 
+/* eslint-disable react/prop-types */
 const FlexBoxAlignCenter: React.FC<FlexBoxAlignCenterProps> = ({ children }) => {
   return (
     <FlexBox

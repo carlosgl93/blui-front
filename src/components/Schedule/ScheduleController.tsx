@@ -1,27 +1,30 @@
+import { scheduleService, ScheduleAppointmentParams, Appointment } from '@/api/appointments';
 import DoNotDisturbAltOutlinedIcon from '@mui/icons-material/DoNotDisturbAltOutlined';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 import { usePerfilPrestador } from '@/pages/PerfilPrestador/usePerfilPrestador';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { updateAppointment } from '@/api/appointments/updateAppointment';
 import { PickersDayProps, PickersDay } from '@mui/x-date-pickers';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { scheduleState } from '@/store/schedule/sheduleState';
-import { useServicios } from '@/hooks/useServicios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useAppointments } from '@/hooks/useAppointments';
-import { scheduleService, ScheduleAppointmentParams, Appointment } from '@/api/appointments';
-import { notificationState } from '@/store/snackbar';
 import { useState, useCallback, useEffect } from 'react';
 import { Badge, SelectChangeEvent } from '@mui/material';
-import { useAuthNew } from '@/hooks';
-import dayjs, { Dayjs } from 'dayjs';
+import { notificationState } from '@/store/snackbar';
+import { useServicios } from '@/hooks/useServicios';
 import { createTransaction } from '@/api/payments';
 import { Prestador } from '@/store/auth/prestador';
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '@/store/global';
+import { useAuthNew } from '@/hooks';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const ScheduleController = () => {
   const { prestadorCreatedServicios: prestadorServicios, prestadorCreatedServiciosLoading } =
     useServicios();
   const prestador = useRecoilValue(interactedPrestadorState);
+  const { setLoading } = useLoading();
   const { handleCloseScheduleModal } = usePerfilPrestador(prestador as Prestador);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [waitingForPayku, setWaitingForPayku] = useState(false);
@@ -169,87 +172,6 @@ export const ScheduleController = () => {
     );
   };
 
-  const shouldDisableTime = useCallback(
-    (time: Dayjs) => {
-      const selectedDays = schedule.selectedDates;
-      const completeTime = time.format('HH:mm');
-      const timeHour = time.get('hours');
-      const timeMinutes = time.get('minutes');
-
-      // Check if the selected time slot is already booked
-      const isSomeTimeSlotBooked = providersAppointments?.some((appointment) => {
-        const serviceDuration = schedule.selectedService!.duration;
-        const appointmentStartTime = dayjs(appointment.scheduledTime, 'HH:mm');
-        const appointmentEndTime = appointmentStartTime.add(serviceDuration, 'minutes');
-        const serviceStartTime = dayjs(completeTime, 'HH:mm');
-        const serviceEndTime = serviceStartTime.add(serviceDuration, 'minutes');
-
-        return selectedDays?.some((selectedDay) => {
-          if (
-            appointment.scheduledTime === completeTime &&
-            appointment.scheduledDate === selectedDay?.format('YYYY-MM-DD')
-          ) {
-            return true;
-          }
-
-          // This conditional checks if the current time slot should be disabled based on the following criteria:
-          // 1. The appointment date matches the selected schedule date.
-          // 2. The appointment does not end before the service start time.
-          // 3. The appointment does not start after the service end time.
-          // 4. The current time is not before the appointment start time.
-          // 5. The current time is not after the appointment end time.
-          // This ensures that time slots overlapping with or within the duration of an existing appointment are disabled.
-          return (
-            dayjs(appointment.scheduledDate).format('YYYY-MM-DD') ===
-              selectedDay?.format('YYYY-MM-DD') &&
-            !appointmentEndTime.isBefore(serviceStartTime) &&
-            !appointmentStartTime.isAfter(serviceEndTime) &&
-            !(time <= appointmentStartTime) &&
-            !(time >= dayjs(appointmentEndTime))
-          );
-        });
-      });
-
-      if (isSomeTimeSlotBooked) {
-        return true;
-      }
-
-      const isTimeUnavailable = selectedDays?.some((selectedDay) => {
-        const dayAvailability = providerAvailability?.find((d) => d?.id === selectedDay?.day());
-        if (dayAvailability && dayAvailability?.isAvailable) {
-          // validation when provider is available all day
-          if (
-            dayAvailability.times.startTime === '00:00' &&
-            (dayAvailability.times.endTime === '23:59' || dayAvailability.times.endTime === '0:0')
-          ) {
-            return false;
-          }
-          const startTimeSplit = dayAvailability.times.startTime.split(':');
-          const endTimeSplit = dayAvailability.times.endTime.split(':');
-
-          const startHour = startTimeSplit[0];
-          const endHour = endTimeSplit[0];
-          const startMinutes = startTimeSplit[1];
-          const endMinutes = endTimeSplit[1];
-
-          if (
-            Number(startHour) > timeHour ||
-            Number(endHour) < timeHour ||
-            (Number(endHour) === timeHour && Number(endMinutes) <= timeMinutes) ||
-            (Number(startHour) === timeHour && Number(startMinutes) > timeMinutes)
-          ) {
-            return true;
-          }
-          (Number(startHour) === timeHour || Number(endHour) === timeHour) &&
-            (Number(endMinutes) < timeMinutes || Number(startMinutes) > timeMinutes);
-        }
-        return false;
-      });
-
-      return isTimeUnavailable ? isTimeUnavailable : false;
-    },
-    [providerAvailability, providersAppointments, schedule.selectedDates, value],
-  );
   const handleSelectServicio = (serviceId: string) => {
     const selectedService = prestadorServicios?.find((s) => s?.id === serviceId);
     setSchedule({
@@ -323,12 +245,14 @@ export const ScheduleController = () => {
   const handleSelectSessionHour = useCallback(
     (date: Dayjs, time: Dayjs) => {
       setSchedule((prev) => {
+        console.log('previous selected times', prev.selectedTimes);
         const newSelectedTimes = { ...prev.selectedTimes };
         const dateKey = date.format('YYYY-MM-DD');
 
         // Set the time for the given date
         // @ts-ignore
         newSelectedTimes[dateKey] = time;
+        console.log('new selected times', newSelectedTimes);
 
         return { ...prev, selectedTimes: newSelectedTimes };
       });
@@ -342,6 +266,8 @@ export const ScheduleController = () => {
   };
 
   const handleConfirmBooking = () => {
+    setLoading(true);
+
     const scheduledTimes = selectedDates!.map((date) => ({
       date: date.format('YYYY-MM-DD'),
       time: selectedTimes![date.format('YYYY-MM-DD') as unknown as number].format('HH:mm'),
@@ -391,7 +317,11 @@ export const ScheduleController = () => {
     setWaitingForPayku(!waitingForPayku);
     const paykuRes = await createTransaction(paykuParams);
     if (paykuRes) {
-      // await updateAppointment(appointment, paykuRes);
+      const promises: Promise<void>[] = [];
+      paykuParams.appointments.forEach(async (app) => {
+        promises.push(updateAppointment(app, paykuRes));
+      });
+      await Promise.all(promises);
       window.location.href = paykuRes.url;
     } else {
       throw new Error('Error al crear la transacción');
@@ -424,6 +354,7 @@ export const ScheduleController = () => {
         client.invalidateQueries(['userAppointments', user?.id]);
         client.invalidateQueries(['providerAppointments', prestador?.id]);
         handleSendUserToPayku(paykuParams);
+        setLoading(false);
       },
       onError: async () => {
         setNotification({
@@ -447,6 +378,7 @@ export const ScheduleController = () => {
     handleCloseScheduleModal,
     numberOfSessionsOptions,
     scheduleServiceLoading,
+    providersAppointments,
     providerAvailability,
     availableTimesStep,
     waitingForPayku,
@@ -458,7 +390,7 @@ export const ScheduleController = () => {
     handleSubmit,
     shouldDisableDay,
     handleSelectDate,
-    shouldDisableTime,
+    // shouldDisableTime,
     renderAvailableDay,
     handleSelectServicio,
     handleConfirmBooking,

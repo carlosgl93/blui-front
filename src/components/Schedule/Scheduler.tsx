@@ -24,7 +24,9 @@ export const Scheduler = () => {
     waitingForPayku,
     shouldDisableDay,
     handleSelectDate,
-    shouldDisableTime,
+    // shouldDisableTime,
+    providersAppointments,
+    providerAvailability,
     renderAvailableDay,
     handleSelectServicio,
     handleCheckIsMultiple,
@@ -135,7 +137,10 @@ export const Scheduler = () => {
                     availableTimesStep={availableTimesStep}
                     selectedDates={selectedDates}
                     handleSelectSessionHour={handleSelectSessionHour}
-                    shouldDisableTime={shouldDisableTime}
+                    // shouldDisableTime={shouldDisableTime}
+                    providerAppointments={providersAppointments}
+                    serviceDuration={selectedService?.duration}
+                    providerAvailability={providerAvailability}
                   />
                 )
               )}

@@ -1,6 +1,6 @@
 import { ProviderAppointmentController } from './ProviderAppointmentController';
 import { Box, Button, CardContent } from '@mui/material';
-import { ScheduleAppointmentParams } from '@/api/appointments';
+import { Appointment } from '@/api/appointments';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Text } from '@/components/StyledComponents';
 import PersonIcon from '@mui/icons-material/Person';
@@ -13,7 +13,7 @@ import { useSetRecoilState } from 'recoil';
 import { chatState } from '@/store/chat/chatStore';
 
 type SessionCardContentProps = {
-  appointment: ScheduleAppointmentParams;
+  appointment: Appointment;
 };
 
 export const ProviderSessionCardContent = ({ appointment }: SessionCardContentProps) => {
@@ -112,6 +112,7 @@ type FlexBoxAlignCenterProps = {
   children: React.ReactNode;
 };
 
+/* eslint-disable react/prop-types */
 const FlexBoxAlignCenter: React.FC<FlexBoxAlignCenterProps> = ({ children }) => {
   return (
     <FlexBox

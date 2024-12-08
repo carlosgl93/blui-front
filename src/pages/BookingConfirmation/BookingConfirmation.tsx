@@ -2,6 +2,7 @@ import Meta from '@/components/Meta';
 import { useRecoilValue } from 'recoil';
 import { paymentSettings } from '@/config';
 import { Box, styled } from '@mui/material';
+import { useLoading } from '@/store/global';
 import { formatDate } from '@/utils/formatDate';
 import { formatCLP } from '../../utils/formatCLP';
 import { formatMinutes } from '@/utils/formatMinutes';
@@ -13,6 +14,7 @@ import { ScheduleController } from '@/components/Schedule/ScheduleController';
 import { interactedPrestadorState } from '@/store/resultados/interactedPrestador';
 import { Container } from '../PrestadorDashboard/StyledPrestadorDashboardComponents';
 import { StyledAvatar } from '../PerfilPrestador/MobilePerfilPrestadorStyledComponents';
+import Loading from '@/components/Loading';
 
 function BookingConfirmation() {
   const { schedule, handleConfirmBooking } = ScheduleController();
@@ -24,10 +26,14 @@ function BookingConfirmation() {
     howManySessionsToConfirm,
     howManySessionsToSchedule,
   } = schedule;
+  const { loading } = useLoading();
+
   const interactedPrestador = useRecoilValue(interactedPrestadorState);
   if (!selectedService || !selectedDates || !selectedTimes || !interactedPrestador) return null;
   const { firstname, lastname, email, profileImageUrl } = interactedPrestador;
   const { name, price, duration } = selectedService;
+
+  if (loading) return <Loading />;
 
   return (
     <>
