@@ -352,7 +352,7 @@ const UnauthenticatedHeaderContent = () => {
           Ingresar
         </Button>
       </ListItem>
-      <ListItem sx={{ mx: 'auto', width: '100%' }}>
+      {/* <ListItem sx={{ mx: 'auto', width: '100%' }}>
         <Button
           component={Link}
           to="/persona-de-apoyo"
@@ -365,7 +365,7 @@ const UnauthenticatedHeaderContent = () => {
         >
           Conviértete en persona de apoyo
         </Button>
-      </ListItem>
+      </ListItem> */}
       <ListItem sx={{ mx: 'auto' }}>
         <Button
           component={Link}

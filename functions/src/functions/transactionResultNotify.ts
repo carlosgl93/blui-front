@@ -46,7 +46,7 @@ export const transactionResultNotify = onRequest(
 
     logger.info('appointmentsIds', ids);
 
-    let appointmentInfo: Array<FirebaseFirestore.DocumentData | undefined> = [];
+    const appointmentInfo: Array<FirebaseFirestore.DocumentData | undefined> = [];
     const db = getFirestore();
 
     try {
