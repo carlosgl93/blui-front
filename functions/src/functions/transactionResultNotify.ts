@@ -1,3 +1,11 @@
+/**;
+ *
+ * Google cloud function that runs after the user has completed the payment process
+ * with payku and updates the appointment status to paid and sends an email notification
+ * to the provider with the appointment details
+ *
+ */
+
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { getFirestore } from '../index';
