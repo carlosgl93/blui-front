@@ -31,6 +31,8 @@ dist-ssr
 *.sw?
 coverage/
 .firebase
+.firebase/*
+.firebase/hosting.*
 .env
 functions/node_modules
 /test-results/

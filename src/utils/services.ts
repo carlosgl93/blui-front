@@ -18,14 +18,6 @@ export const services: Servicio[] = [
         especialidadName: 'Fonoaudiología',
       },
       {
-        id: 3,
-        especialidadName: 'Podología',
-      },
-      {
-        id: 4,
-        especialidadName: 'Estilista',
-      },
-      {
         id: 5,
         especialidadName: 'Terapeuta Ocupacional',
       },

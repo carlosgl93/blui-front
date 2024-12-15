@@ -1,4 +1,3 @@
-import { createTransaction } from '@/api/payments/createTransaction';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { notificationState } from '@/store/snackbar';
 import { useSetRecoilState } from 'recoil';
@@ -7,12 +6,12 @@ import { useAuthNew } from '@/hooks';
 import {
   paymentVerificationFailedMutation,
   savePaymentMutation,
-  AppointmentParams,
+  ScheduleAppointmentParams,
   verifyPaymentMutation,
 } from '@/api/appointments';
 import { getDuePayments } from '@/api/payments';
 
-export const PaymentController = (appointment?: AppointmentParams) => {
+export const PaymentController = (appointment?: ScheduleAppointmentParams) => {
   const setNotification = useSetRecoilState(notificationState);
   const client = useQueryClient();
   const { user } = useAuthNew();
@@ -68,14 +67,6 @@ export const PaymentController = (appointment?: AppointmentParams) => {
       },
     });
 
-  const handleSendUserToPayku = async () => {
-    const paykuRes = await createTransaction(appointment);
-    if (paykuRes) {
-      // window.open(paykuRes.url, '_blank');
-      window.location.href = paykuRes.url;
-    }
-  };
-
   const handlePayment = () => {
     if (!appointment?.id) throw new Error('No appointment id provided');
     savePayment(appointment?.id);
@@ -97,7 +88,6 @@ export const PaymentController = (appointment?: AppointmentParams) => {
     handlePayment,
     handleVerifyPayment,
     handlePaymentVerificationFailed,
-    handleSendUserToPayku,
     duePayments,
   };
 };

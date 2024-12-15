@@ -116,7 +116,7 @@ export const StyledScheduleForm = styled(FormGroup)(() => ({
   flexDirection: 'column',
   gap: '1rem',
   width: '100%',
-  padding: '1rem .25rem',
+  padding: '1rem 0',
   justifyContent: 'center',
   textAlign: 'center',
 }));
