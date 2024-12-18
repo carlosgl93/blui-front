@@ -26,7 +26,7 @@ export async function sendSupportMessage({ nombre, email, mensaje }: TSendSuppor
       message: mensaje,
       options: {
         from: 'Blui.cl <francisco.durney@blui.cl>',
-        to: 'cgumucio93@gmail.com',
+        to: 'fcodurney@gmail.com',
         subject: `${nombre} necesita ayuda en Blui!`,
         text: `${nombre} necesita ayuda en Blui!`,
       },
