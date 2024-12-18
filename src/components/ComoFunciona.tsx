@@ -45,6 +45,21 @@ const ComoFunciona = ({ subtitle, steps }: ComoFuncionaProps) => {
         >
           {subtitle}
         </Text>
+        <ul>
+          <li>
+            <Text>
+              {' '}
+              Servicios Terapéuticos (Terapia Ocupacional, Kinesiología, Fonoaudiología, Podología y
+              más)
+            </Text>
+          </li>
+          <li>
+            <Text>Servicios de Enfermería y Técnico en Enfermería (TENS)</Text>
+          </li>
+          <li>
+            <Text>Servicios de Cuidado o Acompañamiento.</Text>
+          </li>
+        </ul>
       </Box>
       <Box
         sx={{
