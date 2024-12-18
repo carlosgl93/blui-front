@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 
 import Meta from '@/components/Meta';
-import { Box, Container, Typography, Avatar, useTheme } from '@mui/material';
+import { Box, Container, Typography, Avatar, useTheme, Link } from '@mui/material';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -156,7 +156,11 @@ function Nosotros() {
             </Text>
           </Box>
         </TextContainer>
-        <ImageContainer>
+        <ImageContainer
+          sx={{
+            ml: '1rem',
+          }}
+        >
           <Image
             src="/images/nuestra-historia.png"
             alt="2 personas mirando el horizonte en un atardecer en el sur de Chile"
@@ -167,6 +171,7 @@ function Nosotros() {
                 xs: 'contain',
                 sm: 'cover',
               },
+              borderRadius: '2.5%',
             }}
           />
         </ImageContainer>
@@ -186,11 +191,7 @@ function Nosotros() {
           },
         }}
       >
-        <TextContainer
-          sx={{
-            padding: theme.spacing(4),
-          }}
-        >
+        <TextContainer>
           <Typography
             variant="h1"
             gutterBottom
@@ -207,13 +208,34 @@ function Nosotros() {
           </Typography>
         </TextContainer>
         <AvatarContainer>
-          {lideres.map((lider) => (
-            <PersonContainer key={lider.name}>
-              <Avatar sx={{ width: 120, height: 120 }} src={lider.profileImg} alt={lider.name} />
-              <PersonName variant="h6">{lider.name}</PersonName>
-              <LinkedInLogo />
-            </PersonContainer>
-          ))}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: theme.spacing(8),
+              justifyContent: 'center',
+            }}
+          >
+            {lideres.map((lider) => (
+              <Link
+                key={lider.name}
+                href={lider.linkedinUrl}
+                underline="none"
+                target="_blank"
+                rel="noopener"
+              >
+                <PersonContainer>
+                  <Avatar
+                    sx={{ width: 140, height: 140 }}
+                    src={lider.profileImg}
+                    alt={lider.name}
+                  />
+                  <PersonName variant="h6">{lider.name}</PersonName>
+                  <LinkedInLogo />
+                </PersonContainer>
+              </Link>
+            ))}
+          </Box>
         </AvatarContainer>
         <Box
           sx={{
@@ -296,22 +318,26 @@ function Nosotros() {
               }}
             >
               <Text gutterBottom>
-                Blui se creó con el objetivo de romper los paradigmas actuales en el apoyo a
-                personas con discapacidad y adultos mayores, poniendo a disposición de la gente una
-                plataforma on-line que permita conectar de forma fácil y segura a personas que
-                buscan apoyo con aquellas que puedan proporcionarlo.
+                Blui se creó con el objetivo de romper los paradigmas actuales en el apoyo a adultos
+                mayores y personas en situación de discapacidad con algún grado de dependencia,
+                poniendo a disposición de la comunidad una plataforma en línea que permita conectar
+                de forma fácil y segura a personas que buscan apoyo con aquellas que puedan
+                proporcionarlo.
               </Text>
               <Text gutterBottom>
                 El problema que existe actualmente es la dificultad de encontrar a personas que
-                ofrezcan servicios de cuidado y/o servicios profesionales de salud a domicilio según
-                las necesidades del paciente. Además, las alternativas que pueden encontrarse en
-                Chile son muy costosas, siendo inasequibles para muchas personas que lo requieren.
+                ofrezcan servicios de cuidado y/o servicios profesionales y técnicos de salud a
+                domicilio según las necesidades del paciente. Además, las alternativas que pueden
+                encontrarse en Chile son muy caras, siendo inasequibles para muchas personas que lo
+                requieren.
               </Text>
               <Text gutterBottom>
-                Blui nace como una solución a estos problemas, permitiendo que las personas puedan
-                tener contacto directo con el cuidador o profesional que requieran, dándoles la
-                posibilidad de acordar las condiciones del servicio de forma libre dentro de un
-                ambiente de confianza y comunidad.
+                En ese sentido, Blui nace como una solución a estos problemas, permitiendo que la
+                comunidad pueda tener acceso a una gran red de personas que ofrezcan servicios de
+                asistencia y cuidado a adultos mayores y personas en situación de discapacidad con
+                algún grado de dependencia, dando la posibilidad de encontrar el perfil de ayuda que
+                mejor se adapta a las propias necesidades, requerimientos y presupuesto de los
+                pacientes.
               </Text>
             </Box>
           </Box>
@@ -341,12 +367,12 @@ function Nosotros() {
             sx={{
               width: '100%',
               textAlign: 'center',
-              marginBottom: theme.spacing(4),
             }}
           >
             <TextContainer
               sx={{
                 textAlign: 'start',
+                gap: theme.spacing(4),
               }}
             >
               <Typography
@@ -363,10 +389,11 @@ function Nosotros() {
                 Nuestra misión
               </Typography>
               <Text gutterBottom>
-                Somos una plataforma on-line que busca generar un medio para que la comunidad pueda
+                Somos una plataforma en línea que busca generar un medio para que la comunidad pueda
                 conectarse entre sí, permitiéndoles acceder a una mejor calidad de vida, más
-                inclusiva y con mayores oportunidades enfocado en adultos mayores o personas con
-                discapacidad que requieren apoyo viviendo en sus casas.
+                inclusiva y con mayores oportunidades, todo ello con un enfoque directo a la
+                realidad de nuestros adultos mayores y personas en situación de discapacidad con
+                algún grado de dependencia que requieran apoyo viviendo en sus casas.
               </Text>
             </TextContainer>
           </Box>
@@ -374,12 +401,12 @@ function Nosotros() {
             sx={{
               width: '100%',
               textAlign: 'center',
-              marginBottom: theme.spacing(2),
             }}
           >
             <TextContainer
               sx={{
                 textAlign: 'start',
+                gap: theme.spacing(4),
               }}
             >
               <Typography
@@ -396,76 +423,72 @@ function Nosotros() {
                 Nuestra visión
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Crear la comunidad de apoyo para adultos mayores y personas con discapacidad más
-                grande de latinoamérica que permita el desarrollo de una sociedad más inclusiva y
-                con más oportunidades.
+                Crear una gran comunidad de apoyo para adultos mayores y personas en situación de
+                discapacidad con algún grado de dependencia, permitiendo de esta manera dar las
+                herramientas para desarrollar una sociedad más inclusiva y con mayores oportunidades
+                para estas personas.
               </Typography>
             </TextContainer>
           </Box>
-          <Box
+
+          <TextContainer
             sx={{
-              width: '100%',
-              textAlign: 'center',
+              textAlign: 'start',
+              gap: theme.spacing(4),
             }}
           >
-            <TextContainer
+            <Typography
+              variant="h1"
               sx={{
-                textAlign: 'start',
+                fontWeight: 700,
+                fontSize: {
+                  xs: '2.5rem',
+                  sm: '3.5rem',
+                },
+              }}
+              color="primary.dark"
+            >
+              Nuestros valores
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: theme.palette.primary.main,
+                gap: 2,
               }}
             >
-              <Typography
-                variant="h1"
+              <PeopleAltOutlinedIcon
                 sx={{
-                  fontWeight: 700,
-                  fontSize: {
-                    xs: '2.5rem',
-                    sm: '3.5rem',
-                  },
+                  fontSize: '4rem',
                 }}
-                color="primary.dark"
-              >
-                Nuestros valores
-              </Typography>
-              <Box
+              />
+              <Text variant="subtitle1">Colaboración</Text>
+
+              <VisibilityOutlinedIcon
                 sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', md: 'row' },
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: theme.palette.primary.main,
-                  gap: 2,
+                  fontSize: '4rem',
                 }}
-              >
-                <PeopleAltOutlinedIcon
-                  sx={{
-                    fontSize: '4rem',
-                  }}
-                />
-                <Text variant="subtitle1">Colaboración</Text>
+              />
+              <Text variant="subtitle1">Transparencia</Text>
 
-                <VisibilityOutlinedIcon
-                  sx={{
-                    fontSize: '4rem',
-                  }}
-                />
-                <Text variant="subtitle1">Transparencia</Text>
+              <ShieldOutlinedIcon
+                sx={{
+                  fontSize: '4rem',
+                }}
+              />
+              <Text variant="subtitle1">Seguridad</Text>
 
-                <ShieldOutlinedIcon
-                  sx={{
-                    fontSize: '4rem',
-                  }}
-                />
-                <Text variant="subtitle1">Seguridad</Text>
-
-                <FavoriteBorderOutlinedIcon
-                  sx={{
-                    fontSize: '4rem',
-                  }}
-                />
-                <Text variant="subtitle1">Confianza</Text>
-              </Box>
-            </TextContainer>
-          </Box>
+              <FavoriteBorderOutlinedIcon
+                sx={{
+                  fontSize: '4rem',
+                }}
+              />
+              <Text variant="subtitle1">Confianza</Text>
+            </Box>
+          </TextContainer>
         </Box>
       </Box>
     </>

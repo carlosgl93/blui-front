@@ -3,6 +3,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 // import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import { Text } from './StyledComponents';
+import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
 
 const content = [
   {
@@ -16,7 +17,6 @@ const content = [
     title: 'Libertad de elección',
     text: 'Con Blui tendrás la libertad de elegir tu propio equipo de apoyo y diseñar un programa a tu medida, según tus necesidades, intereses y presupuesto.',
   },
-
   {
     icon: (
       <FavoriteBorderOutlinedIcon
@@ -26,7 +26,18 @@ const content = [
       />
     ),
     title: 'Tranquilidad y confianza',
-    text: 'Con Blui puedes tener la tranquilidad y confianza que cada persona de apoyo ha sido sujeta a un exhaustivo control y verificación tanto personal como profesional, de manera de asegurarnos que tu experiencia sea segura y satisfactoria.',
+    text: 'Con Blui puedes tener la tranquilidad y confianza que cada trabajador independiente que ofrezca servicios en nuestra comunidad ha sido sujeto a un exhaustivo control, basado en la verificación de su información personal y profesional, de manera de asegurarnos que la experiencia de los usuarios de Blui sea satisfactoria y por sobre todo segura.',
+  },
+  {
+    icon: (
+      <ReviewsOutlinedIcon
+        sx={{
+          fontSize: '3rem',
+        }}
+      />
+    ),
+    title: 'Calificaciones y comentarios',
+    text: 'En cada perfil de trabajadores independientes que encuentres podrás ver las distintas calificaciones y comentarios que otros miembros de la comunidad Blui hayan dejado en base a sus propias experiencias.',
   },
 ];
 
@@ -91,15 +102,25 @@ function CommunityAdvantages() {
             >
               <Box
                 sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  height: '50px',
                   color: theme.palette.primary.main,
                 }}
               >
                 {item.icon}
+                <Box
+                  sx={{
+                    mt: '0.5rem',
+                  }}
+                >
+                  <Text variant="h5" sx={{ fontWeight: 'bold', mb: '1rem' }}>
+                    {item.title}
+                  </Text>
+                </Box>
               </Box>
               <Box sx={{ mb: '1rem' }}>
-                <Text variant="h5" sx={{ fontWeight: 'bold', mb: '1rem' }}>
-                  {item.title}
-                </Text>
                 <Text variant="body1" sx={{}}>
                   {item.text}
                 </Text>
