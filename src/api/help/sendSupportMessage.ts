@@ -10,6 +10,7 @@
  */
 
 import { sendEmailApi } from '../sendEmailApi';
+import { email as customerSupportEmail } from '@/config';
 
 type TSendSupportMessage = {
   nombre: string;
@@ -26,7 +27,7 @@ export async function sendSupportMessage({ nombre, email, mensaje }: TSendSuppor
       message: mensaje,
       options: {
         from: 'Blui.cl <francisco.durney@blui.cl>',
-        to: 'fcodurney@gmail.com',
+        to: customerSupportEmail,
         subject: `${nombre} necesita ayuda en Blui!`,
         text: `${nombre} necesita ayuda en Blui!`,
       },
