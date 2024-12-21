@@ -44,7 +44,7 @@ const Step2 = () => {
           variant="contained"
           onClick={
             selectedServicio?.serviceName === 'Cuidadora' ||
-            selectedServicio?.serviceName === 'Sana compañía'
+            selectedServicio?.serviceName === 'Sana Compañía'
               ? () => router('/registrar-prestador')
               : increaseStep
           }
