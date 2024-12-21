@@ -1,5 +1,4 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
@@ -34,7 +33,7 @@ export const functions = getFunctions(app);
 functions.region = 'southamerica-west1';
 
 // Check if window is defined before initializing Firebase Analytics
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+// export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
 
 if (import.meta.env.VITE_ENV === 'dev') {
   console.log('connecting to emulators');

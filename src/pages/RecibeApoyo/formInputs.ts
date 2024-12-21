@@ -26,7 +26,7 @@ export const formInputs = [
   {
     inputName: 'contrasena',
     placeholder: 'Ingrese una contraseña',
-    label: 'Crea una contraseña',
+    label: 'Crea una contraseña (*)',
     type: 'password',
   },
   {

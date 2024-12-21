@@ -6,9 +6,9 @@
 
 export function goToEnvUrl() {
     const env = process?.env?.VITE_ENV || import.meta?.env?.VITE_ENV;
-    if (env === 'dev') {
-        return 'http://localhost:5173/';
-    } else {
+    if (env !== 'dev' || env !== 'test') {
         return 'https://blui.cl/';
+    } else {
+        return 'http://localhost:3000/';
     }
 }

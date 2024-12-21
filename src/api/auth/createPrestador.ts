@@ -15,7 +15,7 @@ import {
   setPersistence,
 } from 'firebase/auth';
 import { db, auth } from '@/firebase/firebase';
-import { query, collection, where, getDocs, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { query, collection, where, getDocs, doc, setDoc, writeBatch, or } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
 import { Prestador } from '@/store/auth/prestador';
 
@@ -42,21 +42,27 @@ export async function createPrestador({
   servicio,
   especialidad,
 }: CreatePrestadorParams) {
+  const userRutQuery = query(
+    collection(db, 'users'),
+    or(where('rut', '==', rut), where('email', '==', correo)),
+  );
+  const providerRutQuery = query(
+    collection(db, 'providers'),
+    or(where('rut', '==', rut), where('email', '==', correo)),
+  );
   try {
-    // Check if a user with the given email already exists in the users collection
-    const userQuery = query(collection(db, 'users'), where('email', '==', correo));
-    const userSnapshot = await getDocs(userQuery);
-    if (!userSnapshot.empty) {
-      throw new Error('Este email ya tiene una cuenta.');
+    const userRutSnapshot = await getDocs(userRutQuery);
+    const providerRutSnap = await getDocs(providerRutQuery);
+    if (!userRutSnapshot.empty) {
+      throw new Error('Este rut o email ya tiene una cuenta de usuario.');
     }
-
-    // Check if a user with the given email already exists in the providers collection
-    const providerQuery = query(collection(db, 'providers'), where('email', '==', correo));
-    const providerSnapshot = await getDocs(providerQuery);
-    if (!providerSnapshot.empty) {
-      throw new Error('Este email ya tiene una cuenta.');
+    if (!providerRutSnap.empty) {
+      throw new Error('Este rut o email ya tiene una cuenta de proveedor.');
     }
-
+  } catch (error) {
+    return Promise.reject(error);
+  }
+  try {
     await setPersistence(auth, browserLocalPersistence);
     const userCredentials = await createUserWithEmailAndPassword(auth, correo, contrasena);
     const { user } = userCredentials;
