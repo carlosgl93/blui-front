@@ -30,7 +30,8 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-    baseURL: process.env.ENV === 'dev' ? 'http://localhost:5173' : 'https://blui-6ec33.web.app/',
+    baseURL:
+     'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -77,7 +78,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: process.env.CI ? 'npm run build && npm run preview' : 'npm run dev',
-    url: process.env.ENV === 'dev' ? 'http://localhost:5173' : 'https://blui-6ec33.web.app/',
+    url: 'http://localhost:3000',
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',

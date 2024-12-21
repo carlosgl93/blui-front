@@ -115,7 +115,7 @@ importers:
         specifier: ^9.0.6
         version: 9.0.7
       '@types/node':
-        specifier: ^18.19.39
+        specifier: ^18.19.50
         version: 18.19.50
       '@types/react':
         specifier: ^18.2.63
