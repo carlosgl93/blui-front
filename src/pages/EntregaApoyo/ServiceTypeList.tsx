@@ -10,7 +10,6 @@ const ServiceTypeList = () => {
   const { allServicios } = useServicios();
 
   const handleSelectServicio = (servicio: Servicio) => {
-    console.log(servicio);
     selectServicio(servicio);
   };
 
