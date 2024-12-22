@@ -59,6 +59,7 @@
     "react-query": "^3.39.3",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.1",
+    "recharts": "^2.15.0",
     "recoil": "^0.7.5",
     "uuid": "^9.0.1"
   },
@@ -70,6 +71,7 @@
     "@testing-library/react": "^14.2.1",
     "@types/jest": "^29.5.11",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.17.13",
     "@types/node": "^18.19.50",
     "@types/react": "^18.2.63",
     "@types/react-big-calendar": "^1.8.9",

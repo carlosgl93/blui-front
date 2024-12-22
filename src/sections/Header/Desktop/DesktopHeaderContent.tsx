@@ -200,7 +200,7 @@ const AdminHeaderContent = () => {
   const navigate = useNavigate();
   return (
     <>
-      <ListItem sx={{ mx: 'auto' }}>
+      <ListItem sx={{ mx: 'auto' }} onClick={() => navigate('/backoffice')}>
         <ListItemIcon>
           <HomeOutlinedIcon />
         </ListItemIcon>

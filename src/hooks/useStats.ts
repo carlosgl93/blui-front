@@ -1,4 +1,9 @@
-import { getPrestadoresCount, getUsersCount } from '@/api/stats';
+import {
+  getPrestadoresCount,
+  getProvidersPerComunaCount,
+  getUsersCount,
+  getUsersPerComunaCount,
+} from '@/api/stats';
 import { useQuery } from 'react-query';
 
 export const useStats = () => {
@@ -20,6 +25,24 @@ export const useStats = () => {
     refetchOnWindowFocus: false,
   });
 
+  const {
+    data: providersPerComunaCount,
+    isLoading: providersPerComunaCountLoading,
+    error: providersPerComunaCountError,
+  } = useQuery('providersPerComunaCount', getProvidersPerComunaCount, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const {
+    data: usersPerComunaCount,
+    isLoading: usersPerComunaCountLoading,
+    error: usersPerComunaCountError,
+  } = useQuery('usersPerComunaCount', getUsersPerComunaCount, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
   return {
     usersCount,
     prestadoresCount,
@@ -27,5 +50,11 @@ export const useStats = () => {
     prestadoresCountLoading,
     usersCountError,
     prestadoresCountError,
+    providersPerComunaCount,
+    providersPerComunaCountLoading,
+    providersPerComunaCountError,
+    usersPerComunaCount,
+    usersPerComunaCountLoading,
+    usersPerComunaCountError,
   };
 };

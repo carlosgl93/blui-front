@@ -2,19 +2,26 @@ import { Container, styled } from '@mui/material';
 import { Wrapper } from './styledBackOffice';
 import { Text, Title } from '@/components/StyledComponents';
 import { CenteredFlexBox } from '@/components/styled';
-import { useStats } from '@/hooks/useStats';
 import Loading from '@/components/Loading';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { UsersGridController } from './Dashboard/UsersGridController';
 
 export const BackOffice = () => {
   const {
+    columns,
+    paginationModel,
+    rows,
+    setPaginationModel,
     usersCount,
     usersCountLoading,
     usersCountError,
     prestadoresCount,
     prestadoresCountLoading,
     prestadoresCountError,
-  } = useStats();
+    providersPerComunaCountLoading,
+    usersPerComunaCountLoading,
+  } = UsersGridController();
 
   return (
     <Wrapper>
@@ -22,14 +29,14 @@ export const BackOffice = () => {
         <CenteredFlexBox>
           {/* total users created */}
           <KPIContainer>
-            <Title>Usuarios</Title>
+            <KPITitle>Usuarios</KPITitle>
             {usersCountLoading && <Loading />}
             {usersCountError && <ErrorOutlineOutlinedIcon />}
             {!usersCountLoading && !usersCountError && <Text>Usuarios creados: {usersCount}</Text>}
           </KPIContainer>
           {/* total prestadores created */}
           <KPIContainer>
-            <Title>Prestadores</Title>
+            <KPITitle>Prestadores</KPITitle>
             {prestadoresCountLoading && <Loading />}
             {prestadoresCountError && <ErrorOutlineOutlinedIcon />}
             {!prestadoresCountLoading && !prestadoresCountError && (
@@ -38,15 +45,48 @@ export const BackOffice = () => {
           </KPIContainer>
         </CenteredFlexBox>
         {/* usuarios y prestadores por comuna */}
-        <KPIContainer>
-          <Title>Usuarios y prestadores por comuna</Title>
-          {/* TODO: ADD GRAPH TO DISPLAY PRESTADORES PER COMUNA */}
-        </KPIContainer>
-        {/* usuarios y prestadores por tipo de apoyo */}
-        <KPIContainer>
-          <Title>Usuarios y prestadores por tipo de apoyo</Title>
-          {/* TODO: ADD GRAPH TO DISPLAY PRESTADORES PER service */}
-        </KPIContainer>
+        {/* <KPIContainer>
+          <KPITitle>Usuarios y prestadores por comuna y tipo de apoyo</KPITitle>
+          {(usersPerComunaCountLoading || providersPerComunaCountLoading) && <Loading />}
+          {((usersPerComunaCountError as Error) || (providersPerComunaCountError as Error)) && (
+            <ErrorOutlineOutlinedIcon />
+          )}
+          {usersPerComunaCount && providersPerComunaCount && (
+            <UsuariosPrestadoresPorComunaGraph
+              providersPerComunaCount={providersPerComunaCount}
+              usersPerComunaCount={usersPerComunaCount}
+            />
+          )}
+        {/* </KPIContainer>  */}
+        {rows.length > 0 && (
+          <DataGrid
+            slots={{
+              toolbar: GridToolbar,
+            }}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: paginationModel,
+              },
+              sorting: {
+                sortModel: [{ field: 'total', sort: 'desc' }],
+              },
+            }}
+            rows={rows}
+            getRowId={(row) => row.id}
+            paginationMode="client"
+            rowCount={rows.length}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[10, 25]}
+            loading={
+              usersCountLoading ||
+              prestadoresCountLoading ||
+              providersPerComunaCountLoading ||
+              usersPerComunaCountLoading
+            }
+          />
+        )}
       </Container>
     </Wrapper>
   );
@@ -55,4 +95,8 @@ export const BackOffice = () => {
 const KPIContainer = styled(Container)(() => ({
   borderRadius: '5%',
   padding: '1rem',
+}));
+
+const KPITitle = styled(Title)(() => ({
+  fontSize: '1.5rem',
 }));
