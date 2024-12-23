@@ -178,6 +178,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/BookingConfirmation')),
     path: '/booking-confirmation',
   },
+  [Pages.PublicarAyuda]: {
+    component: asyncComponentLoader(() => import('@/pages/UsuarioDashboard/PublicarAyuda')),
+    path: '/post-support',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',

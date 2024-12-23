@@ -121,6 +121,7 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   };
 
   const selectForWhom = (forWhom: ForWhom) => {
+    console.log('SELECTED FORWHOM', forWhom);
     setApoyo((prev) => ({
       ...prev,
       forWhom: forWhom,

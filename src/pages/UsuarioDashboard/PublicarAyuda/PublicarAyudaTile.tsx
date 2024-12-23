@@ -5,8 +5,8 @@ import { Text } from '@/components/StyledComponents';
 export const PublicarAyudaTile = () => {
   const router = useNavigate();
 
-  const handleGoToProfile = () => {
-    router(`/perfil-usuario`);
+  const handleGoToPostSupport = () => {
+    router(`/post-support`);
   };
 
   return (
@@ -14,7 +14,7 @@ export const PublicarAyudaTile = () => {
       <StyledTitle>Publicar apoyo</StyledTitle>
       <SubTitle>Publica tu necesidad particular</SubTitle>
       <Text>Hazte visible para que los prestadores te encuentren a tí.</Text>
-      <ButtonCTA variant="contained" onClick={handleGoToProfile}>
+      <ButtonCTA variant="contained" onClick={handleGoToPostSupport}>
         Publicar Apoyo
       </ButtonCTA>
     </DashboardTileContainer>

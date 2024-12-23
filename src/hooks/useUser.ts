@@ -7,9 +7,13 @@ import { useQuery } from 'react-query';
 
 const getUserById = async (id: string) => {
   const usersRef = doc(db, 'users', id);
-  const res = await getDoc(usersRef);
-
-  return res.data() as User;
+  try {
+    const res = await getDoc(usersRef);
+    return res.data() as User;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const useUser = (userId: string) => {

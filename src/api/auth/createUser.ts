@@ -79,7 +79,7 @@ export async function createUser({
       role: 'user',
       firstname: nombre,
       lastname: apellido,
-      forWhom: paraQuien !== nombre ? 'tercero' : 'paciente',
+      forWhom: paraQuien,
       patientName: nombrePaciente ?? '',
       rut,
       gender: '',
