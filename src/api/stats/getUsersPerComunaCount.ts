@@ -22,7 +22,6 @@ export const getUsersPerComunaCount = async () => {
     const querySnapshot = await getDocs(usersRef);
     querySnapshot.forEach((doc) => {
       const userData: User = doc.data() as User;
-      console.log('userData', userData);
       if (!comunaCounts[userData.comuna.name]) {
         comunaCounts[userData.comuna.name] = { total: 0 };
       }
@@ -35,7 +34,6 @@ export const getUsersPerComunaCount = async () => {
 
       comunaCounts[userData.comuna.name][userData.service]! += 1;
     });
-    console.log('users comunas count', comunaCounts);
     return Object.entries(comunaCounts).map(([name, count]) => ({ name, count }));
   } catch (error) {
     console.error('Error getting users per comuna count:', error);
