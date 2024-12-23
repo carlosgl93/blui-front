@@ -12,11 +12,8 @@ export const SesionesDashboardTile = () => {
   return (
     <DashboardTileContainer>
       <StyledTitle>Sesiones</StyledTitle>
-      <SubTitle>Revisa tus futuras y pasadas sesiones.</SubTitle>
-      <Text>
-        Puedes revisar la información de tus sesiones. Si tienes alguna pendiente puedes reanudar el
-        pago.
-      </Text>
+      <SubTitle>Revisa tus sesiones</SubTitle>
+      <Text>Puedes obtener información de tus sesiones pasadas y futuras</Text>
       <ButtonCTA variant="contained" onClick={handleBuscarPrestadores}>
         Ver sesiones
       </ButtonCTA>

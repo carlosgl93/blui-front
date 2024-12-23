@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { EncuentraApoyo } from './EncuentraApoyo';
 import { ActualizarPerfil } from './ActualizarPerfil';
 import { SesionesDashboardTile } from './SesionesDashboardTile';
+import { PublicarAyudaTile } from './PublicarAyuda';
 
 export const UsuarioDashboard = () => {
   return (
@@ -26,9 +27,10 @@ export const UsuarioDashboard = () => {
         minHeight: '75vh',
       }}
     >
-      <ActualizarPerfil />
+      <PublicarAyudaTile />
       <EncuentraApoyo />
       <SesionesDashboardTile />
+      <ActualizarPerfil />
     </Box>
   );
 };
