@@ -371,5 +371,6 @@ export const useAuthNew = () => {
     createUserError,
     adminLoginLoading,
     createPrestadorLoading,
+    setUserState,
   };
 };

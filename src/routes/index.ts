@@ -208,6 +208,10 @@ export const protectedRoutes = [
   '/usuario-dashboard',
   '/sesiones',
   '/preview-perfil-prestador',
+  '/backoffice',
+  '/backoffice/prestadores',
+  '/backoffice/pagos',
+  'post-support',
 ];
 
 export default routes;

@@ -137,6 +137,7 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
     }));
   };
   const selectEspecialidad = (especialidad: Especialidad | undefined) => {
+    console.log('SELECTED ESPECIALIDAD', especialidad);
     if (apoyo.especialidad === especialidad) return;
     if (!especialidad) {
       setApoyo((prev) => ({
@@ -148,6 +149,11 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
       //   servicio: apoyo.servicio?.service_id || null,
       // });
       return;
+    } else {
+      setApoyo((prev) => ({
+        ...prev,
+        especialidad,
+      }));
     }
 
     // getPrestadoresByEspecialidad({

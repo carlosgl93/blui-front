@@ -67,7 +67,7 @@ const RegistrarUsuarioController = () => {
   const navigate = useNavigate();
   const setNotification = useSetRecoilState(notificationState);
 
-  const [{ forWhom, comuna, servicio }] = useRecibeApoyo();
+  const [{ forWhom, comuna, servicio, especialidad }] = useRecibeApoyo();
 
   const initialState = {
     error: '',
@@ -150,6 +150,7 @@ const RegistrarUsuarioController = () => {
         correo,
         acceptedTerms,
         servicio,
+        especialidad: especialidad?.especialidadName ? especialidad : undefined,
       };
 
       try {
