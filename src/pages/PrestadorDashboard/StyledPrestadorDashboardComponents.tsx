@@ -16,7 +16,7 @@ export const Container = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
   padding: '1rem',
   marginBottom: '1rem',
   backgroundColor: 'white',
