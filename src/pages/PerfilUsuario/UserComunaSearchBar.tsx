@@ -7,8 +7,8 @@ import { Comuna } from '@/types/Comuna';
 import { useComunas } from '@/hooks/useComunas';
 import { useRecoilState } from 'recoil';
 import { User, userState } from '@/store/auth/user';
-import { IFormInput } from './PerfilUsuario';
 import { UseFormSetValue } from 'react-hook-form';
+import { IFormInput } from './PerfilUsuarioController';
 
 type UserComunaSearchBarProps = {
   register: UseFormSetValue<IFormInput>;

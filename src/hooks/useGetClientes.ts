@@ -1,30 +1,24 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { useEffect, useState } from 'react';
-import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import { User } from '@/store/auth/user';
 import { useAuthNew } from './useAuthNew';
+import { useCallback, useRef, useState } from 'react';
 import { getTotalClientesQuery } from '@/api';
 import { getClientes } from '@/api/clientes/getClientes';
-import { User } from '@/store/auth/user';
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 export type UserPages =
-  | (
-      | {
-          clientes: User[];
-          lastDoc: QueryDocumentSnapshot<DocumentData, DocumentData>;
-        }
-      | {
-          clientes: never[];
-          lastDoc: null;
-        }
-    )[]
+  | {
+      clientes: User[];
+      lastDoc: QueryDocumentSnapshot<DocumentData, DocumentData>;
+    }[]
   | undefined;
 
 export const useGetClientes = () => {
   const { prestador } = useAuthNew();
-  const [limit] = useState(10);
-  // const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<Prestador> | null>(null);
-
-  const { servicio, comunas, especialidad } = prestador!;
+  const [limit] = useState(1);
+  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData, DocumentData> | null>(
+    null,
+  );
 
   const {
     data: infiniteClientes,
@@ -34,15 +28,18 @@ export const useGetClientes = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ['getClientes', comunas, servicio, especialidad],
-    ({ pageParam = null }) => getClientes(comunas, servicio, especialidad, pageParam, limit),
+    ['getClientes', prestador?.comunas, prestador?.servicio, prestador?.especialidad],
+    () =>
+      getClientes(prestador?.comunas, prestador?.servicio, prestador?.especialidad, lastDoc, limit),
     {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: true,
+      getPreviousPageParam: (firstPage) => firstPage.lastDoc,
       getNextPageParam: (lastPage) => lastPage.lastDoc,
       onSuccess(data) {
-        console.log(data);
+        const lastPage = data.pages[data.pages.length - 1];
+        setLastDoc(lastPage.lastDoc);
       },
     },
   );
@@ -53,18 +50,23 @@ export const useGetClientes = () => {
     {},
   );
 
-  useEffect(() => {
-    const sentinel = document.querySelector('.bottomSentinel');
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasNextPage) {
-        console.log('fetching new page');
-        fetchNextPage();
-      }
-    });
-    if (sentinel) {
-      observer.observe(sentinel);
-    }
-  }, []);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastClientElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (infiniteClientesIsLoading || !hasNextPage || isFetchingNextPage) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting) {
+          await fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [infiniteClientesIsLoading, hasNextPage, fetchNextPage, isFetchingNextPage],
+  );
 
   return {
     infiniteClientes: infiniteClientes?.pages,
@@ -74,5 +76,6 @@ export const useGetClientes = () => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
+    lastClientElementRef,
   };
 };

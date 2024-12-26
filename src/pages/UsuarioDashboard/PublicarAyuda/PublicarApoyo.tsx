@@ -1,5 +1,4 @@
-import { CenteredFlexBox, ColumnCenteredFlexBox } from '@/components/styled';
-import { Text, Title } from '@/components/StyledComponents';
+import { useMemo } from 'react';
 import {
   Container,
   TextField,
@@ -9,14 +8,17 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import { PublicarAyudaController } from './PublicarAyudaController';
-import Loading from '@/components/Loading';
 import { User } from '@/store/auth/user';
-import { useMemo } from 'react';
+import Loading from '@/components/Loading';
+import BackButton from '@/components/BackButton';
+import { Text, Title } from '@/components/StyledComponents';
+import { PublicarApoyoController } from './PublicarApoyoController';
+import { CenteredFlexBox, ColumnCenteredFlexBox } from '@/components/styled';
+import { BackButtonContainer } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 
-export const PublicarAyuda = () => {
+export const PublicarApoyo = () => {
   const { user, setUserState, description, setDescription, handleSubmit, isLoading, allServicios } =
-    PublicarAyudaController();
+    PublicarApoyoController();
 
   const specialities = useMemo(() => {
     return allServicios?.find((s) => s.serviceName === user?.service)?.especialidades || [];
@@ -29,22 +31,14 @@ export const PublicarAyuda = () => {
         m: '1rem auto',
       }}
     >
-      <ColumnCenteredFlexBox
+      <BackButtonContainer
         sx={{
-          padding: '1rem 1.4rem',
-          backgroundColor: 'white',
-          borderRadius: '1rem',
-
-          maxWidth: {
-            xs: '100%',
-            sm: '80%',
-            md: '70%',
-            lg: '60%',
-            xl: '50%',
-          },
-          margin: 'auto',
+          py: '1rem',
         }}
       >
+        <BackButton displayText to="/usuario-dashboard" />
+      </BackButtonContainer>
+      <ColumnCenteredFlexBox sx={columnStyle}>
         {isLoading ? (
           <Loading />
         ) : (
@@ -153,4 +147,19 @@ export const PublicarAyuda = () => {
       </ColumnCenteredFlexBox>
     </Container>
   );
+};
+
+const columnStyle = {
+  padding: '1rem 1.4rem',
+  backgroundColor: 'white',
+  borderRadius: '1rem',
+
+  maxWidth: {
+    xs: '100%',
+    sm: '80%',
+    md: '70%',
+    lg: '60%',
+    xl: '50%',
+  },
+  margin: 'auto',
 };

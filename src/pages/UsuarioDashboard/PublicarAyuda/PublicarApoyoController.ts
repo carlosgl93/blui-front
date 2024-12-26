@@ -6,7 +6,7 @@ import { useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { useServicios } from '@/hooks/useServicios';
 
-export const PublicarAyudaController = () => {
+export const PublicarApoyoController = () => {
   const { user, setUserState } = useAuthNew();
   const { allServicios } = useServicios();
 

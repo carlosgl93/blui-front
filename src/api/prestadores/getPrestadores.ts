@@ -45,9 +45,13 @@ export const getPrestadores = async (
     prestadoresQuery = query(prestadoresQuery, startAfter(lastVisible));
   }
   prestadoresQuery = query(prestadoresQuery, where('verified', '==', 'Verificado'));
-
-  const querySnapshot = await getDocs(prestadoresQuery);
-  const prestadores = querySnapshot.docs.map((doc) => doc.data() as Prestador);
-  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-  return { prestadores, lastDoc };
+  try {
+    const querySnapshot = await getDocs(prestadoresQuery);
+    const prestadores = querySnapshot.docs.map((doc) => doc.data() as Prestador);
+    const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+    return { prestadores, lastDoc };
+  } catch (error) {
+    console.error('Error fetching prestadores:', error);
+    throw new Error('Error fetching prestadores');
+  }
 };

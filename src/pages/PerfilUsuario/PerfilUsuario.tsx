@@ -1,24 +1,24 @@
-import { TextField, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box,
+  Avatar,
+  Badge,
+  CircularProgress,
+  IconButton,
+} from '@mui/material';
 import { usePerfilUsuarioController } from './PerfilUsuarioController';
 import UserComunaSearchBar from './UserComunaSearchBar';
 import { SaveButton } from '@/components/SaveButton';
 import BackButton from '@/components/BackButton';
 import Loading from '@/components/Loading';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { styled } from '@mui/system';
-import { Comuna } from '@/types';
 import { Text } from '@/components/StyledComponents';
-
-export interface IFormInput {
-  email: string;
-  firstname: string;
-  lastname: string;
-  gender: string;
-  dob: string;
-  phone: string;
-  address: string;
-  comuna: Comuna | undefined;
-}
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',
@@ -48,22 +48,22 @@ const FormHelperText = styled('p')(({ theme }) => ({
 const StyledTextField = styled(TextField)(() => ({}));
 
 export const PerfilUsuario = () => {
-  const { user, updateUserLoading, onSubmit } = usePerfilUsuarioController();
-
-  const { register, handleSubmit, formState, setValue, control } = useForm<IFormInput>({
-    defaultValues: {
-      email: user?.email || '',
-      firstname: user?.firstname || '',
-      lastname: user?.lastname || '',
-      gender: user?.gender || '',
-      dob: user?.dob || '',
-      phone: user?.phone || '',
-      address: user?.address || '',
-      comuna: user?.comuna,
-    },
-  });
-
-  const { errors, isValid } = formState;
+  const {
+    updateUserLoading,
+    loadingPreview,
+    imagePreview,
+    fileInputRef,
+    onSubmit,
+    isValid,
+    control,
+    errors,
+    user,
+    register,
+    setValue,
+    handleSubmit,
+    handleImageChange,
+    handleEditPicture,
+  } = usePerfilUsuarioController();
 
   return (
     <Box>
@@ -98,6 +98,37 @@ export const PerfilUsuario = () => {
             }}
           >
             <StyledTitle>Actualizar Perfil</StyledTitle>
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100px',
+                justifyContent: 'center',
+                margin: '2rem auto',
+              }}
+            >
+              <Badge
+                overlap="circular"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                badgeContent={
+                  <IconButton onClick={handleEditPicture}>
+                    <EditOutlinedIcon color="primary" />
+                  </IconButton>
+                }
+              >
+                {loadingPreview ? (
+                  <CircularProgress />
+                ) : (
+                  <Avatar
+                    sx={{
+                      width: '128px',
+                      height: '128px',
+                    }}
+                    alt="User profile picture"
+                    src={imagePreview ? (imagePreview as string) : user?.profileImageUrl}
+                  />
+                )}
+              </Badge>
+            </Box>
             <StyledTextField
               {...register('email', { required: 'Email es requerido' })}
               label="Email"
@@ -169,6 +200,15 @@ export const PerfilUsuario = () => {
               variant="outlined"
               error={Boolean(errors.address)}
               helperText={errors.address?.message}
+            />
+
+            <input
+              {...register('profileImage')}
+              type="file"
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              multiple={false}
             />
 
             {!isValid && (

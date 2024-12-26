@@ -41,9 +41,9 @@ export const useGetPrestadores = () => {
   const {
     data: infinitePrestadores,
     isLoading: infinitePrestadoresIsLoading,
-    fetchNextPage,
     hasNextPage,
     isFetching,
+    fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
     ['verifiedProvidersInfinite', comuna, servicio, especialidad],
@@ -52,6 +52,7 @@ export const useGetPrestadores = () => {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: true,
+      getPreviousPageParam: (firstPage) => firstPage.lastDoc,
       getNextPageParam: (lastPage) => lastPage.lastDoc,
       onSuccess(data) {
         console.log(data);

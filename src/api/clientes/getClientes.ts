@@ -6,21 +6,21 @@ import {
   getDocs,
   startAfter,
   QueryDocumentSnapshot,
+  DocumentData,
 } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
 import { Comuna } from '@/types';
 import { User } from '@/store/auth/user';
 
 export const getClientes = async (
-  comunas: Comuna[] | null,
+  comunas: Comuna[] | undefined,
   servicio: string | undefined,
   especialidad: string | undefined,
-  lastVisible: QueryDocumentSnapshot<User> | null = null,
+  lastVisible: QueryDocumentSnapshot<DocumentData, DocumentData> | null,
   pageSize = 10,
 ) => {
   const usersCollectionRef = collection(db, 'users');
   let usersQuery = query(usersCollectionRef, limit(pageSize));
-  console.log('comunas', comunas, 'servicio', servicio, 'especialidad', especialidad);
 
   if (comunas && comunas.length > 0) {
     const comunaIds = comunas.map((comuna) => comuna.id);

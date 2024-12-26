@@ -1,4 +1,4 @@
-import { Box, useTheme, Button, ListItem, List } from '@mui/material';
+import { Box, useTheme, Button, ListItem, List, Avatar } from '@mui/material';
 import { Suspense } from 'react';
 import Loading from '@/components/Loading';
 import { Text, Title } from '@/components/StyledComponents';
@@ -9,7 +9,6 @@ export const MobileClientes = () => {
   const { infiniteClientes } = useGetClientes();
   const theme = useTheme();
   // const [drawerOpen, setDrawerOpen] = useState(false);
-
   return (
     <>
       {/* <Box
@@ -50,7 +49,7 @@ export const MobileClientes = () => {
         sx={{
           minHeight: '80vh',
           backgroundColor: theme.palette.background.paper,
-          m: '5vh 1vw',
+          p: '1rem',
           borderRadius: '0.5rem',
         }}
       >
@@ -72,7 +71,15 @@ export const MobileClientes = () => {
                 return (
                   <div key={pageIndex}>
                     {page.clientes.map((cliente) => {
-                      const { id, email, firstname, lastname, service, speciality } = cliente;
+                      const {
+                        id,
+                        email,
+                        firstname,
+                        lastname,
+                        service,
+                        speciality,
+                        profileImageUrl,
+                      } = cliente;
                       return (
                         <Link
                           key={id}
@@ -100,13 +107,13 @@ export const MobileClientes = () => {
                               }}
                             >
                               {/* TODO: add user profile image */}
-                              {/* <Avatar
-                            sx={{
-                              height: '90px',
-                              width: '90px',
-                            }}
-                            src={profileImageUrl}
-                          /> */}
+                              <Avatar
+                                sx={{
+                                  height: '90px',
+                                  width: '90px',
+                                }}
+                                src={profileImageUrl}
+                              />
                             </Box>
                             <Box
                               sx={{
@@ -157,7 +164,6 @@ export const MobileClientes = () => {
               </Box>
             )}
           </List>
-          <Box className="bottomSentinel" />
         </Suspense>
       </Box>
     </>
