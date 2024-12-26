@@ -29,13 +29,7 @@ export const EncuentraClientes = () => {
       <EncuentraClientesHeader />
       {isTablet && <MobileClientes />}
       {/* TODO: add ? <MobileClientes/> : <DesktopClientes/> */}
-      <Box
-        ref={lastClientElementRef}
-        className="bottomSentinel"
-        sx={{
-          border: '1px solid red',
-        }}
-      />
+      <Box ref={lastClientElementRef} className="bottomSentinel" />
     </>
   );
 };

@@ -1,14 +1,17 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { getAllPrestadores, getPrestadores } from '@/api/prestadores';
-import { Prestador } from '@/store/auth/prestador';
-import useRecibeApoyo from '@/store/recibeApoyo';
-import { getTotalPrestadoresQuery } from '@/api/prestadores/getTotalPrestadores';
+import { useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { QueryDocumentSnapshot } from 'firebase/firestore';
+import useRecibeApoyo from '@/store/recibeApoyo';
+import { Prestador } from '@/store/auth/prestador';
+import { notificationState } from '@/store/snackbar';
+import { getAllPrestadores, getPrestadores } from '@/api/prestadores';
+import { getTotalPrestadoresQuery } from '@/api/prestadores/getTotalPrestadores';
 
 export const useGetPrestadores = () => {
   const [{ servicio, comuna, especialidad }] = useRecibeApoyo();
-  const [limit] = useState(10);
+  const setNotification = useSetRecoilState(notificationState);
+  const [limit] = useState(1);
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<Prestador> | null>(null);
 
   const {
@@ -29,11 +32,15 @@ export const useGetPrestadores = () => {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       onSuccess(data) {
-        console.log(data);
         setLastDoc(data.lastDoc as QueryDocumentSnapshot<Prestador>);
       },
       onError(err) {
-        console.log(err);
+        console.error(err);
+        setNotification({
+          open: true,
+          message: 'Hubo un error al cargar los prestadores',
+          severity: 'error',
+        });
       },
     },
   );
@@ -54,9 +61,6 @@ export const useGetPrestadores = () => {
       refetchOnReconnect: true,
       getPreviousPageParam: (firstPage) => firstPage.lastDoc,
       getNextPageParam: (lastPage) => lastPage.lastDoc,
-      onSuccess(data) {
-        console.log(data);
-      },
     },
   );
 
@@ -68,11 +72,8 @@ export const useGetPrestadores = () => {
 
   useEffect(() => {
     const sentinel = document.querySelector('.bottomSentinel');
-    console.log({ sentinel });
     const observer = new IntersectionObserver((entries) => {
-      console.log(entries[0].isIntersecting);
       if (entries[0].isIntersecting && hasNextPage) {
-        console.log('fetching new page');
         fetchNextPage();
       }
     });

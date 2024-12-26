@@ -9,7 +9,7 @@ import { useServicios } from '@/hooks/useServicios';
 export const PublicarApoyoController = () => {
   const { user, setUserState } = useAuthNew();
   const { allServicios } = useServicios();
-
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [patientName, setPatientName] = useState(user?.patientName || '');
   const [address, setAddress] = useState(user?.address || '');
@@ -40,6 +40,7 @@ export const PublicarApoyoController = () => {
     event.preventDefault();
     if (user) {
       mutateAddSupportRequest({
+        title,
         userId: user.id,
         description,
         patientName,
@@ -48,10 +49,10 @@ export const PublicarApoyoController = () => {
     }
   };
 
-  //   TODO: store user address, service and speciality in the userState atom and fireestore too
-
   return {
     user,
+    title,
+    setTitle,
     description,
     setDescription,
     patientName,

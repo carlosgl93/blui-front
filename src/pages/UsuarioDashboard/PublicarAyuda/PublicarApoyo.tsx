@@ -17,8 +17,17 @@ import { CenteredFlexBox, ColumnCenteredFlexBox } from '@/components/styled';
 import { BackButtonContainer } from '@/pages/PrestadorDashboard/StyledPrestadorDashboardComponents';
 
 export const PublicarApoyo = () => {
-  const { user, setUserState, description, setDescription, handleSubmit, isLoading, allServicios } =
-    PublicarApoyoController();
+  const {
+    user,
+    setUserState,
+    title,
+    setTitle,
+    description,
+    setDescription,
+    handleSubmit,
+    isLoading,
+    allServicios,
+  } = PublicarApoyoController();
 
   const specialities = useMemo(() => {
     return allServicios?.find((s) => s.serviceName === user?.service)?.especialidades || [];
@@ -56,6 +65,15 @@ export const PublicarApoyo = () => {
               necesidades.
             </Text>
             <form onSubmit={handleSubmit}>
+              <TextField
+                label="Título"
+                placeholder={'Resumen de una línea de tu solicitud'}
+                fullWidth
+                margin="normal"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                helperText="Ejemplo: 'Cuidados paleativos para paciente con cancer' o 'Apoyo emocional para mi madre'"
+              />
               <TextField
                 label="Nombre del paciente"
                 placeholder={user?.patientName || 'Nombre del paciente'}
