@@ -48,6 +48,7 @@ enum Pages {
   SobreMi,
   BookingConfirmation,
   PublicarAyuda,
+  EncuentraClientes,
 }
 
 type PathRouteCustomProps = {

@@ -26,8 +26,6 @@ export const getPrestadores = async (
     limit(pageSize),
   );
 
-  console.log(comuna);
-
   if (comuna) {
     prestadoresQuery = query(prestadoresQuery, where('comunas', 'array-contains', comuna));
   }

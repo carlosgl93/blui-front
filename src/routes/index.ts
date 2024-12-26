@@ -182,6 +182,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/UsuarioDashboard/PublicarAyuda')),
     path: '/post-support',
   },
+  [Pages.EncuentraClientes]: {
+    component: asyncComponentLoader(() => import('@/pages/PrestadorDashboard/EncuentraClientes')),
+    path: '/encuentra-clientes',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',
@@ -211,7 +215,8 @@ export const protectedRoutes = [
   '/backoffice',
   '/backoffice/prestadores',
   '/backoffice/pagos',
-  'post-support',
+  '/post-support',
+  '/encuentra-clientes',
 ];
 
 export default routes;

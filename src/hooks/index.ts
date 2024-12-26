@@ -21,3 +21,5 @@ export * from './usePayment';
 export * from './useAppointment';
 export * from './useSobreMi';
 export * from './useWidth';
+export * from './useGetPrestadores';
+export * from './useGetClientes';

@@ -9,7 +9,6 @@ const SpecialityList = () => {
 
   const { allServicios } = useServicios();
   const handleSelectSpeciality = (speciality: Especialidad) => {
-    console.log(speciality);
     selectEspecialidad(speciality);
   };
 

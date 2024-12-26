@@ -17,10 +17,7 @@ export const PrestadorDashboard = () => {
     handleSesiones,
     handleEncuentraClientes,
     shouldDisableEncuentraClientes,
-    prestador,
   } = usePrestadorDashboard();
-
-  console.log('prestador', prestador);
 
   return (
     <Wrapper sx={wrapperSx}>

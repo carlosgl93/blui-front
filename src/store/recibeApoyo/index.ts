@@ -121,7 +121,6 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
   };
 
   const selectForWhom = (forWhom: ForWhom) => {
-    console.log('SELECTED FORWHOM', forWhom);
     setApoyo((prev) => ({
       ...prev,
       forWhom: forWhom,
@@ -137,7 +136,6 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
     }));
   };
   const selectEspecialidad = (especialidad: Especialidad | undefined) => {
-    console.log('SELECTED ESPECIALIDAD', especialidad);
     if (apoyo.especialidad === especialidad) return;
     if (!especialidad) {
       setApoyo((prev) => ({
