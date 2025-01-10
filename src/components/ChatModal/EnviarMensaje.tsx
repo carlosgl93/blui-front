@@ -17,6 +17,7 @@ import { useRecoilValue } from 'recoil';
 import { Apoyo } from '@/api/supportRequests';
 import { User } from '@/store/auth/user';
 import { Prestador } from '@/store/auth/prestador';
+import { SendMessageArgs } from '@/api/firebase/chat';
 
 type EnviarMensajeProps = {
   message: string;
@@ -62,7 +63,7 @@ export const EnviarMensaje = ({
     prestador?.id ?? prestadorId ?? interactedPrestador?.id ?? (id || prestador?.id);
   const customerId = userId ?? user?.id ?? customer?.id;
 
-  let firstMessage;
+  let firstMessage: SendMessageArgs;
   if (pathname.includes('/perfil-prestador')) {
     firstMessage = {
       message,
