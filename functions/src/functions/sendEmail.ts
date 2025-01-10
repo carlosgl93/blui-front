@@ -63,6 +63,7 @@ export const sendEmail = onRequest(
           break;
         case 'new-message.html':
           const { sentBy, recipientName, senderName } = body;
+          console.log('sentBy', sentBy, 'recipientName', recipientName, 'senderName', senderName);
           templateData = {
             recipientName: recipientName,
             senderName: senderName,

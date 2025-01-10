@@ -150,6 +150,33 @@ export const PerfilUsuario = () => {
               error={Boolean(errors.lastname)}
               helperText={errors.lastname?.message}
             />
+            <StyledTextField
+              {...register('age', { required: 'Edad es requerida' })}
+              label="Edad"
+              variant="outlined"
+              error={Boolean(errors.age)}
+              helperText={errors.age?.message}
+            />
+            {user?.forWhom === 'tercero' && (
+              <>
+                <StyledTextField
+                  {...register('patientName', { required: 'Nombre del paciente es requerido' })}
+                  label="Nombre del paciente"
+                  variant="outlined"
+                  error={Boolean(errors.patientName)}
+                  helperText={errors.patientName?.message}
+                />
+
+                <StyledTextField
+                  {...register('patientAge', { required: 'Edad del paciente' })}
+                  label="Edad del paciente"
+                  variant="outlined"
+                  error={Boolean(errors.patientAge)}
+                  helperText={errors.patientAge?.message}
+                />
+              </>
+            )}
+
             <Controller
               name="gender"
               control={control}

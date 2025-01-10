@@ -4,20 +4,16 @@ import { Title } from './StyledComponents';
 
 const content = [
   {
-    title: 'Apoyo en el hogar',
-    image: `/images/apoyo-hogar.jpg`,
-  },
-  {
-    title: 'Cuidadora',
-    image: `/images/cuidadora.jpg`,
-  },
-  {
     title: 'Soporte terapéutico',
     image: `/images/terapeutico.jpg`,
   },
   {
     title: 'Servicios de enfermería',
     image: `/images/enfermeria.jpg`,
+  },
+  {
+    title: 'Cuidadora',
+    image: `/images/cuidadora.jpg`,
   },
   {
     title: 'Sana compañía',

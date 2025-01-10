@@ -75,7 +75,7 @@ export async function createPrestador({
       lastname: apellido,
       rut,
       comunas: comunas,
-      servicio: servicio?.serviceName,
+      servicio: servicio?.serviceName || '',
       especialidad: especialidad?.especialidadName || '',
       offersFreeMeetAndGreet: false,
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),

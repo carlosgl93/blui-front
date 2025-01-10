@@ -1,8 +1,12 @@
 import { Servicio } from '@/types/Servicio';
-
+import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
+import HealingOutlinedIcon from '@mui/icons-material/HealingOutlined';
+import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
+import AddReactionOutlinedIcon from '@mui/icons-material/AddReactionOutlined';
 export const services: Servicio[] = [
   {
     id: 0,
+    icon: PsychologyOutlinedIcon,
     serviceName: 'Soporte Terapéutico',
     especialidades: [
       {
@@ -25,6 +29,7 @@ export const services: Servicio[] = [
   },
   {
     id: 1,
+    icon: HealingOutlinedIcon,
     serviceName: 'Servicios de enfermería',
     especialidades: [
       { id: 6, especialidadName: 'Técnico en enfermería' },
@@ -36,10 +41,12 @@ export const services: Servicio[] = [
   },
   {
     id: 2,
+    icon: AccessibleOutlinedIcon,
     serviceName: 'Cuidadora',
   },
   {
     id: 3,
+    icon: AddReactionOutlinedIcon,
     serviceName: 'Sana Compañía',
   },
 ];

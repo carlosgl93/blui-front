@@ -49,7 +49,9 @@ export const useChat = (userId: string, providerId: string) => {
     {
       onSuccess: async (data) => {
         await client.invalidateQueries(['messages', userId, providerId]);
+        console.log('data success sent', data);
         sendEmailApi.post('/', {
+          sentBy: data?.sentBy,
           senderName: data?.sentBy === 'provider' ? data?.providerName : data?.username,
           recipientName: data?.sentBy === 'provider' ? data?.username : data?.providerName,
           templateName: 'new-message.html',
@@ -60,7 +62,8 @@ export const useChat = (userId: string, providerId: string) => {
             text: 'Te han enviado un mensaje!',
           },
         });
-        navigate('/chat', {
+        const navigateTo = data?.sentBy === 'provider' ? '/prestador-chat' : '/chat';
+        navigate(navigateTo, {
           state: {
             prestador: {
               id: providerId,

@@ -1,50 +1,26 @@
-import { Box, useTheme, Button, ListItem, List, Avatar } from '@mui/material';
-import { Suspense } from 'react';
+import { Suspense, createElement } from 'react';
+import { Box, useTheme, Button, ListItem, List, styled } from '@mui/material';
+import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import Loading from '@/components/Loading';
 import { Text, Title } from '@/components/StyledComponents';
 import { Link } from 'react-router-dom';
-import { useGetClientes } from '@/hooks';
+import { useComunas, useServicios, useSupportRequests } from '@/hooks';
+import { Apoyo } from '@/api/supportRequests';
+import { getRecurrencyText } from '@/utils/getRecurrencyText';
+import { capitalizeFirst } from '../../../utils/capitalizeFirstLetter';
+import { FlexBox } from '@/components/styled';
+import LoupeIcon from '@mui/icons-material/Loupe';
+import EventRepeatIcon from '@mui/icons-material/EventRepeat';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 export const MobileClientes = () => {
-  const { infiniteClientes } = useGetClientes();
+  const { infiniteSupportRequests } = useSupportRequests();
+  const { getServiceIcon } = useServicios();
+  const { getComunasNamesById } = useComunas();
+  const supportRequests = infiniteSupportRequests?.pages.map((page) => page.supportRequests);
   const theme = useTheme();
-  // const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
-      {/* <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={toggleDrawer}
-          sx={{
-            borderRadius: '0.5rem',
-            p: '0 1rem',
-            borderColor: '#99979c',
-            maxWidth: '95vw',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
-              height: '100%',
-              p: '0.5 1rem',
-            }}
-          >
-            <p>Filtros</p>
-            <TuneOutlinedIcon />
-          </Box>
-        </Button>
-      </Box> */}
-
       <Box
         sx={{
           minHeight: '80vh',
@@ -53,10 +29,6 @@ export const MobileClientes = () => {
           borderRadius: '0.5rem',
         }}
       >
-        {/* <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
-          <MobileFilters closeFilters={toggleDrawer} />
-        </Drawer> */}
-
         <Suspense fallback={<Loading />}>
           <List
             component={'ul'}
@@ -66,27 +38,29 @@ export const MobileClientes = () => {
               p: 0,
             }}
           >
-            {infiniteClientes?.length ? (
-              infiniteClientes?.map((page, pageIndex) => {
+            {(supportRequests || []).length > 0 ? (
+              supportRequests?.map((page, pageIndex) => {
                 return (
                   <div key={pageIndex}>
-                    {page.clientes.map((cliente) => {
+                    {page.map((support: Apoyo) => {
                       const {
                         id,
-                        email,
-                        firstname,
-                        lastname,
-                        service,
-                        speciality,
-                        profileImageUrl,
-                      } = cliente;
+                        comunasIds,
+                        serviceName,
+                        recurrency,
+                        sessionsPerRecurrency,
+                        title,
+                        specialityName,
+                      } = support;
+                      const comunasNames = getComunasNamesById(comunasIds);
+
                       return (
                         <Link
                           key={id}
                           to={`/ver-apoyo/${id}`}
                           style={{ textDecoration: 'none' }}
                           state={{
-                            cliente,
+                            apoyo: support,
                           }}
                         >
                           <ListItem
@@ -101,19 +75,17 @@ export const MobileClientes = () => {
                               sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                justifyContent: 'start',
-                                alignContent: 'start',
-                                alignItems: 'start',
+                                alignItems: 'center',
                               }}
                             >
-                              {/* TODO: add user profile image */}
-                              <Avatar
-                                sx={{
-                                  height: '90px',
-                                  width: '90px',
-                                }}
-                                src={profileImageUrl}
-                              />
+                              {createElement(getServiceIcon(serviceName), {
+                                sx: {
+                                  width: '5rem',
+                                  height: '5rem',
+                                  justifyContent: 'center',
+                                  textAlign: 'center',
+                                },
+                              })}
                             </Box>
                             <Box
                               sx={{
@@ -133,18 +105,36 @@ export const MobileClientes = () => {
                                     textOverflow: 'ellipsis',
                                   }}
                                 >
-                                  {firstname ? firstname : email} {lastname}
+                                  {capitalizeFirst(title)}
                                 </Title>
                               </Box>
-                              <Text>{service}</Text>
-                              {speciality && <Text>{speciality}</Text>}
+                              <EntryTextContainer>
+                                <MedicalInformationIcon />
+                                <Text>{serviceName}</Text>
+                              </EntryTextContainer>
+                              {specialityName && (
+                                <EntryTextContainer>
+                                  <LoupeIcon />
+                                  <Text>{specialityName}</Text>
+                                </EntryTextContainer>
+                              )}
+                              <EntryTextContainer>
+                                <EventRepeatIcon />
+                                <Text>
+                                  {getRecurrencyText(recurrency, Number(sessionsPerRecurrency))}
+                                </Text>
+                              </EntryTextContainer>
+                              <EntryTextContainer>
+                                <LocationOnIcon />
+                                <Text>{comunasNames}</Text>
+                              </EntryTextContainer>
                               <Button
                                 variant="outlined"
                                 sx={{
                                   mt: '2vh',
                                 }}
                               >
-                                Ver cliente
+                                Ver detalles
                               </Button>
                             </Box>
                           </ListItem>
@@ -160,7 +150,7 @@ export const MobileClientes = () => {
                   px: 'auto',
                 }}
               >
-                <Text>Aun no hay usuarios buscando apoyo para esta comuna</Text>
+                <Text>Aún no hay usuarios buscando apoyo para tu servicio y/o comuna</Text>
               </Box>
             )}
           </List>
@@ -169,3 +159,9 @@ export const MobileClientes = () => {
     </>
   );
 };
+
+const EntryTextContainer = styled(FlexBox)({
+  alignContent: 'center',
+  alignItems: 'center',
+  gap: '1rem',
+});

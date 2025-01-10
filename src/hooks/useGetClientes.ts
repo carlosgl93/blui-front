@@ -15,7 +15,7 @@ export type UserPages =
 
 export const useGetClientes = () => {
   const { prestador } = useAuthNew();
-  const [limit] = useState(1);
+  const [limit] = useState(10);
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData, DocumentData> | null>(
     null,
   );

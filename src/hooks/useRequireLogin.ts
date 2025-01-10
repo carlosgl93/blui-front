@@ -35,12 +35,12 @@ export function useRequireLogin() {
       navigate('/usuario-dashboard');
     }
 
-    if (userId && (location.pathname.includes('/chat') || redirectAfterLogin === '/chat')) {
+    if (!userId && (location.pathname.includes('/chat') || redirectAfterLogin === '/chat')) {
       navigate('/usuario-inbox');
     }
 
     if (
-      prestadorId &&
+      !prestadorId &&
       (location.pathname.includes('/prestador-chat') || redirectAfterLogin === '/prestador-chat')
     ) {
       navigate('/prestador-inbox');
@@ -52,5 +52,5 @@ export function useRequireLogin() {
     ) {
       navigate('/ingresar');
     }
-  }, [prestadorId, userId, protectedRoutes]);
+  }, [prestadorId, userId, protectedRoutes, location.pathname]);
 }

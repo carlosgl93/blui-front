@@ -1,19 +1,24 @@
-import { useMediaQuery } from '@mui/system';
-import { useGetClientes } from '@/hooks';
+import { useGetClientes, useSupportRequests } from '@/hooks';
 import Loading from '@/components/Loading';
-import { tablet } from '@/theme/breakpoints';
 import { MobileClientes } from './MobileClientes';
 import { EncuentraClientesHeader } from './Header';
 import { BackButtonContainer } from '../StyledPrestadorDashboardComponents';
 import BackButton from '@/components/BackButton';
-import { FlexBox } from '@/components/styled';
+import { CenteredFlexBox, FlexBox } from '@/components/styled';
 import { Box } from '@mui/material';
+import { Text } from '@/components/StyledComponents';
 
 export const EncuentraClientes = () => {
-  const { infiniteClientesIsLoading, isFetching, isLoadingtotalClientes, lastClientElementRef } =
-    useGetClientes();
-  const isTablet = useMediaQuery(tablet);
-  if (infiniteClientesIsLoading || isFetching || isLoadingtotalClientes) <Loading />;
+  const { lastClientElementRef, hasNextPage } = useGetClientes();
+
+  const {
+    infiniteSupportRequests,
+    isFetching,
+    infiniteSupportRequestsIsLoading,
+    totalSupportRequestsIsLoading,
+  } = useSupportRequests();
+
+  if (infiniteSupportRequestsIsLoading || isFetching || totalSupportRequestsIsLoading) <Loading />;
 
   return (
     <>
@@ -27,8 +32,18 @@ export const EncuentraClientes = () => {
         </BackButtonContainer>
       </FlexBox>
       <EncuentraClientesHeader />
-      {isTablet && <MobileClientes />}
+      {/* {isTablet && <MobileClientes />} */}
+      <MobileClientes />
       {/* TODO: add ? <MobileClientes/> : <DesktopClientes/> */}
+      {!hasNextPage && !(infiniteSupportRequests?.pages[0].supportRequests.length === 0) && (
+        <CenteredFlexBox
+          sx={{
+            m: '1rem 1.4rem',
+          }}
+        >
+          <Text>No hay más registros para mostrar para tus comunas y tipo de servicio.</Text>
+        </CenteredFlexBox>
+      )}
       <Box ref={lastClientElementRef} className="bottomSentinel" />
     </>
   );

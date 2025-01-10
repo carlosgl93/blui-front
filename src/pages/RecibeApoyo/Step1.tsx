@@ -4,23 +4,6 @@ import useRecibeApoyo from '@/store/recibeApoyo';
 import { Box, Button } from '@mui/material';
 import ForWhomList from './ForWhomList';
 import { useNavigate } from 'react-router-dom';
-import { ForWhom } from '@/api/auth';
-
-type Options = {
-  value: ForWhom;
-  text: string;
-};
-
-const options: Options[] = [
-  {
-    value: 'paciente',
-    text: 'Para mí',
-  },
-  {
-    value: 'tercero',
-    text: 'Para un amigo(a) o familiar',
-  },
-];
 
 const Step1 = () => {
   const [{ forWhom }, { increaseStep, resetRecibeApoyoState }] = useRecibeApoyo();
@@ -59,7 +42,7 @@ const Step1 = () => {
       >
         {recibeApoyoSteps[0].text}
       </Text>
-      <ForWhomList options={options} />
+      <ForWhomList />
       <Box
         sx={{
           display: 'flex',

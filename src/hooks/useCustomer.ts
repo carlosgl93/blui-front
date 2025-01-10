@@ -1,7 +1,7 @@
 import { getCustomer } from '@/api/users/getCustomer';
 import { useQuery } from 'react-query';
 
-export const useCustomer = (customerId: number) => {
+export const useCustomer = (customerId: string) => {
   const {
     data: customer,
     isError,

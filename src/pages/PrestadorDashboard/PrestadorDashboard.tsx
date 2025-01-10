@@ -48,11 +48,11 @@ export const PrestadorDashboard = () => {
       </Container>
       <Container
         sx={{
-          justifyContent: 'space-evenly',
+          justifyContent: 'space-around',
         }}
       >
         <StyledTitle>Encuentra clientes</StyledTitle>
-        <Text>Aqui puedes ver quien esta buscando tus servicios:</Text>
+        <Text>Aquí puedes ver quien esta buscando tus servicios</Text>
         <FlexBox
           sx={{
             width: '100%',

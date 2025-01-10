@@ -17,6 +17,9 @@ export interface IFormInput {
   address: string;
   comuna: Comuna | undefined;
   profileImage?: File;
+  patientName: string;
+  age: number;
+  patientAge: number;
 }
 
 export const usePerfilUsuarioController = () => {
@@ -40,6 +43,7 @@ export const usePerfilUsuarioController = () => {
       address: user?.address || '',
       comuna: user?.comuna,
       profileImage: image as File,
+      patientName: user?.patientName || '',
     },
   });
 

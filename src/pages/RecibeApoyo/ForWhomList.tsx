@@ -3,14 +3,23 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { ForWhom } from '@/api/auth';
 
-type ListProps = {
-  options: {
-    text: string;
-    value: ForWhom;
-  }[];
+type ForWhomOptions = {
+  value: ForWhom;
+  text: string;
 };
 
-const ForWhomList = ({ options }: ListProps) => {
+export const forWhomOptions: ForWhomOptions[] = [
+  {
+    value: 'paciente',
+    text: 'Para mí',
+  },
+  {
+    value: 'tercero',
+    text: 'Para un amigo(a) o familiar',
+  },
+];
+
+const ForWhomList = () => {
   const [{ forWhom }, { selectForWhom }] = useRecibeApoyo();
 
   const handleSelectForWhom = (whom: ForWhom) => {
@@ -24,8 +33,8 @@ const ForWhomList = ({ options }: ListProps) => {
           gap: 1,
         }}
       >
-        {options.map((item) => {
-          const alreadySelected = forWhom.includes(item.value);
+        {forWhomOptions?.map((item) => {
+          const alreadySelected = forWhom?.includes(item.value);
           return (
             <ListItemButton
               onClick={() => handleSelectForWhom(item.value)}

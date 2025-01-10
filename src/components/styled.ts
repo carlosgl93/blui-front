@@ -10,6 +10,10 @@ const CenteredFlexBox = styled(FlexBox)({
   alignItems: 'center',
 });
 
+const FlexColumn = styled(FlexBox)({
+  flexDirection: 'column',
+});
+
 const ColumnCenteredFlexBox = styled(CenteredFlexBox)({
   flexDirection: 'column',
 });
@@ -28,6 +32,7 @@ const HeaderIconImage = styled('img')({
 
 export {
   FlexBox,
+  FlexColumn,
   CenteredFlexBox,
   FullSizeCenteredFlexBox,
   HeaderIconImage,

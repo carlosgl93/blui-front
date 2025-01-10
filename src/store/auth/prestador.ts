@@ -11,7 +11,7 @@ export interface Prestador {
   lastname?: string;
   rut: string;
   comunas: Comuna[];
-  servicio: string | undefined;
+  servicio: string;
   especialidad?: string | undefined;
   telefono?: string;
   isLoggedIn?: boolean;

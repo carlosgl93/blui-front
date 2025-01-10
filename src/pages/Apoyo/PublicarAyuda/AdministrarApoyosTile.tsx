@@ -1,31 +1,36 @@
 import { useNavigate } from 'react-router-dom';
-import { ButtonCTA, DashboardTileContainer, StyledTitle, SubTitle } from '../StyledComponents';
-import { Text } from '@/components/StyledComponents';
+import {
+  ButtonCTA,
+  DashboardTileContainer,
+  StyledTitle,
+  SubTitle,
+} from '../../UsuarioDashboard/StyledComponents';
 import { useAuthNew } from '@/hooks';
 import { IconButton, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { FlexBox } from '@/components/styled';
+import { Text } from '@/components/StyledComponents';
 
-export const PublicarApoyoTile = () => {
+export const AdministrarApoyosTile = () => {
   const { user } = useAuthNew();
   const router = useNavigate();
 
-  const handleGoToPostSupport = () => {
-    router(`/post-support`);
+  const handleGoToMisApoyos = () => {
+    router(`/mis-apoyos`);
   };
 
   return (
     <DashboardTileContainer>
-      <StyledTitle>Publicar apoyo</StyledTitle>
-      <SubTitle>Publica tu necesidad particular</SubTitle>
+      <StyledTitle>Mis apoyos</StyledTitle>
+      <SubTitle>Administra tus solicitudes de apoyo</SubTitle>
       <Text>Hazte visible para que los prestadores te encuentren a tí.</Text>
       <FlexBox>
         <ButtonCTA
           variant="contained"
-          onClick={handleGoToPostSupport}
+          onClick={handleGoToMisApoyos}
           disabled={!user?.profileImageUrl}
         >
-          Publicar Apoyo
+          Administrar apoyos
         </ButtonCTA>
         {!user?.profileImageUrl && (
           <Tooltip

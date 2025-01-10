@@ -1,4 +1,4 @@
 import { PublicarApoyo } from './PublicarApoyo';
 
-export * from './PublicarApoyoTile';
+export * from './AdministrarApoyosTile';
 export default PublicarApoyo;
