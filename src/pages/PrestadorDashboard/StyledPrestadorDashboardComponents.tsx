@@ -6,7 +6,7 @@ export const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'start',
   padding: '1rem',
   minHeight: '80vh',
   margin: 'auto',
@@ -16,9 +16,8 @@ export const Container = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
   padding: '1rem',
-  marginBottom: '1rem',
   backgroundColor: 'white',
   boxSizing: 'border-box',
   borderRadius: '.5rem',
@@ -27,7 +26,7 @@ export const Container = styled(Box)(() => ({
 }));
 
 export const StyledTitle = styled(Title)(({ theme }) => ({
-  fontSize: '1.75rem',
+  fontSize: '2rem',
   fontWeight: 'bold',
   marginBottom: '0.5rem',
   color: theme.palette.primary.main,

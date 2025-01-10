@@ -56,6 +56,24 @@ export const sendFirstMessage = async ({
   userEmail,
   providerEmail,
 }: SendMessageArgs) => {
+  console.log(
+    'userId',
+    userId,
+    'providerId',
+    providerId,
+    'message',
+    message,
+    'sentBy',
+    sentBy,
+    'providerName',
+    providerName,
+    'username',
+    username,
+    'userEmail',
+    userEmail,
+    'providerEmail',
+    providerEmail,
+  );
   const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
   try {
     const docId = uuidv4();

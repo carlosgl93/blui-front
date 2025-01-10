@@ -1,6 +1,6 @@
 import { Comuna } from '@/types';
 import regions from '../utils/regions.json';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { notificationState } from '@/store/snackbar';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useAuthNew } from './useAuthNew';
@@ -60,17 +60,16 @@ export const useComunas = () => {
   const [matchedComunas, setMatchedComunas] = useState<Comuna[]>([]);
   const [selectedComunas, setSelectedComunas] = useRecoilState(comunasState);
   const [, setNotification] = useRecoilState(notificationState);
-  const { prestador } = useAuthNew();
+  const { prestador, user } = useAuthNew();
   const setPrestador = useSetRecoilState(prestadorState);
   const queryClient = useQueryClient();
 
   const allComunas = useMemo(() => {
     const comunas: Comuna[] = [];
-
-    regions.regiones.forEach((r) => {
-      const newComunas = r.comunas.map((c, i) => {
+    regions.regiones.forEach((r, i) => {
+      const newComunas = r.comunas.map((c, j) => {
         return {
-          id: i,
+          id: Number(`${i}${j}`),
           name: c,
           region: r.region,
           country: 'Chile',
@@ -161,7 +160,9 @@ export const useComunas = () => {
   );
 
   const handleRemoveComuna = (comuna: Comuna) => {
-    removeComuna({ providerId: prestador!.id, comuna, comunas: selectedComunas });
+    if (prestador?.email) {
+      removeComuna({ providerId: prestador!.id, comuna, comunas: selectedComunas });
+    }
     setSelectedComunas((prev) => prev.filter((comunaState) => comunaState.id !== comuna.id));
   };
 
@@ -202,6 +203,20 @@ export const useComunas = () => {
     },
   );
 
+  const getComunasNamesById = (comunasIds: number[]) => {
+    const comunasNames = allComunas.filter((comuna) => comunasIds.includes(comuna.id));
+    return comunasNames.map((comuna) => comuna.name).join(', ');
+  };
+
+  useEffect(() => {
+    if (prestadorComunas) {
+      setSelectedComunas(prestadorComunas);
+    }
+    if (user?.comuna) {
+      setSelectedComunas([user.comuna]);
+    }
+  }, []);
+
   return {
     allComunas,
     comunasSearched,
@@ -211,6 +226,7 @@ export const useComunas = () => {
     removeComunaIsLoading,
     fetchPrestadorComunasIsLoading,
     prestadorComunas,
+    getComunasNamesById,
     setComunasSearched,
     setMatchedComunas,
     handleChangeSearchComuna,

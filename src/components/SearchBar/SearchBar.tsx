@@ -6,7 +6,11 @@ import useRecibeApoyo from '@/store/recibeApoyo';
 import { IconButton, InputAdornment, List, ListItem, OutlinedInput } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-function SearchBar() {
+type SearchBarProps = {
+  routeToResultados?: boolean;
+};
+
+function SearchBar({ routeToResultados = true }: SearchBarProps) {
   const { allComunas } = useComunas();
   const [, { addComuna }] = useRecibeApoyo();
   const [comunasState, setComunasState] = useState(allComunas);
@@ -27,12 +31,16 @@ function SearchBar() {
   const onEnterDown = (e: KeyboardEvent) => {
     if (e.code === 'Enter' && comunasState.length === 1) {
       addComuna(comunasState[0]);
+      if (!routeToResultados) return;
       router(`/resultados`);
     }
   };
 
   const clickComunaHandler = () => {
     setComunasState(allComunas);
+    if (!routeToResultados) {
+      return;
+    }
     router(`/resultados`);
   };
 
@@ -68,8 +76,8 @@ function SearchBar() {
         placeholder="Indicanos tu comuna"
         sx={{
           width: {
-            xs: '80%',
-            sm: '80vw',
+            xs: '100%',
+            sm: '100%',
             md: '60vw',
             lg: '50vw',
           },
@@ -86,8 +94,8 @@ function SearchBar() {
         <List
           sx={{
             width: {
-              xs: '80%',
-              sm: '80vw',
+              xs: '100%',
+              sm: '100%',
               md: '60vw',
               lg: '50vw',
             },
@@ -113,7 +121,7 @@ function SearchBar() {
                   margin: '0.5rem',
                   padding: 'auto',
                   cursor: 'pointer',
-                  width: '96%',
+                  width: '80%',
                 }}
               >
                 {name}

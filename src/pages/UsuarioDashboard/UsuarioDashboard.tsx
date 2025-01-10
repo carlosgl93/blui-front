@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { EncuentraApoyo } from './EncuentraApoyo';
 import { ActualizarPerfil } from './ActualizarPerfil';
 import { SesionesDashboardTile } from './SesionesDashboardTile';
+import { AdministrarApoyosTile } from '../Apoyo/PublicarAyuda';
 
 export const UsuarioDashboard = () => {
   return (
@@ -27,6 +28,7 @@ export const UsuarioDashboard = () => {
       }}
     >
       <ActualizarPerfil />
+      <AdministrarApoyosTile />
       <EncuentraApoyo />
       <SesionesDashboardTile />
     </Box>

@@ -10,6 +10,7 @@ type ComunasSearchBarProps = {
   matchedComunas: Comuna[];
   comunasSearched: string;
   handleChangeSearchComuna: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  placeholder?: string;
 };
 
 export function ComunasSearchBar({
@@ -17,6 +18,7 @@ export function ComunasSearchBar({
   matchedComunas,
   comunasSearched,
   handleChangeSearchComuna,
+  placeholder,
 }: ComunasSearchBarProps) {
   const { allComunas } = useComunas();
 
@@ -51,15 +53,15 @@ export function ComunasSearchBar({
               </IconButton>
             </InputAdornment>
           }
-          placeholder="Indicanos tu comuna"
+          placeholder={placeholder ? placeholder : 'Indicanos tu comuna'}
           sx={{
             width: {
-              xs: '80%',
+              xs: '100%',
               sm: '80vw',
               md: '60vw',
               lg: '50vw',
             },
-
+            maxWidth: '100%',
             backgroundColor: 'white',
             borderRadius: '2rem',
             mt: '1rem',

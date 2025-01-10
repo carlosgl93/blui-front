@@ -26,6 +26,7 @@ export const useSobreMi = () => {
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     prestador?.profileImageUrl ? prestador.profileImageUrl : null,
   );
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const theme = useTheme();
   const {
@@ -80,7 +81,6 @@ export const useSobreMi = () => {
       },
     },
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleEditPicture = () => {
     if (fileInputRef.current) {

@@ -12,12 +12,13 @@ export const ActualizarPerfil = () => {
   return (
     <DashboardTileContainer>
       <StyledTitle>Actualizar perfil</StyledTitle>
-      <SubTitle>Comparte tus necesidades de apoyo.</SubTitle>
+      <SubTitle>Agrega o actualiza tu información.</SubTitle>
       <Text>
-        Agrega o actualiza tus necesidades medicas, sociales para informar a los prestadores.
+        Tus datos, nombre, apellido, direccion, telefono, email. Todo lo que necesitas para que los
+        prestadores te puedan brindar el mejor servicio.
       </Text>
       <ButtonCTA variant="contained" onClick={handleGoToProfile}>
-        Ir al perfil
+        Actualizar perfil
       </ButtonCTA>
     </DashboardTileContainer>
   );

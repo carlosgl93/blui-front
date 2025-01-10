@@ -8,7 +8,6 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
 import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
 import dayjs from 'dayjs';
-import { Spa, SpaOutlined } from '@mui/icons-material';
 
 export const allComunas = [
   'ALGARROBO',
@@ -559,16 +558,13 @@ export const generalExperiences = [
   },
   {
     id: 2,
-    label: 'Enfermería',
+    label: 'Servicios de enfermería',
     icon: LocalHospitalOutlinedIcon,
     checkedIcon: LocalHospitalIcon,
-    // specialities: [
-    //   { id: 3, label: 'Artritis' },
-    //   { id: 4, label: 'Asma' },
-    //   { id: 5, label: 'Enfermedades cardiovasculares' },
-    //   { id: 6, label: 'Enfermedades respiratorias' },
-    //   { id: 7, label: 'Diabetes' },
-    // ],
+    specialities: [
+      { id: 5, label: 'Enfermedades cardiovasculares' },
+      { id: 6, label: 'Enfermedades respiratorias' },
+    ],
   },
   {
     id: 3,
@@ -601,22 +597,6 @@ export const generalExperiences = [
       { id: 22, label: 'Kinesiología' },
       { id: 23, label: 'Quiropráctica' },
       { id: 24, label: 'Fonoaudología' },
-      { id: 25, label: 'Podología' },
-      { id: 26, label: 'Estilista' },
-      { id: 27, label: 'Terapeuta Ocupacional' },
-    ],
-  },
-  {
-    id: 5,
-    label: 'Apoyo en el hogar',
-    icon: SpaOutlined,
-    checkedIcon: Spa,
-    specialities: [
-      { id: 22, label: 'Kinesiología' },
-      { id: 23, label: 'Quiropráctica' },
-      { id: 24, label: 'Fonoaudología' },
-      { id: 25, label: 'Podología' },
-      { id: 26, label: 'Estilista' },
       { id: 27, label: 'Terapeuta Ocupacional' },
     ],
   },

@@ -178,6 +178,24 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/BookingConfirmation')),
     path: '/booking-confirmation',
   },
+
+  [Pages.EncuentraClientes]: {
+    component: asyncComponentLoader(() => import('@/pages/PrestadorDashboard/EncuentraClientes')),
+    path: '/encuentra-clientes',
+  },
+  [Pages.MisApoyos]: {
+    component: asyncComponentLoader(() => import('@/pages/Apoyo')),
+    path: '/mis-apoyos',
+  },
+  [Pages.CrearApoyo]: {
+    component: asyncComponentLoader(() => import('@/pages/Apoyo/PublicarAyuda')),
+    path: '/mis-apoyos/crear',
+  },
+
+  [Pages.VerApoyo]: {
+    component: asyncComponentLoader(() => import('@/pages/VerApoyo')),
+    path: '/ver-apoyo/:id',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',
@@ -204,6 +222,10 @@ export const protectedRoutes = [
   '/usuario-dashboard',
   '/sesiones',
   '/preview-perfil-prestador',
+  '/post-support',
+  '/encuentra-clientes',
+  '/ver-apoyo',
+  '/mis-apoyos',
 ];
 
 export default routes;

@@ -50,7 +50,6 @@ export const SelectSessionTime = ({
 
   const shouldDisableTime = useCallback(
     (time: Dayjs) => {
-      console.log('time to disable', time.format('YYYY-MM-DD HH:mm'), currentSelectedDate);
       const selectedDays = selectedDates;
       const completeTime = time.format('HH:mm');
       const timeHour = time.get('hours');
@@ -64,25 +63,10 @@ export const SelectSessionTime = ({
         const serviceEndTime = serviceStartTime.add(serviceDuration, 'minutes');
 
         return selectedDays?.find((selectedDay) => {
-          const selectedDayFormatted = selectedDay.format('YYYY-MM-DD');
-          console.log(
-            selectedDayFormatted ===
-              selectedTimes?.[selectedDayFormatted as unknown as number]?.format('YYYY-MM-DD'),
-          );
           if (
             appointment.scheduledTime === completeTime &&
             appointment.scheduledDate === currentSelectedDate?.format('YYYY-MM-DD')
           ) {
-            console.log('some of them have this time booked', {
-              appTime: appointment.scheduledTime,
-              appDate: appointment.scheduledDate,
-              iteratedDay: selectedDayFormatted,
-              completeTime,
-              selectedDates,
-              selectedTimes,
-              selectedTimeDay:
-                selectedTimes?.[selectedDayFormatted as unknown as number]?.format('YYYY-MM-DD'),
-            });
             return true;
           }
 

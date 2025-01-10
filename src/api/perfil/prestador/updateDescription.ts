@@ -17,7 +17,6 @@ export async function updateDescriptionAndImage(
   profileImage: File,
 ): Promise<{ description: string; photoUrl: string }> {
   const docRef = doc(db, 'providers', id);
-  console.log('profileImage from updateDescription', profileImage);
   const storageRef = ref(storage, `profileImages/${id}/${profileImage?.name}`);
   try {
     const snapshot = await uploadBytes(storageRef, profileImage);
@@ -32,7 +31,7 @@ export async function updateDescriptionAndImage(
       photoUrl,
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new Error('error updating info');
   }
 }

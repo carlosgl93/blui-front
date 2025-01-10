@@ -12,7 +12,7 @@ export const EncuentraApoyo = () => {
   return (
     <DashboardTileContainer>
       <StyledTitle>Encuentra apoyo</StyledTitle>
-      <SubTitle>Explora los perfiles de los prestadores.</SubTitle>
+      <SubTitle>Explora los prestadores disponibles</SubTitle>
       <Text>
         Filtra por comuna, tipo de servicio y especialidad, luego chatea con los prestadores acerca
         de los servicios que necesitas.

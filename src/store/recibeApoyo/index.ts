@@ -147,6 +147,11 @@ function useRecibeApoyo(): [RecibeApoyoState, Actions] {
       //   servicio: apoyo.servicio?.service_id || null,
       // });
       return;
+    } else {
+      setApoyo((prev) => ({
+        ...prev,
+        especialidad,
+      }));
     }
 
     // getPrestadoresByEspecialidad({

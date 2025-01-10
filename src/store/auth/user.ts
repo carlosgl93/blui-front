@@ -20,6 +20,9 @@ export interface User {
   acceptedTerms: boolean;
   service: string;
   speciality: string;
+  profileImageUrl?: string;
+  age?: number;
+  patientAge?: number;
 }
 
 export const userState = atom<null | User>({

@@ -13,6 +13,7 @@ import { interactedPrestadorState } from '@/store/resultados/interactedPrestador
 import { defaultPrestador, Prestador, prestadorState } from '@/store/auth/prestador';
 import { UserCreatedServicio } from '@/pages/ConstruirPerfil/Servicio/types';
 import { deleteService, DeleteServiceParams } from '../api/servicios/deleteService';
+import SupportOutlinedIcon from '@mui/icons-material/SupportOutlined';
 
 export const useServicios = () => {
   const setNotification = useSetRecoilState(notificationState);
@@ -112,6 +113,15 @@ export const useServicios = () => {
     },
   );
 
+  const getServiceIcon = (serviceName: string) => {
+    const servicio = allServicios.find((s) => s.serviceName === serviceName);
+    if (servicio) {
+      return servicio.icon;
+    } else {
+      return SupportOutlinedIcon;
+    }
+  };
+
   return {
     prestadorCreatedServiciosLoading,
     allServicios,
@@ -121,5 +131,6 @@ export const useServicios = () => {
     deleteServicioLoading,
     saveServicio,
     deleteServicio,
+    getServiceIcon,
   };
 };
