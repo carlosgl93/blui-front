@@ -42,6 +42,8 @@ export const useAuthNew = () => {
         const correo = authUser.email;
         const usersColectionRef = collection(db, 'users');
         const prestadorCollectionRef = collection(db, 'providers');
+        const adminsCollectionRef = collection(db, 'admins');
+
         const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
         const prestadorQuery = query(
           prestadorCollectionRef,
@@ -49,9 +51,12 @@ export const useAuthNew = () => {
           where('email', '==', correo),
         );
 
-        const [users, prestadores] = await Promise.all([
+        const adminsQuery = query(adminsCollectionRef, limit(1), where('email', '==', correo));
+
+        const [users, prestadores, admins] = await Promise.all([
           getDocs(userQuery),
           getDocs(prestadorQuery),
+          getDocs(adminsQuery),
         ]);
 
         if (users.docs.length > 0) {
@@ -73,6 +78,12 @@ export const useAuthNew = () => {
           prestador.availability = availability;
           setPrestadorState({ ...prestador, isLoggedIn: true });
           queryClient.setQueryData(['prestador', correo], prestador);
+        } else if (admins.docs.length > 0) {
+          const admin = admins.docs[0].data() as User;
+          admin.token = authUser.refreshToken;
+          admin.id = authUser.uid;
+          setUserState({ ...admin, isLoggedIn: true, role: 'admin', token: authUser.refreshToken });
+          queryClient.setQueryData(['user', correo], admin);
         } else {
           console.error('No user or provider found with the given email.');
         }
@@ -185,10 +196,16 @@ export const useAuthNew = () => {
 
       const usersColectionRef = collection(db, 'users');
       const prestadorCollectionRef = collection(db, 'providers');
+      const adminsCollectionRef = collection(db, 'admins');
       const userQuery = query(usersColectionRef, limit(1), where('email', '==', correo));
       const prestadorQuery = query(prestadorCollectionRef, limit(1), where('email', '==', correo));
+      const adminQuery = query(adminsCollectionRef, limit(1), where('email', '==', correo));
 
-      const [users, prestadores] = await Promise.all([getDocs(userQuery), getDocs(prestadorQuery)]);
+      const [users, prestadores, admins] = await Promise.all([
+        getDocs(userQuery),
+        getDocs(prestadorQuery),
+        getDocs(adminQuery),
+      ]);
 
       if (users.docs.length > 0) {
         const user = users.docs[0].data() as User;
@@ -206,6 +223,13 @@ export const useAuthNew = () => {
         setPrestadorState({ ...prestador, isLoggedIn: true });
         queryClient.setQueryData(['prestador', correo], prestador);
         return { role: 'prestador', data: prestador };
+      } else if (admins.docs.length > 0) {
+        const admin = admins.docs[0].data() as User;
+        admin.token = userCredential.user.refreshToken;
+        admin.id = userCredential.user.uid;
+        setUserState({ ...admin, isLoggedIn: true, token: userCredential.user.refreshToken });
+        queryClient.setQueryData(['user', correo], admin);
+        return { role: 'admin', data: admin };
       } else {
         throw new Error('No user or provider found with the given email.');
       }

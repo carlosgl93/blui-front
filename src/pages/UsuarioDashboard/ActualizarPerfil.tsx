@@ -14,7 +14,7 @@ export const ActualizarPerfil = () => {
       <StyledTitle>Actualizar perfil</StyledTitle>
       <SubTitle>Agrega o actualiza tu información.</SubTitle>
       <Text>
-        Tus datos, nombre, apellido, direccion, telefono, email. Todo lo que necesitas para que los
+        Tus datos, nombre, apellido, dirección, teléfono, email. Todo lo que necesitas para que los
         prestadores te puedan brindar el mejor servicio.
       </Text>
       <ButtonCTA variant="contained" onClick={handleGoToProfile}>
