@@ -1,130 +1,48 @@
-import { Text } from '@/components/StyledComponents';
-import {
-  Container,
-  StyledButton,
-  StyledList,
-  StyledTitle,
-  Wrapper,
-} from './StyledPrestadorDashboardComponents';
+import { Wrapper } from './StyledPrestadorDashboardComponents';
 import { usePrestadorDashboard } from './usePrestadorDashboard';
-import { FlexBox } from '@/components/styled';
-import { IconButton, Tooltip } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { useMediaQuery } from '@mui/material';
+import { DashboardTile } from '@/components/DashboardTile';
 
 export const PrestadorDashboard = () => {
-  const {
-    handleConstruirPerfil,
-    handleSesiones,
-    handleEncuentraClientes,
-    shouldDisableEncuentraClientes,
-  } = usePrestadorDashboard();
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const { shouldDisableEncuentraClientes } = usePrestadorDashboard();
 
   return (
     <Wrapper sx={wrapperSx}>
-      <Container>
-        <StyledTitle>Construyamos tu perfil</StyledTitle>
-        <Text>Construyamos un perfil ganador. Esta es tu oportunidad de:</Text>
-        <StyledList>
-          <li>
-            <Text>Destacar tus habilidades y experiencia.</Text>
-          </li>
-          <li>
-            <Text>Establecer valores competitivos y disponibilidad.</Text>
-          </li>
-          <li>
-            <Text>Resaltar para los clientes al agregar tu experiencia e intereses.</Text>
-          </li>
-        </StyledList>
-        <FlexBox
-          sx={{
-            width: '100%',
-            justifyContent: 'center',
-          }}
-        >
-          <StyledButton variant="contained" onClick={handleConstruirPerfil}>
-            Construir perfil
-          </StyledButton>
-        </FlexBox>
-      </Container>
-      <Container
-        sx={{
-          justifyContent: 'space-around',
-        }}
-      >
-        <StyledTitle>Encuentra clientes</StyledTitle>
-        <Text>Aquí puedes ver quien esta buscando tus servicios</Text>
-        <FlexBox
-          sx={{
-            width: '100%',
-            justifyContent: 'center',
-          }}
-        >
-          <StyledButton
-            variant="contained"
-            onClick={handleEncuentraClientes}
-            disabled={shouldDisableEncuentraClientes}
-          >
-            Buscar clientes
-          </StyledButton>
-          {shouldDisableEncuentraClientes && (
-            <Tooltip
-              title="Completa tu perfil"
-              enterTouchDelay={0}
-              sx={{
-                ':hover': {
-                  backgroundColor: 'transparent',
-                },
-              }}
-              arrow
-              slotProps={{
-                popper: {
-                  modifiers: [
-                    {
-                      name: 'offset',
-                      options: {
-                        offset: [0, -25],
-                      },
-                    },
-                  ],
-                },
-              }}
-            >
-              <IconButton>
-                <HelpOutlineIcon
-                  sx={{
-                    color: 'secondary.contrastText',
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-          )}
-        </FlexBox>
-      </Container>
-      <Container>
-        <StyledTitle>Sesiones</StyledTitle>
-        <Text>Organiza, chatea y confirma tus sesiones aquí</Text>
-        <StyledList>
-          <li>
-            <Text>Revisa fechas, horarios y clientes</Text>
-          </li>
-          <li>
-            <Text>Chatea con tus clientes.</Text>
-          </li>
-          <li>
-            <Text>Confirma la realización de la sesión para recibir el pago.</Text>
-          </li>
-        </StyledList>
-        <FlexBox
-          sx={{
-            width: '100%',
-            justifyContent: 'center',
-          }}
-        >
-          <StyledButton variant="contained" onClick={handleSesiones}>
-            Ver sesiones
-          </StyledButton>
-        </FlexBox>
-      </Container>
+      <DashboardTile
+        goToPath="/construir-perfil"
+        title="Construyamos tu perfil"
+        subTitle="Construye un perfil ganador"
+        isMobile={isMobile}
+        text="Destaca tus habilidades y experiencia. Establece valores competitivos y disponibilidad. Resalta para los clientes al agregar tu experiencia e intereses."
+        ctaText="Construir perfil"
+      />
+      <DashboardTile
+        goToPath="/encuentra-clientes"
+        title="Encuentra clientes"
+        subTitle="Aquí puedes ver quien está buscando tus servicios"
+        isMobile={isMobile}
+        text="Filtra por comuna, tipo de servicio y especialidad, luego chatea con los prestadores acerca de los servicios que necesitas."
+        ctaText="Buscar clientes"
+        ctaDisabled={shouldDisableEncuentraClientes}
+        disabledText="Completa tu perfil"
+      />
+      <DashboardTile
+        goToPath="/prestador-inbox"
+        title="Inbox"
+        subTitle="Revisa tus mensajes"
+        isMobile={isMobile}
+        text="Chatea con los usuarios"
+        ctaText="Ver inbox"
+      />
+      <DashboardTile
+        goToPath="/sesiones"
+        title="Sesiones"
+        subTitle="Organiza, chatea y confirma tus sesiones aquí"
+        isMobile={isMobile}
+        text="Revisa fechas, horarios y clientes. Chatea con tus clientes. Confirma la realización de la sesión para recibir el pago."
+        ctaText="Ver sesiones"
+      />
     </Wrapper>
   );
 };

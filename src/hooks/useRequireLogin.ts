@@ -17,9 +17,16 @@ export function useRequireLogin() {
   const userId = user?.id?.length;
 
   useEffect(() => {
-    if ((!prestadorId || !userId) && location.pathname.includes('/backoffice')) {
-      setRedirectAfterLogin(location.pathname);
+    // case where the user is logged in as a user and tries to access the backoffice
+    if (location.pathname.includes('/backoffice') && user?.role === 'user') {
+      // setRedirectAfterLogin(location.pathname);
+      navigate('/usuario-dashboard');
+      return;
+    }
+
+    if (location.pathname.includes('/backoffice') && user === null) {
       navigate('/backoffice/login');
+      return;
     }
 
     if (!prestadorId && !userId && protectedRoutes?.includes(location.pathname)) {
