@@ -104,7 +104,6 @@ export const useDisponibilidadNew = () => {
         // If updating end time, ensure it's after existing start time
         if (startOrEnd === 'endTime' && existingTime && e.isBefore(dayjs(existingTime, 'HH:mm'))) {
           console.error('End time must be after start time');
-          console.error('End time must be after start time');
           showError = true;
           errorMessage = 'La hora de término debe ser después de la hora de inicio';
           // setNotification((prev) => ({

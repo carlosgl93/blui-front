@@ -1,5 +1,5 @@
 import { Box, Button, Switch } from '@mui/material';
-import { TimePicker } from '@mui/x-date-pickers';
+import { TimeField } from '@mui/x-date-pickers';
 import { AvailabilityData, StyledDayName } from './ListAvailableDays';
 import { CenteredDivider } from '@/components/StyledDivider';
 import {
@@ -56,16 +56,46 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                 {isAvailable && (
                   <StyledTimePickerContainer>
                     <StyledTimerContainer>
-                      <TimePicker
+                      <TimeField
+                        label="Inicio"
+                        value={dayjs(times.startTime, 'HH:mm')}
+                        onChange={(e) => handleTimeChange(e!, id, 'startTime')}
+                        format="HH:mm"
+                        minutesStep={30}
+                        ampm={false}
+                        helperText="Format de hora 24 horas, ej: 14:30 - Se sugiere usar intervalos de 30 minutos"
+                        FormHelperTextProps={{
+                          sx: {
+                            fontSize: '0.5rem',
+                            maxWidth: '200px',
+                          },
+                        }}
+                      />
+                      {/* <TimePicker
                         label="Inicio"
                         value={dayjs(times.startTime, 'HH:mm')}
                         onChange={(e) => handleTimeChange(e!, id, 'startTime')}
                         minutesStep={30}
                         ampm={false}
-                      />
+                      /> */}
                     </StyledTimerContainer>
                     <StyledTimerContainer>
-                      <TimePicker
+                      <TimeField
+                        label="Término"
+                        value={dayjs(times.endTime, 'HH:mm')}
+                        onChange={(e) => handleTimeChange(e!, id, 'endTime')}
+                        format="HH:mm"
+                        minutesStep={30}
+                        ampm={false}
+                        helperText="Format de hora 24 horas, ej: 14:30 - Se sugiere usar intervalos de 30 minutos"
+                        FormHelperTextProps={{
+                          sx: {
+                            fontSize: '0.5rem',
+                            maxWidth: '200px',
+                          },
+                        }}
+                      />
+                      {/* <TimePicker
                         sx={{
                           display: 'flex',
                         }}
@@ -76,7 +106,7 @@ export const EditAvailableDays = ({ availability }: EditAvailableDaysProps) => {
                         minTime={dayjs(times.startTime, 'HH:mm')}
                         ampm={false}
                         views={['hours', 'minutes']}
-                      />
+                      /> */}
                     </StyledTimerContainer>
                   </StyledTimePickerContainer>
                 )}
