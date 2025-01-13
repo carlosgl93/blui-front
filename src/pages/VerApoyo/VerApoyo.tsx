@@ -74,7 +74,13 @@ export const VerApoyo = (props: VerApoyoProps) => {
         </BackButtonContainer>
         <ColumnCenteredFlexBox>
           <FlexBox>
-            <StyledTitle>{capitalizeFirst(apoyo.title)}</StyledTitle>
+            <StyledTitle
+              sx={{
+                lineHeight: '2.5rem',
+              }}
+            >
+              {capitalizeFirst(apoyo.title)}
+            </StyledTitle>
           </FlexBox>
           <List
             sx={{
@@ -103,8 +109,13 @@ export const VerApoyo = (props: VerApoyoProps) => {
                       justifyContent: 'space-between',
                     }}
                   >
-                    <WhiteText>Paciente: {customer.patientName}</WhiteText>
-                    <WhiteText>Edad del paciente: {customer?.patientAge} años</WhiteText>
+                    <WhiteText>
+                      Paciente: {apoyo.patientName ? apoyo.patientName : customer.patientName}
+                    </WhiteText>
+                    <WhiteText>
+                      Edad del paciente:{' '}
+                      {apoyo.patientAge ? apoyo.patientAge : customer?.patientAge} años
+                    </WhiteText>
                     <WhiteText>Servicio: {service}</WhiteText>
                     {speciality && <WhiteText>Especialidad: {speciality}</WhiteText>}
                   </FlexColumn>
@@ -176,6 +187,7 @@ export const VerApoyo = (props: VerApoyoProps) => {
 const WhiteText = styled(Text)({
   color: 'white',
   fontSize: '1rem',
+  textAlign: 'left',
 });
 
 const SmallUserAvatar = styled(Avatar)({

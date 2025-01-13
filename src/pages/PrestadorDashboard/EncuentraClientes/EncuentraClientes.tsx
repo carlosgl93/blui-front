@@ -1,21 +1,21 @@
-import { useGetClientes, useSupportRequests } from '@/hooks';
-import Loading from '@/components/Loading';
-import { MobileClientes } from './MobileClientes';
-import { EncuentraClientesHeader } from './Header';
 import { BackButtonContainer } from '../StyledPrestadorDashboardComponents';
-import BackButton from '@/components/BackButton';
 import { CenteredFlexBox, FlexBox } from '@/components/styled';
-import { Box } from '@mui/material';
+import { useGetClientes, useSupportRequests } from '@/hooks';
 import { Text } from '@/components/StyledComponents';
+import { EncuentraClientesHeader } from './Header';
+import { MobileClientes } from './MobileClientes';
+import BackButton from '@/components/BackButton';
+import Loading from '@/components/Loading';
+import { Box } from '@mui/material';
 
 export const EncuentraClientes = () => {
   const { lastClientElementRef, hasNextPage } = useGetClientes();
 
   const {
-    infiniteSupportRequests,
     isFetching,
-    infiniteSupportRequestsIsLoading,
+    infiniteSupportRequests,
     totalSupportRequestsIsLoading,
+    infiniteSupportRequestsIsLoading,
   } = useSupportRequests();
 
   if (infiniteSupportRequestsIsLoading || isFetching || totalSupportRequestsIsLoading) <Loading />;
@@ -33,18 +33,30 @@ export const EncuentraClientes = () => {
       </FlexBox>
       <EncuentraClientesHeader />
       {/* {isTablet && <MobileClientes />} */}
-      <MobileClientes />
       {/* TODO: add ? <MobileClientes/> : <DesktopClientes/> */}
-      {!hasNextPage && !(infiniteSupportRequests?.pages[0].supportRequests.length === 0) && (
+      {infiniteSupportRequests?.pages[0].supportRequests.length === 0 && (
         <CenteredFlexBox
           sx={{
+            height: '55vh',
             m: '1rem 1.4rem',
           }}
         >
-          <Text>No hay más registros para mostrar para tus comunas y tipo de servicio.</Text>
+          <Text>Aún no hay personas buscando apoyo para tus comunas y/o servicio.</Text>
         </CenteredFlexBox>
       )}
-      <Box ref={lastClientElementRef} className="bottomSentinel" />
+      {!hasNextPage &&
+        (infiniteSupportRequests?.pages[0]?.supportRequests?.length || [].length) > 0 && (
+          <CenteredFlexBox
+            sx={{
+              m: '1rem 1.4rem',
+            }}
+          >
+            <Text>No hay más registros para mostrar para tus comunas y tipo de servicio.</Text>
+          </CenteredFlexBox>
+        )}
+      {(infiniteSupportRequests?.pages[0].supportRequests || []).length > 0 && <MobileClientes />}
+
+      {hasNextPage && <Box ref={lastClientElementRef} className="bottomSentinel" />}
     </>
   );
 };
