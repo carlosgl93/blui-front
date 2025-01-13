@@ -23,6 +23,7 @@ export const PublicarApoyoController = () => {
   const [speciality, setSpeciality] = useState(user?.speciality || '');
   const [sessionsPerRecurrency, setSessionsPerRecurrency] = useState('1');
   const [patientName, setPatientName] = useState(user?.patientName || '');
+  const [patientAge, setPatientAge] = useState(user?.patientAge || 0);
   const [selectedDates, setSelectedDates] = useState<Dayjs[]>([]);
   const [totalHours, setTotalHours] = useState('1');
   const [startingDateAndTime, setStartingDateAndTime] = useState<Dayjs>();
@@ -38,28 +39,21 @@ export const PublicarApoyoController = () => {
         message: 'Publicación exitosa',
         severity: 'success',
       });
-      navigate(`/ver-apoyo/${data}`, {
+      console.log('data', data);
+      navigate(`/ver-apoyo/${data.id}`, {
         replace: true,
         state: {
-          apoyo: {
-            title,
-            userId: user?.id,
-            description,
-            patientName,
-            address,
-            comunasIds: selectedComunas.map((comuna) => comuna.id),
-            recurrency,
-            sessionsPerRecurrency,
-            serviceName: service,
-            specialityName: speciality,
-            forWhom: user?.forWhom,
-            patientAge: user?.patientAge,
-          },
+          apoyo: data,
         },
       });
     },
     onError: (error) => {
       console.error('Error adding document: ', error);
+      setNotification({
+        open: true,
+        message: 'Error al publicar, revisa los campos e intentalo nuevamente',
+        severity: 'error',
+      });
       // Handle error (e.g., show an error message)
     },
   });
@@ -79,7 +73,7 @@ export const PublicarApoyoController = () => {
         serviceName: service,
         specialityName: speciality,
         forWhom: user.forWhom,
-        patientAge: user.patientAge!,
+        patientAge: patientAge!,
       });
     }
   };
@@ -117,6 +111,8 @@ export const PublicarApoyoController = () => {
     setDescription,
     patientName,
     setPatientName,
+    patientAge,
+    setPatientAge,
     address,
     setAddress,
     handleSubmit,

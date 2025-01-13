@@ -24,7 +24,11 @@ export const addSupportRequest = async (data: Apoyo) => {
       ...data,
       timestamp: Timestamp.now(),
     });
-    return newSupport.id;
+    const id = newSupport.id;
+    return {
+      id,
+      ...data,
+    };
   } catch (error) {
     console.error('Error adding document: ', error);
     throw error;

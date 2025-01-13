@@ -31,6 +31,7 @@ import { ScheduleModal } from '@/components/Schedule/ScheduleModal';
 import { ServiciosCarousel } from './ServiciosCarousel';
 import { DateCalendar } from '@mui/x-date-pickers';
 import { ScheduleController } from '@/components/Schedule/ScheduleController';
+import { SelectSessionTime } from '@/components/Schedule/SelectSessionTime';
 
 export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -82,7 +83,17 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     profileImageUrl,
   } = prestador;
 
-  const { shouldDisableDay, renderAvailableDay } = ScheduleController();
+  const {
+    shouldDisableDay,
+    renderAvailableDay,
+    selectedTimes,
+    selectedDates,
+    availableTimesStep,
+    handleSelectSessionHour,
+    providersAppointments,
+    selectedService,
+    providerAvailability,
+  } = ScheduleController();
 
   return (
     <Wrapper>
@@ -171,7 +182,18 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
           slots={{ day: renderAvailableDay }}
           readOnly
         />
-        {/* <ListAvailableDays disponibilidad={availability ?? []} /> */}
+        Object?.keys(selectedTimes || {})?.length !== selectedDates?.length && (
+        <SelectSessionTime
+          selectedTimes={selectedTimes}
+          availableTimesStep={availableTimesStep}
+          selectedDates={selectedDates}
+          handleSelectSessionHour={handleSelectSessionHour}
+          // shouldDisableTime={shouldDisableTime}
+          providerAppointments={providersAppointments}
+          serviceDuration={selectedService?.duration}
+          providerAvailability={providerAvailability}
+        />
+        ){/* <ListAvailableDays disponibilidad={availability ?? []} /> */}
       </SectionContainer>
 
       <ScheduleModal handleClose={handleCloseScheduleModal} open={scheduleModalOpen} />

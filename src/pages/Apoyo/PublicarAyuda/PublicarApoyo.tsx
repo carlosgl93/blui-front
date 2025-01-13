@@ -51,6 +51,10 @@ export const PublicarApoyo = () => {
     selectedDates,
     startingDateAndTime,
     setStartingDateAndTime,
+    patientName,
+    setPatientName,
+    patientAge,
+    setPatientAge,
   } = PublicarApoyoController();
 
   const {
@@ -135,12 +139,8 @@ export const PublicarApoyo = () => {
                 placeholder={user?.patientName || 'Nombre del paciente'}
                 fullWidth
                 margin="normal"
-                value={user?.patientName}
-                onChange={(e) =>
-                  setUserState((prev) => {
-                    return { ...prev, patientName: e.target.value } as User;
-                  })
-                }
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
                 required
               />
               <TextField
@@ -149,12 +149,8 @@ export const PublicarApoyo = () => {
                 placeholder={user?.patientAge?.toString()}
                 fullWidth
                 margin="normal"
-                value={user?.patientAge}
-                onChange={(e) =>
-                  setUserState((prev) => {
-                    return { ...prev, patientAge: Number(e.target.value) } as User;
-                  })
-                }
+                value={patientAge}
+                onChange={(e) => setPatientAge(parseInt(e.target.value, 10))}
                 required
               />
               <TextField
@@ -336,7 +332,7 @@ export const PublicarApoyo = () => {
                   }}
                 >
                   <DateTimePicker
-                    format="dd/MM/yy HH:mm"
+                    format="DD/MM/YY HH:mm"
                     localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
                     minutesStep={30}
                     showDaysOutsideCurrentMonth
