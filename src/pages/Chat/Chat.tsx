@@ -34,13 +34,13 @@ export const UserChat = () => {
 
   const {
     message,
-    fetchMessages,
     messagesLoading,
     lastMessageRef,
     savingMessageLoading,
     setMessage,
     handleSaveMessage,
     sendWithEnter,
+    realTimeMessages,
   } = useChat(
     userIdFromLocation ? userIdFromLocation : user?.id ?? '',
     providerIdFromLocation ? providerIdFromLocation : prestador?.id ?? '',
@@ -59,7 +59,7 @@ export const UserChat = () => {
       {messagesLoading ? (
         <Loading />
       ) : (
-        fetchMessages?.messages.map((m, index: number) => {
+        realTimeMessages?.messages.map((m, index: number) => {
           const isLastMessage = index === conversation.messages.length - 1;
           if (m?.sentBy === 'provider') {
             return (
@@ -103,7 +103,6 @@ export const UserChat = () => {
           }
         })
       )}
-
       <StyledChatInputContainer>
         {savingMessageLoading ? (
           <CenteredFlexBox

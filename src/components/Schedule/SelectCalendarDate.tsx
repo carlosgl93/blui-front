@@ -2,6 +2,7 @@ import { Box } from '@mui/system';
 import { DateCalendar, PickersDay, PickersDayProps } from '@mui/x-date-pickers';
 import { StyledLabel } from './StyledScheduleModal';
 import dayjs from 'dayjs';
+import { Text } from '../StyledComponents';
 
 type SelectCalendarDateProps = {
   title?: string;
@@ -10,6 +11,7 @@ type SelectCalendarDateProps = {
   renderAvailableDay?: (props: PickersDayProps<dayjs.Dayjs>) => JSX.Element;
   handleSelectDate: (e: dayjs.Dayjs) => void;
   selectedDates: dayjs.Dayjs[] | null;
+  showInstructions?: boolean;
 };
 
 const CustomDay = (props: PickersDayProps<dayjs.Dayjs> & { selectedDays: dayjs.Dayjs[] }) => {
@@ -26,6 +28,7 @@ export const SelectCalendarDate = ({
   selectedDates,
   title = 'Fecha',
   withMargin = false,
+  showInstructions = false,
 }: SelectCalendarDateProps) => (
   <Box
     sx={{
@@ -36,6 +39,11 @@ export const SelectCalendarDate = ({
     }}
   >
     <StyledLabel>{title}</StyledLabel>
+    {showInstructions && (
+      <Text sx={{ fontSize: '0.75rem' }}>
+        Selecciona una fecha para ver los horarios disponibles
+      </Text>
+    )}
     <DateCalendar
       shouldDisableDate={shouldDisableDay ? shouldDisableDay : () => false}
       disablePast={true}

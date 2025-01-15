@@ -21,7 +21,7 @@ import {
 import { ChatModal } from '@/components/ChatModal';
 import { usePerfilPrestador } from './usePerfilPrestador';
 import PerfilBackButton from './PerfilBackButton';
-import { Box, styled, useTheme } from '@mui/material';
+import { Box, Container, styled, useTheme } from '@mui/material';
 import { Prestador } from '@/store/auth/prestador';
 import { useChat } from '@/hooks';
 import { useParams } from 'react-router-dom';
@@ -29,9 +29,9 @@ import { useAuthNew } from '@/hooks/useAuthNew';
 import Loading from '@/components/Loading';
 import { ScheduleModal } from '@/components/Schedule/ScheduleModal';
 import { ServiciosCarousel } from './ServiciosCarousel';
-import { DateCalendar } from '@mui/x-date-pickers';
 import { ScheduleController } from '@/components/Schedule/ScheduleController';
 import { SelectSessionTime } from '@/components/Schedule/SelectSessionTime';
+import { SelectCalendarDate } from '@/components/Schedule/SelectCalendarDate';
 
 export const SectionContainer = styled(Box)(() => ({
   display: 'flex',
@@ -93,6 +93,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
     providersAppointments,
     selectedService,
     providerAvailability,
+    handleSelectDate,
   } = ScheduleController();
 
   return (
@@ -129,13 +130,7 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
               <StyledContactButton onClick={handleContact}>
                 {(messages?.messages ?? []).length > 0 ? 'Ver conversación' : 'Contactar'}
               </StyledContactButton>
-              <ChatModal
-                isLoading={savingMessageLoading}
-                open={open}
-                handleClose={handleClose}
-                message={message}
-                setMessage={setMessage}
-              />
+
               {(createdServicios ?? []).length > 0 ? (
                 <StyledShortListButton
                   startIcon={<EditCalendarOutlinedIcon />}
@@ -176,27 +171,57 @@ export const MobileProfile = ({ prestador }: MobileProfileProps) => {
         >
           Disponibilidad
         </AboutTitle>
-        <DateCalendar
+        <Container
+          sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              md: 'row',
+            },
+            justifyContent: 'space-around',
+          }}
+        >
+          <SelectCalendarDate
+            shouldDisableDay={shouldDisableDay}
+            renderAvailableDay={renderAvailableDay}
+            handleSelectDate={handleSelectDate}
+            selectedDates={selectedDates}
+            showInstructions
+          />
+          {Object?.keys(selectedTimes || {})?.length !== selectedDates?.length &&
+            (selectedDates || [])?.length > 0 && (
+              <SelectSessionTime
+                selectedTimes={selectedTimes}
+                availableTimesStep={availableTimesStep}
+                selectedDates={selectedDates}
+                handleSelectSessionHour={handleSelectSessionHour}
+                // shouldDisableTime={shouldDisableTime}
+                providerAppointments={providersAppointments}
+                serviceDuration={selectedService?.duration}
+                providerAvailability={providerAvailability}
+                showText={false}
+              />
+            )}
+        </Container>
+
+        {/* <DateCalendar
           shouldDisableDate={shouldDisableDay}
           disablePast={true}
           slots={{ day: renderAvailableDay }}
           readOnly
-        />
-        Object?.keys(selectedTimes || {})?.length !== selectedDates?.length && (
-        <SelectSessionTime
-          selectedTimes={selectedTimes}
-          availableTimesStep={availableTimesStep}
-          selectedDates={selectedDates}
-          handleSelectSessionHour={handleSelectSessionHour}
-          // shouldDisableTime={shouldDisableTime}
-          providerAppointments={providersAppointments}
-          serviceDuration={selectedService?.duration}
-          providerAvailability={providerAvailability}
-        />
-        ){/* <ListAvailableDays disponibilidad={availability ?? []} /> */}
+        /> */}
+
+        {/* <ListAvailableDays disponibilidad={availability ?? []} /> */}
       </SectionContainer>
 
       <ScheduleModal handleClose={handleCloseScheduleModal} open={scheduleModalOpen} />
+      <ChatModal
+        isLoading={savingMessageLoading}
+        open={open}
+        handleClose={handleClose}
+        message={message}
+        setMessage={setMessage}
+      />
     </Wrapper>
   );
 };

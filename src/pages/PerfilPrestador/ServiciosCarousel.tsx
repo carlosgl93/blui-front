@@ -1,27 +1,32 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, useMediaQuery } from '@mui/material';
 import { renderDuration } from '@/utils/renderDuration';
 import { Carousel } from 'react-responsive-carousel';
 import { formatCLP } from '@/utils/formatCLP';
 import { Text, Title } from '@/components/StyledComponents';
 import { UserCreatedServicio } from '../ConstruirPerfil/Servicio/types';
+import { mobile, tablet } from '@/theme/breakpoints';
 
 type ServiciosCarouselProps = {
   createdServicios: UserCreatedServicio[] | undefined;
 };
 
 export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) => {
+  const isMobile = useMediaQuery(mobile);
+  const isTablet = useMediaQuery(tablet);
+  const isDesktop = !isMobile && !isTablet;
+
   return (
     <Carousel
       autoPlay
-      centerMode={createdServicios && createdServicios.length > 1 ? true : false}
+      centerMode={true}
       emulateTouch
       showThumbs={false}
-      showIndicators={false}
+      showIndicators={isDesktop ? true : false}
       stopOnHover={true}
       infiniteLoop
       interval={5000}
-      width={'90vw'}
+      width={isMobile ? '50%' : '100%'}
       className="hide-status"
       showArrows={true}
       useKeyboardArrows={true}
@@ -64,7 +69,13 @@ export const ServiciosCarousel = ({ createdServicios }: ServiciosCarouselProps) 
               px: 0,
             }}
           >
-            <Text>{s.description}</Text>
+            <Text
+              sx={{
+                textAlign: 'left',
+              }}
+            >
+              {s.description}
+            </Text>
           </CardContent>
         </Card>
       ))}

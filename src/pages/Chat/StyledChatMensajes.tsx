@@ -2,9 +2,8 @@ import { Text } from '@/components/StyledComponents';
 import { Box, IconButton, TextField, Typography, styled } from '@mui/material';
 
 export const ChatContainer = styled(Box)(() => ({
-  minHeight: '70vh',
-  paddingTop: '1.75rem',
-  paddingBottom: '3.75rem',
+  minHeight: '90vh',
+  padding: '1rem 0',
   marginBottom: '3.75rem',
   msOverflowStyle: 'none',
   scrollbarWidth: 'none',
@@ -29,6 +28,7 @@ export const StyledPrestadorMensajeContainer = styled(Box)(() => ({
   justifyContent: 'center',
   gap: '1rem',
   marginBottom: '0.5rem',
+  margin: '0.5rem',
   maxWidth: '80vw',
   padding: '1rem',
   borderRadius: '1rem',
@@ -55,7 +55,7 @@ export const StyledUsuarioMensajeContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   position: 'relative',
-  left: '40vw',
+  left: '39vw',
   gap: '1rem',
   margin: '0.25rem, 1vw',
   marginBottom: '0.5rem',

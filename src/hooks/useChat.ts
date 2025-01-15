@@ -12,6 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
+import { doc, DocumentData, DocumentReference } from 'firebase/firestore';
+import { db } from '@/firebase';
 
 export const useChat = (userId: string, providerId: string) => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -20,6 +23,23 @@ export const useChat = (userId: string, providerId: string) => {
   const setNotification = useSetRecoilState(notificationState);
   const navigate = useNavigate();
   const client = useQueryClient();
+
+  const messagesRef = doc(db, 'messages', `${userId}${providerId}`);
+
+  console.log({
+    userId,
+    providerId,
+  });
+
+  const [values] = useDocumentData<Conversation>(
+    messagesRef as DocumentReference<Conversation, DocumentData>,
+  );
+
+  useEffect(() => {
+    if (values) {
+      setMessages(values);
+    }
+  }, [values]);
 
   const { mutate: handleSaveMessage, isLoading: savingMessageLoading } = useMutation(sendMessage, {
     onSuccess: async () => {
@@ -130,6 +150,7 @@ export const useChat = (userId: string, providerId: string) => {
     sendFirstMessageLoading,
     messagesLoading,
     lastMessageRef,
+    realTimeMessages: values,
     setMessage,
     handleSendFirstMessage,
     sendWithEnter,

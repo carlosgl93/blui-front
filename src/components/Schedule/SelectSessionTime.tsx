@@ -14,6 +14,7 @@ export const SelectSessionTime = ({
   providerAppointments,
   serviceDuration = 0,
   providerAvailability,
+  showText = true,
 }: // shouldDisableTime,
 {
   selectedTimes: {
@@ -37,6 +38,7 @@ export const SelectSessionTime = ({
   providerAppointments: Appointment[] | undefined;
   serviceDuration: number | undefined;
   providerAvailability: AvailabilityData[] | undefined;
+  showText?: boolean;
 }) => {
   // i think current selected date would be better defined as the date that does not have a time selected yet
   const currentSelectedDate =
@@ -134,13 +136,27 @@ export const SelectSessionTime = ({
       currentSelectedDate?.toString(),
     ],
   );
+
+  // const availableTimes = useMemo(() => {
+  //   const times = [];
+  //   if (currentSelectedDate) {
+  //     for (let i = 0; i < 24 * 60; i += serviceDuration) {
+  //       const time = currentSelectedDate.startOf('day').add(i, 'minutes');
+  //       if (!shouldDisableTime(time)) {
+  //         times.push(time);
+  //       }
+  //     }
+  //   }
+  //   return times;
+  // }, [currentSelectedDate, availableTimesStep, shouldDisableTime]);
   return (
     <Box
       id="select-session-time"
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <StyledLabel>Horas disponibles </StyledLabel>
-      <Text>Selecciona una hora para el día: </Text>
+      <StyledLabel>Horas disponibles</StyledLabel>
+      {showText && <Text>Selecciona una hora para el día: </Text>}
+
       <strong>{currentSelectedDate?.format('DD/MM/YYYY')}</strong>
       <StyledDateTimePicker
         sx={{ mt: '1rem' }}

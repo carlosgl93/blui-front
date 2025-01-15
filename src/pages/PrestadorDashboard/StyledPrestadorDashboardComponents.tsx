@@ -21,7 +21,7 @@ export const Container = styled(Box)(() => ({
   backgroundColor: 'white',
   boxSizing: 'border-box',
   borderRadius: '.5rem',
-  width: '100%',
+  width: 'fit-content',
   height: '100%',
 }));
 

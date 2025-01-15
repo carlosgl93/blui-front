@@ -1,13 +1,15 @@
 import { Box, Button, Modal, TextareaAutosize, styled } from '@mui/material';
 
 export const StyledModal = styled(Modal)(() => ({
+  // position: 'absolute',
+  // top: '50%',
+  // left: '50%',
   display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  my: '5rem',
+  // m: '5rem',
 }));
 
 export const ModalContent = styled(Box)(({ theme }) => ({
+  m: '1rem',
   backgroundColor: theme.palette.background.paper,
   border: '2px solid #000',
   boxShadow: theme.shadows[5],
