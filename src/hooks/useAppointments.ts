@@ -48,7 +48,7 @@ export const useAppointments = (appointmentsIds?: string) => {
         setPrestadorAppointments(data);
       },
       onError: () => {
-        console.log('ERROR');
+        console.log('ERROR fetching provider appointments');
         setNotification({
           open: true,
           message: 'Hubo un error cargando tus sesiones, intentalo nuevamente',
@@ -63,11 +63,13 @@ export const useAppointments = (appointmentsIds?: string) => {
     isLoading: userAppointmentsLoading,
     error: userAppointmentsError,
   } = useQuery(['userAppointments', userId], () => getUserAppointments(userId ?? ''), {
-    enabled: !!userId,
+    enabled: !!userId && user.role === 'user',
     onSuccess: (data) => {
       setUserAppointments(data);
     },
     onError: () => {
+      console.log('ERROR fetching user appointments');
+
       setNotification({
         open: true,
         message: 'Hubo un error cargando tus sesiones, intentalo nuevamente',

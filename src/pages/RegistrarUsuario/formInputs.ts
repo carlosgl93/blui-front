@@ -1,4 +1,4 @@
-export const formInputs = [
+export const selfPatient = [
   {
     inputName: 'nombre',
     placeholder: 'Ingresa tu nombre',
@@ -12,18 +12,11 @@ export const formInputs = [
     type: 'text',
   },
   {
-    inputName: 'nombrePaciente',
-    placeholder: 'Nombre del paciente',
-    label: 'Nombre del paciente (*)',
-    type: 'text',
-  },
-  {
     inputName: 'rut',
     placeholder: 'Ej: 18445810-X',
-    label: 'Rut Paciente (*): ',
+    label: 'Rut (*): ',
     type: 'text',
   },
-
   {
     inputName: 'correo',
     placeholder: 'Ingresa tu email',
@@ -41,5 +34,27 @@ export const formInputs = [
     placeholder: 'Confirme su contraseña',
     label: 'Confirma tu contraseña (*)',
     type: 'password',
+  },
+];
+
+export const withPatientInputs = [
+  ...selfPatient,
+  {
+    inputName: 'patientName',
+    placeholder: 'Nombre del paciente',
+    label: 'Nombre del paciente (*)',
+    type: 'text',
+  },
+  {
+    inputName: 'patientAge',
+    placeholder: 'Edad del paciente',
+    label: 'Edad del paciente (*)',
+    type: 'number',
+  },
+  {
+    inputName: 'patientRut',
+    placeholder: 'Ej: 18445810-X',
+    label: 'Rut Paciente (*): ',
+    type: 'text',
   },
 ];

@@ -6,6 +6,7 @@
  */
 
 import { auth, db } from '@/firebase';
+import { Patient } from '@/pages/RegistrarUsuario/RegistrarUsuarioController';
 import { User } from '@/store/auth/user';
 import { Comuna, Especialidad, Servicio } from '@/types';
 import { FirebaseError } from 'firebase/app';
@@ -26,6 +27,7 @@ export type CreateUserParams = {
   correo: string;
   contrasena: string;
   acceptedTerms: boolean;
+  pacientes?: Patient[];
   servicio: Pick<Servicio, 'serviceName'>;
   especialidad?: Pick<Especialidad, 'especialidadName'>;
 };
@@ -46,6 +48,7 @@ export async function createUser({
   acceptedTerms,
   servicio,
   especialidad,
+  pacientes,
 }: CreateUserParams) {
   const userRutQuery = query(
     collection(db, 'users'),
@@ -87,6 +90,7 @@ export async function createUser({
       acceptedTerms,
       service: servicio.serviceName,
       speciality: especialidad?.especialidadName || '',
+      pacientes,
     };
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);

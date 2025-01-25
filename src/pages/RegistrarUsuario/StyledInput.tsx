@@ -16,11 +16,7 @@ export const StyledInput = ({ input, handleChange, value }: StyledInputProps) =>
   return (
     <TextField
       sx={{
-        m: {
-          xs: 2,
-          sm: 5,
-          md: 3,
-        },
+        m: 2,
       }}
       label={label}
       name={inputName}

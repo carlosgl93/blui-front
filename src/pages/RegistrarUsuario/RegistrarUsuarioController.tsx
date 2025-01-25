@@ -7,6 +7,14 @@ import { Comuna } from '@/types';
 import { useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 
+export type Patient = {
+  name: string;
+  age: number;
+  rut: string;
+  service?: string;
+  speciality?: string;
+};
+
 type FormState = {
   error: string;
   nombre: string;
@@ -18,7 +26,10 @@ type FormState = {
   contrasena: string;
   confirmarContrasena: string;
   acceptedTerms: boolean;
-  [key: string]: string | null | boolean | Comuna;
+  patientName?: string;
+  patientAge?: string;
+  patientRut?: string;
+  [key: string]: string | null | boolean | Comuna | undefined;
 };
 
 type FormActions =
@@ -88,12 +99,14 @@ const RegistrarUsuarioController = () => {
     nombre,
     apellido,
     paraQuien,
-    nombrePaciente,
     rut,
     correo,
     contrasena,
     confirmarContrasena,
     acceptedTerms,
+    patientName,
+    patientAge,
+    patientRut,
   } = state;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -139,12 +152,11 @@ const RegistrarUsuarioController = () => {
       });
       navigate('/recibe-apoyo');
     } else {
-      const newUser: CreateUserParams = {
+      let newUser: CreateUserParams = {
         nombre,
         apellido,
         contrasena,
         paraQuien: paraQuien,
-        nombrePaciente: nombrePaciente ? nombrePaciente : paraQuien === 'paciente' ? nombre : '',
         rut,
         comuna: comuna as Comuna,
         correo,
@@ -152,7 +164,22 @@ const RegistrarUsuarioController = () => {
         servicio,
         especialidad: especialidad?.especialidadName ? especialidad : undefined,
       };
-
+      if (paraQuien === 'tercero' && (!patientName || !patientAge || !patientRut)) {
+        throw new Error('Faltan datos del paciente');
+      } else {
+        newUser = {
+          ...newUser,
+          pacientes: [
+            {
+              name: patientName!,
+              age: Number(patientAge!),
+              rut: patientRut!,
+              service: servicio.serviceName,
+              speciality: especialidad?.especialidadName,
+            },
+          ],
+        };
+      }
       try {
         createUser(newUser);
       } catch (error) {

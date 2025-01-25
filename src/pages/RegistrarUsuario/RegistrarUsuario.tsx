@@ -3,19 +3,16 @@ import { FlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
 import { Box, Button, Checkbox, Typography, useTheme } from '@mui/material';
 import { Text, TextContainer, Title } from '@/components/StyledComponents';
 import RegistrarUsuarioController from './RegistrarUsuarioController';
-import { formInputs } from './formInputs';
+import { selfPatient, withPatientInputs } from './formInputs';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import Loading from '@/components/Loading';
 import { useAuthNew } from '@/hooks/useAuthNew';
 import { Link } from 'react-router-dom';
-import { useComunas } from '@/hooks';
-import SearchBar from '../RecibeApoyo/SearchBar';
 import { StyledInput } from './StyledInput';
 
 function RegistrarUsuario() {
   const [{ forWhom }] = useRecibeApoyo();
   const { state, handleChange, handleSubmit, handleAcceptTerms } = RegistrarUsuarioController();
-  const { selectedComunas } = useComunas();
   const theme = useTheme();
 
   const { createUserLoading, createUserError } = useAuthNew();
@@ -32,7 +29,9 @@ function RegistrarUsuario() {
     state.rut === '' ||
     !state.acceptedTerms ||
     createUserLoading ||
-    !!createUserError;
+    !!createUserError ||
+    (forWhom === 'tercero' &&
+      (state.patientName === '' || state.patientAge === '' || state.patientRut === ''));
 
   return (
     <>
@@ -85,36 +84,27 @@ function RegistrarUsuario() {
               </Typography>
             </TextContainer>
           )}
-          {formInputs.map((input, i) => {
-            if (!selectedComunas.length && input.inputName === 'comuna') {
-              return <SearchBar key={i} />;
-            } else if (forWhom === 'tercero' && input.inputName === 'nombrePaciente') {
-              return (
-                <StyledInput
-                  key={i}
-                  input={{
-                    label: 'Nombre del paciente',
-                    inputName: 'nombrePaciente',
-                    placeholder: 'Nombre del paciente',
-                    type: 'text',
-                  }}
-                  value={state.nombrePaciente}
-                  handleChange={handleChange}
-                />
-              );
-            } else if (forWhom === 'paciente' && input.inputName === 'nombrePaciente') {
-              return null;
-            } else {
-              return (
-                <StyledInput
-                  key={i}
-                  input={input}
-                  handleChange={handleChange}
-                  value={state[input?.inputName] as string}
-                />
-              );
-            }
-          })}
+          {forWhom === 'paciente'
+            ? selfPatient.map((input, i) => {
+                return (
+                  <StyledInput
+                    key={i}
+                    input={input}
+                    handleChange={handleChange}
+                    value={state[input?.inputName] as string}
+                  />
+                );
+              })
+            : withPatientInputs.map((input, i) => {
+                return (
+                  <StyledInput
+                    key={i}
+                    input={input}
+                    handleChange={handleChange}
+                    value={state[input?.inputName] as string}
+                  />
+                );
+              })}
           {/* TODO: ADD CAPTCHA */}
           <FlexBox
             sx={{
@@ -184,3 +174,47 @@ function RegistrarUsuario() {
 }
 
 export default RegistrarUsuario;
+// if (forWhom === 'tercero') {
+//               return (
+//                 <>
+//                   <Button>Crear paciente</Button>
+//                   {creatingNewPatient && (
+//                     <>
+//                       <StyledInput
+//                         input={{
+//                           label: 'Nombre del paciente',
+//                           inputName: 'name',
+//                           placeholder: 'Nombre del paciente',
+//                           type: 'text',
+//                         }}
+//                         value={newPatient.name}
+//                         handleChange={handleChangePatient}
+//                       />
+//                       <StyledInput
+//                         input={{
+//                           label: 'Edad del paciente',
+//                           inputName: 'age',
+//                           placeholder: 'Edad del paciente',
+//                           type: 'number',
+//                         }}
+//                         value={newPatient.age.toString()}
+//                         handleChange={handleChangePatient}
+//                       />
+//                       <StyledInput
+//                         input={{
+//                           label: 'Rut del paciente',
+//                           inputName: 'rut',
+//                           placeholder: 'Rut del paciente',
+//                           type: 'number',
+//                         }}
+//                         value={newPatient.rut.toString()}
+//                         handleChange={handleChangePatient}
+//                       />
+//                       <Box>
+//                         <em>Despues podrás agregar más pacientes.</em>
+//                       </Box>
+//                     </>
+//                   )}
+//                 </>
+//               );
+//             } else {
