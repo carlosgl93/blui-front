@@ -20,6 +20,22 @@ export const MobileResultList = () => {
       >
         {infinitePrestadores?.length && infinitePrestadores?.length > 0 ? (
           infinitePrestadores?.map((page, pageIndex) => {
+            if (page.prestadores.length === 0) {
+              return (
+                <Box
+                  key={pageIndex}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '60vh',
+                    px: '2rem',
+                  }}
+                >
+                  <Text>Aún no hay prestadores para esta combinacion de filtros</Text>
+                </Box>
+              );
+            }
             return (
               <div key={pageIndex}>
                 {page.prestadores.map((prestador) => {

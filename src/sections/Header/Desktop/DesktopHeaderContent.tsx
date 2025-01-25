@@ -21,6 +21,7 @@ import BackButton from '@/components/BackButton';
 import { ChatTitle } from '@/pages/Chat/StyledChatMensajes';
 import { useRecoilValue } from 'recoil';
 import { chatState } from '@/store/chat/chatStore';
+import { styled } from '@mui/system';
 
 const DesktopHeaderContent = () => {
   const { user, prestador } = useAuthNew();
@@ -132,7 +133,13 @@ const DesktopHeaderContent = () => {
                         </ListItemIcon>
                       )}
 
-                      <ListItemText>{title}</ListItemText>
+                      <ListItemText
+                        sx={{
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {title}
+                      </ListItemText>
                     </ListItemButton>
                   </ListItem>
                 </div>
@@ -194,6 +201,10 @@ const BurgerIconWithLogo = ({ user, prestador, toggle }: BurgerIconWithLogoProps
   );
 };
 
+const StyledListItem = styled(ListItemText)({
+  cursor: 'pointer',
+});
+
 const AdminHeaderContent = () => {
   const { logout } = useAuthNew();
   const theme = useTheme<Theme>();
@@ -204,19 +215,19 @@ const AdminHeaderContent = () => {
         <ListItemIcon>
           <HomeOutlinedIcon />
         </ListItemIcon>
-        <ListItemText>Backoffice</ListItemText>
+        <StyledListItem>Backoffice</StyledListItem>
       </ListItem>
       <ListItem sx={{ mx: 'auto' }} onClick={() => navigate('/backoffice/prestadores')}>
         <ListItemIcon>
           <PeopleOutlineOutlinedIcon />
         </ListItemIcon>
-        <ListItemText>Prestadores</ListItemText>
+        <StyledListItem>Prestadores</StyledListItem>
       </ListItem>
       <ListItem sx={{ mx: 'auto' }} onClick={() => navigate('/backoffice/pagos')}>
         <ListItemIcon>
           <PaymentOutlinedIcon />
         </ListItemIcon>
-        <ListItemText>Pagos</ListItemText>
+        <StyledListItem>Pagos</StyledListItem>
       </ListItem>
       <ListItem sx={{ mx: 'auto' }}>
         <Button
