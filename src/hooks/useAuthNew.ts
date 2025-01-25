@@ -84,6 +84,7 @@ export const useAuthNew = () => {
           admin.id = authUser.uid;
           setUserState({ ...admin, isLoggedIn: true, role: 'admin', token: authUser.refreshToken });
           queryClient.setQueryData(['user', correo], admin);
+          navigate('/backoffice');
         } else {
           console.error('No user or provider found with the given email.');
         }
@@ -283,7 +284,9 @@ export const useAuthNew = () => {
             isLoggedIn: true,
             role: data.role,
           } as User);
-          navigate(`/backoffice`);
+          redirectAfterLogin
+            ? navigate(determineRedirectAfterLogin(redirectAfterLogin, 'admin'))
+            : navigate(`/backoffice`);
         }
       },
     },

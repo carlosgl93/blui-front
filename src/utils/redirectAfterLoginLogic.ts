@@ -13,7 +13,10 @@ type RedirectMap = {
   };
 };
 
-export function determineRedirectAfterLogin(redirectURI: string, userType: 'user' | 'provider') {
+export function determineRedirectAfterLogin(
+  redirectURI: string,
+  userType: 'user' | 'provider' | 'admin',
+) {
   const redirectMap: RedirectMap = {
     '/chat': {
       user: '/usuario-inbox',
