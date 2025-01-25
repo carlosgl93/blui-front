@@ -4,15 +4,13 @@ import Loading from '@/components/Loading';
 import MobileResults from './MobileResults';
 import { useMediaQuery } from '@mui/material';
 import DesktopResults from './DesktopResults';
-import { tablet } from '../../theme/breakpoints';
+import { mobile } from '../../theme/breakpoints';
 import { ResultadosHeader } from './ResultadosHeader';
 import { useGetPrestadores } from '@/hooks/useGetPrestadores';
-import { CenteredFlexBox } from '@/components/styled';
-import { Text } from '@/components/StyledComponents';
 
 function Resultados() {
-  const { isLoading, hasNextPage } = useGetPrestadores();
-  const isTablet = useMediaQuery(tablet);
+  const { isLoading } = useGetPrestadores();
+  const isMobile = useMediaQuery(mobile);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -20,24 +18,7 @@ function Resultados() {
 
       <ResultadosHeader />
 
-      {isLoading ? (
-        <Loading />
-      ) : isTablet ? (
-        // <MobileResults filteredPrestadores={data} />
-        <MobileResults />
-      ) : (
-        // <DesktopResults filteredPrestadores={data} />
-        <DesktopResults />
-      )}
-      {!hasNextPage && (
-        <CenteredFlexBox
-          sx={{
-            m: '1rem 1.4rem',
-          }}
-        >
-          <Text>No hay más registros para mostrar para esta combinación de filtros.</Text>
-        </CenteredFlexBox>
-      )}
+      {isLoading ? <Loading /> : isMobile ? <MobileResults /> : <DesktopResults />}
     </Suspense>
   );
 }

@@ -26,7 +26,7 @@ export const UsuarioDashboard = () => {
       }}
     >
       <DashboardTile
-        goToPath="/actualizar-perfil"
+        goToPath="/perfil-usuario"
         title="Actualizar Perfil"
         subTitle="Actualiza tu información personal y de contacto"
         isMobile={isMobile}

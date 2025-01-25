@@ -10,22 +10,7 @@ const DesktopResultList = () => {
 
   if (isLoading || infinitePrestadoresIsLoading) return <Loading />;
 
-  if (infinitePrestadores?.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '90vh',
-          px: '2rem',
-        }}
-      >
-        {/* <Text>Conoces a alguien para esta comuna y servicio? Invitalo a Blui!</Text> */}
-        <Text>Aún no hay prestadores para estos filtros!</Text>
-      </Box>
-    );
-  }
+  console.log(infinitePrestadores);
 
   return (
     <>
@@ -36,6 +21,22 @@ const DesktopResultList = () => {
         }}
       >
         {infinitePrestadores?.map((page, pageIndex) => {
+          if (page.prestadores.length === 0) {
+            return (
+              <Box
+                key={pageIndex}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '60vh',
+                  px: '2rem',
+                }}
+              >
+                <Text>Aún no hay prestadores para esta combinacion de filtros</Text>
+              </Box>
+            );
+          }
           return (
             <div key={pageIndex}>
               {page.prestadores.map((prestador) => {
