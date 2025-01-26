@@ -9,7 +9,6 @@ import {
   Select,
   Chip,
   Input,
-  Tooltip,
 } from '@mui/material';
 import {
   BackButtonContainer,
@@ -162,9 +161,7 @@ export const PublicarApoyo = () => {
                         ))}
                       </Select>
                     </FormControl>
-                    <Tooltip title="Crear un nuevo paciente">
-                      <AddButton onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)} />
-                    </Tooltip>
+                    <AddButton onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)} />
                   </FlexBox>
                 )}
               {isCreatingNewPatient && user?.forWhom === 'tercero' && (
