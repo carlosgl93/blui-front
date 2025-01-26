@@ -1,13 +1,15 @@
 import { useAuthNew, useComunas } from '@/hooks';
 import { useCallback, useState } from 'react';
 import { useMutation } from 'react-query';
-import { addSupportRequest } from '@/api/supportRequests';
+import { addSupportRequest, Apoyo } from '@/api/supportRequests';
 import { useSetRecoilState } from 'recoil';
 import { notificationState } from '@/store/snackbar';
 import { useServicios } from '@/hooks/useServicios';
 import { useNavigate } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 import { Recurrency } from '@/utils/getRecurrencyText';
+import { Patient } from '@/pages/RegistrarUsuario/RegistrarUsuarioController';
+import { SelectChangeEvent } from '@mui/material';
 
 export const PublicarApoyoController = () => {
   const navigate = useNavigate();
@@ -22,11 +24,21 @@ export const PublicarApoyoController = () => {
   const setNotification = useSetRecoilState(notificationState);
   const [speciality, setSpeciality] = useState(user?.speciality || '');
   const [sessionsPerRecurrency, setSessionsPerRecurrency] = useState('1');
-  const [patientName, setPatientName] = useState(user?.patientName || '');
-  const [patientAge, setPatientAge] = useState(user?.patientAge || 0);
+  const [patientName, setPatientName] = useState('');
+  const [patientAge, setPatientAge] = useState(0);
+  const [patientRut, setPatientRut] = useState('');
+
   const [selectedDates, setSelectedDates] = useState<Dayjs[]>([]);
   const [totalHours, setTotalHours] = useState('1');
   const [startingDateAndTime, setStartingDateAndTime] = useState<Dayjs>();
+  const [selectedPatient, setSelectedPatient] = useState<Patient>(
+    user?.pacientes && user.pacientes.length > 0 ? user.pacientes[0] : ({} as Patient),
+  );
+  const [isCreatingNewPatient, setIsCreatingNewPatient] = useState(false);
+
+  const handleChangeSelectedPatient = (e: SelectChangeEvent<string>) => {
+    setSelectedPatient(user?.pacientes?.find((p) => p.rut === e.target.value) || ({} as Patient));
+  };
 
   const {
     mutate: mutateAddSupportRequest,
@@ -40,6 +52,17 @@ export const PublicarApoyoController = () => {
         severity: 'success',
       });
       console.log('data', data);
+      const newPatient: Patient = {
+        name: data.patientName,
+        age: data.patientAge,
+        rut: data.patientRut,
+        service: data.serviceName,
+        speciality: data.specialityName,
+      };
+      setUserState((prev) => ({
+        ...prev!,
+        pacientes: [...(prev?.pacientes || []), newPatient],
+      }));
       navigate(`/ver-apoyo/${data.id}`, {
         replace: true,
         state: {
@@ -60,21 +83,39 @@ export const PublicarApoyoController = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (user) {
-      mutateAddSupportRequest({
-        title,
-        userId: user.id,
-        description,
-        patientName,
-        address,
-        comunasIds: selectedComunas.map((comuna) => comuna.id),
-        recurrency,
-        sessionsPerRecurrency,
-        serviceName: service,
-        specialityName: speciality,
-        forWhom: user.forWhom,
-        patientAge: patientAge!,
+    if (!user) {
+      setNotification({
+        open: true,
+        message: 'Error al publicar, al parecer debes iniciar sesion nuevamente',
+        severity: 'error',
       });
+      throw new Error('User is not defined');
+    }
+    const newApoyo: Apoyo = {
+      title,
+      userId: user.id!,
+      description,
+      address,
+      comunasIds: selectedComunas.map((comuna) => comuna.id),
+      recurrency,
+      sessionsPerRecurrency,
+      serviceName: service,
+      specialityName: speciality,
+      forWhom: user.forWhom!,
+      patientName: selectedPatient.name,
+      patientAge: selectedPatient.age,
+      patientRut: selectedPatient.rut,
+      withNewPatient: isCreatingNewPatient,
+    };
+    if (isCreatingNewPatient) {
+      newApoyo.patientName = patientName;
+      newApoyo.patientAge = patientAge;
+      newApoyo.patientRut = patientRut;
+      newApoyo.withNewPatient = isCreatingNewPatient;
+    }
+
+    if (user) {
+      mutateAddSupportRequest(newApoyo);
     }
   };
 
@@ -113,6 +154,8 @@ export const PublicarApoyoController = () => {
     setPatientName,
     patientAge,
     setPatientAge,
+    patientRut,
+    setPatientRut,
     address,
     setAddress,
     handleSubmit,
@@ -134,5 +177,9 @@ export const PublicarApoyoController = () => {
     setTotalHours,
     startingDateAndTime,
     setStartingDateAndTime,
+    selectedPatient,
+    handleChangeSelectedPatient,
+    isCreatingNewPatient,
+    setIsCreatingNewPatient,
   };
 };

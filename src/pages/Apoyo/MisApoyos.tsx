@@ -9,11 +9,11 @@ import { ContentContainer } from '../ConstruirPerfil/Comunas/StyledCompEditarCom
 import { Section, Text } from '@/components/StyledComponents';
 import Loading from '@/components/Loading';
 import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { CenteredFlexBox } from '@/components/styled';
 import { ApoyoController } from './ApoyoController';
 import React from 'react';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { AddButton } from '@/components';
 
 export const MisApoyos = () => {
   const {
@@ -42,22 +42,7 @@ export const MisApoyos = () => {
       </BackButtonContainer>
       <SectionTitleContainer sx={{ width: '100%', m: '1rem auto', justifyContent: 'space-around' }}>
         <StyledTitle>Mis apoyos</StyledTitle>
-        <IconButton
-          size="large"
-          onClick={handleCreateApoyo}
-          sx={{
-            background: 'white',
-            padding: '0.5rem',
-          }}
-        >
-          <AddOutlinedIcon
-            sx={{
-              fontSize: 'inherit',
-              color: 'primary.main',
-              borderRadius: '50%',
-            }}
-          />
-        </IconButton>
+        <AddButton onClick={handleCreateApoyo} />
       </SectionTitleContainer>
       {isSupportRequestsLoading ? (
         <Loading />
