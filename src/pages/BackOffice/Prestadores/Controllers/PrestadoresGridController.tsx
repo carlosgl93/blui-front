@@ -74,7 +74,6 @@ export const PrestadoresGridController = () => {
       {
         field: 'especialidad',
         valueGetter: (_value, row) => {
-          console.log(row);
           return row?.especialidad;
         },
         headerName: 'Especialidad',

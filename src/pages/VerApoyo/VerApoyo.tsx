@@ -103,7 +103,7 @@ export const VerApoyo = (props: VerApoyoProps) => {
                 >
                   <WhiteText>Publicado por: {firstname ? firstname : email}</WhiteText>
                 </FlexColumn>
-                {customer.patientName && (
+                {apoyo.patientName && (
                   <FlexColumn
                     sx={{
                       justifyContent: 'space-between',

@@ -1,4 +1,4 @@
-import { Fragment, Suspense } from 'react';
+import { lazy, Suspense, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './styles.css';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -6,17 +6,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { esES } from '@mui/x-date-pickers/locales';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import { CircularProgress } from '@mui/material';
 
 import { withErrorHandler } from '@/error-handling';
 import AppErrorBoundaryFallback from '@/error-handling/fallbacks/App';
-import Pages from '@/routes/Pages';
-import Header from '@/sections/Header';
-import HotKeys from '@/sections/HotKeys';
-import SW from '@/sections/SW';
-import Sidebar from '@/sections/Sidebar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { NotificationSnackbar } from './components/Snackbar';
+
+const Loading = lazy(() => import('@/components/Loading'));
+const Pages = lazy(() => import('@/routes/Pages'));
+const Header = lazy(() => import('@/sections/Header'));
+const HotKeys = lazy(() => import('@/sections/HotKeys'));
+const SW = lazy(() => import('@/sections/SW'));
+const Sidebar = lazy(() => import('@/sections/Sidebar'));
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,28 +38,16 @@ function App() {
       >
         <Fragment>
           <CssBaseline />
-          <HotKeys />
-          <SW />
-          <BrowserRouter>
-            <Header />
-            <Sidebar />
-            <Suspense
-              fallback={
-                <CircularProgress
-                  sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    minHeight: '75vh',
-                  }}
-                />
-              }
-            >
+          <Suspense fallback={<Loading />}>
+            <HotKeys />
+            <SW />
+            <BrowserRouter>
+              <Header />
+              <Sidebar />
               <Pages />
-            </Suspense>
-            <NotificationSnackbar />
-          </BrowserRouter>
+              <NotificationSnackbar />
+            </BrowserRouter>
+          </Suspense>
         </Fragment>
       </LocalizationProvider>
     </QueryClientProvider>

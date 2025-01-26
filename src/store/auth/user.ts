@@ -1,3 +1,4 @@
+import { Patient } from '@/pages/RegistrarUsuario/RegistrarUsuarioController';
 import { Comuna } from '@/types';
 import { atom } from 'recoil';
 
@@ -23,6 +24,7 @@ export interface User {
   profileImageUrl?: string;
   age?: number;
   patientAge?: number;
+  pacientes?: Patient[];
 }
 
 export const userState = atom<null | User>({

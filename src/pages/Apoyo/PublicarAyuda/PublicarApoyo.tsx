@@ -29,6 +29,7 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import { esES } from '@mui/x-date-pickers/locales';
 import { SelectCalendarDate } from '@/components/Schedule/SelectCalendarDate';
 import { Recurrency } from '@/utils/getRecurrencyText';
+import { AddButton, RemoveButton } from '@/components';
 
 export const PublicarApoyo = () => {
   const {
@@ -55,6 +56,12 @@ export const PublicarApoyo = () => {
     setPatientName,
     patientAge,
     setPatientAge,
+    patientRut,
+    setPatientRut,
+    selectedPatient,
+    handleChangeSelectedPatient,
+    isCreatingNewPatient,
+    setIsCreatingNewPatient,
   } = PublicarApoyoController();
 
   const {
@@ -134,25 +141,68 @@ export const PublicarApoyo = () => {
                   ))}
                 </Select>
               </FormControl>
-              <TextField
-                label="Nombre del paciente"
-                placeholder={user?.patientName || 'Nombre del paciente'}
-                fullWidth
-                margin="normal"
-                value={patientName}
-                onChange={(e) => setPatientName(e.target.value)}
-                required
-              />
-              <TextField
-                type="number"
-                label="Edad del paciente"
-                placeholder={user?.patientAge?.toString()}
-                fullWidth
-                margin="normal"
-                value={patientAge}
-                onChange={(e) => setPatientAge(parseInt(e.target.value, 10))}
-                required
-              />
+              {user?.forWhom === 'tercero' &&
+                user?.pacientes &&
+                user?.pacientes.length > 0 &&
+                !isCreatingNewPatient && (
+                  <FlexBox>
+                    <FormControl fullWidth margin="normal">
+                      <InputLabel>Selecciona el paciente</InputLabel>
+                      <Select
+                        value={selectedPatient?.rut || user.pacientes[0].rut}
+                        onChange={handleChangeSelectedPatient}
+                        label="Selecciona el paciente"
+                        required
+                      >
+                        {user.pacientes.map((p) => (
+                          <MenuItem key={p.rut} value={p.rut}>
+                            {p.name} - {p.rut}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <AddButton onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)} />
+                  </FlexBox>
+                )}
+              {isCreatingNewPatient && user?.forWhom === 'tercero' && (
+                <>
+                  <RemoveButton
+                    label="Cancelar"
+                    labelPosition="right"
+                    onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)}
+                  />
+                  <TextField
+                    label="Nombre del paciente"
+                    placeholder={'Nombre del paciente'}
+                    fullWidth
+                    margin="normal"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    required
+                  />
+                  <TextField
+                    type="number"
+                    label="Edad del paciente"
+                    placeholder={patientAge?.toString()}
+                    fullWidth
+                    margin="normal"
+                    value={patientAge}
+                    onChange={(e) => setPatientAge(parseInt(e.target.value, 10))}
+                    required
+                  />
+                  <TextField
+                    type="text"
+                    label="Rut del paciente"
+                    placeholder={patientRut.toString()}
+                    fullWidth
+                    margin="normal"
+                    value={patientRut}
+                    onChange={(e) => setPatientRut(e.target.value)}
+                    required
+                  />
+                </>
+              )}
+
               <TextField
                 label="Dirección"
                 placeholder={user?.address || 'Dirección donde quieres recibir apoyo'}
@@ -332,7 +382,7 @@ export const PublicarApoyo = () => {
                   }}
                 >
                   <DateTimePicker
-                    format="DD/MM/YY HH:mm"
+                    format="DD/MM/YYYY HH:mm"
                     localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
                     minutesStep={30}
                     showDaysOutsideCurrentMonth

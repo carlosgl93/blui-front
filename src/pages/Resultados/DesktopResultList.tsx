@@ -10,8 +10,6 @@ const DesktopResultList = () => {
 
   if (isLoading || infinitePrestadoresIsLoading) return <Loading />;
 
-  console.log(infinitePrestadores);
-
   return (
     <>
       <Box
