@@ -51,7 +51,6 @@ export const PublicarApoyoController = () => {
         message: 'Publicación exitosa',
         severity: 'success',
       });
-      console.log('data', data);
       const newPatient: Patient = {
         name: data.patientName,
         age: data.patientAge,
