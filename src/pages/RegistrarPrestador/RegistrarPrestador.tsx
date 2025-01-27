@@ -51,7 +51,7 @@ function RegistrarPrestador() {
               </Typography>
             </TextContainer>
           )}
-          {formInputs.map((input) => {
+          {formInputs.map((input, i) => {
             return (
               <TextField
                 sx={{
@@ -61,7 +61,7 @@ function RegistrarPrestador() {
                     md: 3,
                   },
                 }}
-                key={input.inputName}
+                key={i}
                 label={input.label}
                 name={input.inputName}
                 variant="outlined"
@@ -69,6 +69,7 @@ function RegistrarPrestador() {
                 onChange={handleChange}
                 type={input.type}
                 helperText={input?.helperText ?? ''}
+                value={state[input?.inputName]}
               />
             );
             // }

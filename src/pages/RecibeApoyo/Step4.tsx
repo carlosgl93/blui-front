@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 
 const Step4 = () => {
   const [{ step, servicio }, { decreaseStep, resetServicio }] = useRecibeApoyo();
-
   const router = useNavigate();
 
   const handleNext = () => {

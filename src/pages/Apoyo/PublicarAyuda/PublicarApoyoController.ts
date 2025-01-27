@@ -1,5 +1,5 @@
 import { useAuthNew, useComunas } from '@/hooks';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { addSupportRequest, Apoyo } from '@/api/supportRequests';
 import { useSetRecoilState } from 'recoil';
@@ -142,6 +142,12 @@ export const PublicarApoyoController = () => {
     },
     [recurrency, sessionsPerRecurrency],
   );
+
+  useEffect(() => {
+    if (user?.forWhom === 'tercero' && user.pacientes && user.pacientes.length === 0) {
+      setIsCreatingNewPatient(true);
+    }
+  }, [user?.forWhom]);
 
   return {
     user,

@@ -3,13 +3,16 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import useRecibeApoyo from '@/store/recibeApoyo';
 import { Especialidad } from '@/types/Servicio';
 import { useServicios } from '@/hooks/useServicios';
+import { useNavigate } from 'react-router-dom';
 
 const SpecialityList = () => {
   const [{ servicio, especialidad }, { selectEspecialidad }] = useRecibeApoyo();
-
   const { allServicios } = useServicios();
+  const router = useNavigate();
+
   const handleSelectSpeciality = (speciality: Especialidad) => {
     selectEspecialidad(speciality);
+    router('/registrar-usuario');
   };
 
   const specialities =
