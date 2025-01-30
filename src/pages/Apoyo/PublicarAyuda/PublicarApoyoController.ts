@@ -147,6 +147,9 @@ export const PublicarApoyoController = () => {
     if (user?.forWhom === 'tercero' && user.pacientes && user.pacientes.length === 0) {
       setIsCreatingNewPatient(true);
     }
+    if (user?.forWhom === 'tercero' && !user.pacientes) {
+      setIsCreatingNewPatient(true);
+    }
   }, [user?.forWhom]);
 
   return {

@@ -49,20 +49,6 @@ export async function createUser({
   especialidad,
   pacientes = [],
 }: CreateUserParams) {
-  console.log(
-    'createUser',
-    nombre,
-    apellido,
-    paraQuien,
-    rut,
-    correo,
-    contrasena,
-    comuna,
-    acceptedTerms,
-    servicio,
-    especialidad,
-    pacientes,
-  );
   const userRutQuery = query(
     collection(db, 'users'),
     or(where('rut', '==', rut), where('email', '==', correo)),
@@ -104,7 +90,6 @@ export async function createUser({
       speciality: especialidad?.especialidadName || '',
       pacientes: paraQuien === 'paciente' ? [] : pacientes,
     };
-    console.log('NEW USER', newUser);
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);
   } catch (error) {

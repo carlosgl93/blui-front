@@ -51,7 +51,17 @@ function SW() {
         action: (
           <Button
             onClick={() => {
-              updateServiceWorker(true);
+              updateServiceWorker(false);
+              caches
+                .keys()
+                .then((cacheNames) => {
+                  cacheNames.forEach((cacheName) => {
+                    caches.delete(cacheName);
+                  });
+                })
+                .then(() => {
+                  window.location.reload();
+                });
               setNotification((prev) => ({ ...prev, open: false }));
               close();
             }}

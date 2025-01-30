@@ -166,11 +166,13 @@ export const PublicarApoyo = () => {
                 )}
               {isCreatingNewPatient && user?.forWhom === 'tercero' && (
                 <>
-                  <RemoveButton
-                    label="Cancelar"
-                    labelPosition="right"
-                    onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)}
-                  />
+                  {!user.pacientes || user.pacientes.length === 0 ? null : (
+                    <RemoveButton
+                      label="Cancelar"
+                      labelPosition="right"
+                      onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)}
+                    />
+                  )}
                   <TextField
                     label="Nombre del paciente"
                     placeholder={'Nombre del paciente'}
