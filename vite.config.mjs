@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 import manifest from './manifest.json';
+import hash from 'rollup-plugin-hash';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,6 +21,14 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
       },
     }),
+    {
+      ...hash({
+        dest: 'dist', // Output directory
+        manifest: true, // Generate a manifest file
+        replace: true, // Replace original files with hashed versions
+      }),
+      apply: 'build', // Apply only during build
+    },
   ],
   resolve: {
     alias: {

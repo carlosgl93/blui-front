@@ -40,7 +40,6 @@ export async function createUser({
   nombre,
   apellido,
   paraQuien,
-  nombrePaciente,
   rut,
   correo,
   contrasena,
@@ -48,7 +47,7 @@ export async function createUser({
   acceptedTerms,
   servicio,
   especialidad,
-  pacientes,
+  pacientes = [],
 }: CreateUserParams) {
   const userRutQuery = query(
     collection(db, 'users'),
@@ -83,14 +82,13 @@ export async function createUser({
       firstname: nombre,
       lastname: apellido,
       forWhom: paraQuien,
-      patientName: nombrePaciente ?? '',
       rut,
       gender: '',
       comuna: comuna,
       acceptedTerms,
       service: servicio.serviceName,
       speciality: especialidad?.especialidadName || '',
-      pacientes,
+      pacientes: paraQuien === 'paciente' ? [] : pacientes,
     };
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);

@@ -154,9 +154,9 @@ export const PublicarApoyo = () => {
                         label="Selecciona el paciente"
                         required
                       >
-                        {user.pacientes.map((p) => (
-                          <MenuItem key={p.rut} value={p.rut}>
-                            {p.name} - {p.rut}
+                        {user.pacientes.map(({ name, rut }) => (
+                          <MenuItem key={rut} value={rut}>
+                            {name} - {rut}
                           </MenuItem>
                         ))}
                       </Select>
@@ -166,11 +166,13 @@ export const PublicarApoyo = () => {
                 )}
               {isCreatingNewPatient && user?.forWhom === 'tercero' && (
                 <>
-                  <RemoveButton
-                    label="Cancelar"
-                    labelPosition="right"
-                    onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)}
-                  />
+                  {!user.pacientes || user.pacientes.length === 0 ? null : (
+                    <RemoveButton
+                      label="Cancelar"
+                      labelPosition="right"
+                      onClick={() => setIsCreatingNewPatient(!isCreatingNewPatient)}
+                    />
+                  )}
                   <TextField
                     label="Nombre del paciente"
                     placeholder={'Nombre del paciente'}
@@ -202,7 +204,6 @@ export const PublicarApoyo = () => {
                   />
                 </>
               )}
-
               <TextField
                 label="Dirección"
                 placeholder={user?.address || 'Dirección donde quieres recibir apoyo'}
@@ -344,7 +345,6 @@ export const PublicarApoyo = () => {
                   />
                 </FormControl>
               )}
-
               <FormControl
                 fullWidth
                 sx={{
@@ -371,7 +371,6 @@ export const PublicarApoyo = () => {
                   }}
                 />
               </FormControl>
-
               {recurrency === 'one-off' ? (
                 <FormControl
                   fullWidth
@@ -416,7 +415,6 @@ export const PublicarApoyo = () => {
                 //   showDaysOutsideCurrentMonth
                 // />
               )}
-
               <TextField
                 label="Descripción del apoyo"
                 placeholder="Describe las actividades claves y requerimientos en detalle. Esto podría ser lo que deseas que se enfoque el apoyo, por ejemplo, si necesitas apoyo emocional, apoyo para realizar actividades de la vida diaria, etc. También, puedes proveer mas información sobre el paciente y sus necesidades."

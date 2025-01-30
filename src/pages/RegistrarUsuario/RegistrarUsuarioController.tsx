@@ -48,6 +48,10 @@ type FormActions =
       payload: {
         error: string;
       };
+    }
+  | {
+      type: 'SET_STATE';
+      payload: FormState;
     };
 
 const reducer = (state: FormState, action: FormActions) => {
@@ -68,6 +72,11 @@ const reducer = (state: FormState, action: FormActions) => {
         ...state,
         error: action.payload.error,
       };
+    case 'SET_STATE':
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }
@@ -80,18 +89,22 @@ const RegistrarUsuarioController = () => {
 
   const [{ forWhom, comuna, servicio, especialidad }] = useRecibeApoyo();
 
-  const initialState = {
-    error: '',
-    nombre: '',
-    apellido: '',
-    paraQuien: forWhom,
-    nombrePaciente: '',
-    rut: '',
-    correo: '',
-    contrasena: '',
-    confirmarContrasena: '',
-    acceptedTerms: false,
-  };
+  const initialState = localStorage.getItem('formState')
+    ? JSON.parse(localStorage.getItem('formState') || '{}')
+    : {
+        error: '',
+        nombre: '',
+        apellido: '',
+        paraQuien: forWhom,
+        nombrePaciente: '',
+        rut: '',
+        correo: '',
+        contrasena: '',
+        confirmarContrasena: '',
+        acceptedTerms: false,
+      };
+
+  initialState.paraQuien = forWhom;
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -165,6 +178,12 @@ const RegistrarUsuarioController = () => {
         especialidad: especialidad?.especialidadName ? especialidad : undefined,
       };
       if (paraQuien === 'tercero' && (!patientName || !patientAge || !patientRut)) {
+        setNotification({
+          open: true,
+          message: 'Faltan datos del paciente',
+          severity: 'error',
+        });
+        navigate('/recibe-apoyo');
         throw new Error('Faltan datos del paciente');
       } else {
         newUser = {
@@ -197,6 +216,19 @@ const RegistrarUsuarioController = () => {
     const { name, value } = e.target;
     dispatch({ type: 'CHANGE', payload: { name, value } });
   };
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('formState', JSON.stringify(state));
+  }, [state]);
+
+  // Load state from localStorage on component mount
+  useEffect(() => {
+    const savedState = localStorage.getItem('formState');
+    if (savedState) {
+      dispatch({ type: 'SET_STATE', payload: JSON.parse(savedState) });
+    }
+  }, []);
 
   useEffect(() => {
     if (user?.email) {

@@ -10,7 +10,7 @@ export interface User {
   firstname: string;
   lastname: string;
   forWhom: string;
-  patientName: string;
+  patientName?: string;
   rut: string;
   isLoggedIn?: boolean;
   gender: 'Masculino' | 'Femenino' | 'Otro' | '';

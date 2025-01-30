@@ -20,10 +20,11 @@ export const forWhomOptions: ForWhomOptions[] = [
 ];
 
 const ForWhomList = () => {
-  const [{ forWhom }, { selectForWhom }] = useRecibeApoyo();
+  const [{ forWhom }, { selectForWhom, increaseStep }] = useRecibeApoyo();
 
   const handleSelectForWhom = (whom: ForWhom) => {
     selectForWhom(whom);
+    increaseStep();
   };
 
   return (

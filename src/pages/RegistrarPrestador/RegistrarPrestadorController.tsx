@@ -17,6 +17,7 @@ type FormState = {
   confirmarContrasena: string;
   comoEnteraste: string;
   acceptedTerms: boolean;
+  [key: string]: string | boolean;
 };
 
 type FormActions =
@@ -35,6 +36,10 @@ type FormActions =
       payload: {
         error: string;
       };
+    }
+  | {
+      type: 'SET_STATE';
+      payload: FormState;
     };
 
 const reducer = (state: FormState, action: FormActions) => {
@@ -54,6 +59,11 @@ const reducer = (state: FormState, action: FormActions) => {
         ...state,
         error: action.payload.error,
       };
+    case 'SET_STATE':
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }
@@ -66,21 +76,28 @@ const RegistrarPrestadorController = () => {
 
   const navigate = useNavigate();
 
-  const initialState = {
-    error: '',
-    nombre: '',
-    apellido: '',
-    rut: '',
-    telefono: '',
-    correo: '',
-    contrasena: '',
-    confirmarContrasena: '',
-    comoEnteraste: '',
-    comunas: selectedComunas,
-    servicio: selectedServicio,
-    especialidad: selectedEspecialidad,
-    acceptedTerms: false,
-  };
+  const initialState = localStorage.getItem('prestadorFormState')
+    ? JSON.parse(localStorage.getItem('prestadorFormState') || '{}')
+    : {
+        error: '',
+        nombre: '',
+        apellido: '',
+        rut: '',
+        telefono: '',
+        correo: '',
+        contrasena: '',
+        confirmarContrasena: '',
+        comoEnteraste: '',
+        comunas: selectedComunas,
+        servicio: selectedServicio,
+        especialidad: selectedEspecialidad,
+        acceptedTerms: false,
+      };
+
+  initialState.comunas = selectedComunas;
+  initialState.servicio = selectedServicio;
+  initialState.especialidad = selectedEspecialidad;
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -174,6 +191,19 @@ const RegistrarPrestadorController = () => {
     const { name, value } = e.target;
     dispatch({ type: 'CHANGE', payload: { name, value } });
   };
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('prestadorFormState', JSON.stringify(state));
+  }, [state]);
+
+  // Load state from localStorage on component mount
+  useEffect(() => {
+    const savedState = localStorage.getItem('prestadorFormState');
+    if (savedState) {
+      dispatch({ type: 'SET_STATE', payload: JSON.parse(savedState) });
+    }
+  }, []);
 
   useEffect(() => {
     if (user?.email) {

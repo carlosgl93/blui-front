@@ -5,11 +5,12 @@ import { Servicio } from '@/types/Servicio';
 import { useServicios } from '@/hooks/useServicios';
 
 const ServiceTypeList = () => {
-  const [{ servicio }, { selectServicio }] = useRecibeApoyo();
+  const [{ servicio }, { selectServicio, increaseStep }] = useRecibeApoyo();
 
   const { allServicios } = useServicios();
   const handleSelectServicio = (servicio: Servicio) => {
     selectServicio(servicio);
+    increaseStep();
   };
 
   return (
