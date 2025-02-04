@@ -9,6 +9,7 @@ import { auth, db } from '@/firebase';
 import { Patient } from '@/pages/RegistrarUsuario/RegistrarUsuarioController';
 import { User } from '@/store/auth/user';
 import { Comuna, Especialidad, Servicio } from '@/types';
+import dayjs from 'dayjs';
 import { FirebaseError } from 'firebase/app';
 import {
   browserLocalPersistence,
@@ -89,6 +90,7 @@ export async function createUser({
       service: servicio.serviceName,
       speciality: especialidad?.especialidadName || '',
       pacientes: paraQuien === 'paciente' ? [] : pacientes,
+      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     };
     const userRef = doc(db, 'users', user.uid);
     return await setDoc(userRef, newUser).then(() => newUser);

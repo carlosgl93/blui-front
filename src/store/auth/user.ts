@@ -25,6 +25,7 @@ export interface User {
   age?: number;
   patientAge?: number;
   pacientes?: Patient[];
+  createdAt?: string;
 }
 
 export const userState = atom<null | User>({
